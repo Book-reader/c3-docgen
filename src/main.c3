@@ -133,6 +133,12 @@ fn void? print_decls(String data, OutStream out)
 					io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
 					i += en.len - 1;
 				}
+				else if (try idx = data[i..].index_of("faultdef") && idx == 0)
+				{
+					String faults = data[i:data[i..].index_of(";") ?? 0];
+					io::fprintf(out, "```c3\n%s\n```\n", faults.trim())!;
+					i += faults.len - 1;
+				}
 		}
 	};
 }
