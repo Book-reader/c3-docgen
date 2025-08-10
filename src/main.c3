@@ -45,11 +45,14 @@ fn int main(String[] args)
 		});
 	foreach (mod : module_list)
 	{
-		io::printfn("%s", mod);
-		io::fprintf(&out_file, "### `%s`\n", mod)!!;
-		foreach (decl : modules.get(mod)!!)
+		if (!mod.contains("@private") && !mod.contains("@local") && !mod.contains("@test"))
 		{
-			io::fprintf(&out_file, "```c3\n%s\n```\n", decl)!!;
+			io::printfn("%s", mod);
+			io::fprintf(&out_file, "### `%s`\n", mod)!!;
+			foreach (decl : modules.get(mod)!!)
+			{
+				io::fprintf(&out_file, "```c3\n%s\n```\n", decl)!!;
+			}
 		}
 	}
 
@@ -110,54 +113,54 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				else if (try idx = data[i..].index_of("struct") && idx == 0)
 				{
 					String struc = data[i:data[i..].index_of("{") ?? 0];
-					curr_mod.push(struc.trim().copy(alloc));
+					if (!struc.contains("@private") && !struc.contains("@local")) curr_mod.push(struc.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", struc.trim())!;
 					i += struc.len - 1;
 				}
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "fn");
-					curr_mod.push(func.trim().copy(alloc));
+					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push(func.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
-					curr_mod.push(func.trim().copy(alloc));
+					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push(func.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("typedef") && idx == 0)
 				{
 					String type = data[i:data[i..].index_of(";") ?? 0];
-					curr_mod.push(type.trim().copy(alloc));
+					if (!type.contains("@private") && !type.contains("@local")) curr_mod.push(type.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", type.trim())!;
 					i += type.len - 1;
 				}
 				else if (try idx = data[i..].index_of("alias") && idx == 0)
 				{
 					String al = data[i:data[i..].index_of(";") ?? 0];
-					curr_mod.push(al.trim().copy(alloc));
+					if (!al.contains("@private") && !al.contains("@local")) curr_mod.push(al.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", al.trim())!;
 					i += al.len - 1;
 				}
 				else if (try idx = data[i..].index_of("enum") && idx == 0)
 				{
 					String en = data[i:data[i..].index_of("{") ?? 0];
-					curr_mod.push(en.trim().copy(alloc));
+					if (!en.contains("@private") && !en.contains("@local")) curr_mod.push(en.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
 					i += en.len - 1;
 				}
 				else if (try idx = data[i..].index_of("faultdef") && idx == 0)
 				{
 					String faults = data[i:data[i..].index_of(";") ?? 0];
-					curr_mod.push(faults.trim().copy(alloc));
+					if (!faults.contains("@private") && !faults.contains("@local")) curr_mod.push(faults.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", faults.trim())!;
 					i += faults.len - 1;
 				}
 				else if (try idx = data[i..].index_of("bitstruct") && idx == 0)
 				{
 					String bitstruc = data[i:data[i..].index_of("{") ?? 0];
-					curr_mod.push(bitstruc.trim().copy(alloc));
+					if (!bitstruc.contains("@private") && !bitstruc.contains("@local")) curr_mod.push(bitstruc.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", bitstruc.trim())!;
 					i += bitstruc.len - 1;
 				}
