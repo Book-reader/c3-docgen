@@ -206,7 +206,7 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				}
 				else if (try idx = data[i..].index_of("const") && idx == 0)
 				{
-					String cons = data[i:data[i..].index_of(";") ?? 0];
+					String cons = data[i:data[i..].index_of("=") ?? 0];
 					if (!cons.contains("@private") && !cons.contains("@local")) curr_mod.push({cons.trim().copy(alloc), comment});
 					comment = {};
 					// io::fprintf(out, "```c3\n%s\n```\n", cons.trim())!;
