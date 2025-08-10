@@ -61,6 +61,16 @@ fn int main(String[] args)
 						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
 					}
 				}
+				if (decl.doc_comment.contracts.len() > 0)
+				{
+					if (decl.doc_comment.comment.len() == 0) io::fprintf(&out_file, "\n")!!;
+					io::fprintf(&out_file, "```c3\n<*\n")!!;
+					foreach (str : decl.doc_comment.contracts)
+					{
+						io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+					}
+					io::fprintf(&out_file, "*>\n```\n")!!;
+				}
 				io::fprintf(&out_file, "```c3\n%s\n```\n", decl.item)!!;
 			}
 		}
