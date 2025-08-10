@@ -1297,52 +1297,6 @@ fn usz BitSet.len(&self) @operator(len) @inline
 ```c3
 fn void BitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 ```
-### `module std::collections::blockingqueue { Value }`
-```c3
-struct QueueEntry
-```
-```c3
-struct LinkedBlockingQueue
-```
-```c3
-fn LinkedBlockingQueue* LinkedBlockingQueue.init(&self, Allocator allocator, usz capacity = 0)
-```
-```c3
-fn LinkedBlockingQueue* LinkedBlockingQueue.tinit(&self, usz capacity = 0)
-```
-```c3
-fn void LinkedBlockingQueue.free(&self)
-```
-```c3
-fn void LinkedBlockingQueue.push(&self, Value value)
-```
-```c3
-fn Value LinkedBlockingQueue.poll(&self)
-```
-```c3
-fn Value? LinkedBlockingQueue.pop(&self)
-```
-```c3
-fn Value? LinkedBlockingQueue.poll_timeout(&self, Duration timeout)
-```
-```c3
-fn usz LinkedBlockingQueue.size(&self)
-```
-```c3
-fn bool LinkedBlockingQueue.is_empty(&self)
-```
-```c3
-fn void? LinkedBlockingQueue.try_push(&self, Value value)
-```
-```c3
-fn void? LinkedBlockingQueue.push_timeout(&self, Value value, Duration timeout)
-```
-```c3
-fn Value? LinkedBlockingQueue.peek(&self)
-```
-```c3
-fn bool LinkedBlockingQueue.is_initialized(&self)
-```
 ### `module std::collections::elastic_array {Type, MAX_SIZE}`
 ```c3
 alias ElementPredicate = fn bool(Type *type)
@@ -2324,16 +2278,10 @@ fn Object* Object.get_or_create_obj(&self, String key)
 ```
 ### `module std::collections::pair{Type1, Type2}`
 ```c3
-struct Pair (Printable)
-```
-```c3
-fn usz? Pair.to_format(&self, Formatter* f) @dynamic
+struct Pair
 ```
 ```c3
 macro void Pair.unpack(&self, a, b)
-```
-```c3
-fn bool Pair.equal(self, Pair other) @operator(==) @if
 ```
 ### `module std::collections::priorityqueue::private{Type, MAX}`
 ```c3
@@ -2675,16 +2623,10 @@ fn usz LinkedHashSetIterator.len(&self) @operator(len)
 ```
 ### `module std::collections::triple{Type1, Type2, Type3}`
 ```c3
-struct Triple (Printable)
-```
-```c3
-fn usz? Triple.to_format(&self, Formatter* f) @dynamic
+struct Triple
 ```
 ```c3
 macro void Triple.unpack(&self, a, b, c)
-```
-```c3
-fn bool Triple.equal(self, Triple other) @operator(==) @if
 ```
 ### `module std::collections::tuple{Type1, Type2}`
 ```c3
@@ -3014,9 +2956,6 @@ faultdef NOT_FOUND @builtin
 ```
 ```c3
 faultdef TYPE_MISMATCH @builtin
-```
-```c3
-faultdef CAPACITY_EXCEEDED @builtin
 ```
 ```c3
 alias VoidFn = fn void()
@@ -4015,9 +3954,6 @@ enum AllocInitType
 alias MemoryAllocFn = fn char[]?(usz)
 ```
 ```c3
-fn usz alignment_for_allocation(usz alignment) @inline
-```
-```c3
 macro void* malloc(Allocator allocator, usz size) @nodiscard
 ```
 ```c3
@@ -4291,37 +4227,6 @@ fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignmen
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
-### `module std::core::mem::mempool`
-```c3
-struct FixedBlockPoolNode
-```
-```c3
-struct FixedBlockPoolEntry
-```
-```c3
-struct FixedBlockPool
-```
-```c3
-macro FixedBlockPool* FixedBlockPool.init(&self, Allocator allocator, usz block_size, usz capacity = INITIAL_CAPACITY, usz alignment = 0)
-```
-```c3
-macro FixedBlockPool* FixedBlockPool.init_for_type(&self, Allocator allocator, $Type, usz capacity = INITIAL_CAPACITY)
-```
-```c3
-macro FixedBlockPool* FixedBlockPool.tinit_for_type(&self, $Type, usz capacity = INITIAL_CAPACITY)
-```
-```c3
-macro FixedBlockPool* FixedBlockPool.tinit(&self, usz block_size, usz capacity = INITIAL_CAPACITY)
-```
-```c3
-fn void FixedBlockPool.free(&self)
-```
-```c3
-fn void* FixedBlockPool.alloc(&self)
-```
-```c3
-fn void FixedBlockPool.dealloc(&self, void* ptr)
-```
 ### `module std::core::mem::rc`
 ```c3
 struct RefCounted
@@ -4380,9 +4285,6 @@ fn void? commit(void* ptr, usz len, VirtualMemoryAccess access = READWRITE)
 fn void? decommit(void* ptr, usz len, bool block = true)
 ```
 ```c3
-fn void*? mmap_file(Fd fd, usz size, usz offset = 0, VirtualMemoryAccess access = READ, bool shared = false) @if
-```
-```c3
 fn VirtualMemory? virtual_alloc(usz size, VirtualMemoryAccess access = PROTECTED)
 ```
 ```c3
@@ -4424,25 +4326,19 @@ macro @enum_lookup($Type, #value, value)
 macro @enum_lookup_new($Type, $name, value)
 ```
 ```c3
-alias BenchmarkFn = fn void ()
+alias BenchmarkFn = fn void()
+```
+```c3
+struct BenchmarkUnit
+```
+```c3
+fn BenchmarkUnit[] benchmark_collection_create(Allocator allocator)
 ```
 ```c3
 fn void set_benchmark_warmup_iterations(uint value) @builtin
 ```
 ```c3
 fn void set_benchmark_max_iterations(uint value) @builtin
-```
-```c3
-fn void set_benchmark_func_iterations(String func, uint value) @builtin
-```
-```c3
-macro @start_benchmark()
-```
-```c3
-macro @end_benchmark()
-```
-```c3
-macro @log_benchmark(msg, args...)
 ```
 ```c3
 fn bool run_benchmarks(BenchmarkUnit[] benchmarks)
@@ -5093,9 +4989,6 @@ macro bool is_promotable_to_float($Type) @const
 ```
 ```c3
 macro bool is_same_vector_type($Type1, $Type2) @const
-```
-```c3
-macro bool has_equals($Type) @const
 ```
 ```c3
 macro bool is_equatable_type($Type) @const
@@ -6338,23 +6231,6 @@ fn void? save(String filename, char[] data)
 ```c3
 fn void? File.flush(&self) @dynamic
 ```
-### `module std::io::file @if(env::LIBC &&& env::POSIX)`
-```c3
-fn mmap::FileMmap? mmap_file(File file, usz offset = 0, usz len = 0, vm::VirtualMemoryAccess access = READ, bool shared = false)
-```
-```c3
-fn mmap::FileMmap? mmap_open(String filename, String mode, usz offset = 0, usz len = 0, vm::VirtualMemoryAccess access = READ, bool shared = false)
-```
-### `module std::io::file::mmap @if(env::LIBC &&& env::POSIX)`
-```c3
-struct FileMmap
-```
-```c3
-fn char[] FileMmap.bytes(&self)
-```
-```c3
-fn void? FileMmap.destroy(&self) @maydiscard
-```
 ### `module std::io::os`
 ```c3
 macro void? native_chdir(Path path)
@@ -6799,9 +6675,6 @@ macro log(x, base)
 ```
 ```c3
 macro log2(x)
-```
-```c3
-macro @intlog2($x)
 ```
 ```c3
 macro log10(x)
@@ -9236,9 +9109,6 @@ fn uint Pcg16Random.next_int(&self) @dynamic
 fn ushort Pcg16Random.next_short(&self) @dynamic
 ```
 ```c3
-macro make_seed($Type, char[] input)
-```
-```c3
 fn void seeder(char[] input, char[] out_buffer)
 ```
 ```c3
@@ -9724,7 +9594,6 @@ fn CInt getaddrinfo(ZString nodename, ZString servname, AddrInfo* hints, AddrInf
 ### `module std::net::os @if(env::ANDROID)`
 ### `module std::net::os @if(env::DARWIN)`
 ### `module std::net::os @if(env::LINUX)`
-### `module std::net::os @if(env::OPENBSD)`
 ### `module std::net::os @if(env::POSIX && SUPPORTS_INET)`
 ```c3
 typedef NativeSocket = inline Fd
@@ -10063,18 +9932,6 @@ struct Elf64_Phdr
 ```
 ```c3
 fn CInt dladdr(void* addr, Linux_Dl_info* info)
-```
-```c3
-alias Dl_iterate_phdr_callback64 = fn CInt(Linux_dl_phdr_info_64*, usz, void*)
-```
-```c3
-alias Dl_iterate_phdr_callback32 = fn CInt(Linux_dl_phdr_info_32*, usz, void*)
-```
-```c3
-fn CInt dl_iterate_phdr64(Dl_iterate_phdr_callback64 callback, void* data)
-```
-```c3
-struct Linux_dl_phdr_info_32
 ```
 ```c3
 fn Backtrace? backtrace_line_parse(Allocator allocator, String string, String obj_name, String func_name, bool is_inlined)
@@ -12002,9 +11859,6 @@ fn TzDateTime DateTime.to_gmt_offset(self, int gmt_offset)
 fn TzDateTime TzDateTime.to_gmt_offset(self, int gmt_offset)
 ```
 ```c3
-fn bool TzDateTime.eq(self, TzDateTime other) @operator(==) @inline
-```
-```c3
 fn void DateTime.set_date(&self, int year, Month month = JANUARY, int day = 1, int hour = 0, int min = 0, int sec = 0, int us = 0)
 ```
 ```c3
@@ -12090,9 +11944,6 @@ fn double DateTime.diff_sec(self, DateTime from)
 ```
 ```c3
 fn Duration DateTime.diff_us(self, DateTime from) @operator(-)
-```
-```c3
-fn bool DateTime.eq(self, DateTime other) @operator(==) @inline
 ```
 ```c3
 enum DateTimeFormat
