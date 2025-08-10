@@ -233,8 +233,6 @@ Return a "timespec" from a duration.
 <*
  @require self >= time::NANO_DURATION_ZERO
 *>
-```
-```c3
 fn TimeSpec NanoDuration.to_timespec(self) @inline
 ```
 
@@ -243,8 +241,6 @@ Convert a duration to a timespec.
 <*
  @require self >= time::DURATION_ZERO
 *>
-```
-```c3
 fn TimeSpec Duration.to_timespec(self) @inline
 ```
 
@@ -1208,8 +1204,6 @@ macro bool is_native_atomic_type($Type)
  @require $defined(*ptr + y) : "+ must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_add(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1225,8 +1219,6 @@ macro fetch_add(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatil
  @require $defined(*ptr - y) : "- must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_sub(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1241,8 +1233,6 @@ macro fetch_sub(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatil
  @require $defined(*ptr * y) : "* must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_mul(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1257,8 +1247,6 @@ macro fetch_mul(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require $defined(*ptr * y) : "/ must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_div(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1274,8 +1262,6 @@ macro fetch_div(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require $defined(*ptr | y) : "| must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_or(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1291,8 +1277,6 @@ macro fetch_or(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile
  @require $defined(*ptr ^ y) : "^ must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_xor(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1308,8 +1292,6 @@ macro fetch_xor(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatil
  @require $defined(*ptr ^ y) : "& must be defined between the values."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_and(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1325,8 +1307,6 @@ macro fetch_and(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatil
  @require types::is_int($typeof(y)) : "The value for shift right must be an integer"
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_shift_right(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1342,8 +1322,6 @@ macro fetch_shift_right(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require types::is_int($typeof(y)) : "The value for shift left must be an integer"
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_shift_left(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1357,8 +1335,6 @@ macro fetch_shift_left(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require types::flat_kind($typeof(*ptr)) == BOOL : "Only bool pointers may be used."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro flag_set(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1372,8 +1348,6 @@ macro flag_set(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require types::flat_kind($typeof(*ptr)) == BOOL : "Only bool pointers may be used."
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro flag_clear(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
 
@@ -1388,8 +1362,6 @@ macro flag_clear(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
  @require $defined(*ptr > y) : "Only values that are comparable with > may be used"
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_max(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 
@@ -1404,8 +1376,6 @@ macro fetch_max(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatil
  @require $defined(*ptr > y) : "Only values that are comparable with > may be used"
  @require $ordering != NOT_ATOMIC && $ordering != UNORDERED : "Acquire ordering is not valid."
 *>
-```
-```c3
 macro fetch_min(ptr, y, AtomicOrdering $ordering = SEQ_CONSISTENT, bool $volatile = false, usz $alignment = 0)
 ```
 ```c3
@@ -1428,8 +1398,6 @@ Loads data atomically, by default this uses SEQ_CONSISTENT ordering.
  @param ordering : "The ordering, cannot be release or acquire-release."
  @require ordering != RELEASE && ordering != ACQUIRE_RELEASE : "Release and acquire-release are not valid for load"
 *>
-```
-```c3
 macro Type Atomic.load(&self, AtomicOrdering ordering = SEQ_CONSISTENT)
 ```
 
@@ -1439,8 +1407,6 @@ Stores data atomically, by default this uses SEQ_CONSISTENT ordering.
  @param ordering : "The ordering, cannot be acquire or acquire-release."
  @require ordering != ACQUIRE && ordering != ACQUIRE_RELEASE : "Acquire and acquire-release are not valid for store"
 *>
-```
-```c3
 macro void Atomic.store(&self, Type value, AtomicOrdering ordering = SEQ_CONSISTENT)
 ```
 ```c3
@@ -1488,8 +1454,6 @@ macro Type Atomic.clear(&self, AtomicOrdering ordering = SEQ_CONSISTENT) @if(typ
 <*
  @require types::is_intlike($typeof(i)) : `The input must be an integer or integer vector`
 *>
-```
-```c3
 macro reverse(i)
 ```
 
@@ -1497,8 +1461,6 @@ macro reverse(i)
 <*
  @require types::is_intlike($typeof(i)) : `The input must be an integer or integer vector`
 *>
-```
-```c3
 macro bswap(i) @builtin
 ```
 ```c3
@@ -1949,8 +1911,6 @@ when something is pushed to it.
  @param [&inout] allocator : "The allocator to use"
  @param initial_capacity : "The initial capacity to reserve, defaults to 16"
 *>
-```
-```c3
 fn AnyList* AnyList.init(&self, Allocator allocator, usz initial_capacity = 16)
 ```
 
@@ -1959,8 +1919,6 @@ Initialize the list using the temp allocator.
 <*
  @param initial_capacity : "The initial capacity to reserve"
 *>
-```
-```c3
 fn AnyList* AnyList.tinit(&self, usz initial_capacity = 16)
 ```
 ```c3
@@ -1985,8 +1943,6 @@ will still pop the element.
  @return "The last value as the type given"
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
 *>
-```
-```c3
 macro AnyList.pop(&self, $Type)
 ```
 
@@ -1997,8 +1953,6 @@ Copy the last value, pop it and return the copy of it.
  @return "A copy of the last value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.copy_pop(&self, Allocator allocator)
 ```
 
@@ -2008,8 +1962,6 @@ Copy the last value, pop it and return the copy of it.
  @return "A temp copy of the last value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.tcopy_pop(&self)
 ```
 
@@ -2019,8 +1971,6 @@ Pop the last value. It must later be released using `list.free_element()`.
  @return "The last value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.pop_retained(&self)
 ```
 
@@ -2037,8 +1987,6 @@ will still pop the element.
  @return "The first value as the type given"
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
 *>
-```
-```c3
 macro AnyList.pop_first(&self, $Type)
 ```
 
@@ -2048,8 +1996,6 @@ Pop the first value. It must later be released using `list.free_element()`.
  @return "The first value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.pop_first_retained(&self)
 ```
 
@@ -2060,8 +2006,6 @@ Copy the first value, pop it and return the copy of it.
  @return "A copy of the first value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.copy_pop_first(&self, Allocator allocator)
 ```
 
@@ -2071,8 +2015,6 @@ Copy the first value, pop it and return the temp copy of it.
  @return "A temp copy of the first value if it exists"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.tcopy_pop_first(&self)
 ```
 
@@ -2082,8 +2024,6 @@ Remove the element at the particular index.
  @param index : "The index of the element to remove"
  @require index < self.size
 *>
-```
-```c3
 fn void AnyList.remove_at(&self, usz index)
 ```
 
@@ -2092,8 +2032,6 @@ Add all the elements in another AnyList.
 <*
  @param [&in] other_list : "The list to add"
 *>
-```
-```c3
 fn void AnyList.add_all(&self, AnyList* other_list)
 ```
 
@@ -2107,8 +2045,6 @@ Return a view of the data as a slice.
 <*
  @return "The slice view"
 *>
-```
-```c3
 fn any[] AnyList.array_view(&self)
 ```
 
@@ -2117,8 +2053,6 @@ Push an element to the front of the list.
 <*
  @param value : "The value to push to the list"
 *>
-```
-```c3
 macro void AnyList.push_front(&self, value)
 ```
 
@@ -2129,8 +2063,6 @@ Insert an element at a particular index.
  @param type : "the value to insert"
  @require index <= self.size : "The index is out of bounds"
 *>
-```
-```c3
 macro void AnyList.insert_at(&self, usz index, type)
 ```
 
@@ -2139,8 +2071,6 @@ Remove the last element in the list. The list may not be empty.
 <*
  @require self.size > 0 : "The list was already empty"
 *>
-```
-```c3
 fn void AnyList.remove_last(&self)
 ```
 
@@ -2149,8 +2079,6 @@ Remove the first element in the list, the list may not be empty.
 <*
  @require self.size > 0
 *>
-```
-```c3
 fn void AnyList.remove_first(&self)
 ```
 
@@ -2161,8 +2089,6 @@ Return the first element by value, assuming it is the given type.
  @return "The first element"
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
 *>
-```
-```c3
 macro AnyList.first(&self, $Type)
 ```
 
@@ -2172,8 +2098,6 @@ Return the first element
  @return "The first element"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.first_any(&self) @inline
 ```
 
@@ -2184,8 +2108,6 @@ Return the last element by value, assuming it is the given type.
  @return "The last element"
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
 *>
-```
-```c3
 macro AnyList.last(&self, $Type)
 ```
 
@@ -2195,8 +2117,6 @@ Return the last element
  @return "The last element"
  @return? NO_MORE_ELEMENT
 *>
-```
-```c3
 fn any? AnyList.last_any(&self) @inline
 ```
 
@@ -2205,8 +2125,6 @@ Return whether the list is empty.
 <*
  @return "True if the list is empty"
 *>
-```
-```c3
 fn bool AnyList.is_empty(&self) @inline
 ```
 
@@ -2215,8 +2133,6 @@ Return the length of the list.
 <*
  @return "The number of elements in the list"
 *>
-```
-```c3
 fn usz AnyList.len(&self) @operator(len) @inline
 ```
 
@@ -2229,8 +2145,6 @@ Return an element in the list by value, assuming it is the given type.
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
  @require index < self.size : "Index out of range"
 *>
-```
-```c3
 macro AnyList.get(&self, usz index, $Type)
 ```
 
@@ -2242,8 +2156,6 @@ Return an element in the list.
  @return? TYPE_MISMATCH, NO_MORE_ELEMENT
  @require index < self.size : "Index out of range"
 *>
-```
-```c3
 fn any AnyList.get_any(&self, usz index) @inline @operator([])
 ```
 
@@ -2260,8 +2172,6 @@ Swap two elements in a list.
  @require i < self.size : "The first index is out of range"
  @require j < self.size : "The second index is out of range"
 *>
-```
-```c3
 fn void AnyList.swap(&self, usz i, usz j)
 ```
 
@@ -2276,8 +2186,6 @@ Remove any elements matching the predicate.
  @param filter : "The function to determine if it should be removed or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz AnyList.remove_if(&self, AnyPredicate filter)
 ```
 
@@ -2287,8 +2195,6 @@ Retain the elements matching the predicate.
  @param selection : "The function to determine if it should be kept or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz AnyList.retain_if(&self, AnyPredicate selection)
 ```
 
@@ -2299,8 +2205,6 @@ Remove any elements matching the predicate.
  @param context : "The context to the function"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz AnyList.remove_using_test(&self, AnyTest filter, any context)
 ```
 
@@ -2311,8 +2215,6 @@ Retain any elements matching the predicate.
  @param context : "The context to the function"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz AnyList.retain_using_test(&self, AnyTest selection, any context)
 ```
 
@@ -2321,8 +2223,6 @@ Reserve memory so that at least the `min_capacity` exists.
 <*
  @param min_capacity : "The min capacity to hold"
 *>
-```
-```c3
 fn void AnyList.reserve(&self, usz min_capacity)
 ```
 
@@ -2333,8 +2233,6 @@ Set the element at any index.
  @param value : "The value to set"
  @require index <= self.size : "Index out of range"
 *>
-```
-```c3
 macro void AnyList.set(&self, usz index, value)
 ```
 ### `std::collections::bitset {SIZE}`
@@ -2352,8 +2250,6 @@ struct BitSet
 <*
  @return "The number of bits set"
 *>
-```
-```c3
 fn usz BitSet.cardinality(&self)
 ```
 
@@ -2363,8 +2259,6 @@ Set a bit in the bitset.
  @param i : "The index to set"
  @require i < SIZE : "Index was out of range"
 *>
-```
-```c3
 fn void BitSet.set(&self, usz i)
 ```
 
@@ -2374,8 +2268,6 @@ Perform xor over all bits, mutating itself
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 macro BitSet BitSet.xor_self(&self, BitSet set) @operator(^=)
 ```
 
@@ -2385,8 +2277,6 @@ Perform xor over all bits, returning a new bit set.
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 fn BitSet BitSet.xor(&self, BitSet set) @operator(^)
 ```
 
@@ -2396,8 +2286,6 @@ Perform or over all bits, returning a new bit set.
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 fn BitSet BitSet.or(&self, BitSet set) @operator(|)
 ```
 
@@ -2407,8 +2295,6 @@ Perform or over all bits, mutating itself
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 macro BitSet BitSet.or_self(&self, BitSet set) @operator(|=)
 ```
 
@@ -2418,8 +2304,6 @@ Perform & over all bits, returning a new bit set.
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 fn BitSet BitSet.and(&self, BitSet set) @operator(&)
 ```
 
@@ -2429,8 +2313,6 @@ Perform & over all bits, mutating itself.
  @param set : "The bit set to xor with"
  @return "The resulting bit set"
 *>
-```
-```c3
 macro BitSet BitSet.and_self(&self, BitSet set) @operator(&=)
 ```
 
@@ -2440,8 +2322,6 @@ Unset (clear) a bit in the bitset.
  @param i : "The index to set"
  @require i < SIZE : "Index was out of range"
 *>
-```
-```c3
 fn void BitSet.unset(&self, usz i)
 ```
 
@@ -2451,8 +2331,6 @@ Get a particular bit in the bitset
  @param i : "The index of the bit"
  @require i < SIZE : "Index was out of range"
 *>
-```
-```c3
 fn bool BitSet.get(&self, usz i) @operator([]) @inline
 ```
 ```c3
@@ -2466,8 +2344,6 @@ Change a particular bit in the bitset
  @param value : "The value to set the bit to"
  @require i < SIZE : "Index was out of range"
 *>
-```
-```c3
 fn void BitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 ```
 ### `std::collections::blockingqueue { Value }`
@@ -2487,8 +2363,6 @@ struct LinkedBlockingQueue
  @param capacity : "Maximum capacity (0 for unbounded)"
  @require !self.is_initialized() : "Queue was already initialized"
 *>
-```
-```c3
 fn LinkedBlockingQueue* LinkedBlockingQueue.init(&self, Allocator allocator, usz capacity = 0)
 ```
 ```c3
@@ -2499,8 +2373,6 @@ fn LinkedBlockingQueue* LinkedBlockingQueue.tinit(&self, usz capacity = 0)
 <*
  @require self.is_initialized() : "Queue must be initialized"
 *>
-```
-```c3
 fn void LinkedBlockingQueue.free(&self)
 ```
 
@@ -2509,8 +2381,6 @@ fn void LinkedBlockingQueue.free(&self)
  @param value : "Value to add to the queue"
  @require self.is_initialized() : "Queue must be initialized"
 *>
-```
-```c3
 fn void LinkedBlockingQueue.push(&self, Value value)
 ```
 
@@ -2520,8 +2390,6 @@ Get a value from the queue, blocking if there is no element in the queue.
  @require self.is_initialized() : "Queue must be initialized"
  @return "The removed value"
 *>
-```
-```c3
 fn Value LinkedBlockingQueue.poll(&self)
 ```
 
@@ -2532,8 +2400,6 @@ Pop an element from the queue, fail is it is empty.
  @return "The removed value"
  @return? NO_MORE_ELEMENT : "If the queue is empty"
 *>
-```
-```c3
 fn Value? LinkedBlockingQueue.pop(&self)
 ```
 
@@ -2545,8 +2411,6 @@ Poll with a timeout.
  @return "The removed value or null if timeout occurred"
  @return? NO_MORE_ELEMENT : "If we reached the timeout"
 *>
-```
-```c3
 fn Value? LinkedBlockingQueue.poll_timeout(&self, Duration timeout)
 ```
 
@@ -2555,8 +2419,6 @@ fn Value? LinkedBlockingQueue.poll_timeout(&self, Duration timeout)
  @require self.is_initialized() : "Queue must be initialized"
  @return "Current size of the queue"
 *>
-```
-```c3
 fn usz LinkedBlockingQueue.size(&self)
 ```
 
@@ -2565,8 +2427,6 @@ fn usz LinkedBlockingQueue.size(&self)
  @require self.is_initialized() : "Queue must be initialized"
  @return "True if queue is empty"
 *>
-```
-```c3
 fn bool LinkedBlockingQueue.is_empty(&self)
 ```
 
@@ -2577,8 +2437,6 @@ Try to push, return CAPACITY_EXCEEDED if the queue is full.
  @require self.is_initialized() : "Queue must be initialized"
  @return? CAPACITY_EXCEEDED : "If the queue is full"
 *>
-```
-```c3
 fn void? LinkedBlockingQueue.try_push(&self, Value value)
 ```
 
@@ -2590,8 +2448,6 @@ Try to push, return CAPACITY_EXCEEDED if the queue is still full after timeout i
  @require self.is_initialized() : "Queue must be initialized"
  @return? CAPACITY_EXCEEDED : "If the queue is full"
 *>
-```
-```c3
 fn void? LinkedBlockingQueue.push_timeout(&self, Value value, Duration timeout)
 ```
 
@@ -2600,8 +2456,6 @@ fn void? LinkedBlockingQueue.push_timeout(&self, Value value, Duration timeout)
  @require self.is_initialized() : "Queue must be initialized"
  @return "The head value or NO_MORE_ELEMENT? if queue is empty"
 *>
-```
-```c3
 fn Value? LinkedBlockingQueue.peek(&self)
 ```
 
@@ -2609,8 +2463,6 @@ fn Value? LinkedBlockingQueue.peek(&self)
 <*
  @return "True if queue is initialized"
 *>
-```
-```c3
 fn bool LinkedBlockingQueue.is_initialized(&self)
 ```
 ### `std::collections::elastic_array {Type, MAX_SIZE}`
@@ -2646,8 +2498,6 @@ fn void? ElasticArray.push_try(&self, Type element) @inline
 <*
  @require self.size < MAX_SIZE : `Tried to exceed the max size`
 *>
-```
-```c3
 fn void ElasticArray.push(&self, Type element) @inline
 ```
 ```c3
@@ -2661,8 +2511,6 @@ fn void ElasticArray.clear(&self)
 <*
  @require self.size > 0
 *>
-```
-```c3
 fn Type? ElasticArray.pop_first(&self)
 ```
 
@@ -2670,8 +2518,6 @@ fn Type? ElasticArray.pop_first(&self)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn void ElasticArray.remove_at(&self, usz index)
 ```
 
@@ -2679,8 +2525,6 @@ fn void ElasticArray.remove_at(&self, usz index)
 <*
  @require other_list.size + self.size <= MAX_SIZE
 *>
-```
-```c3
 fn void ElasticArray.add_all(&self, ElasticArray* other_list)
 ```
 
@@ -2696,8 +2540,6 @@ number of elements that didn't fit.
 <*
  @param [in] array
 *>
-```
-```c3
 fn usz ElasticArray.add_array_to_limit(&self, Type[] array)
 ```
 
@@ -2708,8 +2550,6 @@ Add the values of an array to this list.
  @require array.len + self.size <= MAX_SIZE : `Size would exceed max.`
  @ensure self.size >= array.len
 *>
-```
-```c3
 fn void ElasticArray.add_array(&self, Type[] array)
 ```
 
@@ -2722,8 +2562,6 @@ fn Type[] ElasticArray.to_aligned_array(&self, Allocator allocator)
 <*
  @require !type_is_overaligned() : "This function is not available on overaligned types"
 *>
-```
-```c3
 macro Type[] ElasticArray.to_array(&self, Allocator allocator)
 ```
 ```c3
@@ -2742,8 +2580,6 @@ fn Type[] ElasticArray.array_view(&self)
 <*
  @require self.size < MAX_SIZE : `List would exceed max size`
 *>
-```
-```c3
 fn void ElasticArray.push_front(&self, Type type) @inline
 ```
 
@@ -2751,8 +2587,6 @@ fn void ElasticArray.push_front(&self, Type type) @inline
 <*
  @require self.size < MAX_SIZE : `List would exceed max size`
 *>
-```
-```c3
 fn void? ElasticArray.push_front_try(&self, Type type) @inline
 ```
 
@@ -2760,8 +2594,6 @@ fn void? ElasticArray.push_front_try(&self, Type type) @inline
 <*
  @require index <= self.size
 *>
-```
-```c3
 fn void? ElasticArray.insert_at_try(&self, usz index, Type value)
 ```
 
@@ -2770,8 +2602,6 @@ fn void? ElasticArray.insert_at_try(&self, usz index, Type value)
  @require self.size < MAX_SIZE : `List would exceed max size`
  @require index <= self.size
 *>
-```
-```c3
 fn void ElasticArray.insert_at(&self, usz index, Type type)
 ```
 
@@ -2779,8 +2609,6 @@ fn void ElasticArray.insert_at(&self, usz index, Type type)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn void ElasticArray.set_at(&self, usz index, Type type)
 ```
 ```c3
@@ -2816,8 +2644,6 @@ fn void ElasticArray.swap(&self, usz i, usz j)
  @param filter : "The function to determine if it should be removed or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz ElasticArray.remove_if(&self, ElementPredicate filter)
 ```
 
@@ -2826,8 +2652,6 @@ fn usz ElasticArray.remove_if(&self, ElementPredicate filter)
  @param selection : "The function to determine if it should be kept or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz ElasticArray.retain_if(&self, ElementPredicate selection)
 ```
 ```c3
@@ -2862,8 +2686,6 @@ Check for presence of a value in a list.
  @param value : "The value to search for"
  @return "True if the value is found, false otherwise"
 *>
-```
-```c3
 fn bool ElasticArray.contains(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -2873,8 +2695,6 @@ fn bool ElasticArray.contains(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
  @param value : "The value to remove"
  @return "true if the value was found"
 *>
-```
-```c3
 fn bool ElasticArray.remove_last_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -2884,8 +2704,6 @@ fn bool ElasticArray.remove_last_item(&self, Type value) @if(ELEMENT_IS_EQUATABL
  @param value : "The value to remove"
  @return "true if the value was found"
 *>
-```
-```c3
 fn bool ElasticArray.remove_first_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -2895,8 +2713,6 @@ fn bool ElasticArray.remove_first_item(&self, Type value) @if(ELEMENT_IS_EQUATAB
  @param value : "The value to remove"
  @return "the number of deleted elements."
 *>
-```
-```c3
 fn usz ElasticArray.remove_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
@@ -2908,8 +2724,6 @@ fn void ElasticArray.remove_all_from(&self, ElasticArray* other_list) @if(ELEMEN
  @param [&in] self
  @return "The number non-null values in the list"
 *>
-```
-```c3
 fn usz ElasticArray.compact_count(&self) @if(ELEMENT_IS_POINTER)
 ```
 ```c3
@@ -2931,8 +2745,6 @@ fn usz? EnumMap.to_format(&self, Formatter* formatter) @dynamic
  @return "The total size of this map, which is the same as the number of enum values"
  @pure
 *>
-```
-```c3
 fn usz EnumMap.len(&self) @operator(len) @inline
 ```
 
@@ -2940,8 +2752,6 @@ fn usz EnumMap.len(&self) @operator(len) @inline
 <*
  @return "Retrieve a value given the underlying enum, if there is no entry, then the zero value for the value is returned."
 *>
-```
-```c3
 fn ValueType EnumMap.get(&self, Enum key) @operator([]) @inline
 ```
 ```c3
@@ -3009,8 +2819,6 @@ struct GrowableBitSet
  @param initial_capacity
  @param [&inout] allocator : "The allocator to use, defaults to the heap allocator"
 *>
-```
-```c3
 fn GrowableBitSet* GrowableBitSet.init(&self, Allocator allocator, usz initial_capacity = 1)
 ```
 ```c3
@@ -3050,8 +2858,6 @@ struct LinkedList
  @param [&inout] allocator : "The allocator to use, defaults to the heap allocator"
  @return "the initialized list"
 *>
-```
-```c3
 fn LinkedList* LinkedList.init(&self, Allocator allocator)
 ```
 ```c3
@@ -3092,8 +2898,6 @@ fn usz LinkedList.len(&self) @inline
 <*
  @require index < self.size
 *>
-```
-```c3
 macro Node* LinkedList.node_at_index(&self, usz index)
 ```
 
@@ -3101,8 +2905,6 @@ macro Node* LinkedList.node_at_index(&self, usz index)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn Type LinkedList.get(&self, usz index)
 ```
 
@@ -3110,8 +2912,6 @@ fn Type LinkedList.get(&self, usz index)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn void LinkedList.set(&self, usz index, Type element)
 ```
 
@@ -3119,8 +2919,6 @@ fn void LinkedList.set(&self, usz index, Type element)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn void LinkedList.remove_at(&self, usz index)
 ```
 
@@ -3128,8 +2926,6 @@ fn void LinkedList.remove_at(&self, usz index)
 <*
  @require index <= self.size
 *>
-```
-```c3
 fn void LinkedList.insert_at(&self, usz index, Type element)
 ```
 ```c3
@@ -3211,8 +3007,6 @@ struct List (Printable)
  @param initial_capacity : "The initial capacity to reserve"
  @param [&inout] allocator : "The allocator to use, defaults to the heap allocator"
 *>
-```
-```c3
 fn List* List.init(&self, Allocator allocator, usz initial_capacity = 16)
 ```
 
@@ -3221,8 +3015,6 @@ Initialize the list using the temp allocator.
 <*
  @param initial_capacity : "The initial capacity to reserve"
 *>
-```
-```c3
 fn List* List.tinit(&self, usz initial_capacity = 16)
 ```
 
@@ -3232,8 +3024,6 @@ Initialize a new list with an array.
  @param [in] values : `The values to initialize the list with.`
  @require self.size == 0 : "The List must be empty"
 *>
-```
-```c3
 fn List* List.init_with_array(&self, Allocator allocator, Type[] values)
 ```
 
@@ -3243,8 +3033,6 @@ Initialize a temporary list with an array.
  @param [in] values : `The values to initialize the list with.`
  @require self.size == 0 : "The List must be empty"
 *>
-```
-```c3
 fn List* List.tinit_with_array(&self, Type[] values)
 ```
 
@@ -3252,8 +3040,6 @@ fn List* List.tinit_with_array(&self, Type[] values)
 <*
  @require !self.is_initialized() : "The List must not be allocated"
 *>
-```
-```c3
 fn void List.init_wrapping_array(&self, Allocator allocator, Type[] types)
 ```
 ```c3
@@ -3279,8 +3065,6 @@ fn Type? List.pop_first(&self)
 <*
  @require index < self.size : `Removed element out of bounds`
 *>
-```
-```c3
 fn void List.remove_at(&self, usz index)
 ```
 ```c3
@@ -3296,8 +3080,6 @@ fn Type[] List.to_aligned_array(&self, Allocator allocator)
 <*
  @require !type_is_overaligned() : "This function is not available on overaligned types"
 *>
-```
-```c3
 macro Type[] List.to_array(&self, Allocator allocator)
 ```
 ```c3
@@ -3318,8 +3100,6 @@ Add the values of an array to this list.
  @param [in] array
  @ensure self.size >= array.len
 *>
-```
-```c3
 fn void List.add_array(&self, Type[] array)
 ```
 ```c3
@@ -3330,8 +3110,6 @@ fn void List.push_front(&self, Type type) @inline
 <*
  @require index <= self.size : `Insert was out of bounds`
 *>
-```
-```c3
 fn void List.insert_at(&self, usz index, Type type)
 ```
 
@@ -3339,8 +3117,6 @@ fn void List.insert_at(&self, usz index, Type type)
 <*
  @require index < self.size
 *>
-```
-```c3
 fn void List.set_at(&self, usz index, Type type)
 ```
 ```c3
@@ -3369,8 +3145,6 @@ fn usz List.len(&self) @operator(len) @inline
 <*
  @require index < self.size : `Access out of bounds`
 *>
-```
-```c3
 fn Type List.get(&self, usz index) @inline
 ```
 ```c3
@@ -3381,8 +3155,6 @@ fn void List.free(&self)
 <*
  @require i < self.size && j < self.size : `Access out of bounds`
 *>
-```
-```c3
 fn void List.swap(&self, usz i, usz j)
 ```
 
@@ -3391,8 +3163,6 @@ fn void List.swap(&self, usz i, usz j)
  @param filter : "The function to determine if it should be removed or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz List.remove_if(&self, ElementPredicate filter)
 ```
 
@@ -3401,8 +3171,6 @@ fn usz List.remove_if(&self, ElementPredicate filter)
  @param selection : "The function to determine if it should be kept or not"
  @return "the number of deleted elements"
 *>
-```
-```c3
 fn usz List.retain_if(&self, ElementPredicate selection)
 ```
 ```c3
@@ -3416,8 +3184,6 @@ fn usz List.retain_using_test(&self, ElementTest filter, any context)
 <*
  @require index < self.size : `Access out of bounds`
 *>
-```
-```c3
 macro Type List.@item_at(&self, usz index) @operator([])
 ```
 
@@ -3425,8 +3191,6 @@ macro Type List.@item_at(&self, usz index) @operator([])
 <*
  @require index < self.size : `Access out of bounds`
 *>
-```
-```c3
 fn Type* List.get_ref(&self, usz index) @operator(&[]) @inline
 ```
 
@@ -3434,8 +3198,6 @@ fn Type* List.get_ref(&self, usz index) @operator(&[]) @inline
 <*
  @require index < self.size : `Access out of bounds`
 *>
-```
-```c3
 fn void List.set(&self, usz index, Type value) @operator([]=)
 ```
 ```c3
@@ -3461,8 +3223,6 @@ Check for presence of a value in a list.
  @param value : "The value to search for"
  @return "True if the value is found, false otherwise"
 *>
-```
-```c3
 fn bool List.contains(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -3472,8 +3232,6 @@ fn bool List.contains(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
  @param value : "The value to remove"
  @return "true if the value was found"
 *>
-```
-```c3
 fn bool List.remove_last_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -3483,8 +3241,6 @@ fn bool List.remove_last_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
  @param value : "The value to remove"
  @return "true if the value was found"
 *>
-```
-```c3
 fn bool List.remove_first_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 
@@ -3494,8 +3250,6 @@ fn bool List.remove_first_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
  @param value : "The value to remove"
  @return "the number of deleted elements."
 *>
-```
-```c3
 fn usz List.remove_item(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
@@ -3507,8 +3261,6 @@ fn void List.remove_all_from(&self, List* other_list) @if(ELEMENT_IS_EQUATABLE)
  @param [&in] self
  @return "The number non-null values in the list"
 *>
-```
-```c3
 fn usz List.compact_count(&self) @if(ELEMENT_IS_POINTER)
 ```
 ```c3
@@ -3551,8 +3303,6 @@ struct HashMap (Printable)
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashMap* HashMap.init(&self, Allocator allocator, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3563,8 +3313,6 @@ fn HashMap* HashMap.init(&self, Allocator allocator, uint capacity = DEFAULT_INI
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashMap* HashMap.tinit(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3577,8 +3325,6 @@ fn HashMap* HashMap.tinit(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro HashMap* HashMap.init_with_key_values(&self, Allocator allocator, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3590,8 +3336,6 @@ macro HashMap* HashMap.init_with_key_values(&self, Allocator allocator, ..., uin
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro HashMap* HashMap.tinit_with_key_values(&self, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3606,8 +3350,6 @@ macro HashMap* HashMap.tinit_with_key_values(&self, ..., uint capacity = DEFAULT
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashMap* HashMap.init_from_keys_and_values(&self, Allocator allocator, Key[] keys, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3621,8 +3363,6 @@ fn HashMap* HashMap.init_from_keys_and_values(&self, Allocator allocator, Key[] 
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashMap* HashMap.tinit_from_keys_and_values(&self, Key[] keys, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3632,8 +3372,6 @@ Has this hash map been initialized yet?
  @param [&in] map : "The hash map we are testing"
  @return "Returns true if it has been initialized, false otherwise"
 *>
-```
-```c3
 fn bool HashMap.is_initialized(&map)
 ```
 
@@ -3643,8 +3381,6 @@ fn bool HashMap.is_initialized(&map)
  @param [&in] other_map : "The map to copy from."
  @require !self.is_initialized() : "Map was already initialized"
 *>
-```
-```c3
 fn HashMap* HashMap.init_from_map(&self, Allocator allocator, HashMap* other_map)
 ```
 
@@ -3653,8 +3389,6 @@ fn HashMap* HashMap.init_from_map(&self, Allocator allocator, HashMap* other_map
  @param [&in] other_map : "The map to copy from."
  @require !map.is_initialized() : "Map was already initialized"
 *>
-```
-```c3
 fn HashMap* HashMap.tinit_from_map(&map, HashMap* other_map)
 ```
 ```c3
@@ -3675,8 +3409,6 @@ Get the value or update and
 <*
  @require @assignable_to(#expr, Value)
 *>
-```
-```c3
 macro Value HashMap.@get_or_set(&map, Key key, Value #expr)
 ```
 ```c3
@@ -3744,8 +3476,6 @@ typedef HashMapKeyIterator = HashMapIterator
 <*
  @require idx < self.map.count
 *>
-```
-```c3
 fn Entry HashMapIterator.get(&self, usz idx) @operator([])
 ```
 ```c3
@@ -3781,8 +3511,6 @@ struct LinkedHashMap (Printable)
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.init(&self, Allocator allocator, usz capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3793,8 +3521,6 @@ fn LinkedHashMap* LinkedHashMap.init(&self, Allocator allocator, usz capacity = 
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.tinit(&self, usz capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3807,8 +3533,6 @@ fn LinkedHashMap* LinkedHashMap.tinit(&self, usz capacity = DEFAULT_INITIAL_CAPA
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro LinkedHashMap* LinkedHashMap.init_with_key_values(&self, Allocator allocator, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3820,8 +3544,6 @@ macro LinkedHashMap* LinkedHashMap.init_with_key_values(&self, Allocator allocat
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro LinkedHashMap* LinkedHashMap.tinit_with_key_values(&self, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3836,8 +3558,6 @@ macro LinkedHashMap* LinkedHashMap.tinit_with_key_values(&self, ..., uint capaci
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.init_from_keys_and_values(&self, Allocator allocator, Key[] keys, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3851,8 +3571,6 @@ fn LinkedHashMap* LinkedHashMap.init_from_keys_and_values(&self, Allocator alloc
  @require !self.is_initialized() : "Map was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.tinit_from_keys_and_values(&self, Key[] keys, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -3862,8 +3580,6 @@ Has this hash map been initialized yet?
  @param [&in] map : "The hash map we are testing"
  @return "Returns true if it has been initialized, false otherwise"
 *>
-```
-```c3
 fn bool LinkedHashMap.is_initialized(&map)
 ```
 
@@ -3873,8 +3589,6 @@ fn bool LinkedHashMap.is_initialized(&map)
  @param [&in] other_map : "The map to copy from."
  @require !self.is_initialized() : "Map was already initialized"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.init_from_map(&self, Allocator allocator, LinkedHashMap* other_map)
 ```
 
@@ -3883,8 +3597,6 @@ fn LinkedHashMap* LinkedHashMap.init_from_map(&self, Allocator allocator, Linked
  @param [&in] other_map : "The map to copy from."
  @require !map.is_initialized() : "Map was already initialized"
 *>
-```
-```c3
 fn LinkedHashMap* LinkedHashMap.tinit_from_map(&map, LinkedHashMap* other_map)
 ```
 ```c3
@@ -3905,8 +3617,6 @@ Get the value or update and
 <*
  @require @assignable_to(#expr, Value)
 *>
-```
-```c3
 macro Value LinkedHashMap.@get_or_set(&map, Key key, Value #expr)
 ```
 ```c3
@@ -4096,8 +3806,6 @@ macro Object* Object.set(&self, String key, value)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 macro Object* Object.set_at(&self, usz index, String key, value)
 ```
 
@@ -4106,8 +3814,6 @@ macro Object* Object.set_at(&self, usz index, String key, value)
  @require self.is_indexable()
  @ensure return != null
 *>
-```
-```c3
 macro Object* Object.push(&self, value)
 ```
 
@@ -4115,8 +3821,6 @@ macro Object* Object.push(&self, value)
 <*
  @require self.is_keyable()
 *>
-```
-```c3
 fn Object*? Object.get(&self, String key)
 ```
 ```c3
@@ -4127,8 +3831,6 @@ fn bool Object.has_key(&self, String key)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn Object* Object.get_at(&self, usz index)
 ```
 
@@ -4136,8 +3838,6 @@ fn Object* Object.get_at(&self, usz index)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn usz Object.get_len(&self)
 ```
 
@@ -4145,8 +3845,6 @@ fn usz Object.get_len(&self)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn void Object.push_object(&self, Object* to_append)
 ```
 
@@ -4154,8 +3852,6 @@ fn void Object.push_object(&self, Object* to_append)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn void Object.set_object_at(&self, usz index, Object* to_set)
 ```
 
@@ -4163,8 +3859,6 @@ fn void Object.set_object_at(&self, usz index, Object* to_set)
 <*
  @require $Type.kindof.is_int() : "Expected an integer type."
 *>
-```
-```c3
 macro get_integer_value(Object* value, $Type)
 ```
 ```c3
@@ -4232,8 +3926,6 @@ fn uint128? Object.get_uint128_at(&self, usz index)
 <*
  @require self.is_keyable()
 *>
-```
-```c3
 fn String? Object.get_string(&self, String key)
 ```
 
@@ -4241,8 +3933,6 @@ fn String? Object.get_string(&self, String key)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn String? Object.get_string_at(&self, usz index)
 ```
 
@@ -4250,8 +3940,6 @@ fn String? Object.get_string_at(&self, usz index)
 <*
  @require self.is_keyable()
 *>
-```
-```c3
 macro String? Object.get_enum(&self, $EnumType, String key)
 ```
 
@@ -4259,8 +3947,6 @@ macro String? Object.get_enum(&self, $EnumType, String key)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 macro String? Object.get_enum_at(&self, $EnumType, usz index)
 ```
 
@@ -4268,8 +3954,6 @@ macro String? Object.get_enum_at(&self, $EnumType, usz index)
 <*
  @require self.is_keyable()
 *>
-```
-```c3
 fn bool? Object.get_bool(&self, String key)
 ```
 
@@ -4277,8 +3961,6 @@ fn bool? Object.get_bool(&self, String key)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn bool? Object.get_bool_at(&self, usz index)
 ```
 
@@ -4286,8 +3968,6 @@ fn bool? Object.get_bool_at(&self, usz index)
 <*
  @require self.is_keyable()
 *>
-```
-```c3
 fn double? Object.get_float(&self, String key)
 ```
 
@@ -4295,8 +3975,6 @@ fn double? Object.get_float(&self, String key)
 <*
  @require self.is_indexable()
 *>
-```
-```c3
 fn double? Object.get_float_at(&self, usz index)
 ```
 ```c3
@@ -4317,8 +3995,6 @@ fn usz? Pair.to_format(&self, Formatter* f) @dynamic
  @require @assignable_to(self.first, $typeof(*a)) : "You cannot assign the first value to a"
  @require @assignable_to(self.second, $typeof(*b)) : "You cannot assign the second value to b"
 *>
-```
-```c3
 macro void Pair.unpack(&self, a, b)
 ```
 ```c3
@@ -4342,8 +4018,6 @@ fn void PrivatePriorityQueue.push(&self, Type element)
 <*
  @require index < self.len() : "Index out of range"
 *>
-```
-```c3
 fn void PrivatePriorityQueue.remove_at(&self, usz index)
 ```
 
@@ -4351,8 +4025,6 @@ fn void PrivatePriorityQueue.remove_at(&self, usz index)
 <*
  @require self != null
 *>
-```
-```c3
 fn Type? PrivatePriorityQueue.pop(&self)
 ```
 ```c3
@@ -4372,8 +4044,6 @@ fn bool PrivatePriorityQueue.is_empty(&self)
 <*
  @require index < self.len()
 *>
-```
-```c3
 fn Type PrivatePriorityQueue.get(&self, usz index) @operator([])
 ```
 ```c3
@@ -4401,8 +4071,6 @@ fn bool Range.contains(&self, Type value) @inline
 <*
  @require index < self.len() : "Can't index into an empty range"
 *>
-```
-```c3
 fn Type Range.get(&self, usz index) @operator([])
 ```
 ```c3
@@ -4425,8 +4093,6 @@ fn usz? ExclusiveRange.to_format(&self, Formatter* formatter) @dynamic
 <*
  @require index < self.len() : "Can't index into an empty range"
 *>
-```
-```c3
 fn Type ExclusiveRange.get(&self, usz index) @operator([])
 ```
 ### `std::collections::ringbuffer{Type}`
@@ -4493,8 +4159,6 @@ fn int HashSet.len(&self) @operator(len)
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashSet* HashSet.init(&self, Allocator allocator, usz capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4505,8 +4169,6 @@ fn HashSet* HashSet.init(&self, Allocator allocator, usz capacity = DEFAULT_INIT
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashSet* HashSet.tinit(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4518,8 +4180,6 @@ fn HashSet* HashSet.tinit(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro HashSet* HashSet.init_with_values(&self, Allocator allocator, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4530,8 +4190,6 @@ macro HashSet* HashSet.init_with_values(&self, Allocator allocator, ..., uint ca
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro HashSet* HashSet.tinit_with_values(&self, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4544,8 +4202,6 @@ macro HashSet* HashSet.tinit_with_values(&self, ..., uint capacity = DEFAULT_INI
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashSet* HashSet.init_from_values(&self, Allocator allocator, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4557,8 +4213,6 @@ fn HashSet* HashSet.init_from_values(&self, Allocator allocator, Value[] values,
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn HashSet* HashSet.tinit_from_values(&self, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4568,8 +4222,6 @@ Has this hash set been initialized yet?
  @param [&in] set : "The hash set we are testing"
  @return "Returns true if it has been initialized, false otherwise"
 *>
-```
-```c3
 fn bool HashSet.is_initialized(&set)
 ```
 
@@ -4579,8 +4231,6 @@ fn bool HashSet.is_initialized(&set)
  @param [&in] other_set : "The set to copy from."
  @require !self.is_initialized() : "Set was already initialized"
 *>
-```
-```c3
 fn HashSet* HashSet.init_from_set(&self, Allocator allocator, HashSet* other_set)
 ```
 
@@ -4589,8 +4239,6 @@ fn HashSet* HashSet.init_from_set(&self, Allocator allocator, HashSet* other_set
  @param [&in] other_set : "The set to copy from."
  @require !set.is_initialized() : "Set was already initialized"
 *>
-```
-```c3
 fn HashSet* HashSet.tinit_from_set(&set, HashSet* other_set)
 ```
 
@@ -4600,8 +4248,6 @@ Check if the set is empty
  @return "true if it is empty"
  @pure
 *>
-```
-```c3
 fn bool HashSet.is_empty(&set) @inline
 ```
 
@@ -4612,8 +4258,6 @@ Add all elements in the slice to the set.
  @return "The number of new elements added"
  @ensure total <= list.len
 *>
-```
-```c3
 fn usz HashSet.add_all(&set, Value[] list)
 ```
 
@@ -4623,8 +4267,6 @@ fn usz HashSet.add_all(&set, Value[] list)
  @return "The number of new elements added"
  @ensure return <= other.count
 *>
-```
-```c3
 fn usz HashSet.add_all_from(&set, HashSet* other)
 ```
 
@@ -4633,8 +4275,6 @@ fn usz HashSet.add_all_from(&set, HashSet* other)
  @param value : "The value to add"
  @return "true if the value didn't exist in the set"
 *>
-```
-```c3
 fn bool HashSet.add(&set, Value value)
 ```
 
@@ -4649,8 +4289,6 @@ Check if the set contains the given value.
  @param value : "The value to check"
  @return "true if it exists in the set"
 *>
-```
-```c3
 fn bool HashSet.contains(&set, Value value)
 ```
 
@@ -4660,8 +4298,6 @@ Remove a single value from the set.
  @param value : "The value to remove"
  @return? NOT_FOUND : "If the entry is not found"
 *>
-```
-```c3
 fn void? HashSet.remove(&set, Value value) @maydiscard
 ```
 ```c3
@@ -4672,8 +4308,6 @@ fn usz HashSet.remove_all(&set, Value[] values)
 <*
  @param [&in] other : "Other set"
 *>
-```
-```c3
 fn usz HashSet.remove_all_from(&set, HashSet* other)
 ```
 
@@ -4687,8 +4321,6 @@ Clear all elements from the set while keeping the underlying storage
 <*
  @ensure set.count == 0
 *>
-```
-```c3
 fn void HashSet.clear(&set)
 ```
 ```c3
@@ -4702,8 +4334,6 @@ Returns the union of two sets (A | B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing the union of both sets"
 *>
-```
-```c3
 fn HashSet HashSet.set_union(&self, Allocator allocator, HashSet* other)
 ```
 ```c3
@@ -4717,8 +4347,6 @@ Returns the intersection of the two sets (A & B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing the intersection of both sets"
 *>
-```
-```c3
 fn HashSet HashSet.intersection(&self, Allocator allocator, HashSet* other)
 ```
 ```c3
@@ -4732,8 +4360,6 @@ Return this set - other, so (A & ~B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing elements in this set but not in the other"
 *>
-```
-```c3
 fn HashSet HashSet.difference(&self, Allocator allocator, HashSet* other)
 ```
 ```c3
@@ -4747,8 +4373,6 @@ Return (A ^ B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing elements in this set or the other, but not both"
 *>
-```
-```c3
 fn HashSet HashSet.symmetric_difference(&self, Allocator allocator, HashSet* other)
 ```
 ```c3
@@ -4761,8 +4385,6 @@ Check if this hash set is a subset of another set.
  @param [&in] other : "The other set to check against"
  @return "True if all elements of this set are in the other set"
 *>
-```
-```c3
 fn bool HashSet.is_subset(&self, HashSet* other)
 ```
 ```c3
@@ -4801,8 +4423,6 @@ fn int LinkedHashSet.len(&self) @operator(len)
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.init(&self, Allocator allocator, usz capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4813,8 +4433,6 @@ fn LinkedHashSet* LinkedHashSet.init(&self, Allocator allocator, usz capacity = 
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.tinit(&self, usz capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4826,8 +4444,6 @@ fn LinkedHashSet* LinkedHashSet.tinit(&self, usz capacity = DEFAULT_INITIAL_CAPA
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro LinkedHashSet* LinkedHashSet.init_with_values(&self, Allocator allocator, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4838,8 +4454,6 @@ macro LinkedHashSet* LinkedHashSet.init_with_values(&self, Allocator allocator, 
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 macro LinkedHashSet* LinkedHashSet.tinit_with_values(&self, ..., uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4852,8 +4466,6 @@ macro LinkedHashSet* LinkedHashSet.tinit_with_values(&self, ..., uint capacity =
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.init_from_values(&self, Allocator allocator, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4865,8 +4477,6 @@ fn LinkedHashSet* LinkedHashSet.init_from_values(&self, Allocator allocator, Val
  @require !self.is_initialized() : "Set was already initialized"
  @require capacity < MAXIMUM_CAPACITY : "Capacity cannot exceed maximum"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.tinit_from_values(&self, Value[] values, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR)
 ```
 
@@ -4876,8 +4486,6 @@ Has this linked hash set been initialized yet?
  @param [&in] set : "The linked hash set we are testing"
  @return "Returns true if it has been initialized, false otherwise"
 *>
-```
-```c3
 fn bool LinkedHashSet.is_initialized(&set)
 ```
 
@@ -4887,8 +4495,6 @@ fn bool LinkedHashSet.is_initialized(&set)
  @param [&in] other_set : "The set to copy from."
  @require !self.is_initialized() : "Set was already initialized"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.init_from_set(&self, Allocator allocator, LinkedHashSet* other_set)
 ```
 
@@ -4897,8 +4503,6 @@ fn LinkedHashSet* LinkedHashSet.init_from_set(&self, Allocator allocator, Linked
  @param [&in] other_set : "The set to copy from."
  @require !set.is_initialized() : "Set was already initialized"
 *>
-```
-```c3
 fn LinkedHashSet* LinkedHashSet.tinit_from_set(&set, LinkedHashSet* other_set)
 ```
 
@@ -4908,8 +4512,6 @@ Check if the set is empty
  @return "true if it is empty"
  @pure
 *>
-```
-```c3
 fn bool LinkedHashSet.is_empty(&set) @inline
 ```
 
@@ -4920,8 +4522,6 @@ Add all elements in the slice to the set.
  @return "The number of new elements added"
  @ensure total <= list.len
 *>
-```
-```c3
 fn usz LinkedHashSet.add_all(&set, Value[] list)
 ```
 
@@ -4931,8 +4531,6 @@ fn usz LinkedHashSet.add_all(&set, Value[] list)
  @return "The number of new elements added"
  @ensure return <= other.count
 *>
-```
-```c3
 fn usz LinkedHashSet.add_all_from(&set, LinkedHashSet* other)
 ```
 
@@ -4941,8 +4539,6 @@ fn usz LinkedHashSet.add_all_from(&set, LinkedHashSet* other)
  @param value : "The value to add"
  @return "true if the value didn't exist in the set"
 *>
-```
-```c3
 fn bool LinkedHashSet.add(&set, Value value)
 ```
 
@@ -4957,8 +4553,6 @@ Check if the set contains the given value.
  @param value : "The value to check"
  @return "true if it exists in the set"
 *>
-```
-```c3
 fn bool LinkedHashSet.contains(&set, Value value)
 ```
 
@@ -4968,8 +4562,6 @@ Remove a single value from the set.
  @param value : "The value to remove"
  @return? NOT_FOUND : "If the entry is not found"
 *>
-```
-```c3
 fn void? LinkedHashSet.remove(&set, Value value) @maydiscard
 ```
 ```c3
@@ -4980,8 +4572,6 @@ fn usz LinkedHashSet.remove_all(&set, Value[] values)
 <*
  @param [&in] other : "Other set"
 *>
-```
-```c3
 fn usz LinkedHashSet.remove_all_from(&set, LinkedHashSet* other)
 ```
 
@@ -4995,8 +4585,6 @@ Clear all elements from the set while keeping the underlying storage
 <*
  @ensure set.count == 0
 *>
-```
-```c3
 fn void LinkedHashSet.clear(&set)
 ```
 ```c3
@@ -5010,8 +4598,6 @@ Returns the union of two sets (A | B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing the union of both sets"
 *>
-```
-```c3
 fn LinkedHashSet LinkedHashSet.set_union(&self, Allocator allocator, LinkedHashSet* other)
 ```
 ```c3
@@ -5025,8 +4611,6 @@ Returns the intersection of the two sets (A & B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing the intersection of both sets"
 *>
-```
-```c3
 fn LinkedHashSet LinkedHashSet.intersection(&self, Allocator allocator, LinkedHashSet* other)
 ```
 ```c3
@@ -5040,8 +4624,6 @@ Return this set - other, so (A & ~B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing elements in this set but not in the other"
 *>
-```
-```c3
 fn LinkedHashSet LinkedHashSet.difference(&self, Allocator allocator, LinkedHashSet* other)
 ```
 ```c3
@@ -5055,8 +4637,6 @@ Return (A ^ B)
  @param [&inout] allocator : "Allocator for the new set"
  @return "A new set containing elements in this set or the other, but not both"
 *>
-```
-```c3
 fn LinkedHashSet LinkedHashSet.symmetric_difference(&self, Allocator allocator, LinkedHashSet* other)
 ```
 ```c3
@@ -5069,8 +4649,6 @@ Check if this hash set is a subset of another set.
  @param [&in] other : "The other set to check against"
  @return "True if all elements of this set are in the other set"
 *>
-```
-```c3
 fn bool LinkedHashSet.is_subset(&self, LinkedHashSet* other)
 ```
 ```c3
@@ -5111,8 +4689,6 @@ fn usz? Triple.to_format(&self, Formatter* f) @dynamic
  @require @assignable_to(self.second, $typeof(*b)) : "You cannot assign the second value to b"
  @require @assignable_to(self.third, $typeof(*c)) : "You cannot assign the second value to c"
 *>
-```
-```c3
 macro void Triple.unpack(&self, a, b, c)
 ```
 ```c3
@@ -5168,8 +4744,6 @@ See the write() function for an example.
  @param [&in] desc : `The descriptor of the image`
  @return? INVALID_PARAMETERS, TOO_MANY_PIXELS, INVALID_DATA
 *>
-```
-```c3
 fn char[]? encode(Allocator allocator, char[] input, QOIDesc* desc) @nodiscard
 ```
 
@@ -5195,8 +4769,6 @@ and use of the data should be wrapped in a @pool() { ... }; block.
  @param channels : `The channels to be used`
  @return? INVALID_DATA, TOO_MANY_PIXELS
 *>
-```
-```c3
 fn char[]? decode(Allocator allocator, char[] data, QOIDesc* desc, QOIChannels channels = AUTO) @nodiscard
 ```
 ### `std::compression::qoi @if(!$feature(QOI_NO_STDIO))`
@@ -5216,8 +4788,6 @@ or the number of bytes written on success.
  @param [in] input : `The raw RGB or RGBA pixels to encode`
  @param [&in] desc : `The descriptor of the image`
 *>
-```
-```c3
 fn usz? write(String filename, char[] input, QOIDesc* desc)
 ```
 
@@ -5243,8 +4813,6 @@ and use of the data should be wrapped in a @pool() { ... }; block.
  @param channels : `The channels to be used`
  @return? FILE_OPEN_FAILED, INVALID_DATA, TOO_MANY_PIXELS
 *>
-```
-```c3
 fn char[]? read(Allocator allocator, String filename, QOIDesc* desc, QOIChannels channels = AUTO)
 ```
 ### `std::core::array`
@@ -5258,8 +4826,6 @@ Returns true if the array contains at least one element, else false
  @require @typekind(array) == SLICE || @typekind(array) == ARRAY
  @require @typeis(array[0], $typeof(element)) : "array and element must have the same type"
 *>
-```
-```c3
 macro bool contains(array, element)
 ```
 
@@ -5272,8 +4838,6 @@ Return the first index of element found in the array, searching from the start.
  @return "the first index of the element"
  @return? NOT_FOUND
 *>
-```
-```c3
 macro index_of(array, element)
 ```
 
@@ -5290,8 +4854,6 @@ Slice a 2d array and create a Slice2d from it.
  @require @typekind(*array_ptr) == VECTOR || @typekind(*array_ptr) == ARRAY
  @require @typekind((*array_ptr)[0]) == VECTOR || @typekind((*array_ptr)[0]) == ARRAY
 *>
-```
-```c3
 macro slice2d(array_ptr, x = 0, xlen = 0, y = 0, ylen = 0)
 ```
 
@@ -5304,8 +4866,6 @@ Return the first index of element found in the array, searching in reverse from 
  @return "the last index of the element"
  @return? NOT_FOUND
 *>
-```
-```c3
 macro rindex_of(array, element)
 ```
 
@@ -5320,8 +4880,6 @@ Concatenate two arrays or slices, returning a slice containing the concatenation
  @require @typeis(arr1[0], $typeof(arr2[0])) : "Arrays must have the same type"
  @ensure result.len == arr1.len + arr2.len
 *>
-```
-```c3
 macro concat(Allocator allocator, arr1, arr2) @nodiscard
 ```
 
@@ -5336,8 +4894,6 @@ allocated using the temp allocator.
  @require @typeis(arr1[0], $typeof(arr2[0])) : "Arrays must have the same type"
  @ensure return.len == arr1.len + arr2.len
 *>
-```
-```c3
 macro tconcat(arr1, arr2) @nodiscard
 ```
 ### `std::core::array::slice {Type}`
@@ -5352,8 +4908,6 @@ struct Slice2d
 <*
  @return `The length of the "outer" slice`
 *>
-```
-```c3
 fn usz Slice2d.len(&self) @operator(len)
 ```
 
@@ -5361,8 +4915,6 @@ fn usz Slice2d.len(&self) @operator(len)
 <*
  @return `The total number of elements.`
 *>
-```
-```c3
 fn usz Slice2d.count(&self)
 ```
 
@@ -5383,8 +4935,6 @@ Return a row as a slice.
  @return "The slice for the particular row"
  @require idy >= 0 && idy < self.ylen
 *>
-```
-```c3
 macro Type[] Slice2d.get_row(self, usz idy) @operator([])
 ```
 
@@ -5396,8 +4946,6 @@ Get the value at a particular x/y position in the slice.
  @require coord.y >= 0 && coord.y < self.ylen : "y value out of range"
  @require coord.x >= 0 && coord.x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro Type Slice2d.get_coord(self, usz[<2>] coord)
 ```
 
@@ -5409,8 +4957,6 @@ Get a pointer to the value at a particular x/y position in the slice.
  @require coord.y >= 0 && coord.y < self.ylen : "y value out of range"
  @require coord.x >= 0 && coord.x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro Type* Slice2d.get_coord_ref(self, usz[<2>] coord)
 ```
 
@@ -5423,8 +4969,6 @@ Get the value at a particular x/y position in the slice.
  @require y >= 0 && y < self.ylen : "y value out of range"
  @require x >= 0 && x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro Type Slice2d.get_xy(self, x, y)
 ```
 
@@ -5437,8 +4981,6 @@ Get the value at a particular x/y position in the slice by reference.
  @require y >= 0 && y < self.ylen : "y value out of range"
  @require x >= 0 && x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro Type* Slice2d.get_xy_ref(self, x, y)
 ```
 
@@ -5450,8 +4992,6 @@ Set the ´value at a particular x/y position in the slice.
  @require coord.y >= 0 && coord.y < self.ylen : "y value out of range"
  @require coord.x >= 0 && coord.x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro void Slice2d.set_coord(self, usz[<2>] coord, Type value)
 ```
 
@@ -5464,8 +5004,6 @@ Set the value at a particular x/y position in the slice.
  @require y >= 0 && y < self.ylen : "y value out of range"
  @require x >= 0 && x < self.xlen : "x value out of range"
 *>
-```
-```c3
 macro void Slice2d.set_xy(self, x, y, Type value)
 ```
 
@@ -5479,8 +5017,6 @@ Reslice a slice2d returning a new slice.
  @require y >= 0 && y < self.ylen
  @require x >= 0 && x < self.xlen
 *>
-```
-```c3
 fn Slice2d Slice2d.slice(&self, isz x = 0, isz xlen = 0, isz y = 0, isz ylen = 0)
 ```
 ### `std::core::ascii`
@@ -5635,8 +5171,6 @@ Convert a-f/A-F/0-9 to the appropriate hex value.
  @require c.is_xdigit()
  @ensure return >= 0 && return <= 15
 *>
-```
-```c3
 macro char char.from_hex(char c)
 ```
 ```c3
@@ -5697,8 +5231,6 @@ bitstruct UInt128LE : uint128 @littleendian
  @require @is_array_or_slice_of_char(bytes) : "argument must be an array, a pointer to an array or a slice of char"
  @require is_bitorder($Type) : "type must be a bitorder integer"
 *>
-```
-```c3
 macro read(bytes, $Type)
 ```
 
@@ -5707,8 +5239,6 @@ macro read(bytes, $Type)
  @require @is_arrayptr_or_slice_of_char(bytes) : "argument must be a pointer to an array or a slice of char"
  @require is_bitorder($Type) : "type must be a bitorder integer"
 *>
-```
-```c3
 macro write(x, bytes, $Type)
 ```
 ```c3
@@ -5764,8 +5294,6 @@ Returns a random value at compile time.
  @ensure return >= 0.0 && return < 1.0
  @return "A compile time random"
 *>
-```
-```c3
 macro @rnd() @const @builtin
 ```
 ```c3
@@ -5794,8 +5322,6 @@ macro scope.
  @param #variable : `the variable to store and restore`
  @require values::@is_lvalue(#variable)
 *>
-```
-```c3
 macro void @scope(#variable; @body) @builtin
 ```
 
@@ -5804,8 +5330,6 @@ Swap two variables
 <*
  @require $defined(#a = #b, #b = #a) : `The values must be mutually assignable`
 *>
-```
-```c3
 macro void @swap(#a, #b) @builtin
 ```
 ```c3
@@ -5824,8 +5348,6 @@ Convert an `any` type to a type, returning an failure if there is a type mismatc
  @ensure @typeis(return, $Type*)
  @return? TYPE_MISMATCH
 *>
-```
-```c3
 macro anycast(any v, $Type) @builtin
 ```
 ```c3
@@ -5868,8 +5390,6 @@ never happens.
 <*
  @param [in] string : "The panic message or format string"
 *>
-```
-```c3
 macro void unreachable(String string = "Unreachable statement reached.", ...) @builtin @noreturn
 ```
 
@@ -5878,8 +5398,6 @@ Marks the path as unsupported, this is similar to unreachable.
 <*
  @param [in] string : "The error message"
 *>
-```
-```c3
 macro void unsupported(String string = "Unsupported function invoked") @builtin @noreturn
 ```
 
@@ -5904,8 +5422,6 @@ macro any.as_inner(&self)
  @require $sizeof(expr) == $Type.sizeof  : "Cannot bitcast between types of different size."
  @ensure @typeis(return, $Type)
 *>
-```
-```c3
 macro bitcast(expr, $Type) @builtin
 ```
 
@@ -5917,8 +5433,6 @@ macro bitcast(expr, $Type) @builtin
  @ensure @typeis(return, $Type)
  @return? NOT_FOUND
 *>
-```
-```c3
 macro enum_by_name($Type, String enum_name) @builtin
 ```
 
@@ -5931,8 +5445,6 @@ macro enum_by_name($Type, String enum_name) @builtin
  @ensure @typeis(return, $Type)
  @return? NOT_FOUND
 *>
-```
-```c3
 macro @enum_from_value($Type, #value, value) @builtin @deprecated("Use Enum.lookup_field and Enum.lookup")
 ```
 
@@ -5943,8 +5455,6 @@ Mark an expression as likely to be true
  @param $probability : "in the range 0 - 1"
  @require $probability >= 0 && $probability <= 1.0
 *>
-```
-```c3
 macro bool @likely(bool #value, $probability = 1.0) @builtin
 ```
 
@@ -5955,8 +5465,6 @@ Mark an expression as unlikely to be true
  @param $probability : "in the range 0 - 1"
  @require $probability >= 0 && $probability <= 1.0
 *>
-```
-```c3
 macro bool @unlikely(bool #value, $probability = 1.0) @builtin
 ```
 
@@ -5966,8 +5474,6 @@ macro bool @unlikely(bool #value, $probability = 1.0) @builtin
  @require @assignable_to(expected, $typeof(#value))
  @require $probability >= 0 && $probability <= 1.0
 *>
-```
-```c3
 macro @expect(#value, expected, $probability = 1.0) @builtin
 ```
 
@@ -5984,8 +5490,6 @@ Prefetch a pointer.
  @param $locality : `Locality ranging from none to extremely local`
  @param $write : `Prefetch for write, otherwise prefetch for read.`
 *>
-```
-```c3
 macro @prefetch(void* ptr, PrefetchLocality $locality = VERY_NEAR, bool $write = false) @builtin
 ```
 ```c3
@@ -6001,8 +5505,6 @@ Returns the count of leading zero bits from an integer at compile-time.
  @require types::is_int($typeof($value)) : "Input value must be an integer"
  @require $sizeof($value) * 8 <= 128 : "Input value must be 128 bits wide or lower"
 *>
-```
-```c3
 macro @clz($value) @builtin @const
 ```
 
@@ -6012,8 +5514,6 @@ return a null fault.
 <*
  @require @typekind(#expr) == OPTIONAL : `@catch expects an Optional value`
 *>
-```
-```c3
 macro fault @catch(#expr) @builtin
 ```
 
@@ -6023,8 +5523,6 @@ if it has a value.
 <*
  @require @typekind(#expr) == OPTIONAL : `@ok expects an Optional value`
 *>
-```
-```c3
 macro bool @ok(#expr) @builtin
 ```
 
@@ -6036,8 +5534,6 @@ else, assign the result to an expression.
  @require $defined(#expr!) : "Expected an optional expression"
  @require @assignable_to(#expr!!, $typeof(#v))  : `Type of #expr must be an optional of #v's type`
 *>
-```
-```c3
 macro void? @try(#v, #expr) @builtin
 ```
 
@@ -6076,8 +5572,6 @@ fault, we rethrow is. Without this macro, the code is instead written like:
  @require @assignable_to(#expr!!, $typeof(#v))  : `Type of #expr must be an optional of #v's type`
  @return "True if it was the expected fault, false if the variable was assigned, otherwise returns an optional."
 *>
-```
-```c3
 macro bool? @try_catch(#v, #expr, fault expected_fault) @builtin
 ```
 
@@ -6085,8 +5579,6 @@ macro bool? @try_catch(#v, #expr, fault expected_fault) @builtin
 <*
  @require $defined(&#value, (char*)&#value) : "This must be a value that can be viewed as a char array"
 *>
-```
-```c3
 macro char[] @as_char_view(#value) @builtin
 ```
 ```c3
@@ -6226,8 +5718,6 @@ const MAX_FRAMEADDRESS
 <*
  @require n >= 0
 *>
-```
-```c3
 macro void* get_frameaddress(int n)
 ```
 
@@ -6235,8 +5725,6 @@ macro void* get_frameaddress(int n)
 <*
  @require n >= 0
 *>
-```
-```c3
 macro void* get_returnaddress(int n)
 ```
 
@@ -6244,8 +5732,6 @@ macro void* get_returnaddress(int n)
 <*
  @require types::@comparable_value(a) && types::@comparable_value(b)
 *>
-```
-```c3
 macro less(a, b) @builtin
 ```
 
@@ -6253,8 +5739,6 @@ macro less(a, b) @builtin
 <*
  @require types::@comparable_value(a) && types::@comparable_value(b)
 *>
-```
-```c3
 macro less_eq(a, b) @builtin
 ```
 
@@ -6262,8 +5746,6 @@ macro less_eq(a, b) @builtin
 <*
  @require types::@comparable_value(a) && types::@comparable_value(b)
 *>
-```
-```c3
 macro greater(a, b) @builtin
 ```
 
@@ -6271,8 +5753,6 @@ macro greater(a, b) @builtin
 <*
  @require types::@comparable_value(a) && types::@comparable_value(b)
 *>
-```
-```c3
 macro int compare_to(a, b) @builtin
 ```
 
@@ -6280,8 +5760,6 @@ macro int compare_to(a, b) @builtin
 <*
  @require types::@comparable_value(a) && types::@comparable_value(b)
 *>
-```
-```c3
 macro greater_eq(a, b) @builtin
 ```
 
@@ -6289,8 +5767,6 @@ macro greater_eq(a, b) @builtin
 <*
  @require types::@equatable_value(a) && types::@equatable_value(b) : `values must be equatable`
 *>
-```
-```c3
 macro bool equals(a, b) @builtin
 ```
 ```c3
@@ -6392,8 +5868,6 @@ Initialize the DString with a particular allocator.
  @return "Return the DString itself"
  @require !self.data() : "String already initialized"
 *>
-```
-```c3
 fn DString DString.init(&self, Allocator allocator, usz capacity = MIN_CAPACITY)
 ```
 
@@ -6405,8 +5879,6 @@ initialized, this is the allocator it will default to.
  @return "Return the DString itself"
  @require !self.data() : "String already initialized"
 *>
-```
-```c3
 fn DString DString.tinit(&self, usz capacity = MIN_CAPACITY)
 ```
 ```c3
@@ -6447,8 +5919,6 @@ fn usz DString.len(&self) @dynamic @operator(len)
 <*
  @require new_size <= self.len()
 *>
-```
-```c3
 fn void DString.chop(self, usz new_size)
 ```
 ```c3
@@ -6460,8 +5930,6 @@ fn String DString.str_view(self)
  @require index < self.len()
  @require self.data() != null : "Empty string"
 *>
-```
-```c3
 fn char DString.char_at(self, usz index) @operator([])
 ```
 
@@ -6470,8 +5938,6 @@ fn char DString.char_at(self, usz index) @operator([])
  @require index < self.len()
  @require self.data() != null  : "Empty string"
 *>
-```
-```c3
 fn char* DString.char_ref(&self, usz index) @operator(&[])
 ```
 ```c3
@@ -6482,8 +5948,6 @@ fn usz DString.append_utf32(&self, Char32[] chars)
 <*
  @require index < self.len()
 *>
-```
-```c3
 fn void DString.set(self, usz index, char c) @operator([]=)
 ```
 ```c3
@@ -6494,8 +5958,6 @@ fn void DString.append_repeat(&self, char c, usz times)
 <*
  @require c <= 0x10ffff
 *>
-```
-```c3
 fn usz DString.append_char32(&self, Char32 c)
 ```
 ```c3
@@ -6550,8 +6012,6 @@ fn void DString.append_char(&self, char c)
  @require end < self.len()
  @require end >= start : "End must be same or equal to the start"
 *>
-```
-```c3
 fn void DString.delete_range(&self, usz start, usz end)
 ```
 
@@ -6560,8 +6020,6 @@ fn void DString.delete_range(&self, usz start, usz end)
  @require start < self.len()
  @require start + len <= self.len()
 *>
-```
-```c3
 fn void DString.delete(&self, usz start, usz len = 1)
 ```
 ```c3
@@ -6572,8 +6030,6 @@ macro void DString.append(&self, value)
 <*
  @require index <= self.len()
 *>
-```
-```c3
 fn void DString.insert_chars_at(&self, usz index, String s)
 ```
 
@@ -6581,8 +6037,6 @@ fn void DString.insert_chars_at(&self, usz index, String s)
 <*
  @require index <= self.len()
 *>
-```
-```c3
 fn void DString.insert_string_at(&self, usz index, DString str)
 ```
 
@@ -6590,8 +6044,6 @@ fn void DString.insert_string_at(&self, usz index, DString str)
 <*
  @require index <= self.len()
 *>
-```
-```c3
 fn void DString.insert_char_at(&self, usz index, char c)
 ```
 
@@ -6599,8 +6051,6 @@ fn void DString.insert_char_at(&self, usz index, char c)
 <*
  @require index <= self.len()
 *>
-```
-```c3
 fn usz DString.insert_char32_at(&self, usz index, Char32 c)
 ```
 
@@ -6608,8 +6058,6 @@ fn usz DString.insert_char32_at(&self, usz index, Char32 c)
 <*
  @require index <= self.len()
 *>
-```
-```c3
 fn usz DString.insert_utf32_at(&self, usz index, Char32[] chars)
 ```
 ```c3
@@ -6886,8 +6334,6 @@ macro void @category_scope(LogCategory new_category; @body)
 <*
  @require tag_prefix.len <= 3 : "The prefix may not exceed 3 bytes"
 *>
-```
-```c3
 macro void @tag_scope(String tag_prefix = ""; @body)
 ```
 
@@ -6895,8 +6341,6 @@ macro void @tag_scope(String tag_prefix = ""; @body)
 <*
  @require tag_prefix.len <= 3 : "The prefix may not exceed 3 bytes"
 *>
-```
-```c3
 macro void push_tag(String tag_prefix = "")
 ```
 
@@ -6904,8 +6348,6 @@ macro void push_tag(String tag_prefix = "")
 <*
  @require tag_prefix.len <= 3 : "The prefix may not exceed 3 bytes"
 *>
-```
-```c3
 fn LogTag create_tag(String tag_prefix)
 ```
 ```c3
@@ -7046,8 +6488,6 @@ Load a vector from memory according to a mask assuming default alignment.
  @require passthru.len == mask.len : "Mask and passthru must have the same length"
  @return "A vector with the loaded values where the mask is true, passthru where the mask is false"
 *>
-```
-```c3
 macro masked_load(ptr, bool[<*>] mask, passthru)
 ```
 
@@ -7064,8 +6504,6 @@ Load a vector from memory according to a mask.
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
  @return "A vector with the loaded values where the mask is true, passthru where the mask is false"
 *>
-```
-```c3
 macro @masked_load_aligned(ptr, bool[<*>] mask, passthru, usz $alignment)
 ```
 
@@ -7082,8 +6520,6 @@ Load values from a pointer vector, assuming default alignment.
  @require mask.len == ptrvec.len : "Mask and ptrvec must have the same length"
  @return "A vector with the loaded values where the mask is true, passthru where the mask is false"
 *>
-```
-```c3
 macro gather(ptrvec, bool[<*>] mask, passthru)
 ```
 
@@ -7102,8 +6538,6 @@ Load values from a pointer vector.
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
  @return "A vector with the loaded values where the mask is true, passthru where the mask is false"
 *>
-```
-```c3
 macro @gather_aligned(ptrvec, bool[<*>] mask, passthru, usz $alignment)
 ```
 
@@ -7117,8 +6551,6 @@ Store parts of a vector according to the mask, assuming default alignment.
  @require @typekind(value) == VECTOR : "Expected value to be a vector"
  @require value.len == mask.len : "Mask and value must have the same length"
 *>
-```
-```c3
 macro masked_store(ptr, value, bool[<*>] mask)
 ```
 
@@ -7133,8 +6565,6 @@ macro masked_store(ptr, value, bool[<*>] mask)
  @require value.len == mask.len : "Mask and value must have the same length"
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
 *>
-```
-```c3
 macro @masked_store_aligned(ptr, value, bool[<*>] mask, usz $alignment)
 ```
 
@@ -7149,8 +6579,6 @@ macro @masked_store_aligned(ptr, value, bool[<*>] mask, usz $alignment)
  @require value.len == mask.len : "Mask and value must have the same length"
  @require mask.len == ptrvec.len : "Mask and ptrvec must have the same length"
 *>
-```
-```c3
 macro scatter(ptrvec, value, bool[<*>] mask)
 ```
 
@@ -7167,8 +6595,6 @@ macro scatter(ptrvec, value, bool[<*>] mask)
  @require mask.len == ptrvec.len : "Mask and ptrvec must have the same length"
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
 *>
-```
-```c3
 macro @scatter_aligned(ptrvec, value, bool[<*>] mask, usz $alignment)
 ```
 
@@ -7180,8 +6606,6 @@ macro @scatter_aligned(ptrvec, value, bool[<*>] mask, usz $alignment)
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
  @require $defined(&#x) : "This must be a variable or dereferenced pointer"
 *>
-```
-```c3
 macro @unaligned_load(#x, usz $alignment) @builtin
 ```
 
@@ -7195,8 +6619,6 @@ macro @unaligned_load(#x, usz $alignment) @builtin
  @require $defined(#x = value) : "The value doesn't match the variable"
  @require @constant_is_power_of_2($alignment) : "The alignment must be a power of two"
 *>
-```
-```c3
 macro @unaligned_store(#x, value, usz $alignment) @builtin
 ```
 
@@ -7206,8 +6628,6 @@ macro @unaligned_store(#x, value, usz $alignment) @builtin
  @return "The value of the variable"
  @require $defined(&#x) : "This must be a variable or dereferenced pointer"
 *>
-```
-```c3
 macro @volatile_load(#x) @builtin
 ```
 
@@ -7219,8 +6639,6 @@ macro @volatile_load(#x) @builtin
  @require $defined(&#x) : "This must be a variable or dereferenced pointer"
  @require $defined(#x = value) : "The value doesn't match the variable"
 *>
-```
-```c3
 macro @volatile_store(#x, value) @builtin
 ```
 ```c3
@@ -7238,8 +6656,6 @@ enum AtomicOrdering : int
  @require $ordering != AtomicOrdering.ACQUIRE_RELEASE : "Acquire release is not valid for load."
  @require types::may_load_atomic($typeof(#x)) : "Only integer, float and pointers may be used."
 *>
-```
-```c3
 macro @atomic_load(#x, AtomicOrdering $ordering = SEQ_CONSISTENT, $volatile = false) @builtin
 ```
 
@@ -7255,8 +6671,6 @@ macro @atomic_load(#x, AtomicOrdering $ordering = SEQ_CONSISTENT, $volatile = fa
  @require $defined(&#x) : "This must be a variable or dereferenced pointer"
  @require $defined(#x = value) : "The value doesn't match the variable"
 *>
-```
-```c3
 macro void @atomic_store(#x, value, AtomicOrdering $ordering = SEQ_CONSISTENT, $volatile = false) @builtin
 ```
 
@@ -7265,8 +6679,6 @@ macro void @atomic_store(#x, value, AtomicOrdering $ordering = SEQ_CONSISTENT, $
  @require $success != AtomicOrdering.NOT_ATOMIC && $success != AtomicOrdering.UNORDERED : "Acquire ordering is not valid."
  @require $failure != AtomicOrdering.RELEASE && $failure != AtomicOrdering.ACQUIRE_RELEASE : "Acquire release is not valid."
 *>
-```
-```c3
 macro compare_exchange(ptr, compare, value, AtomicOrdering $success = SEQ_CONSISTENT, AtomicOrdering $failure = SEQ_CONSISTENT, bool $volatile = true, bool $weak = false, usz $alignment = 0)
 ```
 
@@ -7275,8 +6687,6 @@ macro compare_exchange(ptr, compare, value, AtomicOrdering $success = SEQ_CONSIS
  @require $success != AtomicOrdering.NOT_ATOMIC && $success != AtomicOrdering.UNORDERED : "Acquire ordering is not valid."
  @require $failure != AtomicOrdering.RELEASE && $failure != AtomicOrdering.ACQUIRE_RELEASE : "Acquire release is not valid."
 *>
-```
-```c3
 macro compare_exchange_volatile(ptr, compare, value, AtomicOrdering $success = SEQ_CONSISTENT, AtomicOrdering $failure = SEQ_CONSISTENT)
 ```
 
@@ -7284,8 +6694,6 @@ macro compare_exchange_volatile(ptr, compare, value, AtomicOrdering $success = S
 <*
  @require math::is_power_of_2(alignment)
 *>
-```
-```c3
 fn usz aligned_offset(usz offset, usz alignment)
 ```
 ```c3
@@ -7296,8 +6704,6 @@ macro void* aligned_pointer(void* ptr, usz alignment)
 <*
  @require math::is_power_of_2(alignment)
 *>
-```
-```c3
 fn bool ptr_is_aligned(void* ptr, usz alignment) @inline
 ```
 ```c3
@@ -7325,8 +6731,6 @@ Copy memory from src to dst efficiently, assuming the memory ranges do not overl
  @require src != null || len == 0 : "Copying a null with non-zero length is invalid"
  @require len == 0 || dst + len <= src || src + len <= dst : "Ranges may not overlap"
 *>
-```
-```c3
 macro void copy(void* dst, void* src, usz len, usz $dst_align = 0, usz $src_align = 0, bool $is_volatile = false)
 ```
 
@@ -7343,8 +6747,6 @@ will always be inlined and never call memcopy
  @require src != null || $len == 0 : "Copying a null with non-zero length is invalid"
  @require $len == 0 || dst + $len <= src || src + $len <= dst : "Ranges may not overlap"
 *>
-```
-```c3
 macro void copy_inline(void* dst, void* src, usz $len, usz $dst_align = 0, usz $src_align = 0, bool $is_volatile = false)
 ```
 
@@ -7359,8 +6761,6 @@ Copy memory from src to dst but correctly handle the possibility of overlapping 
  @param $is_volatile : "True if this copy should be treated as volatile, i.e. it can't be optimized away."
  @require src != null || len == 0 : "Moving a null with non-zero length is invalid"
 *>
-```
-```c3
 macro void move(void* dst, void* src, usz len, usz $dst_align = 0, usz $src_align = 0, bool $is_volatile = false)
 ```
 
@@ -7374,8 +6774,6 @@ Sets all memory in a region to that of the provided byte.
  @param $is_volatile : "True if this copy should be treated as volatile, i.e. it can't be optimized away."
  @ensure !len || (dst[0] == val && dst[len - 1] == val)
 *>
-```
-```c3
 macro void set(void* dst, char val, usz len, usz $dst_align = 0, bool $is_volatile = false)
 ```
 
@@ -7389,8 +6787,6 @@ Sets all memory in a region to that of the provided byte. Never calls OS memset.
  @param $is_volatile : "True if this copy should be treated as volatile, i.e. it can't be optimized away."
  @ensure !$len || (dst[0] == val && dst[$len - 1] == val)
 *>
-```
-```c3
 macro void set_inline(void* dst, char val, usz $len, usz $dst_align = 0, bool $is_volatile = false)
 ```
 
@@ -7403,8 +6799,6 @@ Test if n elements are equal in a slice, pointed to by a pointer etc.
  @require values::@inner_kind(a) != TypeKind.POINTER || len > -1
  @require values::@assign_to(a, b) && values::@assign_to(b, a)
 *>
-```
-```c3
 macro bool equals(a, b, isz len = -1, usz $align = 0)
 ```
 
@@ -7413,8 +6807,6 @@ Check if an allocation must be aligned given the type.
 <*
  @return `true if the alignment of the type exceeds DEFAULT_MEM_ALIGNMENT.`
 *>
-```
-```c3
 macro bool type_alloc_must_be_aligned($Type)
 ```
 
@@ -7429,8 +6821,6 @@ print out stats.
 <*
  @param $enabled : "Set to false to disable tracking"
 *>
-```
-```c3
 macro void @report_heap_allocs_in_scope($enabled = true; @body())
 ```
 
@@ -7439,8 +6829,6 @@ Assert on memory leak in the scope of the macro body.
 <*
  @param $report : "Set to false to disable memory report"
 *>
-```
-```c3
 macro void @assert_leak($report = true; @body()) @builtin
 ```
 
@@ -7452,8 +6840,6 @@ Release everything on scope exit.
 <*
  @param $size : `the size of the buffer`
 *>
-```
-```c3
 macro void @stack_mem(usz $size; @body(Allocator mem)) @builtin
 ```
 ```c3
@@ -7477,8 +6863,6 @@ fn void temp_pop(PoolState old_state)
  @require allocator.type != TempAllocator.typeid : "You may not create a temp allocator with a TempAllocator as the backing allocator."
  @require min_size > TempAllocator.sizeof + 64 : "Min size must meaningfully hold the data + some bytes"
 *>
-```
-```c3
 macro void @pool_init(Allocator allocator, usz pool_size,
 	usz reserve_size = allocator::temp_allocator_reserve_size,
 	usz min_size = allocator::temp_allocator_min_size,
@@ -7494,8 +6878,6 @@ It is made available for optimization, and can usually be ignored.
 <*
  @param reserve : "The amount of bytes to reserve for out-of-order allocations, 0 gives the default."
 *>
-```
-```c3
 macro void @pool(usz reserve = 0; @body) @builtin
 ```
 ```c3
@@ -7508,8 +6890,6 @@ macro TrackingEnv* get_tracking_env()
  @return "A pointer to the cloned value"
  @require $alignof(value) <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'clone_aligned' instead"
 *>
-```
-```c3
 macro @clone(value) @builtin @nodiscard
 ```
 
@@ -7518,8 +6898,6 @@ macro @clone(value) @builtin @nodiscard
  @param value : "The value to clone"
  @return "A pointer to the cloned value, which must be released using free_aligned"
 *>
-```
-```c3
 macro @clone_aligned(value) @builtin @nodiscard
 ```
 
@@ -7528,8 +6906,6 @@ macro @clone_aligned(value) @builtin @nodiscard
  @param value : "The value to clone"
  @return "A pointer to the cloned value"
 *>
-```
-```c3
 macro @tclone(value) @builtin @nodiscard
 ```
 ```c3
@@ -7551,8 +6927,6 @@ fn void* tmalloc(usz size, usz alignment = 0) @builtin @inline @nodiscard
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro new($Type, ...) @nodiscard
 ```
 
@@ -7562,8 +6936,6 @@ macro new($Type, ...) @nodiscard
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro new_with_padding($Type, usz padding, ...) @nodiscard
 ```
 
@@ -7574,8 +6946,6 @@ exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro new_aligned($Type, ...) @nodiscard
 ```
 
@@ -7583,8 +6953,6 @@ macro new_aligned($Type, ...) @nodiscard
 <*
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro alloc($Type) @nodiscard
 ```
 
@@ -7592,8 +6960,6 @@ macro alloc($Type) @nodiscard
 <*
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro alloc_with_padding($Type, usz padding) @nodiscard
 ```
 
@@ -7608,8 +6974,6 @@ macro alloc_aligned($Type) @nodiscard
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro tnew($Type, ...) @nodiscard
 ```
 
@@ -7618,8 +6982,6 @@ macro tnew($Type, ...) @nodiscard
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro temp_with_padding($Type, usz padding, ...) @nodiscard
 ```
 ```c3
@@ -7633,8 +6995,6 @@ macro talloc_with_padding($Type, usz padding) @nodiscard
 <*
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'new_array_aligned' instead"
 *>
-```
-```c3
 macro new_array($Type, usz elements) @nodiscard
 ```
 
@@ -7648,8 +7008,6 @@ macro new_array_aligned($Type, usz elements) @nodiscard
 <*
  @require $Type.alignof <= DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_array_aligned' instead"
 *>
-```
-```c3
 macro alloc_array($Type, usz elements) @nodiscard
 ```
 
@@ -7699,8 +7057,6 @@ and offers safe access to that member, by constructing an UnalignedRef.
  @require $defined(&#arg) : "It must be possible to take the address of the argument."
  @return "An 'UnalignedRef' with the proper type and alignment, with a pointer to argument"
 *>
-```
-```c3
 macro @unaligned_addr(#arg) @builtin
 ```
 ### `std::core::mem @if(WASM_NOLIBC)`
@@ -7736,8 +7092,6 @@ Initialize a memory arena for use using the provided bytes.
 <*
  @param [inout] data : "The memory to use for the arena."
 *>
-```
-```c3
 fn ArenaAllocator* ArenaAllocator.init(&self, char[] data)
 ```
 
@@ -7752,8 +7106,6 @@ Given some memory, create an arena allocator on the stack for it.
  @param [inout] bytes : `The bytes to use, may be empty.`
  @return `An arena allocator using the bytes`
 *>
-```
-```c3
 macro ArenaAllocator* wrap(char[] bytes)
 ```
 
@@ -7762,8 +7114,6 @@ macro ArenaAllocator* wrap(char[] bytes)
 <*
  @return `The value to pass to 'reset' in order to reset to the current use.`
 *>
-```
-```c3
 fn usz ArenaAllocator.mark(&self)
 ```
 
@@ -7773,8 +7123,6 @@ Reset to a previous mark.
  @param mark : `The previous mark.`
  @require mark <= self.used : "Invalid mark - out of range"
 *>
-```
-```c3
 fn void ArenaAllocator.reset(&self, usz mark)
 ```
 
@@ -7783,8 +7131,6 @@ Implements the Allocator interface method.
 <*
  @require ptr != null
 *>
-```
-```c3
 fn void ArenaAllocator.release(&self, void* ptr, bool) @dynamic
 ```
 
@@ -7796,8 +7142,6 @@ Implements the Allocator interface method.
  @require size > 0
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? ArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 
@@ -7810,8 +7154,6 @@ Implements the Allocator interface method.
  @require size > 0
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? ArenaAllocator.resize(&self, void *old_pointer, usz size, usz alignment) @dynamic
 ```
 
@@ -7836,8 +7178,6 @@ macro bool ExtraPage.is_aligned(&self)
 <*
  @require size >= 16
 *>
-```
-```c3
 fn BackedArenaAllocator*? new_backed_allocator(usz size, Allocator allocator)
 ```
 ```c3
@@ -7862,8 +7202,6 @@ fn void*? BackedArenaAllocator.resize(&self, void* pointer, usz size, usz alignm
  @require !alignment || math::is_power_of_2(alignment)
  @require alignment <= mem::MAX_MEMORY_ALIGNMENT : `alignment too big`
 *>
-```
-```c3
 fn void*? BackedArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 
@@ -7885,8 +7223,6 @@ struct DynamicArenaAllocator (Allocator)
  @param [&inout] allocator
  @require page_size >= 128
 *>
-```
-```c3
 fn void DynamicArenaAllocator.init(&self, Allocator allocator, usz page_size)
 ```
 ```c3
@@ -7898,8 +7234,6 @@ fn void DynamicArenaAllocator.free(&self)
  @require ptr != null
  @require self.page != null  : `tried to free pointer on invalid allocator`
 *>
-```
-```c3
 fn void DynamicArenaAllocator.release(&self, void* ptr, bool) @dynamic
 ```
 
@@ -7910,8 +7244,6 @@ fn void DynamicArenaAllocator.release(&self, void* ptr, bool) @dynamic
  @require self.page != null  : `tried to realloc pointer on invalid allocator`
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? DynamicArenaAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
@@ -7924,8 +7256,6 @@ fn void DynamicArenaAllocator.reset(&self)
  @require !alignment || math::is_power_of_2(alignment)
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? DynamicArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 
@@ -7943,8 +7273,6 @@ struct SimpleHeapAllocator (Allocator)
  @require allocator != null  : "An underlying memory provider must be given"
  @require !self.free_list : "The allocator may not be already initialized"
 *>
-```
-```c3
 fn void SimpleHeapAllocator.init(&self, MemoryAllocFn allocator)
 ```
 ```c3
@@ -7973,8 +7301,6 @@ Initialize a memory arena for use using the provided bytes.
 <*
  @param [&inout] allocator
 *>
-```
-```c3
 fn void OnStackAllocator.init(&self, char[] data, Allocator allocator)
 ```
 ```c3
@@ -7988,8 +7314,6 @@ struct OnStackAllocatorHeader
 <*
  @require old_pointer != null
 *>
-```
-```c3
 fn void OnStackAllocator.release(&self, void* old_pointer, bool aligned) @dynamic
 ```
 
@@ -7999,8 +7323,6 @@ fn void OnStackAllocator.release(&self, void* old_pointer, bool aligned) @dynami
  @require old_pointer != null
  @require alignment <= mem::MAX_MEMORY_ALIGNMENT : `alignment too big`
 *>
-```
-```c3
 fn void*? OnStackAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 
@@ -8009,8 +7331,6 @@ fn void*? OnStackAllocator.resize(&self, void* old_pointer, usz size, usz alignm
  @require alignment <= mem::MAX_MEMORY_ALIGNMENT : `alignment too big`
  @require size > 0
 *>
-```
-```c3
 fn void*? OnStackAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
@@ -8031,8 +7351,6 @@ Initialize a tracking allocator to wrap (and track) another allocator.
 <*
  @param [&inout] allocator : "The allocator to track"
 *>
-```
-```c3
 fn void TrackingAllocator.init(&self, Allocator allocator)
 ```
 
@@ -8045,8 +7363,6 @@ fn void TrackingAllocator.free(&self)
 <*
  @return "the total allocated memory not yet freed."
 *>
-```
-```c3
 fn usz TrackingAllocator.allocated(&self)
 ```
 
@@ -8054,8 +7370,6 @@ fn usz TrackingAllocator.allocated(&self)
 <*
  @return "the total memory allocated (freed or not)."
 *>
-```
-```c3
 fn usz TrackingAllocator.total_allocated(&self)
 ```
 
@@ -8063,8 +7377,6 @@ fn usz TrackingAllocator.total_allocated(&self)
 <*
  @return "the total number of allocations (freed or not)."
 *>
-```
-```c3
 fn usz TrackingAllocator.total_allocation_count(&self)
 ```
 ```c3
@@ -8075,8 +7387,6 @@ fn Allocation[] TrackingAllocator.allocations_tlist(&self, Allocator allocator)
 <*
  @return "the number of non-freed allocations."
 *>
-```
-```c3
 fn usz TrackingAllocator.allocation_count(&self)
 ```
 ```c3
@@ -8158,8 +7468,6 @@ macro void free_aligned(Allocator allocator, void* ptr)
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro new(Allocator allocator, $Type, ...) @nodiscard
 ```
 
@@ -8169,8 +7477,6 @@ macro new(Allocator allocator, $Type, ...) @nodiscard
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro new_try(Allocator allocator, $Type, ...) @nodiscard
 ```
 
@@ -8181,8 +7487,6 @@ exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], $Type) : "The second argument must be an initializer for the type"
 *>
-```
-```c3
 macro new_aligned(Allocator allocator, $Type, ...) @nodiscard
 ```
 
@@ -8190,8 +7494,6 @@ macro new_aligned(Allocator allocator, $Type, ...) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT
 *>
-```
-```c3
 macro new_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 ```
 
@@ -8199,8 +7501,6 @@ macro new_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro alloc(Allocator allocator, $Type) @nodiscard
 ```
 
@@ -8208,8 +7508,6 @@ macro alloc(Allocator allocator, $Type) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_aligned' instead"
 *>
-```
-```c3
 macro alloc_try(Allocator allocator, $Type) @nodiscard
 ```
 
@@ -8223,8 +7521,6 @@ macro alloc_aligned(Allocator allocator, $Type) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT
 *>
-```
-```c3
 macro alloc_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 ```
 
@@ -8232,8 +7528,6 @@ macro alloc_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'new_array_aligned' instead"
 *>
-```
-```c3
 macro new_array(Allocator allocator, $Type, usz elements) @nodiscard
 ```
 
@@ -8241,8 +7535,6 @@ macro new_array(Allocator allocator, $Type, usz elements) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'new_array_aligned' instead"
 *>
-```
-```c3
 macro new_array_try(Allocator allocator, $Type, usz elements) @nodiscard
 ```
 
@@ -8256,8 +7548,6 @@ macro new_array_aligned(Allocator allocator, $Type, usz elements) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_array_aligned' instead"
 *>
-```
-```c3
 macro alloc_array(Allocator allocator, $Type, usz elements) @nodiscard
 ```
 
@@ -8271,8 +7561,6 @@ macro alloc_array_aligned(Allocator allocator, $Type, usz elements) @nodiscard
 <*
  @require $Type.alignof <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'alloc_array_aligned' instead"
 *>
-```
-```c3
 macro alloc_array_try(Allocator allocator, $Type, usz elements) @nodiscard
 ```
 
@@ -8284,8 +7572,6 @@ Clone a value.
  @return "A pointer to the cloned value"
  @require $alignof(value) <= mem::DEFAULT_MEM_ALIGNMENT : "Types with alignment exceeding the default must use 'clone_aligned' instead"
 *>
-```
-```c3
 macro clone(Allocator allocator, value) @nodiscard
 ```
 
@@ -8296,8 +7582,6 @@ Clone overaligned values. Must be released using free_aligned.
  @param value : "The value to clone"
  @return "A pointer to the cloned value"
 *>
-```
-```c3
 macro clone_aligned(Allocator allocator, value) @nodiscard
 ```
 ```c3
@@ -8310,8 +7594,6 @@ fn any clone_any(Allocator allocator, any value) @nodiscard
  @require alignment > 0
  @require bytes <= isz.max
 *>
-```
-```c3
 macro void*? @aligned_alloc(#alloc_fn, usz bytes, usz alignment)
 ```
 ```c3
@@ -8326,8 +7608,6 @@ macro void? @aligned_free(#free_fn, void* old_pointer)
  @require bytes > 0
  @require alignment > 0
 *>
-```
-```c3
 macro void*? @aligned_realloc(#calloc_fn, #free_fn, void* old_pointer, usz bytes, usz alignment)
 ```
 ```c3
@@ -8410,8 +7690,6 @@ macro bool TempAllocatorPage.is_aligned(&self)
  @require allocator.type != TempAllocator.typeid : "You may not create a temp allocator with a TempAllocator as the backing allocator."
  @require min_size > TempAllocator.sizeof + 64 : "Min size must meaningfully hold the data + some bytes"
 *>
-```
-```c3
 fn TempAllocator*? new_temp_allocator(Allocator allocator, usz size, usz reserve = temp_allocator_reserve_size, usz min_size = temp_allocator_min_size, usz realloc_size = temp_allocator_realloc_size)
 ```
 
@@ -8419,8 +7697,6 @@ fn TempAllocator*? new_temp_allocator(Allocator allocator, usz size, usz reserve
 <*
  @require !self.derived
 *>
-```
-```c3
 fn TempAllocator*? TempAllocator.derive_allocator(&self, usz reserve = 0)
 ```
 
@@ -8433,8 +7709,6 @@ fn void TempAllocator.reset(&self)
 <*
  @require self.allocated : "Only a top level allocator should be freed."
 *>
-```
-```c3
 fn void TempAllocator.free(&self)
 ```
 ```c3
@@ -8450,8 +7724,6 @@ fn void*? TempAllocator.resize(&self, void* pointer, usz size, usz alignment) @d
  @require !alignment || math::is_power_of_2(alignment)
  @require alignment <= mem::MAX_MEMORY_ALIGNMENT : `alignment too big`
 *>
-```
-```c3
 fn void*? TempAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ### `std::core::mem::allocator @if(!env::WIN32 && !env::POSIX && env::LIBC)`
@@ -8478,8 +7750,6 @@ struct TempAllocator (Allocator)
  @require !alignment || math::is_power_of_2(alignment)
  @require alignment <= mem::MAX_MEMORY_ALIGNMENT : `alignment too big`
 *>
-```
-```c3
 fn void*? TempAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
@@ -8527,8 +7797,6 @@ Implements the Allocator interface method.
  @require preferred_size >= 1 * mem::KB : "The preferred size must exceed 1 KB"
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY, VMEM_RESERVE_FAILED
 *>
-```
-```c3
 fn void? Vmem.init(&self, usz preferred_size, usz reserve_page_size = 0, VmemOptions options = { true, true, env::COMPILER_SAFE_MODE }, usz min_size = 0)
 ```
 
@@ -8540,8 +7808,6 @@ Implements the Allocator interface method.
  @require size > 0
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? Vmem.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
@@ -8557,8 +7823,6 @@ Implements the Allocator interface method.
  @require size > 0
  @return? mem::INVALID_ALLOC_SIZE, mem::OUT_OF_MEMORY
 *>
-```
-```c3
 fn void*? Vmem.resize(&self, void *old_pointer, usz size, usz alignment) @dynamic
 ```
 
@@ -8567,8 +7831,6 @@ Implements the Allocator interface method.
 <*
  @require ptr != null
 *>
-```
-```c3
 fn void Vmem.release(&self, void* ptr, bool) @dynamic
 ```
 ```c3
@@ -8579,8 +7841,6 @@ fn usz Vmem.mark(&self)
 <*
  @require mark <= self.allocated : "Invalid mark"
 *>
-```
-```c3
 fn void Vmem.reset(&self, usz mark)
 ```
 ```c3
@@ -8641,8 +7901,6 @@ Initialize an block pool
  @require calculate_actual_capacity(capacity, block_size) * block_size >= block_size
     : "Total memory would overflow"
 *>
-```
-```c3
 macro FixedBlockPool* FixedBlockPool.init(&self, Allocator allocator, usz block_size, usz capacity = INITIAL_CAPACITY, usz alignment = 0)
 ```
 
@@ -8654,8 +7912,6 @@ Initialize an block pool
  @param capacity : "The amount of blocks to be pre-allocated"
  @require !self.initialized : "The block pool must not be initialized"
 *>
-```
-```c3
 macro FixedBlockPool* FixedBlockPool.init_for_type(&self, Allocator allocator, $Type, usz capacity = INITIAL_CAPACITY)
 ```
 
@@ -8666,8 +7922,6 @@ Initialize an block pool using Temporary allocator
  @param capacity : "The amount of blocks to be pre-allocated"
  @require !self.initialized : "The block pool must not be initialized"
 *>
-```
-```c3
 macro FixedBlockPool* FixedBlockPool.tinit_for_type(&self, $Type, usz capacity = INITIAL_CAPACITY)
 ```
 
@@ -8678,8 +7932,6 @@ Initialize an block pool using Temporary allocator
  @param capacity : "The amount of blocks to be pre-allocated"
  @require !self.initialized : "The block pool must not be initialized"
 *>
-```
-```c3
 macro FixedBlockPool* FixedBlockPool.tinit(&self, usz block_size, usz capacity = INITIAL_CAPACITY)
 ```
 
@@ -8688,8 +7940,6 @@ Free up the entire block pool
 <*
  @require self.initialized : "The block pool must be initialized"
 *>
-```
-```c3
 fn void FixedBlockPool.free(&self)
 ```
 
@@ -8698,8 +7948,6 @@ Allocate an block on the block pool, re-uses previously deallocated blocks
 <*
  @require self.initialized : "The block pool must be initialized"
 *>
-```
-```c3
 fn void* FixedBlockPool.alloc(&self)
 ```
 
@@ -8709,8 +7957,6 @@ Deallocate a block from the block pool
  @require self.initialized : "The block pool must be initialized"
  @require self.check_ptr(ptr) : "The pointer should be part of the pool"
 *>
-```
-```c3
 fn void FixedBlockPool.dealloc(&self, void* ptr)
 ```
 ### `std::core::mem::rc`
@@ -8733,8 +7979,6 @@ struct RefCounted
 <*
  @require @assignable_to(refcounted, RefCounted*) : "Expected a ref counted value"
 *>
-```
-```c3
 macro retain(refcounted)
 ```
 
@@ -8744,8 +7988,6 @@ macro retain(refcounted)
  @require !$defined(refcounted.dealloc()) ||| @typeis(refcounted.dealloc(), void)
    : "Expected refcounted type to have a valid dealloc"
 *>
-```
-```c3
 macro void release(refcounted)
 ```
 ### `std::core::mem::ref { Type }`
@@ -8761,8 +8003,6 @@ fn Ref wrap(Type* ptr, Allocator allocator = mem)
  @require $vacount < 2 : "Too many arguments."
  @require $vacount == 0 ||| @assignable_to($vaexpr[0], Type) : "The first argument must be an initializer for the type"
 *>
-```
-```c3
 macro Ref new(..., Allocator allocator = mem)
 ```
 ```c3
@@ -8799,8 +8039,6 @@ Allocate virtual memory, size is rounded up to platform granularity (Win32) / pa
  @return? mem::OUT_OF_MEMORY, RANGE_OVERFLOW, UNKNOWN_ERROR, ACCESS_DENIED, INVALID_ARGS
  @return "Pointer to the allocated memory, page aligned"
 *>
-```
-```c3
 fn void*? alloc(usz size, VirtualMemoryAccess access)
 ```
 
@@ -8811,8 +8049,6 @@ Release memory allocated with "alloc".
  @param size : "The size of the allocated pointer"
  @require mem::ptr_is_page_aligned(ptr) : "The pointer should be page aligned"
 *>
-```
-```c3
 fn void? release(void* ptr, usz size)
 ```
 
@@ -8826,8 +8062,6 @@ Change the access protection of a region in memory. The region must be page alig
  @require mem::ptr_is_page_aligned(ptr + len) : "The length must be page aligned"
  @return? ACCESS_DENIED, UNALIGNED_ADDRESS, RANGE_OVERFLOW, UPDATE_FAILED, UNMAPPED_ACCESS, INVALID_ARGS
 *>
-```
-```c3
 fn void? protect(void* ptr, usz len, VirtualMemoryAccess access)
 ```
 
@@ -8841,8 +8075,6 @@ but optional on Posix.
  @require mem::ptr_is_page_aligned(ptr + len) : "The length must be page aligned"
  @return? UNKNOWN_ERROR, mem::OUT_OF_MEMORY, ACCESS_DENIED, UNALIGNED_ADDRESS, RANGE_OVERFLOW, UPDATE_FAILED, UNMAPPED_ACCESS, INVALID_ARGS
 *>
-```
-```c3
 fn void? commit(void* ptr, usz len, VirtualMemoryAccess access = READWRITE)
 ```
 
@@ -8858,8 +8090,6 @@ respected on Posix, and protects the region from read/write/exec. On Win32 this 
  @require mem::ptr_is_page_aligned(ptr + len) : "The length must be page aligned"
  @return? ACCESS_DENIED, UNALIGNED_ADDRESS, RANGE_OVERFLOW, UPDATE_FAILED, UNMAPPED_ACCESS, INVALID_ARGS
 *>
-```
-```c3
 fn void? decommit(void* ptr, usz len, bool block = true)
 ```
 
@@ -8874,8 +8104,6 @@ Map a portion of an already-opened file into memory.
  @return? mem::OUT_OF_MEMORY, RANGE_OVERFLOW, UNKNOWN_ERROR, ACCESS_DENIED, INVALID_ARGS, io::NO_PERMISSION, io::FILE_NOT_VALID, io::WOULD_BLOCK, io::FILE_NOT_FOUND
  @return "Pointer to the mapped region"
 *>
-```
-```c3
 fn void*? mmap_file(Fd fd, usz size, usz offset = 0, VirtualMemoryAccess access = READ, bool shared = false) @if
 ```
 
@@ -8886,8 +8114,6 @@ Create a VirtualMemory using
  @require size > 0 : "The size must be non-zero"
  @return? mem::OUT_OF_MEMORY, RANGE_OVERFLOW, UNKNOWN_ERROR, ACCESS_DENIED, INVALID_ARGS
 *>
-```
-```c3
 fn VirtualMemory? virtual_alloc(usz size, VirtualMemoryAccess access = PROTECTED)
 ```
 
@@ -8902,8 +8128,6 @@ Commits memory, using vm::commit
  @require offset + len <= self.size : "Length out of range"
  @return? UPDATE_FAILED, ACCESS_DENIED, UNALIGNED_ADDRESS, RANGE_OVERFLOW, UNKNOWN_ERROR
 *>
-```
-```c3
 macro void? VirtualMemory.commit(self, usz offset, usz len)
 ```
 
@@ -8918,8 +8142,6 @@ Changes protection of a part of memory using vm::protect
  @require offset + len < self.size : "Length out of range"
  @return? UPDATE_FAILED, ACCESS_DENIED, UNALIGNED_ADDRESS, RANGE_OVERFLOW, UNKNOWN_ERROR
 *>
-```
-```c3
 macro void? VirtualMemory.protect(self, usz offset, usz len, VirtualMemoryAccess access)
 ```
 
@@ -8935,8 +8157,6 @@ Decommits a part of memory using vm::decommit
  @require offset + len < self.size : "Length out of range"
  @return? UPDATE_FAILED
 *>
-```
-```c3
 fn void? VirtualMemory.decommit(self, usz offset, usz len, bool block = true)
 ```
 
@@ -8945,8 +8165,6 @@ Releases the memory region
 <*
  @require self.ptr != null : "Virtual memory must be initialized to call destroy"
 *>
-```
-```c3
 fn void? VirtualMemory.destroy(&self)
 ```
 ### `std::core::mem::volatile { Type }`
@@ -9070,8 +8288,6 @@ unpoison memory in the same memory region simultaneously.
  @param addr : "Start of memory region."
  @param size : "Size of memory region."
 *>
-```
-```c3
 macro poison_memory_region(void* addr, usz size)
 ```
 
@@ -9089,8 +8305,6 @@ poison or unpoison memory in the same memory region simultaneously.
  @param addr : "Start of memory region."
  @param size : "Size of memory region."
 *>
-```
-```c3
 macro unpoison_memory_region(void* addr, usz size)
 ```
 
@@ -9100,8 +8314,6 @@ Checks if an address is poisoned.
  @return "True if 'addr' is poisoned (that is, 1-byte read/write access to this address would result in an error report from ASan). Otherwise returns false."
  @param addr : "Address to check."
 *>
-```
-```c3
 macro bool address_is_poisoned(void* addr)
 ```
 
@@ -9115,8 +8327,6 @@ address of the first such byte. Otherwise returns 0.
  @param size : "Start of memory region."
  @return "Address of first poisoned byte."
 *>
-```
-```c3
 macro void* region_is_poisoned(void* beg, usz size)
 ```
 
@@ -9240,8 +8450,6 @@ Create a pointer to an UTF32 encoded string at compile time.
 <*
  @param $string : "The string to encode"
 *>
-```
-```c3
 macro Char32* @wstring32(String $string) @builtin
 ```
 
@@ -9250,8 +8458,6 @@ Create a slice of an UTF32 encoded string at compile time.
 <*
  @param $string : "The string to encode"
 *>
-```
-```c3
 macro Char32[] @char32(String $string) @builtin
 ```
 
@@ -9260,8 +8466,6 @@ Create a WString (an UTF16 encoded string) at compile time.
 <*
  @param $string : "The string to encode"
 *>
-```
-```c3
 macro WString @wstring(String $string) @builtin
 ```
 
@@ -9270,8 +8474,6 @@ Create a slice of an UTF32 encoded string at compile time.
 <*
  @param $string : "The string to encode"
 *>
-```
-```c3
 macro Char16[] @char16(String $string) @builtin
 ```
 ```c3
@@ -9283,8 +8485,6 @@ Return a temporary ZString created using the formatting function.
 <*
  @param [in] fmt : `The formatting string`
 *>
-```
-```c3
 fn ZString tformat_zstr(String fmt, args...) @format(0)
 ```
 
@@ -9294,8 +8494,6 @@ Return a new String created using the formatting function.
  @param [inout] allocator : `The allocator to use`
  @param [in] fmt : `The formatting string`
 *>
-```
-```c3
 fn String format(Allocator allocator, String fmt, args...) @format(1)
 ```
 
@@ -9305,8 +8503,6 @@ Return a new String created using the formatting function.
  @param [inout] buffer : `The buffer to use`
  @param [in] fmt : `The formatting string`
 *>
-```
-```c3
 fn String bformat(char[] buffer, String fmt, args...) @format(1)
 ```
 
@@ -9315,8 +8511,6 @@ Return a temporary String created using the formatting function.
 <*
  @param [in] fmt : `The formatting string`
 *>
-```
-```c3
 fn String tformat(String fmt, args...) @format(0)
 ```
 
@@ -9328,8 +8522,6 @@ Check if a character is in a set.
  @pure
  @return `True if a character is in the set`
 *>
-```
-```c3
 macro bool char_in_set(char c, String set)
 ```
 ```c3
@@ -9345,8 +8537,6 @@ Replace all instances of one substring with a different string.
  @param [&inout] allocator : `The allocator to use for the String`
  @return "The new string with the elements replaced"
 *>
-```
-```c3
 fn String String.replace(self, Allocator allocator, String needle, String new_str) @nodiscard
 ```
 
@@ -9358,8 +8548,6 @@ Replace all instances of one substring with a different string, allocating the n
  @param [in] new_str : `The replacement string`
  @return "The new string with the elements replaced"
 *>
-```
-```c3
 fn String String.treplace(self, String needle, String new_str)
 ```
 
@@ -9371,8 +8559,6 @@ Remove characters from the front and end of a string.
  @pure
  @return `a substring of the string passed in`
 *>
-```
-```c3
 fn String String.trim(self, String to_trim = "\t\n\r ")
 ```
 
@@ -9384,8 +8570,6 @@ Remove characters from the front of a string.
  @pure
  @return `a substring of the string passed in`
 *>
-```
-```c3
 fn String String.trim_left(self, String to_trim = "\t\n\r ")
 ```
 
@@ -9397,8 +8581,6 @@ Remove characters from the end of a string.
  @pure
  @return `a substring of the string passed in`
 *>
-```
-```c3
 fn String String.trim_right(self, String to_trim = "\t\n\r ")
 ```
 
@@ -9410,8 +8592,6 @@ Check if the String starts with the prefix.
  @pure
  @return `'true' if the string starts with the prefix`
 *>
-```
-```c3
 fn bool String.starts_with(self, String prefix)
 ```
 
@@ -9423,8 +8603,6 @@ Check if the String ends with the suffix.
  @pure
  @return `'true' if the string ends with the suffix`
 *>
-```
-```c3
 fn bool String.ends_with(self, String suffix)
 ```
 
@@ -9436,8 +8614,6 @@ Strip the front of the string if the prefix exists.
  @pure
  @return `the substring with the prefix removed`
 *>
-```
-```c3
 fn String String.strip(self, String prefix)
 ```
 
@@ -9449,8 +8625,6 @@ Strip the end of the string if the suffix exists.
  @pure
  @return `the substring with the suffix removed`
 *>
-```
-```c3
 fn String String.strip_end(self, String suffix)
 ```
 
@@ -9465,8 +8639,6 @@ Split a string into parts, e.g "a|b|c" split with "|" yields { "a", "b", "c" }
  @require delimiter.len > 0 : "The delimiter must be at least 1 character long"
  @ensure return.len > 0 || skip_empty
 *>
-```
-```c3
 fn String[] String.split(self, Allocator allocator, String delimiter, usz max = 0, bool skip_empty = false)
 ```
 
@@ -9479,8 +8651,6 @@ temporary allocator.
  @param max : "Max number of elements, 0 means no limit, defaults to 0"
  @param skip_empty : "True to skip empty elements"
 *>
-```
-```c3
 fn String[] String.tsplit(s, String delimiter, usz max = 0, bool skip_empty = false)
 ```
 ```c3
@@ -9498,8 +8668,6 @@ Split a string into parts, e.g "a|b|c" split with "|" yields { "a", "b", "c" }
  @ensure return.len > 0 || skip_empty
  @return? BUFFER_EXCEEDED : `If there are more elements than would fit the buffer`
 *>
-```
-```c3
 fn String[]? String.split_to_buffer(s, String delimiter, String[] buffer, usz max = 0, bool skip_empty = false)
 ```
 
@@ -9511,8 +8679,6 @@ Check if a substring is found in the string.
  @pure
  @return "true if the string contains the substring, false otherwise"
 *>
-```
-```c3
 fn bool String.contains(s, String substr)
 ```
 
@@ -9526,8 +8692,6 @@ If the substring has zero length, the number of matches is zero.
  @pure
  @return "The number of times matched"
 *>
-```
-```c3
 fn usz String.count(self, String substr)
 ```
 
@@ -9541,8 +8705,6 @@ Find the index of the first incidence of a string.
  @return "the index of the character"
  @return? NOT_FOUND : "if the character cannot be found"
 *>
-```
-```c3
 fn usz? String.index_of_char(self, char character)
 ```
 
@@ -9556,8 +8718,6 @@ Find the index of the first incidence of a one of the chars.
  @return "the index of the character"
  @return? NOT_FOUND : "if the character cannot be found"
 *>
-```
-```c3
 fn usz? String.index_of_chars(String self, char[] characters)
 ```
 
@@ -9572,8 +8732,6 @@ Find the index of the first incidence of a character.
  @return "the index of the character"
  @return? NOT_FOUND : "if the character cannot be found starting from the start_index"
 *>
-```
-```c3
 fn usz? String.index_of_char_from(self, char character, usz start_index)
 ```
 
@@ -9587,8 +8745,6 @@ Find the index of the first incidence of a character starting from the end.
  @return "the index of the character"
  @return? NOT_FOUND : "if the character cannot be found"
 *>
-```
-```c3
 fn usz? String.rindex_of_char(self, char character)
 ```
 
@@ -9603,8 +8759,6 @@ Find the index of the first incidence of a string.
  @return "the index of the substring"
  @return? NOT_FOUND : "if the substring cannot be found"
 *>
-```
-```c3
 fn usz? String.index_of(self, String substr)
 ```
 
@@ -9619,8 +8773,6 @@ Find the index of the last incidence of a string.
  @return "the index of the substring"
  @return? NOT_FOUND : "if the substring cannot be found"
 *>
-```
-```c3
 fn usz? String.rindex_of(self, String substr)
 ```
 ```c3
@@ -9676,8 +8828,6 @@ Convert an UTF-8 string to UTF-16
  @return "The UTF-16 string as a slice, allocated using the given allocator"
  @return? INVALID_UTF8 : "If the string contained an invalid UTF-8 sequence"
 *>
-```
-```c3
 fn Char16[]? String.to_utf16(self, Allocator allocator)
 ```
 ```c3
@@ -9702,8 +8852,6 @@ Convert a string to ASCII lower case in place.
  @param [inout] self
  @pure
 *>
-```
-```c3
 fn void String.convert_to_lower(self)
 ```
 ```c3
@@ -9719,8 +8867,6 @@ Convert a string to ASCII upper case.
  @param [inout] self
  @pure
 *>
-```
-```c3
 fn void String.convert_to_upper(self)
 ```
 
@@ -9731,8 +8877,6 @@ Returns a string converted to ASCII upper case.
  @param [inout] allocator
  @return `a new String converted to ASCII upper case.`
 *>
-```
-```c3
 fn String String.to_upper_copy(self, Allocator allocator)
 ```
 ```c3
@@ -9745,8 +8889,6 @@ Convert a string from `snake_case` to PascalCase.
  @param [in] self
  @return `"FooBar" from "foo_bar" the resulting pointer may safely be cast to ZString.`
 *>
-```
-```c3
 fn String String.snake_to_pascal_copy(self, Allocator allocator)
 ```
 
@@ -9755,8 +8897,6 @@ Movifies the current string from `snake_case` to PascalCase.
 <*
  @param [inout] self
 *>
-```
-```c3
 fn void String.convert_snake_to_pascal(&self)
 ```
 
@@ -9766,8 +8906,6 @@ Convert a string from `PascalCase` to `snake_case`.
  @param [in] self
  @return `"foo_bar" from "FooBar" the resulting pointer may safely be cast to ZString.`
 *>
-```
-```c3
 fn String String.pascal_to_snake_copy(self, Allocator allocator)
 ```
 ```c3
@@ -9779,8 +8917,6 @@ fn StringIterator String.iterator(self)
  @param [in] self
  @return `a temporary String converted to ASCII upper case.`
 *>
-```
-```c3
 fn String String.to_upper_tcopy(self)
 ```
 ```c3
@@ -9829,8 +8965,6 @@ For this reason, try to ensure that the resulting ZString is immediately used.
 <*
  @ensure return[self.len] == 0
 *>
-```
-```c3
 fn ZString String.quick_zstr(self) @deprecated("Unsafe, use zstr_tcopy instead")
 ```
 
@@ -9849,8 +8983,6 @@ Furthermore it will skip any spaces before and after the number.
  @return? EMPTY_STRING : "If the string was empty"
  @return? NEGATIVE_VALUE : "If the type was unsigned, and the value had a - prefix"
 *>
-```
-```c3
 macro String.to_integer(self, $Type, int base = 10)
 ```
 ```c3
@@ -9898,8 +9030,6 @@ instead.
  @param [in] split : "The string to use for splitting"
  @return "A Splitter to track the state"
 *>
-```
-```c3
 fn Splitter String.tokenize(self, String split)
 ```
 
@@ -9912,8 +9042,6 @@ instead.
  @param skip_last : "Set to true to not include the last empty token if present (default: false)"
  @return "A Splitter to track the state"
 *>
-```
-```c3
 fn Splitter String.tokenize_all(self, String split, bool skip_last = false)
 ```
 ```c3
@@ -9926,8 +9054,6 @@ This macro will create a string description of a struct.
  @param [&inout] allocator : "The allocator to use"
  @param x : "The struct to create a description of"
 *>
-```
-```c3
 macro String from_struct(Allocator allocator, x)
 ```
 
@@ -9936,8 +9062,6 @@ This macro will create a temporary string description of a struct.
 <*
  @param x : "The struct to create a description of"
 *>
-```
-```c3
 macro String tfrom_struct(x)
 ```
 ```c3
@@ -9966,8 +9090,6 @@ Escape a string by adding quotes and converting special characters to escape seq
  @param strip_quotes : "Do not include beginning and end quotes, defaults to false"
  @return "The escaped string with surrounding quotes, can safely be cast to ZString"
 *>
-```
-```c3
 fn String String.escape(String s, Allocator allocator, bool strip_quotes = true)
 ```
 
@@ -9978,8 +9100,6 @@ Escape a string using the temp allocator.
  @param strip_quotes : "Do not include beginning and end quotes, defaults to false"
  @return "The escaped string with surrounding quotes"
 *>
-```
-```c3
 fn String String.tescape(String s, bool strip_quotes = false)
 ```
 
@@ -9989,8 +9109,6 @@ Calculate the length needed for an escaped string (including quotes).
  @param s : "The string to check"
  @return "The length needed for the escaped version"
 *>
-```
-```c3
 fn usz escape_len(String s)
 ```
 
@@ -10003,8 +9121,6 @@ Unescape a quoted string by parsing escape sequences.
  @return "The unescaped string without quotes, safe to convert to ZString"
  @return? UNTERMINATED_STRING, INVALID_ESCAPE_SEQUENCE, INVALID_HEX_ESCAPE, INVALID_UNICODE_ESCAPE
 *>
-```
-```c3
 fn String? String.unescape(String s, Allocator allocator, bool allow_unquoted = false)
 ```
 
@@ -10016,8 +9132,6 @@ Unescape a quoted string using the temp allocator.
  @return "The unescaped string without quotes"
  @return? UNTERMINATED_STRING, INVALID_ESCAPE_SEQUENCE, INVALID_HEX_ESCAPE, INVALID_UNICODE_ESCAPE
 *>
-```
-```c3
 fn String? String.tunescape(String s, bool allow_unquoted = false)
 ```
 
@@ -10027,8 +9141,6 @@ Check if a character needs to be escaped in a string literal.
  @param c : "The character to check"
  @return "True if the character needs escaping"
 *>
-```
-```c3
 fn bool needs_escape(char c)
 ```
 ```c3
@@ -10048,8 +9160,6 @@ const uint[2] B1B_MAX
 <*
  @require chars.len > 0
 *>
-```
-```c3
 macro double? decfloat(char[] chars, int $bits, int $emin, int sign)
 ```
 ```c3
@@ -10065,8 +9175,6 @@ enum Ansi : const inline String
 <*
  @return `the formatting char for the given background color`
 *>
-```
-```c3
 macro String color_8bit(char $index, bool $bg = false) @const
 ```
 
@@ -10075,8 +9183,6 @@ macro String color_8bit(char $index, bool $bg = false) @const
 <*
  @return `the string for the given foreground color`
 *>
-```
-```c3
 macro String color_rgb(char $r, char $g, char $b, bool $bg = false) @const
 ```
 
@@ -10086,8 +9192,6 @@ macro String color_rgb(char $r, char $g, char $b, bool $bg = false) @const
  @require $rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
  @return `the string char for the given foreground color`
 *>
-```
-```c3
 macro String color(uint $rgb, bool $bg = false) @const
 ```
 
@@ -10097,8 +9201,6 @@ macro String color(uint $rgb, bool $bg = false) @const
  @require rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
  @return `the string char for the given foreground color`
 *>
-```
-```c3
 fn String make_color(Allocator mem, uint rgb, bool bg = false)
 ```
 
@@ -10108,8 +9210,6 @@ fn String make_color(Allocator mem, uint rgb, bool bg = false)
  @require rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
  @return `the string char for the given foreground color`
 *>
-```
-```c3
 fn String make_tcolor(uint rgb, bool bg = false)
 ```
 
@@ -10118,8 +9218,6 @@ fn String make_tcolor(uint rgb, bool bg = false)
 <*
  @return `the string char for the given foreground color`
 *>
-```
-```c3
 fn String make_color_rgb(Allocator mem, char r, char g, char b, bool bg = false)
 ```
 
@@ -10128,8 +9226,6 @@ fn String make_color_rgb(Allocator mem, char r, char g, char b, bool bg = false)
 <*
  @return `the string char for the given foreground color`
 *>
-```
-```c3
 fn String make_tcolor_rgb(char r, char g, char b, bool bg = false)
 ```
 ### `std::core::string::conv`
@@ -10140,8 +9236,6 @@ fn String make_tcolor_rgb(char r, char g, char b, bool bg = false)
  @param [out] output : `the resulting buffer`
  @return? string::CONVERSION_FAILED
 *>
-```
-```c3
 fn usz? char32_to_utf8(Char32 c, char[] output)
 ```
 
@@ -10151,8 +9245,6 @@ Convert a code pointer into 1-2 UTF16 characters.
  @param c : `The character to convert.`
  @param [inout] output : `the resulting UTF16 buffer to write to.`
 *>
-```
-```c3
 fn void char32_to_utf16_unsafe(Char32 c, Char16** output)
 ```
 
@@ -10163,8 +9255,6 @@ Convert 1-2 UTF16 data points into UTF8.
  @param [inout] available : `amount of UTF16 data available.`
  @param [inout] output : `the resulting utf8 buffer to write to.`
 *>
-```
-```c3
 fn void? char16_to_utf8_unsafe(Char16 *ptr, usz *available, char** output)
 ```
 
@@ -10173,8 +9263,6 @@ fn void? char16_to_utf8_unsafe(Char16 *ptr, usz *available, char** output)
  @param c : `The utf32 codepoint to convert`
  @param [inout] output : `the resulting buffer`
 *>
-```
-```c3
 fn usz char32_to_utf8_unsafe(Char32 c, char** output)
 ```
 
@@ -10184,8 +9272,6 @@ fn usz char32_to_utf8_unsafe(Char32 c, char** output)
  @param [inout] size : `Set to max characters to read, set to characters read`
  @return `the parsed 32 bit codepoint`
 *>
-```
-```c3
 fn Char32? utf8_to_char32(char* ptr, usz* size)
 ```
 
@@ -10194,8 +9280,6 @@ fn Char32? utf8_to_char32(char* ptr, usz* size)
  @param utf8 : `An UTF-8 encoded slice of bytes`
  @return `the number of encoded code points`
 *>
-```
-```c3
 fn usz utf8_codepoints(String utf8)
 ```
 
@@ -10205,8 +9289,6 @@ Calculate the UTF8 length required to encode an UTF32 array.
  @param [in] utf32 : `the utf32 data to calculate from`
  @return `the length of the resulting UTF8 array`
 *>
-```
-```c3
 fn usz utf8len_for_utf32(Char32[] utf32)
 ```
 
@@ -10216,8 +9298,6 @@ Calculate the UTF8 length required to encode an UTF16 array.
  @param [in] utf16 : `the utf16 data to calculate from`
  @return `the length of the resulting UTF8 array`
 *>
-```
-```c3
 fn usz utf8len_for_utf16(Char16[] utf16)
 ```
 
@@ -10227,8 +9307,6 @@ Calculate the UTF16 length required to encode a UTF8 array.
  @param utf8 : `the utf8 data to calculate from`
  @return `the length of the resulting UTF16 array`
 *>
-```
-```c3
 fn usz utf16len_for_utf8(String utf8)
 ```
 
@@ -10237,8 +9315,6 @@ fn usz utf16len_for_utf8(String utf8)
  @param [in] utf32 : `the UTF32 array to check the length for`
  @return `the required length of an UTF16 array to hold the UTF32 data.`
 *>
-```
-```c3
 fn usz utf16len_for_utf32(Char32[] utf32)
 ```
 
@@ -10249,8 +9325,6 @@ Convert an UTF32 array to an UTF8 array.
  @param [out] utf8_buffer
  @return `the number of bytes written.`
 *>
-```
-```c3
 fn usz? utf32to8(Char32[] utf32, char[] utf8_buffer)
 ```
 
@@ -10261,8 +9335,6 @@ Convert an UTF8 array to an UTF32 array.
  @param [out] utf32_buffer
  @return `the number of Char32s written.`
 *>
-```
-```c3
 fn usz? utf8to32(String utf8, Char32[] utf32_buffer)
 ```
 
@@ -10274,8 +9346,6 @@ the converted data.
  @param [in] utf16 : `The UTF16 array containing the data to convert.`
  @param [out] utf8_buffer : `the (sufficiently large) buffer to hold the UTF16 data.`
 *>
-```
-```c3
 fn void? utf16to8_unsafe(Char16[] utf16, char* utf8_buffer)
 ```
 
@@ -10287,8 +9357,6 @@ the converted data.
  @param [in] utf8 : `The UTF8 buffer containing the data to convert.`
  @param [out] utf32_buffer : `the (sufficiently large) buffer to hold the UTF8 data.`
 *>
-```
-```c3
 fn void? utf8to32_unsafe(String utf8, Char32* utf32_buffer)
 ```
 
@@ -10300,8 +9368,6 @@ the converted data.
  @param [in] utf8 : `The UTF8 buffer containing the data to convert.`
  @param [out] utf16_buffer : `the (sufficiently large) buffer to hold the UTF8 data.`
 *>
-```
-```c3
 fn void? utf8to16_unsafe(String utf8, Char16* utf16_buffer)
 ```
 
@@ -10313,8 +9379,6 @@ the converted data.
  @param [in] utf32 : `The UTF32 buffer containing the data to convert.`
  @param [out] utf8_buffer : `the (sufficiently large) buffer to hold the UTF8 data.`
 *>
-```
-```c3
 fn void utf32to8_unsafe(Char32[] utf32, char* utf8_buffer)
 ```
 ### `std::core::string::iterator`
@@ -10346,8 +9410,6 @@ Initializes test case context.
  @require runtime::test_context != null : "Only allowed in @test functions"
  @require setup_fn != null : "setup_fn must always be set"
 *>
-```
-```c3
 macro @setup(TestFn setup_fn, TestFn teardown_fn = null)
 ```
 
@@ -10359,8 +9421,6 @@ Checks condition and fails assertion if not true
  @param args : `vargs for format`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro @check(#condition, String format = "", args...)
 ```
 
@@ -10371,8 +9431,6 @@ Check if function returns specific error
  @param error_expected : `expected error of function execution`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro @error(#funcresult, fault error_expected)
 ```
 
@@ -10383,8 +9441,6 @@ Check if left == right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro eq(left, right)
 ```
 
@@ -10398,8 +9454,6 @@ Check left floating point value is approximately equals to right value
  @require delta >= 0, delta <= 1 : "delta must be a small number"
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro void eq_approx(double left, double right, uint places = 7, double delta = 0, bool equal_nan = true)
 ```
 
@@ -10410,8 +9464,6 @@ Check if left != right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro void ne(left, right)
 ```
 
@@ -10422,8 +9474,6 @@ Check if left > right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro gt(left, right)
 ```
 
@@ -10434,8 +9484,6 @@ Check if left >= right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro ge(left, right)
 ```
 
@@ -10446,8 +9494,6 @@ Check if left < right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro lt(left, right)
 ```
 
@@ -10458,8 +9504,6 @@ Check if left <= right
  @param right : `right argument of any comparable type`
  @require runtime::test_context != null : "Only allowed in @test functions"
 *>
-```
-```c3
 macro le(left, right)
 ```
 ### `std::core::types`
@@ -10472,8 +9516,6 @@ faultdef VALUE_OUT_OF_RANGE, VALUE_OUT_OF_UNSIGNED_RANGE
  @require $Type.kindof.is_int() : "Type was not an integer"
  @require v.type.kindof == ENUM : "Value was not an enum"
 *>
-```
-```c3
 macro any_to_enum_ordinal(any v, $Type)
 ```
 
@@ -10482,8 +9524,6 @@ macro any_to_enum_ordinal(any v, $Type)
  @require $Type.kindof.is_int() : "Type was not an integer"
  @require v.type.kindof.is_int() : "Value was not an integer"
 *>
-```
-```c3
 macro any_to_int(any v, $Type)
 ```
 ```c3
@@ -10512,8 +9552,6 @@ macro bool is_int($Type) @const
 <*
  @require is_numerical($Type) : "Expected a numerical type"
 *>
-```
-```c3
 macro bool is_signed($Type) @const
 ```
 
@@ -10521,8 +9559,6 @@ macro bool is_signed($Type) @const
 <*
  @require is_numerical($Type) : "Expected a numerical type"
 *>
-```
-```c3
 macro bool is_unsigned($Type) @const
 ```
 ```c3
@@ -10662,8 +9698,6 @@ This acts like `$bool ? #value_1 : #value_2` but at compile time.
  @param #value_2
  @returns `The selected value.`
 *>
-```
-```c3
 macro @select(bool $bool, #value_1, #value_2) @builtin
 ```
 ```c3
@@ -10700,8 +9734,6 @@ Generate a public key from a private key.
  @param [in] private_key : "32 bytes of cryptographically secure random data"
  @require private_key.len == Ed25519PrivateKey.len
 *>
-```
-```c3
 fn Ed25519PublicKey public_keygen(char[] private_key)
 ```
 
@@ -10714,8 +9746,6 @@ Sign a message.
  @require private_key.len == Ed25519PrivateKey.len
  @require public_key.len == Ed25519PublicKey.len
 *>
-```
-```c3
 fn Ed25519Signature sign(char[] message, char[] private_key, char[] public_key)
 ```
 
@@ -10728,8 +9758,6 @@ Verify the signature of a message.
  @require signature.len == Ed25519Signature.len
  @require public_key.len == Ed25519PublicKey.len
 *>
-```
-```c3
 fn bool verify(char[] message, char[] signature, char[] public_key)
 ```
 ### `std::crypto::rc4`
@@ -10743,8 +9771,6 @@ Initialize the RC4 state.
  @param [in] key : "The key to use"
  @require key.len > 0 : "The key must be at least 1 byte long"
 *>
-```
-```c3
 fn void Rc4.init(&self, char[] key)
 ```
 
@@ -10754,8 +9780,6 @@ Run a single pass of en/decryption using a particular key.
  @param [in] key
  @param [inout] data
 *>
-```
-```c3
 fn void crypt(char[] key, char[] data)
 ```
 
@@ -10766,8 +9790,6 @@ Encrypt or decrypt a sequence of bytes.
  @param [out] out : "The output"
  @require in.len <= out.len : "Output would overflow"
 *>
-```
-```c3
 fn void Rc4.crypt(&self, char[] in, char[] out)
 ```
 
@@ -10776,8 +9798,6 @@ Clear the rc4 state.
 <*
  @param [&out] self : "The RC4 State"
 *>
-```
-```c3
 fn void Rc4.destroy(&self)
 ```
 ### `std::encoding`
@@ -10804,8 +9824,6 @@ Encode the content of src into a newly allocated string
  @require padding < 0xFF : "Invalid padding character"
  @return "The encoded string."
 *>
-```
-```c3
 fn String? encode(Allocator allocator, char[] src, char padding = DEFAULT_PAD, Base32Alphabet* alphabet = &STANDARD)
 ```
 
@@ -10818,8 +9836,6 @@ Decode the content of src into a newly allocated char array.
  @require padding < 0xFF : "Invalid padding character"
  @return "The decoded data."
 *>
-```
-```c3
 fn char[]? decode(Allocator allocator, char[] src, char padding = DEFAULT_PAD, Base32Alphabet* alphabet = &STANDARD)
 ```
 ```c3
@@ -10837,8 +9853,6 @@ Calculate the length in bytes of the decoded data.
  @require padding < 0xFF : "Invalid padding character"
  @return "Length in bytes of the decoded data."
 *>
-```
-```c3
 fn usz decode_len(usz n, char padding)
 ```
 
@@ -10850,8 +9864,6 @@ Calculate the length in bytes of the encoded data.
  @require padding < 0xFF : "Invalid padding character"
  @return "Length in bytes of the encoded data."
 *>
-```
-```c3
 fn usz encode_len(usz n, char padding)
 ```
 
@@ -10867,8 +9879,6 @@ Decode the content of src into dst, which must be properly sized.
  @return "The resulting dst buffer"
  @return? encoding::INVALID_PADDING, encoding::INVALID_CHARACTER
 *>
-```
-```c3
 fn char[]? decode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base32Alphabet* alphabet = &STANDARD)
 ```
 
@@ -10883,8 +9893,6 @@ Encode the content of src into dst, which must be properly sized.
  @require dst.len >= encode_len(src.len, padding) : "Destination buffer too small"
  @return "The encoded size."
 *>
-```
-```c3
 fn String encode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base32Alphabet* alphabet = &STANDARD)
 ```
 ```c3
@@ -10951,8 +9959,6 @@ Calculate the size of the encoded data.
  @require padding < 0xFF : "Invalid padding character"
  @return "The size of the input once encoded."
 *>
-```
-```c3
 fn usz encode_len(usz n, char padding)
 ```
 
@@ -10965,8 +9971,6 @@ Calculate the size of the decoded data.
  @return "The size of the input once decoded."
  @return? encoding::INVALID_PADDING
 *>
-```
-```c3
 fn usz? decode_len(usz n, char padding)
 ```
 
@@ -10980,8 +9984,6 @@ Encode the content of src into dst, which must be properly sized.
  @require padding < 0xFF : "Invalid padding character"
  @return "The encoded size."
 *>
-```
-```c3
 fn String encode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base64Alphabet* alphabet = &STANDARD)
 ```
 
@@ -10997,8 +9999,6 @@ Decode the content of src into dst, which must be properly sized.
  @return "The decoded data."
  @return? encoding::INVALID_CHARACTER, encoding::INVALID_PADDING
 *>
-```
-```c3
 fn char[]? decode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base64Alphabet* alphabet = &STANDARD)
 ```
 ### `std::encoding::csv`
@@ -11019,8 +10019,6 @@ fn usz CsvRow.len(&self) @operator(len)
 <*
  @require col < self.list.len
 *>
-```
-```c3
 fn String CsvRow.get_col(&self, usz col) @operator([])
 ```
 ```c3
@@ -11031,8 +10029,6 @@ fn void CsvReader.init(&self, InStream stream, String separator = ",")
 <*
  @param [&inout] allocator
 *>
-```
-```c3
 fn CsvRow? CsvReader.read_row(self, Allocator allocator)
 ```
 ```c3
@@ -11043,8 +10039,6 @@ fn CsvRow? CsvReader.tread_row(self)
 <*
  @require self.allocator != null  : `Row already freed`
 *>
-```
-```c3
 fn void CsvRow.free(&self)
 ```
 ```c3
@@ -11082,8 +10076,6 @@ Calculate the size of the encoded data.
  @param n : "Size of the input to be encoded."
  @return "The size of the input once encoded."
 *>
-```
-```c3
 fn usz encode_len(usz n)
 ```
 
@@ -11095,8 +10087,6 @@ Encode the content of src into dst, which must be properly sized.
  @return "The encoded size."
  @require dst.len >= encode_len(src.len) : "Destination array is not large enough"
 *>
-```
-```c3
 fn usz encode_bytes(char[] src, char[] dst)
 ```
 
@@ -11106,8 +10096,6 @@ Calculate the size of the decoded data.
  @param n : "Size of the input to be decoded."
  @return "The size of the input once decoded."
 *>
-```
-```c3
 macro usz decode_len(usz n)
 ```
 
@@ -11123,8 +10111,6 @@ length.
  @require dst.len >= decode_len(src.len) : "Destination array is not large enough"
  @return? encoding::INVALID_CHARACTER
 *>
-```
-```c3
 fn usz? decode_bytes(char[] src, char[] dst)
 ```
 ### `std::encoding::json`
@@ -11274,8 +10260,6 @@ fn char[HASH_BYTES] hash(char[] key, char[] message)
  @require output.len > 0 : "Output must be greater than zero"
  @require output.len < int.max / HASH_BYTES : "Output is too large"
 *>
-```
-```c3
 fn void pbkdf2(char[] pw, char[] salt, uint iterations, char[] output)
 ```
 ```c3
@@ -11388,8 +10372,6 @@ fn void Sha1.init(&self)
  @param [in] data
  @require data.len <= uint.max
 *>
-```
-```c3
 fn void Sha1.update(&self, char[] data)
 ```
 ```c3
@@ -11426,8 +10408,6 @@ fn void Sha256.init(&self)
  @param [in] data
  @require data.len <= uint.max
 *>
-```
-```c3
 fn void Sha256.update(&self, char[] data)
 ```
 ```c3
@@ -11460,8 +10440,6 @@ enum HashTruncationType : uint (uint truncation_width, ulong[8] initial_state)
 <*
  @param [in] data
 *>
-```
-```c3
 fn char[HASH_SIZE] hash(char[] data)
 ```
 ```c3
@@ -11473,8 +10451,6 @@ fn void Sha512.init(&self)
  @param [in] data
  @require data.len <= ulong.max
 *>
-```
-```c3
 fn void Sha512.update(&self, char[] data)
 ```
 ```c3
@@ -11495,8 +10471,6 @@ fn void SipHash.init(&self, uint128 key)
 <*
  @param [in] data : "Bytes to hash"
 *>
-```
-```c3
 fn void SipHash.update(&self, char[] data)
 ```
 ```c3
@@ -11563,8 +10537,6 @@ macro void Whirlpool.init(&self)
 <*
  @require data.len <= isz.max : "Update with smaller slices"
 *>
-```
-```c3
 fn void Whirlpool.update(&self, char[] data)
 ```
 ```c3
@@ -11582,8 +10554,6 @@ fn ulong wyr3(char* in, usz len) @inline
 <*
  @require input.len <= 16 : `wyhash2 is not useable for inputs over 16 bytes in length.`
 *>
-```
-```c3
 fn ulong hash(char[] input, ulong seed = 0)
 ```
 ### `std::io`
@@ -11602,8 +10572,6 @@ fn void BitReader.clear(&self) @inline
  @require nbits <= 8
  @require self.len + nbits <= uint.sizeof * 8
 *>
-```
-```c3
 fn char? BitReader.read_bits(&self, uint nbits)
 ```
 ```c3
@@ -11623,8 +10591,6 @@ fn void? BitWriter.flush(&self)
 <*
  @require nbits <= 32
 *>
-```
-```c3
 fn void? BitWriter.write_bits(&self, uint bits, uint nbits)
 ```
 ```c3
@@ -11652,8 +10618,6 @@ Introspect a struct and print it to a formatter
 <*
  @require @typekind(value) == STRUCT || @typekind(value) == BITSTRUCT : `This macro is only valid on macros`
 *>
-```
-```c3
 macro usz? struct_to_format(value, Formatter* f, bool $force_dump)
 ```
 ```c3
@@ -11773,8 +10737,6 @@ or to the end of the stream, whatever comes first.
  @param [inout] allocator : `the allocator to use.`
  @return `The string containing the data read.`
 *>
-```
-```c3
 macro String? readline(Allocator allocator, stream = io::stdin())
 ```
 
@@ -11787,8 +10749,6 @@ on the temporary allocator and does not need to be freed.
  @require @is_instream(stream) : `The stream must implement InStream.`
  @return `The temporary string containing the data read.`
 *>
-```
-```c3
 macro String? treadline(stream = io::stdin())
 ```
 
@@ -11803,8 +10763,6 @@ Reads a string, see `readline`, the data is passed to an outstream
  @require @is_outstream(out_stream) : `The out_stream must implement OutStream.`
  @return `The number of bytes written`
 *>
-```
-```c3
 macro usz? readline_to_stream(out_stream, in_stream = io::stdin())
 ```
 
@@ -11816,8 +10774,6 @@ Print a value to a stream.
  @require @is_outstream(out) : `The output must implement OutStream.`
  @return `the number of bytes printed.`
 *>
-```
-```c3
 macro usz? fprint(out, x)
 ```
 
@@ -11829,8 +10785,6 @@ See `printf` for details on formatting.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? fprintf(OutStream out, String format, args...) @format(1)
 ```
 
@@ -11842,8 +10796,6 @@ appending '\n' at the end. See `printf`.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? fprintfn(OutStream out, String format, args...) @format(1) @maydiscard
 ```
 
@@ -11851,8 +10803,6 @@ fn usz? fprintfn(OutStream out, String format, args...) @format(1) @maydiscard
 <*
  @require @is_outstream(out) : "The output must implement OutStream"
 *>
-```
-```c3
 macro usz? fprintn(out, x = "")
 ```
 
@@ -11866,8 +10816,6 @@ Print any value to stdout, appending an '\n’ after.
 <*
  @param x : "The value to print"
 *>
-```
-```c3
 macro void printn(x = "")
 ```
 
@@ -11881,8 +10829,6 @@ Print any value to stderr, appending an '\n’ after.
 <*
  @param x : "The value to print"
 *>
-```
-```c3
 macro void eprintn(x = "")
 ```
 
@@ -11900,8 +10846,6 @@ the Printable interface.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? printf(String format, args...) @format(0) @maydiscard
 ```
 
@@ -11912,8 +10856,6 @@ appending '\n' at the end. See `printf`.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? printfn(String format, args...) @format(0) @maydiscard
 ```
 
@@ -11924,8 +10866,6 @@ to stderr.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? eprintf(String format, args...) @maydiscard
 ```
 
@@ -11936,8 +10876,6 @@ to stderr appending '\n' at the end. See `printf`.
  @param [in] format : `The printf-style format string`
  @return `the number of characters printed`
 *>
-```
-```c3
 fn usz? eprintfn(String format, args...) @maydiscard
 ```
 
@@ -11949,8 +10887,6 @@ to a string buffer. See `printf`.
  @param [in] format : `The printf-style format string`
  @return `a slice formed from the "buffer" with the resulting length.`
 *>
-```
-```c3
 fn char[]? bprintf(char[] buffer, String format, args...) @maydiscard
 ```
 ```c3
@@ -11968,8 +10904,6 @@ macro bool @is_outstream(#expr)
  @param [&out] ref
  @require @is_instream(stream) : "Expected a stream"
 *>
-```
-```c3
 macro usz? read_any(stream, any ref)
 ```
 
@@ -11979,8 +10913,6 @@ macro usz? read_any(stream, any ref)
  @require @is_outstream(stream)
  @ensure return == ref.type.sizeof
 *>
-```
-```c3
 macro usz? write_any(stream, any ref)
 ```
 
@@ -11988,8 +10920,6 @@ macro usz? write_any(stream, any ref)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro usz? read_all(stream, char[] buffer)
 ```
 
@@ -11997,8 +10927,6 @@ macro usz? read_all(stream, char[] buffer)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro char[]? read_fully(Allocator allocator, stream)
 ```
 
@@ -12006,8 +10934,6 @@ macro char[]? read_fully(Allocator allocator, stream)
 <*
  @require @is_outstream(stream)
 *>
-```
-```c3
 macro usz? write_all(stream, char[] buffer)
 ```
 ```c3
@@ -12037,8 +10963,6 @@ fn usz? copy_to(InStream in, OutStream dst, char[] buffer = {})
  @require @is_instream(stream)
  @require @typekind(x_ptr) == POINTER && $typeof(x_ptr).inner.kindof.is_int()
 *>
-```
-```c3
 macro usz? read_varint(stream, x_ptr)
 ```
 
@@ -12047,8 +10971,6 @@ macro usz? read_varint(stream, x_ptr)
  @require @is_outstream(stream)
  @require @typekind(x).is_int()
 *>
-```
-```c3
 macro usz? write_varint(stream, x)
 ```
 
@@ -12056,8 +10978,6 @@ macro usz? write_varint(stream, x)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro ushort? read_be_ushort(stream)
 ```
 
@@ -12065,8 +10985,6 @@ macro ushort? read_be_ushort(stream)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro short? read_be_short(stream)
 ```
 
@@ -12074,8 +10992,6 @@ macro short? read_be_short(stream)
 <*
  @require @is_outstream(stream)
 *>
-```
-```c3
 macro void? write_be_short(stream, ushort s)
 ```
 
@@ -12083,8 +10999,6 @@ macro void? write_be_short(stream, ushort s)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro uint? read_be_uint(stream)
 ```
 
@@ -12092,8 +11006,6 @@ macro uint? read_be_uint(stream)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro int? read_be_int(stream)
 ```
 
@@ -12101,8 +11013,6 @@ macro int? read_be_int(stream)
 <*
  @require @is_outstream(stream)
 *>
-```
-```c3
 macro void? write_be_int(stream, uint s)
 ```
 
@@ -12110,8 +11020,6 @@ macro void? write_be_int(stream, uint s)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro ulong? read_be_ulong(stream)
 ```
 
@@ -12119,8 +11027,6 @@ macro ulong? read_be_ulong(stream)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro long? read_be_long(stream)
 ```
 
@@ -12128,8 +11034,6 @@ macro long? read_be_long(stream)
 <*
  @require @is_outstream(stream)
 *>
-```
-```c3
 macro void? write_be_long(stream, ulong s)
 ```
 
@@ -12137,8 +11041,6 @@ macro void? write_be_long(stream, ulong s)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro uint128? read_be_uint128(stream)
 ```
 
@@ -12146,8 +11048,6 @@ macro uint128? read_be_uint128(stream)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro int128? read_be_int128(stream)
 ```
 
@@ -12155,8 +11055,6 @@ macro int128? read_be_int128(stream)
 <*
  @require @is_outstream(stream)
 *>
-```
-```c3
 macro void? write_be_int128(stream, uint128 s)
 ```
 
@@ -12165,8 +11063,6 @@ macro void? write_be_int128(stream, uint128 s)
  @require @is_outstream(stream)
  @require data.len < 256 : "Data exceeded 255"
 *>
-```
-```c3
 macro usz? write_tiny_bytearray(stream, char[] data)
 ```
 
@@ -12174,8 +11070,6 @@ macro usz? write_tiny_bytearray(stream, char[] data)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro char[]? read_tiny_bytearray(stream, Allocator allocator)
 ```
 
@@ -12184,8 +11078,6 @@ macro char[]? read_tiny_bytearray(stream, Allocator allocator)
  @require @is_outstream(stream)
  @require data.len < 0x1000 : "Data exceeded 65535"
 *>
-```
-```c3
 macro usz? write_short_bytearray(stream, char[] data)
 ```
 
@@ -12193,8 +11085,6 @@ macro usz? write_short_bytearray(stream, char[] data)
 <*
  @require @is_instream(stream)
 *>
-```
-```c3
 macro char[]? read_short_bytearray(stream, Allocator allocator)
 ```
 
@@ -12213,8 +11103,6 @@ Buffer reads from a stream.
  @require bytes.len > 0
  @require self.bytes.len == 0 : "Init may not run on already initialized data"
 *>
-```
-```c3
 fn ReadBuffer* ReadBuffer.init(&self, InStream wrapped_stream, char[] bytes)
 ```
 ```c3
@@ -12240,8 +11128,6 @@ Buffer writes to a stream. Call `flush` when done writing to the buffer.
  @require bytes.len > 0 : "Non-empty buffer required"
  @require self.bytes.len == 0 : "Init may not run on already initialized data"
 *>
-```
-```c3
 fn WriteBuffer* WriteBuffer.init(&self, OutStream wrapped_stream, char[] bytes)
 ```
 ```c3
@@ -12269,8 +11155,6 @@ max_read defines how many bytes might be kept before its internal buffer is shri
 <*
  @require self.bytes.len == 0 : "Buffer already initialized."
 *>
-```
-```c3
 fn ByteBuffer* ByteBuffer.init(&self, Allocator allocator, usz max_read, usz initial_capacity = 16)
 ```
 ```c3
@@ -12282,8 +11166,6 @@ fn ByteBuffer* ByteBuffer.tinit(&self, usz max_read, usz initial_capacity = 16)
  @require buf.len > 0
  @require self.bytes.len == 0 : "Buffer already initialized."
 *>
-```
-```c3
 fn ByteBuffer* ByteBuffer.init_with_buffer(&self, char[] buf)
 ```
 ```c3
@@ -12356,8 +11238,6 @@ struct ByteWriter (OutStream)
  @require self.bytes.len == 0 : "Init may not run on already initialized data"
  @ensure (bool)allocator, self.index == 0
 *>
-```
-```c3
 fn ByteWriter* ByteWriter.init(&self, Allocator allocator)
 ```
 
@@ -12367,8 +11247,6 @@ fn ByteWriter* ByteWriter.init(&self, Allocator allocator)
  @require self.bytes.len == 0 : "Init may not run on already initialized data"
  @ensure self.index == 0
 *>
-```
-```c3
 fn ByteWriter* ByteWriter.tinit(&self)
 ```
 ```c3
@@ -12395,8 +11273,6 @@ fn void? ByteWriter.write_byte(&self, char c) @dynamic
  @param [&inout] self
  @param reader
 *>
-```
-```c3
 fn usz? ByteWriter.read_from(&self, InStream reader) @dynamic
 ```
 ```c3
@@ -12408,8 +11284,6 @@ struct LimitReader (InStream)
  @param [&inout] wrapped_stream : "The stream to read from"
  @param limit : "The max limit to read"
 *>
-```
-```c3
 fn LimitReader* LimitReader.init(&self, InStream wrapped_stream, usz limit)
 ```
 ```c3
@@ -12435,8 +11309,6 @@ struct MultiReader (InStream)
  @require self.readers.len == 0 : "Init may not run on already initialized data"
  @ensure self.index == 0
 *>
-```
-```c3
 fn MultiReader* MultiReader.init(&self, Allocator allocator, InStream... readers)
 ```
 
@@ -12446,8 +11318,6 @@ fn MultiReader* MultiReader.init(&self, Allocator allocator, InStream... readers
  @require self.readers.len == 0 : "Init may not run on already initialized data"
  @ensure self.index == 0
 *>
-```
-```c3
 fn MultiReader* MultiReader.tinit(&self, InStream... readers)
 ```
 ```c3
@@ -12470,8 +11340,6 @@ struct MultiWriter (OutStream)
  @require writers.len > 0
  @require self.writers.len == 0 : "Init may not run on already initialized data"
 *>
-```
-```c3
 fn MultiWriter* MultiWriter.init(&self, Allocator allocator, OutStream... writers)
 ```
 
@@ -12481,8 +11349,6 @@ fn MultiWriter* MultiWriter.init(&self, Allocator allocator, OutStream... writer
  @require writers.len > 0
  @require self.writers.len == 0 : "Init may not run on already initialized data"
 *>
-```
-```c3
 fn MultiWriter* MultiWriter.tinit(&self, OutStream... writers)
 ```
 ```c3
@@ -12506,8 +11372,6 @@ including its pattern.
  @param [&in] stream : "The stream to read data from."
  @require buffer.len > 0 : "Non-empty buffer required."
 *>
-```
-```c3
 fn void Scanner.init(&self, InStream stream, char[] buffer)
 ```
 
@@ -12525,8 +11389,6 @@ Scan the stream for the next split character and return data up to the match.
  @require pattern.len > 0 : "Non-empty pattern required."
  @require self.buf.len > pattern.len : "Pattern too large."
 *>
-```
-```c3
 fn char[]? Scanner.scan(&self, String pattern = "\n")
 ```
 ```c3
@@ -12546,8 +11408,6 @@ from the wrapped reader r to the writer w. There is no internal buffering.
  @param [&inout] r : "Stream r to read from."
  @param [&inout] w : "Stream w to write to what it reads from r."
 *>
-```
-```c3
 macro TeeReader tee_reader(InStream r, OutStream w)
 ```
 
@@ -12557,8 +11417,6 @@ macro TeeReader tee_reader(InStream r, OutStream w)
  @param [&inout] r : "Stream r to read from."
  @param [&inout] w : "Stream w to write to what it reads from r."
 *>
-```
-```c3
 fn TeeReader* TeeReader.init(&self, InStream r, OutStream w)
 ```
 ```c3
@@ -12579,8 +11437,6 @@ Get standard out.
 <*
  @return `stdout as a File`
 *>
-```
-```c3
 fn File* stdout()
 ```
 
@@ -12589,8 +11445,6 @@ Get standard err.
 <*
  @return `stderr as a File`
 *>
-```
-```c3
 fn File* stderr()
 ```
 
@@ -12599,8 +11453,6 @@ Get standard in.
 <*
  @return `stdin as a File`
 *>
-```
-```c3
 fn File* stdin()
 ```
 ### `std::io @if(!env::LIBC)`
@@ -12646,8 +11498,6 @@ fn void? delete(String filename)
 <*
  @require self.file != null
 *>
-```
-```c3
 fn void? File.reopen(&self, String filename, String mode)
 ```
 
@@ -12655,8 +11505,6 @@ fn void? File.reopen(&self, String filename, String mode)
 <*
  @require self.file != null
 *>
-```
-```c3
 fn usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET) @dynamic
 ```
 
@@ -12664,8 +11512,6 @@ fn usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET) @dynamic
 <*
  @require self.file != null
 *>
-```
-```c3
 fn void? File.write_byte(&self, char c) @dynamic
 ```
 
@@ -12673,8 +11519,6 @@ fn void? File.write_byte(&self, char c) @dynamic
 <*
  @param [&inout] self
 *>
-```
-```c3
 fn void? File.close(&self) @inline @dynamic
 ```
 
@@ -12682,8 +11526,6 @@ fn void? File.close(&self) @inline @dynamic
 <*
  @require self.file != null
 *>
-```
-```c3
 fn bool File.eof(&self) @inline
 ```
 
@@ -12691,8 +11533,6 @@ fn bool File.eof(&self) @inline
 <*
  @param [in] buffer
 *>
-```
-```c3
 fn usz? File.read(&self, char[] buffer) @dynamic
 ```
 
@@ -12701,8 +11541,6 @@ fn usz? File.read(&self, char[] buffer) @dynamic
  @param [out] buffer
  @require self.file != null : `File must be initialized`
 *>
-```
-```c3
 fn usz? File.write(&self, char[] buffer) @dynamic
 ```
 ```c3
@@ -12722,8 +11560,6 @@ than the buffer.
  @param filename : "The path to the file to read"
  @param [in] buffer : "The buffer to read to"
 *>
-```
-```c3
 fn char[]? load_buffer(String filename, char[] buffer)
 ```
 ```c3
@@ -12746,8 +11582,6 @@ fn void? save(String filename, char[] data)
 <*
  @require self.file != null : `File must be initialized`
 *>
-```
-```c3
 fn void? File.flush(&self) @dynamic
 ```
 ### `std::io::file @if(env::LIBC &&& env::POSIX)`
@@ -12761,8 +11595,6 @@ Maps a region of an already-opened file into memory
  @return? mem::OUT_OF_MEMORY, vm::ACCESS_DENIED, vm::RANGE_OVERFLOW, vm::INVALID_ARGS, vm::UNKNOWN_ERROR, io::NO_PERMISSION, io::FILE_NOT_VALID, io::WOULD_BLOCK, io::FILE_NOT_FOUND
  @return "Memory mapped region. Must be released with FileMmap.destroy(). Provided File will not be closed"
 *>
-```
-```c3
 fn mmap::FileMmap? mmap_file(File file, usz offset = 0, usz len = 0, vm::VirtualMemoryAccess access = READ, bool shared = false)
 ```
 
@@ -12776,8 +11608,6 @@ Maps a region of the given file into memory
  @return? mem::OUT_OF_MEMORY, vm::ACCESS_DENIED, vm::RANGE_OVERFLOW, vm::INVALID_ARGS, vm::UNKNOWN_ERROR, io::NO_PERMISSION, io::FILE_NOT_VALID, io::WOULD_BLOCK, io::FILE_NOT_FOUND
  @return "Memory mapped region. Must be released with FileMmap.destroy()"
 *>
-```
-```c3
 fn mmap::FileMmap? mmap_open(String filename, String mode, usz offset = 0, usz len = 0, vm::VirtualMemoryAccess access = READ, bool shared = false)
 ```
 ### `std::io::file::mmap @if(env::LIBC &&& env::POSIX)`
@@ -12790,8 +11620,6 @@ Provides a slice of bytes to the expected mapped range discarding the extra byte
 <*
  @return "Slice of the mapped range where the first byte matches the file's byte at the offset specified to File::file_mmap()"
 *>
-```
-```c3
 fn char[] FileMmap.bytes(&self)
 ```
 
@@ -12840,8 +11668,6 @@ macro bool? native_rmdir(Path path)
  @require mode.len > 0
  @require filename.len > 0
 *>
-```
-```c3
 fn void*? native_fopen(String filename, String mode) @inline
 ```
 ```c3
@@ -12853,8 +11679,6 @@ fn void? native_remove(String filename)
  @require mode.len > 0
  @require filename.len > 0
 *>
-```
-```c3
 fn void*? native_freopen(void* file, String filename, String mode) @inline
 ```
 ```c3
@@ -12915,8 +11739,6 @@ Delete a file.
 <*
  @require filename.len > 0
 *>
-```
-```c3
 fn void? native_remove(String filename) @inline
 ```
 
@@ -12925,8 +11747,6 @@ fn void? native_remove(String filename) @inline
  @require mode.len > 0
  @require filename.len > 0
 *>
-```
-```c3
 fn void*? native_freopen(void* file, String filename, String mode) @inline
 ```
 ```c3
@@ -12956,8 +11776,6 @@ fn PathList? native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Al
 <*
  @require dir.str_view().len > 0
 *>
-```
-```c3
 fn void? native_rmtree(Path dir)
 ```
 ### `std::io::os @if(env::WIN32)`
@@ -13018,8 +11836,6 @@ fn Path? tcwd()
 <*
  @require @is_pathlike(path) : "Expected a Path or String to chdir"
 *>
-```
-```c3
 macro void? chdir(path)
 ```
 ```c3
@@ -13055,8 +11871,6 @@ Create a directory on a given path, optionally recursive.
  @param recursive : `If directories in between should be created if they're missing, defaults to false`
  @param permissions : `The permissions to set on the directory`
 *>
-```
-```c3
 macro bool? mkdir(path, bool recursive = false, MkdirPermissions permissions = NORMAL)
 ```
 
@@ -13068,8 +11882,6 @@ Tries to delete directory, which must be empty.
  @return `true if there was a directory to delete, false otherwise`
  @return? INVALID_PATH : `if the path was invalid`
 *>
-```
-```c3
 macro bool? rmdir(path)
 ```
 
@@ -13083,8 +11895,6 @@ Creates a new path.
 <*
  @return? INVALID_PATH : `if the path was invalid`
 *>
-```
-```c3
 fn Path? new(Allocator allocator, String path, PathEnv path_env = DEFAULT_ENV)
 ```
 
@@ -13093,8 +11903,6 @@ Creates a new path using the temp allocator.
 <*
  @return? INVALID_PATH : `if the path was invalid`
 *>
-```
-```c3
 fn Path? temp(String path, PathEnv path_env = DEFAULT_ENV)
 ```
 ```c3
@@ -13118,8 +11926,6 @@ Append the string to the current path.
 <*
  @param [in] filename
 *>
-```
-```c3
 fn Path? Path.append(self, Allocator allocator, String filename)
 ```
 ```c3
@@ -13139,8 +11945,6 @@ fn Path? String.to_absolute_path(self, Allocator allocator)
 <*
  @require self.env == DEFAULT_ENV : "This method is only available on native paths"
 *>
-```
-```c3
 fn Path? Path.absolute(self, Allocator allocator)
 ```
 ```c3
@@ -13170,8 +11974,6 @@ this would be true matching the extension "c3"
  @require extension.len > 0 : `The extension cannot be empty`
  @return `true if the extension matches`
 *>
-```
-```c3
 fn bool Path.has_extension(self, String extension)
 ```
 ```c3
@@ -13194,8 +11996,6 @@ of the path itself.
  @return `The parent of the path as a non-allocated path`
  @return? NO_PARENT : `if this path does not have a parent`
 *>
-```
-```c3
 fn Path? Path.parent(self)
 ```
 ```c3
@@ -13217,8 +12017,6 @@ directory found. Return true to abort the walk.
 <*
  @require self.env == DEFAULT_ENV : "This method is only available on native paths"
 *>
-```
-```c3
 fn bool? Path.walk(self, PathWalker w, void* data)
 ```
 ```c3
@@ -13231,8 +12029,6 @@ directory found. Return true to abort the walk.
 <*
  @require path.env == DEFAULT_ENV : "This method is only available on native paths"
 *>
-```
-```c3
 fn bool? traverse(Path path, TraverseCallback callback, any data)
 ```
 ```c3
@@ -13246,8 +12042,6 @@ fn bool Path.has_suffix(self, String str)
 <*
  @require self.allocator != null : "This Path should never be freed"
 *>
-```
-```c3
 fn void Path.free(self)
 ```
 ```c3
@@ -13439,8 +12233,6 @@ faultdef OVERFLOW, MATRIX_INVERSE_DOESNT_EXIST
 <*
  @require types::is_numerical($typeof(x)) : `The input must be a numerical value or numerical vector`
 *>
-```
-```c3
 macro deg_to_rad(x)
 ```
 
@@ -13448,8 +12240,6 @@ macro deg_to_rad(x)
 <*
  @require types::is_numerical($typeof(x)) : `The input must be a numerical value or numerical vector`
 *>
-```
-```c3
 macro abs(x)
 ```
 
@@ -13458,8 +12248,6 @@ macro abs(x)
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
  @require values::@is_int(y) || values::@is_float(y) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro is_approx(x, y, eps)
 ```
 
@@ -13468,8 +12256,6 @@ macro is_approx(x, y, eps)
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
  @require values::@is_int(y) || values::@is_float(y) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro is_approx_rel(x, y, eps)
 ```
 
@@ -13477,8 +12263,6 @@ macro is_approx_rel(x, y, eps)
 <*
  @require values::@is_int(x) : `The input must be an integer`
 *>
-```
-```c3
 macro sign(x)
 ```
 
@@ -13487,8 +12271,6 @@ macro sign(x)
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
  @require values::@is_int(y) || values::@is_float(y) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro atan2(x, y)
 ```
 
@@ -13499,8 +12281,6 @@ macro atan2(x, y)
  @require values::@is_same_type(sinp, cosp) : "Expected sinp and cosp to have the same type"
  @require @assignable_to(x, $typeof(*sinp)) : "Expected x and sinp/cosp to have the same type"
 *>
-```
-```c3
 macro sincos_ref(x, sinp, cosp)
 ```
 
@@ -13510,8 +12290,6 @@ Return a vector with sin / cos of the given angle.
  @param x : `the angle in radians`
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro sincos(x)
 ```
 
@@ -13519,8 +12297,6 @@ macro sincos(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro atan(x)
 ```
 
@@ -13528,8 +12304,6 @@ macro atan(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro atanh(x)
 ```
 
@@ -13537,8 +12311,6 @@ macro atanh(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro acos(x)
 ```
 
@@ -13546,8 +12318,6 @@ macro acos(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro acosh(x)
 ```
 
@@ -13555,8 +12325,6 @@ macro acosh(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro asin(x)
 ```
 
@@ -13564,8 +12332,6 @@ macro asin(x)
 <*
  @require values::@is_int(x) || values::@is_float(x) : "Expected an integer or floating point value"
 *>
-```
-```c3
 macro asinh(x)
 ```
 
@@ -13573,8 +12339,6 @@ macro asinh(x)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro ceil(x)
 ```
 
@@ -13583,8 +12347,6 @@ Ceil for compile time evaluation.
 <*
  @require @typeis($input, double) || @typeis($input, float) : "Only float and double may be used"
 *>
-```
-```c3
 macro @ceil($input) @const
 ```
 
@@ -13599,8 +12361,6 @@ Constrain the value to lie within the given interval.
  @require values::@assign_to(lower, x) : `The lower bound must be convertable to the value type.`
  @require values::@assign_to(upper, x) : `The upper bound must be convertable to the value type.`
 *>
-```
-```c3
 macro clamp(x, lower, upper)
 ```
 
@@ -13609,8 +12369,6 @@ macro clamp(x, lower, upper)
  @require values::@is_promotable_to_floatlike(mag) : `The input must be a number value or float vector`
  @require $defined(($typeof(values::promote_int(mag)))mag) : `It's not possible to cast the sign to the type of the magnitude`
 *>
-```
-```c3
 macro copysign(mag, sgn)
 ```
 
@@ -13618,8 +12376,6 @@ macro copysign(mag, sgn)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cos(x)
 ```
 
@@ -13627,8 +12383,6 @@ macro cos(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cosec(x)
 ```
 
@@ -13636,8 +12390,6 @@ macro cosec(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cosech(x)
 ```
 
@@ -13645,8 +12397,6 @@ macro cosech(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cosh(x)
 ```
 
@@ -13654,8 +12404,6 @@ macro cosh(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cotan(x)
 ```
 
@@ -13663,8 +12411,6 @@ macro cotan(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro cotanh(x)
 ```
 
@@ -13672,8 +12418,6 @@ macro cotanh(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro exp(x)
 ```
 
@@ -13681,8 +12425,6 @@ macro exp(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro exp2(x)
 ```
 
@@ -13690,8 +12432,6 @@ macro exp2(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number value or float vector`
 *>
-```
-```c3
 macro floor(x)
 ```
 
@@ -13703,8 +12443,6 @@ macro floor(x)
  @require values::@is_same_vector_type(a, b) : `The input types must be equal`
  @require values::@is_same_vector_type(a, c) : `The input types must match`
 *>
-```
-```c3
 macro fma(a, b, c)
 ```
 
@@ -13714,8 +12452,6 @@ macro fma(a, b, c)
  @require values::@is_promotable_to_floatlike(y) : `The input must be a number or a float vector`
  @require values::@is_same_vector_type(x, y) : `The input types must match`
 *>
-```
-```c3
 macro hypot(x, y)
 ```
 
@@ -13723,8 +12459,6 @@ macro hypot(x, y)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro ln(x)
 ```
 
@@ -13733,8 +12467,6 @@ macro ln(x)
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
  @require values::@is_promotable_to_floatlike(base) : `The base must be a number or a float vector`
 *>
-```
-```c3
 macro log(x, base)
 ```
 
@@ -13742,8 +12474,6 @@ macro log(x, base)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro log2(x)
 ```
 
@@ -13753,8 +12483,6 @@ macro log2(x)
  @require $x >= 0 : `The input value must be a positive integer.`
  @return `A floored base-2 log of an input integer value.`
 *>
-```
-```c3
 macro @intlog2($x)
 ```
 
@@ -13762,8 +12490,6 @@ macro @intlog2($x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro log10(x)
 ```
 
@@ -13772,8 +12498,6 @@ macro log10(x)
  @require types::is_numerical($typeof(x)) : `The input must be a floating point value or float vector`
  @require types::is_same($typeof(x), $typeof(y)) : `The input types must be equal`
 *>
-```
-```c3
 macro max(x, y, ...)
 ```
 
@@ -13782,8 +12506,6 @@ macro max(x, y, ...)
  @require types::is_numerical($typeof(x)) : `The input must be a numerical value or numerical vector`
  @require types::is_same($typeof(x), $typeof(y)) : `The input types must be equal`
 *>
-```
-```c3
 macro min(x, y, ...)
 ```
 
@@ -13792,8 +12514,6 @@ macro min(x, y, ...)
  @require types::@is_float(a) : `The input must be a floating point value`
  @require types::@has_same(a, b, c) : `The input types must be equal`
 *>
-```
-```c3
 macro muladd(a, b, c)
 ```
 
@@ -13801,8 +12521,6 @@ macro muladd(a, b, c)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro nearbyint(x)
 ```
 
@@ -13811,8 +12529,6 @@ macro nearbyint(x)
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
  @require @assignable_to(exp, $typeof(values::promote_int(x))) || values::@is_int(exp) : `The input must be an integer, castable to the type of x`
 *>
-```
-```c3
 macro pow(x, exp)
 ```
 
@@ -13820,8 +12536,6 @@ macro pow(x, exp)
 <*
  @require values::@is_promotable_to_float(x) : `The input must be integer or floating type`
 *>
-```
-```c3
 macro frexp(x, int* e)
 ```
 
@@ -13829,8 +12543,6 @@ macro frexp(x, int* e)
 <*
  @require values::@is_promotable_to_float(x) : `The input must be integer or floating type`
 *>
-```
-```c3
 macro int signbit(x)
 ```
 
@@ -13838,8 +12550,6 @@ macro int signbit(x)
 <*
  @require values::@is_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro rint(x)
 ```
 
@@ -13847,8 +12557,6 @@ macro rint(x)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro round(x)
 ```
 
@@ -13856,8 +12564,6 @@ macro round(x)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro round_to_decimals(x, int decimal_places)
 ```
 
@@ -13865,8 +12571,6 @@ macro round_to_decimals(x, int decimal_places)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro roundeven(x)
 ```
 
@@ -13874,8 +12578,6 @@ macro roundeven(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sec(x)
 ```
 
@@ -13883,8 +12585,6 @@ macro sec(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sech(x)
 ```
 
@@ -13892,8 +12592,6 @@ macro sech(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sin(x)
 ```
 
@@ -13901,8 +12599,6 @@ macro sin(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sinh(x)
 ```
 
@@ -13910,8 +12606,6 @@ macro sinh(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sqr(x)
 ```
 
@@ -13919,8 +12613,6 @@ macro sqr(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro sqrt(x)
 ```
 
@@ -13928,8 +12620,6 @@ macro sqrt(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro tan(x)
 ```
 
@@ -13937,8 +12627,6 @@ macro tan(x)
 <*
  @require values::@is_promotable_to_float(x) : `The input must be a float`
 *>
-```
-```c3
 macro bool is_finite(x)
 ```
 
@@ -13946,8 +12634,6 @@ macro bool is_finite(x)
 <*
  @require values::@is_promotable_to_float(x) : `The input must be a float`
 *>
-```
-```c3
 macro is_nan(x)
 ```
 
@@ -13955,8 +12641,6 @@ macro is_nan(x)
 <*
  @require values::@is_promotable_to_float(x) : `The input must be a float`
 *>
-```
-```c3
 macro is_inf(x)
 ```
 
@@ -13964,8 +12648,6 @@ macro is_inf(x)
 <*
  @require values::@is_promotable_to_floatlike(x) : `The input must be a number or a float vector`
 *>
-```
-```c3
 macro tanh(x)
 ```
 
@@ -13973,8 +12655,6 @@ macro tanh(x)
 <*
  @require values::@is_floatlike(x) : `The input must be a floating point value or float vector`
 *>
-```
-```c3
 macro trunc(x)
 ```
 
@@ -13989,8 +12669,6 @@ Use a mask to select values from either "then" or "else" vectors.
  @require then_value.len == mask.len : "Mask and selected vectors must be of the same width."
  @return "a vector of the same type as then/else"
 *>
-```
-```c3
 macro select(bool[<*>] mask, then_value, else_value)
 ```
 ```c3
@@ -14907,8 +13585,6 @@ macro int128? int128.overflow_mul(int128 x, int128 y)
 <*
  @require values::@is_int(x) : `The input must be an integer`
 *>
-```
-```c3
 macro bool is_odd(x)
 ```
 
@@ -14916,8 +13592,6 @@ macro bool is_odd(x)
 <*
  @require values::@is_int(x) : `The input must be an integer`
 *>
-```
-```c3
 macro bool is_even(x)
 ```
 ```c3
@@ -14985,8 +13659,6 @@ macro bool int128.is_odd(int128 x)
 <*
  @require types::is_underlying_int($typeof(x)) : `is_power_of_2 may only be used on integer types`
 *>
-```
-```c3
 macro bool is_power_of_2(x)
 ```
 ```c3
@@ -15034,8 +13706,6 @@ fn float _frexpf(float x, int* e)
  @require values::@is_flat_intlike(a) &&& values::@is_flat_intlike(b) : "a and b must both be integer or integer vector based"
  @require $defined(*out) &&& values::@is_same_type(*out, a) : "out must be a pointer of the same type as a and b"
 *>
-```
-```c3
 macro bool overflow_add(a, b, out)
 ```
 
@@ -15047,8 +13717,6 @@ macro bool overflow_add(a, b, out)
  @require values::@is_flat_intlike(a) &&& values::@is_flat_intlike(b) : "a and b must both be integer or integer vector based"
  @require $defined(*out) &&& values::@is_same_type(*out, a) : "out must be a pointer of the same type as a and b"
 *>
-```
-```c3
 macro bool overflow_sub(a, b, out)
 ```
 
@@ -15060,8 +13728,6 @@ macro bool overflow_sub(a, b, out)
  @require values::@is_flat_intlike(a) &&& values::@is_flat_intlike(b) : "a and b must both be integer or integer vector based"
  @require $defined(*out) &&& values::@is_same_type(*out, a) : "out must be a pointer of the same type as a and b"
 *>
-```
-```c3
 macro bool overflow_mul(a, b, out)
 ```
 
@@ -15069,8 +13735,6 @@ macro bool overflow_mul(a, b, out)
 <*
  @require types::is_vector($Type) || ($Type.kindof == ARRAY &&& types::is_numerical($typefrom($Type.inner)))
 *>
-```
-```c3
 macro iota($Type)
 ```
 ```c3
@@ -15103,8 +13767,6 @@ macro ulong ulong.muldiv(self, ulong mul, ulong div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro char[<*>] char[<*>].muldiv(self, mul, div)
 ```
 
@@ -15113,8 +13775,6 @@ macro char[<*>] char[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro ichar[<*>] ichar[<*>].muldiv(self, mul, div)
 ```
 
@@ -15123,8 +13783,6 @@ macro ichar[<*>] ichar[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro short[<*>] short[<*>].muldiv(self, mul, div)
 ```
 
@@ -15133,8 +13791,6 @@ macro short[<*>] short[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro ushort[<*>] ushort[<*>].muldiv(self, mul, div)
 ```
 
@@ -15143,8 +13799,6 @@ macro ushort[<*>] ushort[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro int[<*>] int[<*>].muldiv(self, mul, div)
 ```
 
@@ -15153,8 +13807,6 @@ macro int[<*>] int[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro uint[<*>] uint[<*>].muldiv(self, mul, div)
 ```
 
@@ -15163,8 +13815,6 @@ macro uint[<*>] uint[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro long[<*>] long[<*>].muldiv(self, mul, div)
 ```
 
@@ -15173,8 +13823,6 @@ macro long[<*>] long[<*>].muldiv(self, mul, div)
  @require @is_same_vector_or_scalar(self, mul) : `mul must be a vector of the same type as self, or be an integer scalar`
  @require @is_same_vector_or_scalar(self, div) : `div must be a vector of the same type as self, or be an integer scalar`
 *>
-```
-```c3
 macro ulong[<*>] ulong[<*>].muldiv(self, mul, div)
 ```
 
@@ -15183,8 +13831,6 @@ Calculate the least common multiple for the provided arguments.
 <*
  @require $vacount >= 2 : "At least two arguments are required."
 *>
-```
-```c3
 macro lcm(...)
 ```
 
@@ -15193,8 +13839,6 @@ Calculate the greatest common divisor for the provided arguments.
 <*
  @require $vacount >= 2 : "At least two arguments are required."
 *>
-```
-```c3
 macro gcd(...)
 ```
 ```c3
@@ -15284,8 +13928,6 @@ fn BigInt* BigInt.init_with_u128(&self, uint128 value)
 <*
  @require values.len <= MAX_LEN
 *>
-```
-```c3
 fn BigInt* BigInt.init_with_array(&self, uint[] values)
 ```
 ```c3
@@ -15389,8 +14031,6 @@ fn String BigInt.to_string(&self, Allocator allocator) @dynamic
 <*
  @require radix > 1 && radix <= 36 : "Radix must be 2-36"
 *>
-```
-```c3
 fn String BigInt.to_string_with_radix(&self, int radix, Allocator allocator)
 ```
 
@@ -15398,8 +14038,6 @@ fn String BigInt.to_string_with_radix(&self, int radix, Allocator allocator)
 <*
  @require !exp.is_negative() : "Positive exponents only"
 *>
-```
-```c3
 fn BigInt BigInt.mod_pow(&self, BigInt exp, BigInt mod)
 ```
 
@@ -15444,8 +14082,6 @@ fn BigInt BigInt.lcm(&self, BigInt other)
 <*
  @require bits >> 5 < MAX_LEN : "Required bits > maxlength"
 *>
-```
-```c3
 fn void BigInt.randomize_bits(&self, Random random, int bits)
 ```
 ### `std::math::complex {Real}`
@@ -16206,8 +14842,6 @@ fn Quaternion Quaternion.mul(self, Quaternion b) @operator(*)
 <*
  @require is_random(random)
 *>
-```
-```c3
 macro void seed(random, seed)
 ```
 
@@ -16216,8 +14850,6 @@ Seed the random with some best effort entropy.
 <*
  @require is_random(random)
 *>
-```
-```c3
 macro void seed_entropy(random)
 ```
 
@@ -16227,8 +14859,6 @@ Get the next value between 0 and range (not including range).
  @require is_random(random)
  @require range > 0
 *>
-```
-```c3
 macro int next(random, uint range)
 ```
 
@@ -16238,8 +14868,6 @@ Get a random in the range [min, max], both included.
  @require is_random(random)
  @require max >= min
 *>
-```
-```c3
 macro int next_in_range(random, int min, int max)
 ```
 ```c3
@@ -16261,8 +14889,6 @@ Get a random in the range, both included.
 <*
  @require max >= min
 *>
-```
-```c3
 fn int rand_in_range(int min, int max) @builtin
 ```
 ```c3
@@ -16274,8 +14900,6 @@ Get 'true' or 'false'
 <*
  @require is_random(random)
 *>
-```
-```c3
 macro bool next_bool(random)
 ```
 
@@ -16284,8 +14908,6 @@ Get a float between 0 and 1.0, not including 1.0.
 <*
  @require is_random(random)
 *>
-```
-```c3
 macro float next_float(random)
 ```
 
@@ -16294,8 +14916,6 @@ Get a double between 0 and 1.0, not including 1.0.
 <*
  @require is_random(random)
 *>
-```
-```c3
 macro double next_double(random)
 ```
 ```c3
@@ -16330,8 +14950,6 @@ fn ulong Lcg128Random.next_long(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Lcg128Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16360,8 +14978,6 @@ fn uint Lcg64Random.next_int(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Lcg64Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16435,8 +15051,6 @@ fn void Mcg128Random.set_seed(&self, char[] seed) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Mcg128Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16465,8 +15079,6 @@ fn void Mcg64Random.set_seed(&self, char[] seed) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Mcg64Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16498,8 +15110,6 @@ fn ushort Mcg32Random.next_short(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Mcg32Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16552,8 +15162,6 @@ fn uint128 Msws128Random.next_int128(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Msws128Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16582,8 +15190,6 @@ fn ulong Msws64Random.next_long(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Msws64Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16612,8 +15218,6 @@ fn uint Msws32Random.next_int(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Msws32Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16642,8 +15246,6 @@ fn ushort Msws16Random.next_short(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Msws16Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16696,8 +15298,6 @@ fn ulong Pcg128Random.next_long(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Pcg128Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16726,8 +15326,6 @@ fn uint Pcg64Random.next_int(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Pcg64Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16756,8 +15354,6 @@ fn ushort Pcg32Random.next_short(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Pcg32Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16805,8 +15401,6 @@ macro make_seed($Type, char[] input)
  @param [in] input
  @param [inout] out_buffer
 *>
-```
-```c3
 fn void seeder(char[] input, char[] out_buffer)
 ```
 ```c3
@@ -16829,8 +15423,6 @@ fn uint128 Sfc128Random.next_int128(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Sfc128Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16859,8 +15451,6 @@ fn ulong Sfc64Random.next_long(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Sfc64Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16889,8 +15479,6 @@ fn uint Sfc32Random.next_int(&sfc) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Sfc32Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16919,8 +15507,6 @@ fn ushort Sfc16Random.next_short(&seed) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void Sfc16Random.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -16973,8 +15559,6 @@ fn uint SimpleRandom.next_int(&self) @dynamic
 <*
  @require bytes.len > 0
 *>
-```
-```c3
 fn void SimpleRandom.next_bytes(&self, char[] bytes) @dynamic
 ```
 ```c3
@@ -17271,8 +15855,6 @@ struct Poll
  @param [inout] polls
  @param timeout : "duration to poll (clamped to CInt.max ms), or POLL_FOREVER."
 *>
-```
-```c3
 fn ulong? poll(Poll[] polls, Duration timeout)
 ```
 
@@ -17281,8 +15863,6 @@ fn ulong? poll(Poll[] polls, Duration timeout)
  @param [inout] polls
  @param timeout_ms : "duration to poll in ms or -1. Clamped to CInt.max"
 *>
-```
-```c3
 fn ulong? poll_ms(Poll[] polls, long timeout_ms)
 ```
 ```c3
@@ -18722,8 +17302,6 @@ Parse a URL string into a Url struct.
  @require url_string.len > 0 : "the url_string must be len 1 or more"
  @return "the parsed Url"
 *>
-```
-```c3
 fn Url? tparse(String url_string)
 ```
 
@@ -18734,8 +17312,6 @@ Parse a URL string into a Url struct.
  @require url_string.len > 0 : "the url_string must be len 1 or more"
  @return "the parsed Url"
 *>
-```
-```c3
 fn Url? parse(Allocator allocator, String url_string)
 ```
 ```c3
@@ -18757,8 +17333,6 @@ Parse the query parameters of the Url into a UrlQueryValues map.
  @param [in] query
  @return "a UrlQueryValues HashMap"
 *>
-```
-```c3
 fn UrlQueryValues parse_query_to_temp(String query)
 ```
 
@@ -18769,8 +17343,6 @@ Parse the query parameters of the Url into a UrlQueryValues map.
  @param [inout] allocator
  @return "a UrlQueryValues HashMap"
 *>
-```
-```c3
 fn UrlQueryValues parse_query(Allocator allocator, String query)
 ```
 
@@ -18783,8 +17355,6 @@ copies are freed when the UrlQueryValues map is freed.
  @param value
  @return "a UrlQueryValues map"
 *>
-```
-```c3
 fn UrlQueryValues* UrlQueryValues.add(&self, String key, String value)
 ```
 ```c3
@@ -18799,8 +17369,6 @@ Free an Url struct.
 <*
  @param [in] self
 *>
-```
-```c3
 fn void Url.free(&self)
 ```
 ```c3
@@ -18824,8 +17392,6 @@ Returned string must be freed.
  @param [inout] allocator
  @return "Percent-encoded String"
 *>
-```
-```c3
 fn String encode(Allocator allocator, String s, UrlEncodingMode mode)
 ```
 
@@ -18836,8 +17402,6 @@ Encode string s for a given encoding mode, stored on the temp allocator.
  @param mode : "Url encoding mode"
  @return "Percent-encoded String"
 *>
-```
-```c3
 fn String tencode(String s, UrlEncodingMode mode)
 ```
 
@@ -18846,8 +17410,6 @@ Calculate the length of the percent-decoded string.
 <*
  @return? INVALID_HEX
 *>
-```
-```c3
 fn usz? decode_len(String s, UrlEncodingMode mode) @inline
 ```
 
@@ -18860,8 +17422,6 @@ Returned string must be freed.
  @param [inout] allocator
  @return "Percent-decoded String"
 *>
-```
-```c3
 fn String? decode(Allocator allocator, String s, UrlEncodingMode  mode)
 ```
 
@@ -18872,8 +17432,6 @@ Decode string s for a given encoding mode, stored on the temp allocator.
  @param mode : "Url encoding mode"
  @return "Percent-decoded String"
 *>
-```
-```c3
 fn String? tdecode(String s, UrlEncodingMode  mode)
 ```
 ### `std::os`
@@ -19099,8 +17657,6 @@ extern fn int nsApplicationMain(int argc, char **argv) @extern("NSApplicationMai
  @require name.len > 0
  @return? NOT_FOUND
 *>
-```
-```c3
 fn String? get_var(Allocator allocator, String name)
 ```
 ```c3
@@ -19113,8 +17669,6 @@ fn String? tget_var(String name)
  @param [in] value
  @require name.len > 0
 *>
-```
-```c3
 fn bool set_var(String name, String value, bool overwrite = true)
 ```
 
@@ -19133,8 +17687,6 @@ fn Path? get_config_dir(Allocator allocator)
  @param [in] name
  @require name.len > 0
 *>
-```
-```c3
 fn bool clear_var(String name)
 ```
 ```c3
@@ -19459,8 +18011,6 @@ bitstruct SubProcessOptions : int
 <*
  @require !environment || !options.inherit_environment
 *>
-```
-```c3
 fn SubProcess? create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::WIN32)
 ```
 ```c3
@@ -19474,8 +18024,6 @@ fn String? execute_stdout_to_buffer(char[] buffer, String[] command_line, SubPro
 <*
  @require !environment || !options.inherit_environment
 *>
-```
-```c3
 fn SubProcess? create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::POSIX)
 ```
 ```c3
@@ -20887,8 +19435,6 @@ in [0, array.len) where x would be inserted or cmp(i) is true and cmp(j) is true
  @require @is_valid_cmp_fn(cmp, list, context) : "Expected a comparison function which compares values"
  @require @is_valid_context(cmp, context) : "Expected a valid context"
 *>
-```
-```c3
 macro usz binarysearch(list, x, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @builtin
 ```
 
@@ -20898,8 +19444,6 @@ Sort list using the counting sort algorithm.
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
  @require @is_cmp_key_fn(key_fn, list) : "Expected a transformation function which returns an unsigned integer."
 *>
-```
-```c3
 macro countingsort(list, key_fn = EMPTY_MACRO_SLOT) @builtin
 ```
 ```c3
@@ -20915,8 +19459,6 @@ Sort list using the quick sort algorithm.
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
  @require @is_valid_cmp_fn(cmp, list, context) : "Expected a comparison function which compares values"
 *>
-```
-```c3
 macro insertionsort(list, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @builtin @safemacro
 ```
 
@@ -20927,8 +19469,6 @@ Sort list using the quick sort algorithm.
  @require @is_valid_cmp_fn(cmp, list, context) : "Expected a comparison function which compares values"
  @require @is_valid_context(cmp, context) : "Expected a valid context"
 *>
-```
-```c3
 macro quicksort(list, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @builtin
 ```
 
@@ -20941,8 +19481,6 @@ list will be partially sorted.
  @require @is_valid_cmp_fn(cmp, list, context) : "expected a comparison function which compares values"
  @require @is_valid_context(cmp, context) : "Expected a valid context"
 *>
-```
-```c3
 macro quickselect(list, isz k, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @builtin
 ```
 ```c3
@@ -20968,8 +19506,6 @@ Returns true if list is sorted in either ascending or descending order.
  @require @is_valid_cmp_fn(cmp, list, ctx) : "Expected a comparison function which compares values"
  @require @is_valid_context(cmp, ctx) : "Expected a valid context"
 *>
-```
-```c3
 macro bool is_sorted(list, cmp = EMPTY_MACRO_SLOT, ctx = EMPTY_MACRO_SLOT) @builtin
 ```
 ### `std::sort::cs{Type, KeyFn}`
@@ -21017,8 +19553,6 @@ fn void qsort(Type list, isz low, isz high, CmpFn cmp, Context context)
  @require low <= k : "kth smalles element is smaller than lower bounds"
  @require k <= high : "kth smalles element is larger than upper bounds"
 *>
-```
-```c3
 fn ElementType? qselect(Type list, isz low, isz high, isz k, CmpFn cmp, Context context)
 ```
 ```c3
@@ -21142,8 +19676,6 @@ macro void? ConditionVariable.wait(&cond, Mutex* mutex)
  @require @assignable_to(#ms_or_duration, Duration) || @assignable_to(#ms_or_duration, ulong)
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 macro void? ConditionVariable.wait_timeout(&cond, Mutex* mutex, #ms_or_duration) @safemacro
 ```
 
@@ -21151,8 +19683,6 @@ macro void? ConditionVariable.wait_timeout(&cond, Mutex* mutex, #ms_or_duration)
 <*
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 macro void? ConditionVariable.wait_until(&cond, Mutex* mutex, Time time)
 ```
 
@@ -21161,8 +19691,6 @@ Create and start a thread.
 <*
  @require thread_fn != null : "A non null thread function is required"
 *>
-```
-```c3
 macro void? Thread.create(&thread, ThreadFn thread_fn, void* arg)
 ```
 ```c3
@@ -21401,8 +19929,6 @@ alias NativeOnceFlag = Pthread_once_t
  @require !self.is_initialized() : "Mutex is already initialized"
  @ensure self.is_initialized()
 *>
-```
-```c3
 fn void? NativeMutex.init(&self, MutexType type)
 ```
 ```c3
@@ -21414,8 +19940,6 @@ fn bool NativeMutex.is_initialized(&self)
  @require self.is_initialized() : "Mutex was not initialized"
  @ensure !self.is_initialized()
 *>
-```
-```c3
 fn void? NativeMutex.destroy(&self)
 ```
 
@@ -21423,8 +19947,6 @@ fn void? NativeMutex.destroy(&self)
 <*
  @require self.is_initialized() : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeMutex.lock(&self)
 ```
 
@@ -21432,8 +19954,6 @@ fn void? NativeMutex.lock(&self)
 <*
  @require self.is_initialized() : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeMutex.lock_timeout(&self, ulong ms)
 ```
 
@@ -21441,8 +19961,6 @@ fn void? NativeMutex.lock_timeout(&self, ulong ms)
 <*
  @require self.is_initialized() : "Mutex was not initialized"
 *>
-```
-```c3
 fn bool NativeMutex.try_lock(&self)
 ```
 
@@ -21450,8 +19968,6 @@ fn bool NativeMutex.try_lock(&self)
 <*
  @require self.is_initialized() : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeMutex.unlock(&self)
 ```
 ```c3
@@ -21471,8 +19987,6 @@ fn void? NativeConditionVariable.broadcast(&cond)
 <*
  @require mtx.is_initialized()
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx)
 ```
 
@@ -21481,8 +19995,6 @@ fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx)
  @require mtx.is_initialized()
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms)
 ```
 
@@ -21491,8 +20003,6 @@ fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms)
  @require mtx.is_initialized()
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_timeout_duration(&cond, NativeMutex* mtx, Duration duration)
 ```
 
@@ -21501,8 +20011,6 @@ fn void? NativeConditionVariable.wait_timeout_duration(&cond, NativeMutex* mtx, 
  @require mtx.is_initialized()
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_until(&cond, NativeMutex* mtx, Time time)
 ```
 ```c3
@@ -21558,8 +20066,6 @@ struct NativeOnceFlag
  @require !type.timed
  @ensure mtx.initialized
 *>
-```
-```c3
 fn void? NativeMutex.init(&mtx, MutexType type)
 ```
 
@@ -21569,8 +20075,6 @@ fn void? NativeMutex.init(&mtx, MutexType type)
  @require mtx.owner_thread != win32::getCurrentThreadId() : "Mutex was not unlocked before destroying it"
  @ensure !mtx.initialized
 *>
-```
-```c3
 fn void? NativeMutex.destroy(&mtx)
 ```
 
@@ -21578,8 +20082,6 @@ fn void? NativeMutex.destroy(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeMutex.lock(&mtx)
 ```
 
@@ -21587,8 +20089,6 @@ fn void? NativeMutex.lock(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn bool NativeMutex.try_lock(&mtx)
 ```
 
@@ -21596,8 +20096,6 @@ fn bool NativeMutex.try_lock(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeMutex.unlock(&mtx)
 ```
 
@@ -21607,8 +20105,6 @@ fn void? NativeMutex.unlock(&mtx)
  @require !mtx.initialized : "Mutex is already initialized"
  @ensure mtx.initialized
 *>
-```
-```c3
 fn void? NativeTimedMutex.init(&mtx, MutexType type)
 ```
 
@@ -21618,8 +20114,6 @@ fn void? NativeTimedMutex.init(&mtx, MutexType type)
  @require mtx.owner_thread != win32::getCurrentThreadId() : "Mutex was not unlocked before destroying it"
  @ensure !mtx.initialized
 *>
-```
-```c3
 fn void? NativeTimedMutex.destroy(&mtx)
 ```
 
@@ -21627,8 +20121,6 @@ fn void? NativeTimedMutex.destroy(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeTimedMutex.lock(&mtx)
 ```
 
@@ -21636,8 +20128,6 @@ fn void? NativeTimedMutex.lock(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeTimedMutex.lock_timeout(&mtx, ulong ms)
 ```
 
@@ -21645,8 +20135,6 @@ fn void? NativeTimedMutex.lock_timeout(&mtx, ulong ms)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn bool NativeTimedMutex.try_lock(&mtx)
 ```
 
@@ -21654,8 +20142,6 @@ fn bool NativeTimedMutex.try_lock(&mtx)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeTimedMutex.unlock(&mtx)
 ```
 ```c3
@@ -21675,8 +20161,6 @@ fn void? NativeConditionVariable.broadcast(&cond)
 <*
  @require mtx.initialized : "Mutex was not initialized"
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx) @inline
 ```
 
@@ -21685,8 +20169,6 @@ fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx) @inline
  @require mtx.initialized : "Mutex was not initialized"
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms) @inline
 ```
 
@@ -21695,8 +20177,6 @@ fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms)
  @require mtx.initialized : "Mutex was not initialized"
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_timeout_duration(&cond, NativeMutex* mtx, Duration duration) @inline
 ```
 
@@ -21705,8 +20185,6 @@ fn void? NativeConditionVariable.wait_timeout_duration(&cond, NativeMutex* mtx, 
  @require mtx.initialized : "Mutex was not initialized"
  @return? thread::WAIT_TIMEOUT, thread::WAIT_FAILED
 *>
-```
-```c3
 fn void? NativeConditionVariable.wait_until(&cond, NativeMutex* mtx, Time time) @inline
 ```
 ```c3
@@ -21745,8 +20223,6 @@ struct ThreadPool
 <*
  @require !self.initialized : "ThreadPool must not be already initialized"
 *>
-```
-```c3
 fn void? ThreadPool.init(&self)
 ```
 
@@ -21781,8 +20257,6 @@ struct FixedThreadPool
  @require threads > 0 && threads < 0x1000 : `Threads should be greater than 0 and less than 0x1000`
  @require queue_size < 0x10000 : `Queue size must be less than 65536`
 *>
-```
-```c3
 fn void? FixedThreadPool.init(&self, usz threads, usz queue_size = 0)
 ```
 
@@ -21995,8 +20469,6 @@ fn DateTime now()
  @require sec >= 0 && sec < 60
  @require us >= 0 && us <= 999_999
 *>
-```
-```c3
 fn DateTime from_date(int year, Month month = JANUARY, int day = 1, int hour = 0, int min = 0, int sec = 0, int us = 0)
 ```
 
@@ -22009,8 +20481,6 @@ fn DateTime from_date(int year, Month month = JANUARY, int day = 1, int hour = 0
  @require us >= 0 && us <= 999_999
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
 *>
-```
-```c3
 fn TzDateTime from_date_tz(int year, Month month = JANUARY, int day = 1, int hour = 0, int min = 0, int sec = 0, int us = 0, int gmt_offset = 0)
 ```
 ```c3
@@ -22023,8 +20493,6 @@ values unchanged.
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
 *>
-```
-```c3
 fn TzDateTime DateTime.with_gmt_offset(self, int gmt_offset)
 ```
 
@@ -22034,8 +20502,6 @@ values unchanged.
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
 *>
-```
-```c3
 fn TzDateTime TzDateTime.with_gmt_offset(self, int gmt_offset)
 ```
 
@@ -22046,8 +20512,6 @@ timestamp unchanged.
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
  @ensure self.time == return.time
 *>
-```
-```c3
 fn TzDateTime DateTime.to_gmt_offset(self, int gmt_offset)
 ```
 
@@ -22058,8 +20522,6 @@ timestamp unchanged.
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
  @ensure self.time == return.time
 *>
-```
-```c3
 fn TzDateTime TzDateTime.to_gmt_offset(self, int gmt_offset)
 ```
 ```c3
@@ -22074,8 +20536,6 @@ fn bool TzDateTime.eq(self, TzDateTime other) @operator(==) @inline
  @require sec >= 0 && sec < 60
  @require us >= 0 && us <= 999_999
 *>
-```
-```c3
 fn void DateTime.set_date(&self, int year, Month month = JANUARY, int day = 1, int hour = 0, int min = 0, int sec = 0, int us = 0)
 ```
 ```c3
@@ -22144,8 +20604,6 @@ fn DateTime from_time(Time time)
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
  @ensure time == return.time
 *>
-```
-```c3
 fn TzDateTime from_time_tz(Time time, int gmt_offset)
 ```
 ```c3
