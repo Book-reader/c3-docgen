@@ -204,6 +204,15 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					// io::fprintf(out, "```c3\n%s\n```\n", bitstruc.trim())!;
 					i += bitstruc.len - 1;
 				}
+				else if (try idx = data[i..].index_of("const") && idx == 0)
+				{
+					String cons = data[i:data[i..].index_of(";") ?? 0];
+					if (!cons.contains("@private") && !cons.contains("@local")) curr_mod.push({cons.trim().copy(alloc), comment});
+					comment = {};
+					// io::fprintf(out, "```c3\n%s\n```\n", cons.trim())!;
+					i += cons.len - 1;
+				}
+
 /*				else
 				{
 					io::printf("%c", data[i]);
