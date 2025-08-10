@@ -65,10 +65,13 @@ typedef StringBut_better = int[];
 *>
 fn int main(String[] args)
 {
-	String file_data = (String)file::load(tmem, args[1])!!;
-
-	//List {String} extracted_decls = extract_decls(file_data);
-	print_decls(file_data, io::stdout())!!;
+	File out_file = file::open(args[1], "wb")!!;
+	defer (void)out_file.close();
+	foreach (str : args[2..])
+	{
+		String file_data = (String)file::load(tmem, str)!!;
+		print_decls(file_data, &out_file)!!;
+	}
 	return 0;
 }
 
@@ -153,7 +156,7 @@ fn String parse_function(usz* i, String data, String function_str)
 		if (*i < data.len && data[*i] == '@')
 		{
 			*i += 1;
-			while (*i < data.len && data[*i].is_alpha()) *i += 1;
+			while (*i < data.len && (data[*i].is_alpha() || data[*i] == '_')) *i += 1;
 			if (*i < data.len && data[*i] == '(') skip_block(i, data, '(', ')');
 			// io::printfn("a");
 		}
