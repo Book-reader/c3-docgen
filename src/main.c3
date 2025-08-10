@@ -74,7 +74,6 @@ fn int main(String[] args)
 
 fn void? print_decls(String data, OutStream out)
 {
-	// io::fprintf(output, data)!;
 	for (usz i = 0; i < data.len; i++) @pool()
 	{
 		switch
@@ -108,32 +107,12 @@ fn void? print_decls(String data, OutStream out)
 				}
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
-					usz start_idx = i;
-					while (i < data.len && data[i] != '(') i++;
-					skip_block(&i, data, '(', ')');
-					while (i < data.len)
-					{
-						// io::printfn("a: %s", data[i:30]);
-						if (i < data.len && data[i] == '@')
-						{
-							i++;
-							while (i < data.len && data[i].is_alpha()) i++;
-							if (i < data.len && data[i] == '(') skip_block(&i, data, '(', ')');
-							// io::printfn("a");
-						}
-						else if (i < data.len && data[i].is_space())
-						{
-							i++;
-						}
-						else
-						{
-							break;
-						}
-					}
-					i--;
-					String func = data[start_idx..i];//.index_of()
-					// io::printfn("got this func:\n%s", func);
-					// abort();
+					String func = parse_function(&i, data, "fn");
+					io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
+				}
+				else if (try idx = data[i..].index_of("macro") && idx == 0)
+				{
+					String func = parse_function(&i, data, "macro");
 					io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("typedef") && idx == 0)
@@ -142,8 +121,59 @@ fn void? print_decls(String data, OutStream out)
 					io::fprintf(out, "```c3\n%s\n```\n", type.trim())!;
 					i += type.len - 1;
 				}
+				else if (try idx = data[i..].index_of("alias") && idx == 0)
+				{
+					String al = data[i:data[i..].index_of(";") ?? 0];
+					io::fprintf(out, "```c3\n%s\n```\n", al.trim())!;
+					i += al.len - 1;
+				}
+				else if (try idx = data[i..].index_of("enum") && idx == 0)
+				{
+					String en = data[i:data[i..].index_of("{") ?? 0];
+					io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
+					i += en.len - 1;
+				}
 		}
 	};
+}
+fn String parse_function(usz* i, String data, String function_str)
+{
+	usz start_idx = *i;
+	while (*i < data.len && data[*i] != '(') *i += 1;
+	skip_block(i, data, '(', ')');
+	while (*i < data.len)
+	{
+		// io::printfn("a: %s", data[*i:30]);
+		if (*i < data.len && data[*i] == '@')
+		{
+			*i += 1;
+			while (*i < data.len && data[*i].is_alpha()) *i += 1;
+			if (*i < data.len && data[*i] == '(') skip_block(i, data, '(', ')');
+			// io::printfn("a");
+		}
+		else if (*i < data.len && data[*i].is_space())
+		{
+			*i += 1;
+		}
+		else
+		{
+			break;
+		}
+	}
+	*i -= 1;
+	defer
+	{
+		if (try idx = data[*i..].trim().index_of("=>") && idx == 0)
+		{
+			skip_line_comment(i, data); // this is not what skip_line_comment is meant to be used for
+		}
+		else
+		{
+			while (*i < data.len && data[*i] != '{') *i += 1;
+			skip_block(i, data, '{', '}');
+		}
+	}
+	return data[start_idx..*i];
 }
 
 fn void skip_line_comment(usz* i, String data)
