@@ -1,4 +1,4 @@
-### `module libc`
+### `libc`
 ```c3
 alias WChar @if(env::WIN32) = Char16
 ```
@@ -86,7 +86,7 @@ fn TimeSpec Duration.to_timespec(self) @inline
 ```c3
 fn TimeSpec Time.to_timespec(self) @inline
 ```
-### `module libc @if(!env::LIBC)`
+### `libc @if(!env::LIBC)`
 ```c3
 fn void longjmp(JmpBuf* buffer, CInt value) @weak @extern("longjmp") @nostrip
 ```
@@ -156,7 +156,7 @@ fn int putchar(int c) @weak @extern("putchar") @nostrip
 ```c3
 fn int puts(ZString str) @weak @extern("puts") @nostrip
 ```
-### `module libc @if(env::ANDROID)`
+### `libc @if(env::ANDROID)`
 ```c3
 alias Blksize_t = $typefrom(env::X86_64 ? long.typeid : CInt.typeid)
 ```
@@ -190,7 +190,7 @@ struct Stat @if(!env::X86_64)
 ```c3
 fn CInt stat(ZString path, Stat* stat)
 ```
-### `module libc @if(env::DARWIN || env::FREEBSD)`
+### `libc @if(env::DARWIN || env::FREEBSD)`
 ```c3
 fn usz malloc_size(void* ptr) @if(!env::FREEBSD)
 ```
@@ -200,7 +200,7 @@ macro CFile stdout()
 ```c3
 macro CFile stderr()
 ```
-### `module libc @if(env::DARWIN)`
+### `libc @if(env::DARWIN)`
 ```c3
 alias Dev_t = int
 ```
@@ -225,7 +225,7 @@ struct Stat
 ```c3
 fn int stat(ZString str, Stat* stat) @extern("stat64")
 ```
-### `module libc @if(env::FREEBSD)`
+### `libc @if(env::FREEBSD)`
 ```c3
 alias Blksize_t = int
 ```
@@ -256,7 +256,7 @@ struct Stat @if(!env::X86_64)
 ```c3
 fn CInt stat(ZString path, Stat* stat)
 ```
-### `module libc @if(env::LIBC)`
+### `libc @if(env::LIBC)`
 ```c3
 fn void abort()
 ```
@@ -266,7 +266,7 @@ macro CFile stdout()
 ```c3
 macro CFile stderr()
 ```
-### `module libc @if(env::LINUX)`
+### `libc @if(env::LINUX)`
 ```c3
 alias Blksize_t = $typefrom(env::X86_64 ? long.typeid : CInt.typeid)
 ```
@@ -300,7 +300,7 @@ struct Stat @if(!env::X86_64)
 ```c3
 fn CInt stat(ZString path, Stat* stat)
 ```
-### `module libc @if(env::OPENBSD)`
+### `libc @if(env::OPENBSD)`
 ```c3
 alias Blksize_t = int
 ```
@@ -331,7 +331,7 @@ struct Stat @if(!env::X86_64)
 ```c3
 fn CInt stat(ZString path, Stat* stat)
 ```
-### `module libc @if(env::POSIX)`
+### `libc @if(env::POSIX)`
 ```c3
 fn CInt shutdown(Fd sockfd, CInt how)
 ```
@@ -341,7 +341,7 @@ struct Stack_t
 ```c3
 fn CInt sigaltstack(Stack_t* ss, Stack_t* old_ss)
 ```
-### `module libc @if(env::WIN32)`
+### `libc @if(env::WIN32)`
 ```c3
 alias fdopen = _fdopen
 ```
@@ -375,11 +375,11 @@ fn CFile __acrt_iob_func(CInt c)
 ```c3
 fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
 ```
-### `module libc::errno`
-### `module libc::errno @if(!env::WIN32 && !env::DARWIN)`
-### `module libc::errno @if(env::DARWIN)`
-### `module libc::errno @if(env::WIN32)`
-### `module libc::os @if(env::LIBC)`
+### `libc::errno`
+### `libc::errno @if(!env::WIN32 && !env::DARWIN)`
+### `libc::errno @if(env::DARWIN)`
+### `libc::errno @if(env::WIN32)`
+### `libc::os @if(env::LIBC)`
 ```c3
 fn int* __errno_location() @if(env::LINUX)
 ```
@@ -389,7 +389,7 @@ macro void errno_set(int err) @if(env::WIN32)
 ```c3
 fn void _get_errno(int* result) @if(env::WIN32)
 ```
-### `module libc::termios @if(!env::LIBC ||| !env::POSIX)`
+### `libc::termios @if(!env::LIBC ||| !env::POSIX)`
 ```c3
 typedef Cc = char
 ```
@@ -462,7 +462,7 @@ fn int Termios.getAttr(Termios* self, Fd fd)
 ```c3
 fn int Termios.setAttr(Termios* self, Fd fd, int optional_actions)
 ```
-### `module libc::termios @if(env::LIBC &&& env::POSIX)`
+### `libc::termios @if(env::LIBC &&& env::POSIX)`
 ```c3
 fn int sendBreak(Fd fd, int duration)
 ```
@@ -493,7 +493,7 @@ fn int Termios.getAttr(Termios* self, Fd fd)
 ```c3
 fn int Termios.setAttr(Termios* self, Fd fd, Tcactions optional_actions)
 ```
-### `module std::ascii`
+### `std::ascii`
 ```c3
 macro bool in_range_m(c, start, len)
 ```
@@ -602,7 +602,7 @@ fn uint uint.to_lower(uint c)  @deprecated
 ```c3
 fn uint uint.to_upper(uint c)  @deprecated
 ```
-### `module std::atomic`
+### `std::atomic`
 ```c3
 macro bool is_native_atomic_type($Type)
 ```
@@ -654,7 +654,7 @@ macro @__atomic_compare_exchange_ordering_success(ptr, expected, desired, succes
 ```c3
 fn CInt __atomic_compare_exchange(CInt size, any ptr, any expected, any desired, CInt success, CInt failure) @weak @export("__atomic_compare_exchange")
 ```
-### `module std::atomic::types{Type}`
+### `std::atomic::types{Type}`
 ```c3
 struct Atomic
 ```
@@ -703,7 +703,7 @@ macro Type Atomic.set(&self, AtomicOrdering ordering = SEQ_CONSISTENT) @if(types
 ```c3
 macro Type Atomic.clear(&self, AtomicOrdering ordering = SEQ_CONSISTENT) @if(types::flat_kind(Type) == BOOL)
 ```
-### `module std::bits`
+### `std::bits`
 ```c3
 macro reverse(i)
 ```
@@ -1130,7 +1130,7 @@ macro int128 int128.rotl(self, int128 shift)
 ```c3
 macro int128 int128.rotr(self, int128 shift)
 ```
-### `module std::collections::anylist`
+### `std::collections::anylist`
 ```c3
 alias AnyPredicate = fn bool(any value)
 ```
@@ -1257,7 +1257,7 @@ fn void AnyList.reserve(&self, usz min_capacity)
 ```c3
 macro void AnyList.set(&self, usz index, value)
 ```
-### `module std::collections::bitset {SIZE}`
+### `std::collections::bitset {SIZE}`
 ```c3
 struct BitSet
 ```
@@ -1297,7 +1297,7 @@ fn usz BitSet.len(&self) @operator(len) @inline
 ```c3
 fn void BitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 ```
-### `module std::collections::elastic_array {Type, MAX_SIZE}`
+### `std::collections::elastic_array {Type, MAX_SIZE}`
 ```c3
 alias ElementPredicate = fn bool(Type *type)
 ```
@@ -1454,7 +1454,7 @@ fn usz ElasticArray.compact_count(&self) @if(ELEMENT_IS_POINTER)
 ```c3
 fn usz ElasticArray.compact(&self) @if(ELEMENT_IS_POINTER)
 ```
-### `module std::collections::enummap{Enum, ValueType}`
+### `std::collections::enummap{Enum, ValueType}`
 ```c3
 struct EnumMap (Printable)
 ```
@@ -1476,7 +1476,7 @@ fn ValueType* EnumMap.get_ref(&self, Enum key) @operator(&[]) @inline
 ```c3
 fn void EnumMap.set(&self, Enum key, ValueType value) @operator([]=) @inline
 ```
-### `module std::collections::enumset{Enum}`
+### `std::collections::enumset{Enum}`
 ```c3
 typedef EnumSet (Printable) = EnumSetType
 ```
@@ -1516,7 +1516,7 @@ fn EnumSet EnumSet.xor_of(&self, EnumSet s)
 ```c3
 fn usz? EnumSet.to_format(&set, Formatter* formatter) @dynamic
 ```
-### `module std::collections::growablebitset{Type}`
+### `std::collections::growablebitset{Type}`
 ```c3
 alias GrowableBitSetList = List{Type}
 ```
@@ -1550,7 +1550,7 @@ fn usz GrowableBitSet.len(&self) @operator(len)
 ```c3
 fn void GrowableBitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 ```
-### `module std::collections::linkedlist{Type}`
+### `std::collections::linkedlist{Type}`
 ```c3
 struct LinkedList
 ```
@@ -1629,7 +1629,7 @@ fn bool LinkedList.remove_first_match(&self, Type t) @if(ELEMENT_IS_EQUATABLE)
 ```c3
 fn bool LinkedList.remove_last_match(&self, Type t)  @if(ELEMENT_IS_EQUATABLE)
 ```
-### `module std::collections::list_common`
+### `std::collections::list_common`
 ```c3
 macro list_to_aligned_array($Type, self, Allocator allocator)
 ```
@@ -1651,7 +1651,7 @@ macro usz list_remove_item(self, value)
 ```c3
 macro usz list_remove_if(self, filter, bool $invert)
 ```
-### `module std::collections::list{Type}`
+### `std::collections::list{Type}`
 ```c3
 alias ElementPredicate = fn bool(Type *type)
 ```
@@ -1817,7 +1817,7 @@ fn usz List.compact_count(&self) @if(ELEMENT_IS_POINTER)
 ```c3
 fn usz List.compact(&self) @if(ELEMENT_IS_POINTER)
 ```
-### `module std::collections::map{Key, Value}`
+### `std::collections::map{Key, Value}`
 ```c3
 struct Entry
 ```
@@ -2076,7 +2076,7 @@ fn usz LinkedHashMapKeyIterator.len(self) @operator(len)
 ```c3
 fn usz LinkedHashMapIterator.len(self) @operator(len)
 ```
-### `module std::collections::maybe{Type}`
+### `std::collections::maybe{Type}`
 ```c3
 struct Maybe (Printable)
 ```
@@ -2098,7 +2098,7 @@ macro Type? Maybe.get(self)
 ```c3
 fn bool Maybe.equals(self, Maybe other) @operator(==) @if(types::is_equatable_type(Type))
 ```
-### `module std::collections::object`
+### `std::collections::object`
 ```c3
 struct Object (Printable)
 ```
@@ -2276,14 +2276,14 @@ fn double? Object.get_float_at(&self, usz index)
 ```c3
 fn Object* Object.get_or_create_obj(&self, String key)
 ```
-### `module std::collections::pair{Type1, Type2}`
+### `std::collections::pair{Type1, Type2}`
 ```c3
 struct Pair
 ```
 ```c3
 macro void Pair.unpack(&self, a, b)
 ```
-### `module std::collections::priorityqueue::private{Type, MAX}`
+### `std::collections::priorityqueue::private{Type, MAX}`
 ```c3
 struct PrivatePriorityQueue (Printable)
 ```
@@ -2320,14 +2320,14 @@ fn Type PrivatePriorityQueue.get(&self, usz index) @operator([])
 ```c3
 fn usz? PrivatePriorityQueue.to_format(&self, Formatter* formatter) @dynamic
 ```
-### `module std::collections::priorityqueue{Type}`
+### `std::collections::priorityqueue{Type}`
 ```c3
 typedef PriorityQueue = inline PrivatePriorityQueue{Type, false}
 ```
 ```c3
 typedef PriorityQueueMax = inline PrivatePriorityQueue{Type, true}
 ```
-### `module std::collections::range{Type}`
+### `std::collections::range{Type}`
 ```c3
 struct Range (Printable)
 ```
@@ -2358,7 +2358,7 @@ fn usz? ExclusiveRange.to_format(&self, Formatter* formatter) @dynamic
 ```c3
 fn Type ExclusiveRange.get(&self, usz index) @operator([])
 ```
-### `module std::collections::ringbuffer{Type}`
+### `std::collections::ringbuffer{Type}`
 ```c3
 alias Element = $typeof((Type){}[0])
 ```
@@ -2386,7 +2386,7 @@ fn usz RingBuffer.read(&self, usz index, Element[] buffer)
 ```c3
 fn void RingBuffer.write(&self, Element[] buffer)
 ```
-### `module std::collections::set {Value}`
+### `std::collections::set {Value}`
 ```c3
 struct Entry
 ```
@@ -2621,18 +2621,18 @@ fn bool LinkedHashSetIterator.has_next(&self)
 ```c3
 fn usz LinkedHashSetIterator.len(&self) @operator(len)
 ```
-### `module std::collections::triple{Type1, Type2, Type3}`
+### `std::collections::triple{Type1, Type2, Type3}`
 ```c3
 struct Triple
 ```
 ```c3
 macro void Triple.unpack(&self, a, b, c)
 ```
-### `module std::collections::tuple{Type1, Type2}`
+### `std::collections::tuple{Type1, Type2}`
 ```c3
 struct Tuple @deprecated("Use 'Pair' instead")
 ```
-### `module std::compression::qoi`
+### `std::compression::qoi`
 ```c3
 enum QOIColorspace : char (char id)
 ```
@@ -2651,14 +2651,14 @@ fn char[]? encode(Allocator allocator, char[] input, QOIDesc* desc) @nodiscard
 ```c3
 fn char[]? decode(Allocator allocator, char[] data, QOIDesc* desc, QOIChannels channels = AUTO) @nodiscard
 ```
-### `module std::compression::qoi @if(!$feature(QOI_NO_STDIO))`
+### `std::compression::qoi @if(!$feature(QOI_NO_STDIO))`
 ```c3
 fn usz? write(String filename, char[] input, QOIDesc* desc)
 ```
 ```c3
 fn char[]? read(Allocator allocator, String filename, QOIDesc* desc, QOIChannels channels = AUTO)
 ```
-### `module std::core::array`
+### `std::core::array`
 ```c3
 macro bool contains(array, element)
 ```
@@ -2677,7 +2677,7 @@ macro concat(Allocator allocator, arr1, arr2) @nodiscard
 ```c3
 macro tconcat(arr1, arr2) @nodiscard
 ```
-### `module std::core::array::slice {Type}`
+### `std::core::array::slice {Type}`
 ```c3
 struct Slice2d
 ```
@@ -2717,7 +2717,7 @@ macro void Slice2d.set_xy(self, x, y, Type value)
 ```c3
 fn Slice2d Slice2d.slice(&self, isz x = 0, isz xlen = 0, isz y = 0, isz ylen = 0)
 ```
-### `module std::core::ascii`
+### `std::core::ascii`
 ```c3
 macro bool @is_lower(c)
 ```
@@ -2865,7 +2865,7 @@ macro char char.to_upper(char c)
 ```c3
 macro char char.from_hex(char c)
 ```
-### `module std::core::bitorder`
+### `std::core::bitorder`
 ```c3
 bitstruct ShortBE : short @bigendian
 ```
@@ -2935,7 +2935,7 @@ macro bool is_arrayptr_or_slice_of_char(bytes) @deprecated("Use @is_arrayptr_or_
 ```c3
 macro bool @is_arrayptr_or_slice_of_char(#bytes) @const
 ```
-### `module std::core::builtin`
+### `std::core::builtin`
 ```c3
 typedef EmptySlot = void*
 ```
@@ -3224,7 +3224,7 @@ macro min(x, ...) @builtin
 ```c3
 macro max(x, ...) @builtin
 ```
-### `module std::core::builtin @if((env::LINUX || env::ANDROID || env::DARWIN) && env::COMPILER_SAFE_MODE && env::DEBUG_SYMBOLS)`
+### `std::core::builtin @if((env::LINUX || env::ANDROID || env::DARWIN) && env::COMPILER_SAFE_MODE && env::DEBUG_SYMBOLS)`
 ```c3
 fn void sig_panic(String message)
 ```
@@ -3234,7 +3234,7 @@ fn void sig_bus_error(CInt i)
 ```c3
 fn void sig_segmentation_fault(CInt i)
 ```
-### `module std::core::cinterop`
+### `std::core::cinterop`
 ```c3
 alias CShort = $typefrom(signed_int_from_bitsize($$C_SHORT_SIZE))
 ```
@@ -3271,7 +3271,7 @@ alias CChar = $typefrom($$C_CHAR_IS_SIGNED ? ichar.typeid : char.typeid)
 ```c3
 enum CBool : char
 ```
-### `module std::core::cpudetect @if(env::X86 || env::X86_64)`
+### `std::core::cpudetect @if(env::X86 || env::X86_64)`
 ```c3
 struct CpuId
 ```
@@ -3287,7 +3287,7 @@ fn void add_feature_if_bit(X86Feature feature, uint register, int bit)
 ```c3
 fn void x86_initialize_cpu_features()
 ```
-### `module std::core::dstring`
+### `std::core::dstring`
 ```c3
 typedef DString (OutStream) = DStringOpaque*
 ```
@@ -3447,7 +3447,7 @@ fn void DString.reserve(&self, usz addition)
 ```c3
 fn usz? DString.read_from_stream(&self, InStream reader)
 ```
-### `module std::core::env`
+### `std::core::env`
 ```c3
 enum CompilerOptLevel
 ```
@@ -3466,7 +3466,7 @@ macro bool os_is_darwin() @const
 ```c3
 macro bool os_is_posix() @const
 ```
-### `module std::core::main_stub`
+### `std::core::main_stub`
 ```c3
 macro int @main_to_err_main(#m, int, char**)
 ```
@@ -3488,7 +3488,7 @@ macro int @_main_runner(#m, int argc, char** argv)
 ```c3
 macro int @main_to_void_main_args(#m, int argc, char** argv)
 ```
-### `module std::core::main_stub @if(env::WIN32)`
+### `std::core::main_stub @if(env::WIN32)`
 ```c3
 fn Char16** _win_command_line_to_argv_w(ushort* cmd_line, int* argc_ptr) @extern("CommandLineToArgvW")
 ```
@@ -3531,7 +3531,7 @@ macro int @_wmain_runner(#m, int argc, Char16** argv)
 ```c3
 macro int @wmain_to_void_main_args(#m, int argc, Char16** argv)
 ```
-### `module std::core::mem`
+### `std::core::mem`
 ```c3
 faultdef OUT_OF_MEMORY, INVALID_ALLOC_SIZE
 ```
@@ -3757,8 +3757,8 @@ fn void* trealloc(void* ptr, usz size, usz alignment = mem::DEFAULT_MEM_ALIGNMEN
 ```c3
 macro @unaligned_addr(#arg) @builtin
 ```
-### `module std::core::mem @if(WASM_NOLIBC)`
-### `module std::core::mem @if(env::NO_LIBC)`
+### `std::core::mem @if(WASM_NOLIBC)`
+### `std::core::mem @if(env::NO_LIBC)`
 ```c3
 fn CInt __memcmp(void* s1, void* s2, usz n) @weak @export("memcmp")
 ```
@@ -3768,7 +3768,7 @@ fn void* __memset(void* str, CInt c, usz n) @weak @export("memset")
 ```c3
 fn void* __memcpy(void* dst, void* src, usz n) @weak @export("memcpy")
 ```
-### `module std::core::mem::alignment { Type, ALIGNMENT }`
+### `std::core::mem::alignment { Type, ALIGNMENT }`
 ```c3
 typedef UnalignedRef = Type*
 ```
@@ -3778,7 +3778,7 @@ macro Type UnalignedRef.get(self)
 ```c3
 macro Type UnalignedRef.set(&self, Type val)
 ```
-### `module std::core::mem::allocator`
+### `std::core::mem::allocator`
 ```c3
 struct ArenaAllocator (Allocator)
 ```
@@ -4100,7 +4100,7 @@ struct WasmMemory
 ```c3
 fn char[]? WasmMemory.allocate_block(&self, usz bytes)
 ```
-### `module std::core::mem::allocator @if(!(env::POSIX || env::WIN32) || !$feature(VMEM_TEMP))`
+### `std::core::mem::allocator @if(!(env::POSIX || env::WIN32) || !$feature(VMEM_TEMP))`
 ```c3
 struct TempAllocator (Allocator)
 ```
@@ -4134,7 +4134,7 @@ fn void*? TempAllocator.resize(&self, void* pointer, usz size, usz alignment) @d
 ```c3
 fn void*? TempAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
-### `module std::core::mem::allocator @if(!env::WIN32 && !env::POSIX && env::LIBC)`
+### `std::core::mem::allocator @if(!env::WIN32 && !env::POSIX && env::LIBC)`
 ```c3
 fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
@@ -4144,7 +4144,7 @@ fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignmen
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
-### `module std::core::mem::allocator @if((env::POSIX || env::WIN32) && $feature(VMEM_TEMP))`
+### `std::core::mem::allocator @if((env::POSIX || env::WIN32) && $feature(VMEM_TEMP))`
 ```c3
 fn TempAllocator*? new_temp_allocator(Allocator allocator, usz size, usz reserve = temp_allocator_reserve_size, usz min_size = temp_allocator_min_size, usz realloc_size = temp_allocator_realloc_size)
 ```
@@ -4169,11 +4169,11 @@ fn void*? TempAllocator.resize(&self, void* pointer, usz size, usz alignment) @d
 ```c3
 fn void TempAllocator.release(&self, void* old_pointer, bool b) @dynamic
 ```
-### `module std::core::mem::allocator @if(env::LIBC)`
+### `std::core::mem::allocator @if(env::LIBC)`
 ```c3
 typedef LibcAllocator (Allocator) = uptr
 ```
-### `module std::core::mem::allocator @if(env::POSIX || env::WIN32)`
+### `std::core::mem::allocator @if(env::POSIX || env::WIN32)`
 ```c3
 faultdef VMEM_RESERVE_FAILED
 ```
@@ -4207,7 +4207,7 @@ fn void Vmem.reset(&self, usz mark)
 ```c3
 fn void Vmem.free(&self)
 ```
-### `module std::core::mem::allocator @if(env::POSIX)`
+### `std::core::mem::allocator @if(env::POSIX)`
 ```c3
 fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
@@ -4217,7 +4217,7 @@ fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignmen
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
-### `module std::core::mem::allocator @if(env::WIN32)`
+### `std::core::mem::allocator @if(env::WIN32)`
 ```c3
 fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
@@ -4227,7 +4227,7 @@ fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignmen
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
-### `module std::core::mem::rc`
+### `std::core::mem::rc`
 ```c3
 struct RefCounted
 ```
@@ -4237,7 +4237,7 @@ macro retain(refcounted)
 ```c3
 macro void release(refcounted)
 ```
-### `module std::core::mem::ref { Type }`
+### `std::core::mem::ref { Type }`
 ```c3
 alias DeallocFn = fn void(void*)
 ```
@@ -4256,7 +4256,7 @@ fn Ref* Ref.retain(&self)
 ```c3
 fn void Ref.release(&self)
 ```
-### `module std::core::mem::vm`
+### `std::core::mem::vm`
 ```c3
 struct VirtualMemory
 ```
@@ -4299,7 +4299,7 @@ fn void? VirtualMemory.decommit(self, usz offset, usz len, bool block = true)
 ```c3
 fn void? VirtualMemory.destroy(&self)
 ```
-### `module std::core::mem::volatile { Type }`
+### `std::core::mem::volatile { Type }`
 ```c3
 typedef Volatile @structlike = Type
 ```
@@ -4309,7 +4309,7 @@ macro Type Volatile.get(&self)
 ```c3
 macro Type Volatile.set(&self, Type val)
 ```
-### `module std::core::runtime`
+### `std::core::runtime`
 ```c3
 struct ReflectedParam (Printable) @if(!$defined(ReflectedParam))
 ```
@@ -4364,11 +4364,11 @@ fn int cmp_test_unit(TestUnit a, TestUnit b)
 ```c3
 fn bool default_test_runner(String[] args)
 ```
-### `module std::core::runtime @if(WASM_NOLIBC)`
+### `std::core::runtime @if(WASM_NOLIBC)`
 ```c3
 fn void __wasm_call_ctors()
 ```
-### `module std::core::sanitizer`
+### `std::core::sanitizer`
 ```c3
 macro void annotate_contiguous_container(void* beg, void* end, void* old_mid, void* new_mid)
 ```
@@ -4381,14 +4381,14 @@ macro void print_stack_trace()
 ```c3
 fn void set_death_callback(VoidFn callback)
 ```
-### `module std::core::sanitizer @if (env::ANY_SANITIZER)`
+### `std::core::sanitizer @if (env::ANY_SANITIZER)`
 ```c3
 struct __Sanitizer_sandbox_arguments
 ```
 ```c3
 fn void __sanitizer_set_report_path(ZString path)
 ```
-### `module std::core::sanitizer::asan`
+### `std::core::sanitizer::asan`
 ```c3
 alias ErrorCallback = fn void (ZString)
 ```
@@ -4407,11 +4407,11 @@ macro void* region_is_poisoned(void* beg, usz size)
 ```c3
 fn void set_error_report_callback(ErrorCallback callback)
 ```
-### `module std::core::sanitizer::asan @if(env::ADDRESS_SANITIZER)`
+### `std::core::sanitizer::asan @if(env::ADDRESS_SANITIZER)`
 ```c3
 fn void __asan_poison_memory_region(void* addr, usz size)
 ```
-### `module std::core::sanitizer::tsan`
+### `std::core::sanitizer::tsan`
 ```c3
 typedef MutexFlags = inline CUInt
 ```
@@ -4445,7 +4445,7 @@ macro void mutex_pre_divert(void* addr, MutexFlags flags)
 ```c3
 macro void mutex_post_divert(void* addr, MutexFlags flags)
 ```
-### `module std::core::string`
+### `std::core::string`
 ```c3
 typedef String @if(!$defined(String)) = inline char[]
 ```
@@ -4772,7 +4772,7 @@ macro double? decfloat(char[] chars, int $bits, int $emin, int sign)
 ```c3
 macro double? hexfloat(char[] chars, int $bits, int $emin, int sign)
 ```
-### `module std::core::string::ansi`
+### `std::core::string::ansi`
 ```c3
 enum Ansi : const inline String
 ```
@@ -4797,7 +4797,7 @@ fn String make_color_rgb(Allocator mem, char r, char g, char b, bool bg = false)
 ```c3
 fn String make_tcolor_rgb(char r, char g, char b, bool bg = false)
 ```
-### `module std::core::string::conv`
+### `std::core::string::conv`
 ```c3
 fn usz? char32_to_utf8(Char32 c, char[] output)
 ```
@@ -4846,7 +4846,7 @@ fn void? utf8to16_unsafe(String utf8, Char16* utf16_buffer)
 ```c3
 fn void utf32to8_unsafe(Char32[] utf32, char* utf8_buffer)
 ```
-### `module std::core::string::iterator`
+### `std::core::string::iterator`
 ```c3
 struct StringIterator
 ```
@@ -4865,7 +4865,7 @@ fn bool StringIterator.has_next(&self)
 ```c3
 fn Char32? StringIterator.get(&self)
 ```
-### `module std::core::test`
+### `std::core::test`
 ```c3
 macro @setup(TestFn setup_fn, TestFn teardown_fn = null)
 ```
@@ -4896,7 +4896,7 @@ macro lt(left, right)
 ```c3
 macro le(left, right)
 ```
-### `module std::core::types`
+### `std::core::types`
 ```c3
 faultdef VALUE_OUT_OF_RANGE, VALUE_OUT_OF_UNSIGNED_RANGE
 ```
@@ -5008,7 +5008,7 @@ enum TypeKind : char
 ```c3
 struct TypeEnum
 ```
-### `module std::core::values`
+### `std::core::values`
 ```c3
 macro bool @is_same_type(#value1, #value2) @const
 ```
@@ -5060,18 +5060,18 @@ macro promote_int_same(x, y)
 ```c3
 macro TypeKind @inner_kind(#value) @const
 ```
-### `module std::crypto`
+### `std::crypto`
 ```c3
 fn bool safe_compare(void* data1, void* data2, usz len)
 ```
-### `module std::crypto::dh`
+### `std::crypto::dh`
 ```c3
 fn BigInt generate_secret(BigInt p, BigInt x, BigInt y)
 ```
 ```c3
 fn BigInt public_key(BigInt p, BigInt g, BigInt x)
 ```
-### `module std::crypto::ed25519`
+### `std::crypto::ed25519`
 ```c3
 alias Ed25519PrivateKey = char[32]
 ```
@@ -5090,7 +5090,7 @@ fn Ed25519Signature sign(char[] message, char[] private_key, char[] public_key)
 ```c3
 fn bool verify(char[] message, char[] signature, char[] public_key)
 ```
-### `module std::crypto::rc4`
+### `std::crypto::rc4`
 ```c3
 struct Rc4
 ```
@@ -5106,11 +5106,11 @@ fn void Rc4.crypt(&self, char[] in, char[] out)
 ```c3
 fn void Rc4.destroy(&self)
 ```
-### `module std::encoding`
+### `std::encoding`
 ```c3
 faultdef INVALID_CHARACTER, INVALID_PADDING
 ```
-### `module std::encoding::base32`
+### `std::encoding::base32`
 ```c3
 struct Base32Alphabet
 ```
@@ -5141,7 +5141,7 @@ fn String encode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base
 ```c3
 typedef Alphabet = char[32]
 ```
-### `module std::encoding::base64`
+### `std::encoding::base64`
 ```c3
 struct Base64Alphabet
 ```
@@ -5169,7 +5169,7 @@ fn String encode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base
 ```c3
 fn char[]? decode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base64Alphabet* alphabet = &STANDARD)
 ```
-### `module std::encoding::csv`
+### `std::encoding::csv`
 ```c3
 struct CsvReader
 ```
@@ -5206,7 +5206,7 @@ macro void? @each_row(InStream stream, String separator = ",", int max_rows = in
 ```c3
 macro void? CsvReader.@each_row(self, int rows = int.max; @body(String[] row)) @maydiscard
 ```
-### `module std::encoding::hex`
+### `std::encoding::hex`
 ```c3
 fn String encode_buffer(char[] code, char[] buffer)
 ```
@@ -5237,7 +5237,7 @@ macro usz decode_len(usz n)
 ```c3
 fn usz? decode_bytes(char[] src, char[] dst)
 ```
-### `module std::encoding::json`
+### `std::encoding::json`
 ```c3
 faultdef UNEXPECTED_CHARACTER, INVALID_ESCAPE_SEQUENCE, INVALID_NUMBER, MAX_DEPTH_REACHED
 ```
@@ -5256,7 +5256,7 @@ fn Object*? tparse(InStream s)
 ```c3
 fn JsonTokenType? lex_string(JsonContext* context)
 ```
-### `module std::experimental::scheduler{Event}`
+### `std::experimental::scheduler{Event}`
 ```c3
 struct FrameScheduler
 ```
@@ -5278,11 +5278,11 @@ fn void FrameScheduler.queue_event(&self, Event event)
 ```c3
 fn Event? FrameScheduler.pop_event(&self)
 ```
-### `module std::hash::a5hash`
+### `std::hash::a5hash`
 ```c3
 fn ulong hash(char[] data, ulong seed = 0)
 ```
-### `module std::hash::adler32`
+### `std::hash::adler32`
 ```c3
 struct Adler32
 ```
@@ -5301,7 +5301,7 @@ fn uint Adler32.final(&self)
 ```c3
 fn uint hash(char[] data)
 ```
-### `module std::hash::crc32`
+### `std::hash::crc32`
 ```c3
 struct Crc32
 ```
@@ -5320,7 +5320,7 @@ fn uint Crc32.final(&self)
 ```c3
 fn uint hash(char[] data)
 ```
-### `module std::hash::crc64`
+### `std::hash::crc64`
 ```c3
 struct Crc64
 ```
@@ -5339,7 +5339,7 @@ fn ulong Crc64.final(&self)
 ```c3
 fn ulong hash(char[] data)
 ```
-### `module std::hash::fnv32a`
+### `std::hash::fnv32a`
 ```c3
 typedef Fnv32a = uint
 ```
@@ -5355,7 +5355,7 @@ macro void Fnv32a.update_char(&self, char c)
 ```c3
 fn uint hash(char[] data)
 ```
-### `module std::hash::fnv64a`
+### `std::hash::fnv64a`
 ```c3
 typedef Fnv64a = ulong
 ```
@@ -5371,7 +5371,7 @@ macro void Fnv64a.update_char(&self, char c)
 ```c3
 fn ulong hash(char[] data)
 ```
-### `module std::hash::hmac{HashAlg, HASH_BYTES, BLOCK_BYTES}`
+### `std::hash::hmac{HashAlg, HASH_BYTES, BLOCK_BYTES}`
 ```c3
 struct Hmac
 ```
@@ -5393,11 +5393,11 @@ fn char[HASH_BYTES] Hmac.final(&self)
 ```c3
 macro @derive(Hmac *hmac_start, char[] salt, uint iterations, usz index, char[] out)
 ```
-### `module std::hash::komi`
+### `std::hash::komi`
 ```c3
 fn ulong hash(char[] data, ulong seed = 0)
 ```
-### `module std::hash::md5`
+### `std::hash::md5`
 ```c3
 struct Md5
 ```
@@ -5422,7 +5422,7 @@ fn void Md5.update(&ctx, char[] data)
 ```c3
 fn char[HASH_BYTES] Md5.final(&ctx)
 ```
-### `module std::hash::metro128`
+### `std::hash::metro128`
 ```c3
 struct MetroHash128
 ```
@@ -5438,7 +5438,7 @@ fn void MetroHash128.update(&self, char[] data)
 ```c3
 fn uint128 MetroHash128.final(&self)
 ```
-### `module std::hash::metro64`
+### `std::hash::metro64`
 ```c3
 struct MetroHash64
 ```
@@ -5454,7 +5454,7 @@ fn void MetroHash64.update(&self, char[] data)
 ```c3
 fn ulong MetroHash64.final(&self)
 ```
-### `module std::hash::sha1`
+### `std::hash::sha1`
 ```c3
 struct Sha1
 ```
@@ -5479,7 +5479,7 @@ fn void Sha1.update(&self, char[] data)
 ```c3
 fn char[HASH_BYTES] Sha1.final(&self)
 ```
-### `module std::hash::sha256`
+### `std::hash::sha256`
 ```c3
 struct Sha256
 ```
@@ -5504,7 +5504,7 @@ fn void Sha256.update(&self, char[] data)
 ```c3
 fn char[HASH_SIZE] Sha256.final(&self)
 ```
-### `module std::hash::sha512`
+### `std::hash::sha512`
 ```c3
 struct Sha512
 ```
@@ -5532,7 +5532,7 @@ fn void Sha512.update(&self, char[] data)
 ```c3
 fn char[HASH_SIZE] Sha512.final(&self)
 ```
-### `module std::hash::siphash { OutType, BLOCK_ROUNDS, FINALIZE_ROUNDS }`
+### `std::hash::siphash { OutType, BLOCK_ROUNDS, FINALIZE_ROUNDS }`
 ```c3
 struct SipHash
 ```
@@ -5548,35 +5548,35 @@ fn void SipHash.update(&self, char[] data)
 ```c3
 fn OutType SipHash.final(&self)
 ```
-### `module std::hash::siphash24`
+### `std::hash::siphash24`
 ```c3
 alias SipHash24 = SipHash { ulong, 2, 4 }
 ```
 ```c3
 alias hash = siphash::hash { ulong, 2, 4 }
 ```
-### `module std::hash::siphash24_128`
+### `std::hash::siphash24_128`
 ```c3
 alias SipHash24_128 = SipHash { uint128, 2, 4 }
 ```
 ```c3
 alias hash = siphash::hash { uint128, 2, 4 }
 ```
-### `module std::hash::siphash48`
+### `std::hash::siphash48`
 ```c3
 alias SipHash48 = SipHash { ulong, 4, 8 }
 ```
 ```c3
 alias hash = siphash::hash { ulong, 4, 8 }
 ```
-### `module std::hash::siphash48_128`
+### `std::hash::siphash48_128`
 ```c3
 alias SipHash48_128 = SipHash { uint128, 4, 8 }
 ```
 ```c3
 alias hash = siphash::hash { uint128, 4, 8 }
 ```
-### `module std::hash::whirlpool`
+### `std::hash::whirlpool`
 ```c3
 struct Whirlpool
 ```
@@ -5601,14 +5601,14 @@ fn void Whirlpool.update(&self, char[] data)
 ```c3
 fn char[HASH_SIZE] Whirlpool.final(&self)
 ```
-### `module std::hash::wyhash2`
+### `std::hash::wyhash2`
 ```c3
 fn ulong wyr3(char* in, usz len) @inline
 ```
 ```c3
 fn ulong hash(char[] input, ulong seed = 0)
 ```
-### `module std::io`
+### `std::io`
 ```c3
 struct BitReader
 ```
@@ -6129,7 +6129,7 @@ fn usz? TeeReader.read(&self, char[] bytes) @dynamic
 ```c3
 fn char? TeeReader.read_byte(&self) @dynamic
 ```
-### `module std::io @if (env::LIBC)`
+### `std::io @if (env::LIBC)`
 ```c3
 fn void putchar(char c) @inline
 ```
@@ -6142,7 +6142,7 @@ fn File* stderr()
 ```c3
 fn File* stdin()
 ```
-### `module std::io @if(!env::LIBC)`
+### `std::io @if(!env::LIBC)`
 ```c3
 fn void putchar(char c) @inline
 ```
@@ -6155,7 +6155,7 @@ fn File* stderr()
 ```c3
 fn File* stdin()
 ```
-### `module std::io::file`
+### `std::io::file`
 ```c3
 fn File? open(String filename, String mode)
 ```
@@ -6231,7 +6231,7 @@ fn void? save(String filename, char[] data)
 ```c3
 fn void? File.flush(&self) @dynamic
 ```
-### `module std::io::os`
+### `std::io::os`
 ```c3
 macro void? native_chdir(Path path)
 ```
@@ -6265,7 +6265,7 @@ macro bool? native_mkdir(Path path, MkdirPermissions permissions)
 ```c3
 macro bool? native_rmdir(Path path)
 ```
-### `module std::io::os @if(env::LIBC)`
+### `std::io::os @if(env::LIBC)`
 ```c3
 fn void*? native_fopen(String filename, String mode) @inline
 ```
@@ -6296,7 +6296,7 @@ fn Path? native_temp_directory(Allocator allocator) @if(!env::WIN32)
 ```c3
 fn Path? native_temp_directory(Allocator allocator) @if(env::WIN32)
 ```
-### `module std::io::os @if(env::NO_LIBC)`
+### `std::io::os @if(env::NO_LIBC)`
 ```c3
 alias FopenFn = fn void*?(String, String)
 ```
@@ -6351,21 +6351,21 @@ fn void? native_fputc(CInt c, CFile stream) @inline
 ```c3
 macro Path? native_temp_directory(Allocator allocator)
 ```
-### `module std::io::os @if(env::POSIX)`
+### `std::io::os @if(env::POSIX)`
 ```c3
 fn PathList? native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
 ```
 ```c3
 fn void? native_rmtree(Path dir)
 ```
-### `module std::io::os @if(env::WIN32)`
+### `std::io::os @if(env::WIN32)`
 ```c3
 fn PathList? native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
 ```
 ```c3
 fn void? native_rmtree(Path path)
 ```
-### `module std::io::path`
+### `std::io::path`
 ```c3
 alias PathList = List { Path }
 ```
@@ -6549,7 +6549,7 @@ macro bool is_reserved_win32_path_char(char c)
 ```c3
 macro bool is_reserved_path_char(char c, PathEnv path_env = DEFAULT_ENV)
 ```
-### `module std::math`
+### `std::math`
 ```c3
 alias Complexf = Complex {float}
 ```
@@ -7891,7 +7891,7 @@ alias QUATERNION_IDENTITY  @builtin = quaternion::IDENTITY {double}
 ```c3
 alias QUATERNIONF_IDENTITY @builtin = quaternion::IDENTITY {float}
 ```
-### `module std::math::bigint`
+### `std::math::bigint`
 ```c3
 struct BigInt (Printable)
 ```
@@ -8045,7 +8045,7 @@ fn BigInt BigInt.lcm(&self, BigInt other)
 ```c3
 fn void BigInt.randomize_bits(&self, Random random, int bits)
 ```
-### `module std::math::complex {Real}`
+### `std::math::complex {Real}`
 ```c3
 macro Complex Complex.add(self, Complex b) @operator(+)
 ```
@@ -8109,7 +8109,7 @@ macro bool Complex.not_equals(self, Complex b) @operator(!=)
 ```c3
 fn usz? Complex.to_format(&self, Formatter* f) @dynamic
 ```
-### `module std::math::easing`
+### `std::math::easing`
 ```c3
 fn float linear_none(float t, float b, float c, float d) @inline
 ```
@@ -8194,7 +8194,7 @@ fn float elastic_out(float t, float b, float c, float d) @inline
 ```c3
 fn float elastic_inout(float t, float b, float c, float d) @inline
 ```
-### `module std::math::math_rt`
+### `std::math::math_rt`
 ```c3
 fn int128 __divti3(int128 a, int128 b) @extern("__divti3") @weak @nostrip
 ```
@@ -8255,7 +8255,7 @@ fn double __roundeven(double d) @extern("roundeven") @weak @nostrip
 ```c3
 fn double __powidf2(double a, int b) @extern("__powidf2") @weak @nostrip
 ```
-### `module std::math::matrix {Real}`
+### `std::math::matrix {Real}`
 ```c3
 struct Matrix2x2
 ```
@@ -8415,7 +8415,7 @@ fn Matrix4x4 ortho(Real left, Real right, Real top, Real bottom, Real near, Real
 ```c3
 fn Matrix4x4 perspective(Real fov, Real aspect_ratio, Real near, Real far)
 ```
-### `module std::math::nolibc @if(env::NO_LIBC || $feature(C3_MATH))`
+### `std::math::nolibc @if(env::NO_LIBC || $feature(C3_MATH))`
 ```c3
 fn double __cos(double x, double y) @extern("__cos") @weak @nostrip
 ```
@@ -8599,7 +8599,7 @@ fn double _trunc(double x) @weak @extern("trunc") @nostrip
 ```c3
 fn float _truncf(float x) @weak @extern("truncf") @nostrip
 ```
-### `module std::math::quaternion {Real}`
+### `std::math::quaternion {Real}`
 ```c3
 macro Quaternion Quaternion.add(self, Quaternion b) @operator(+)
 ```
@@ -8645,7 +8645,7 @@ fn Quaternion Quaternion.slerp(self, Quaternion q2, Real amount)
 ```c3
 fn Quaternion Quaternion.mul(self, Quaternion b) @operator(*)
 ```
-### `module std::math::random`
+### `std::math::random`
 ```c3
 macro void seed(random, seed)
 ```
@@ -9261,7 +9261,7 @@ fn ushort SimpleRandom.next_short(&self) @dynamic
 ```c3
 fn char SimpleRandom.next_byte(&self) @dynamic
 ```
-### `module std::math::uuid`
+### `std::math::uuid`
 ```c3
 typedef Uuid (Printable) = char[16]
 ```
@@ -9277,7 +9277,7 @@ fn usz? Uuid.to_format(&self, Formatter* formatter) @dynamic
 ```c3
 fn String Uuid.to_string(&self, Allocator allocator)
 ```
-### `module std::math::vector`
+### `std::math::vector`
 ```c3
 macro double[<*>].sq_magnitude(self)
 ```
@@ -9380,7 +9380,7 @@ fn void ortho_normalize(float[<3>]* v1, float[<3>]* v2)
 ```c3
 fn void ortho_normalized(double[<3>]* v1, double[<3>]* v2)
 ```
-### `module std::net`
+### `std::net`
 ```c3
 enum IpProtocol : char (AIFamily ai_family)
 ```
@@ -9469,7 +9469,7 @@ fn uint? ipv4toint(String s)
 ```c3
 fn String? int_to_ipv4(uint val, Allocator allocator)
 ```
-### `module std::net @if(os::SUPPORTS_INET)`
+### `std::net @if(os::SUPPORTS_INET)`
 ```c3
 struct Socket (InStream, OutStream)
 ```
@@ -9563,7 +9563,7 @@ fn void? Socket.shutdown(&self, SocketShutdownHow how)
 ```c3
 fn bool last_error_is_delayed_connect()
 ```
-### `module std::net::os`
+### `std::net::os`
 ```c3
 typedef AIFamily = CInt
 ```
@@ -9591,10 +9591,10 @@ struct AddrInfo
 ```c3
 fn CInt getaddrinfo(ZString nodename, ZString servname, AddrInfo* hints, AddrInfo** res) @if(SUPPORTS_INET)
 ```
-### `module std::net::os @if(env::ANDROID)`
-### `module std::net::os @if(env::DARWIN)`
-### `module std::net::os @if(env::LINUX)`
-### `module std::net::os @if(env::POSIX && SUPPORTS_INET)`
+### `std::net::os @if(env::ANDROID)`
+### `std::net::os @if(env::DARWIN)`
+### `std::net::os @if(env::LINUX)`
+### `std::net::os @if(env::POSIX && SUPPORTS_INET)`
 ```c3
 typedef NativeSocket = inline Fd
 ```
@@ -9622,7 +9622,7 @@ macro void? NativeSocket.set_non_blocking(self, bool non_blocking)
 ```c3
 macro bool NativeSocket.is_non_blocking(self)
 ```
-### `module std::net::os @if(env::WIN32)`
+### `std::net::os @if(env::WIN32)`
 ```c3
 typedef NativeSocket = inline Win32_SOCKET
 ```
@@ -9641,7 +9641,7 @@ fn fault convert_error(WSAError error)
 ```c3
 fn fault socket_error()
 ```
-### `module std::net::tcp @if(os::SUPPORTS_INET)`
+### `std::net::tcp @if(os::SUPPORTS_INET)`
 ```c3
 typedef TcpSocket = inline Socket
 ```
@@ -9669,7 +9669,7 @@ fn TcpSocket? accept(TcpServerSocket* server_socket)
 ```c3
 fn TcpServerSocket? listen_to(AddrInfo* ai, uint backlog, SocketOption... options)
 ```
-### `module std::net::udp @if(os::SUPPORTS_INET)`
+### `std::net::udp @if(os::SUPPORTS_INET)`
 ```c3
 typedef UdpSocket = inline Socket
 ```
@@ -9685,7 +9685,7 @@ fn UdpSocket? connect_async(String host, uint port, SocketOption... options, IpP
 ```c3
 fn UdpSocket? connect_async_to(AddrInfo* ai, SocketOption... options)
 ```
-### `module std::net::url`
+### `std::net::url`
 ```c3
 faultdef
 	EMPTY,
@@ -9759,26 +9759,26 @@ fn String? decode(Allocator allocator, String s, UrlEncodingMode  mode)
 ```c3
 fn String? tdecode(String s, UrlEncodingMode  mode)
 ```
-### `module std::os`
+### `std::os`
 ```c3
 fn void exit(int result) @weak @noreturn
 ```
 ```c3
 fn void fastexit(int result) @weak @noreturn
 ```
-### `module std::os @if(env::DARWIN)`
+### `std::os @if(env::DARWIN)`
 ```c3
 fn uint num_cpu()
 ```
-### `module std::os @if(env::LINUX)`
+### `std::os @if(env::LINUX)`
 ```c3
 fn uint num_cpu()
 ```
-### `module std::os @if(env::WIN32)`
+### `std::os @if(env::WIN32)`
 ```c3
 fn uint num_cpu()
 ```
-### `module std::os::android @if(env::ANDROID)`
+### `std::os::android @if(env::ANDROID)`
 ```c3
 enum LogPriority : (CInt val)
 ```
@@ -9794,7 +9794,7 @@ fn CInt log_write(LogPriority prio, ZString tag, ZString text) @extern("__androi
 ```c3
 fn CInt log_buf_write(CInt bufID, CInt prio, ZString tag, ZString text) @extern("__android_log_buf_write")
 ```
-### `module std::os::backtrace`
+### `std::os::backtrace`
 ```c3
 faultdef SEGMENT_NOT_FOUND, EXECUTABLE_PATH_NOT_FOUND, IMAGE_NOT_FOUND, NO_BACKTRACE_SYMBOLS,
          RESOLUTION_FAILED
@@ -9838,7 +9838,7 @@ alias symbolize_backtrace @if(env::OPENBSD)	= openbsd::symbolize_backtrace
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace) @if(!env::NATIVE_STACKTRACE)
 ```
-### `module std::os::darwin @if(env::DARWIN)`
+### `std::os::darwin @if(env::DARWIN)`
 ```c3
 fn CInt sysctl(CInt *name, CUInt namelen, void *oldp, usz *oldlenp, void *newp, usz newlen)
 ```
@@ -9863,11 +9863,11 @@ fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace)
 ```c3
 fn usz malloc_size(void* ptr)
 ```
-### `module std::os::darwin::cocoa @if(env::OS_TYPE == MACOS) @link("Cocoa.framework")`
+### `std::os::darwin::cocoa @if(env::OS_TYPE == MACOS) @link("Cocoa.framework")`
 ```c3
 fn int nsApplicationMain(int argc, char **argv) @extern("NSApplicationMain")
 ```
-### `module std::os::env`
+### `std::os::env`
 ```c3
 fn String? get_var(Allocator allocator, String name)
 ```
@@ -9889,8 +9889,8 @@ fn bool clear_var(String name)
 ```c3
 fn String? executable_path()
 ```
-### `module std::os::freebsd @if(env::FREEBSD)`
-### `module std::os::linux @if(env::LINUX)`
+### `std::os::freebsd @if(env::FREEBSD)`
+### `std::os::linux @if(env::LINUX)`
 ```c3
 fn usz malloc_usable_size(void* ptr)
 ```
@@ -9939,7 +9939,7 @@ fn Backtrace? backtrace_line_parse(Allocator allocator, String string, String ob
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace)
 ```
-### `module std::os::macos::cf @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
+### `std::os::macos::cf @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
 typedef CFAllocatorRef = void*
 ```
@@ -9991,7 +9991,7 @@ struct CFRange
 ```c3
 fn CFTypeRef macos_CFRetain(CFTypeRef cf) @extern("CFRetain") @builtin
 ```
-### `module std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
+### `std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
 typedef ObjcClass = void*
 ```
@@ -10070,15 +10070,15 @@ enum EventMask : (long val)
 ```c3
 enum EventModifierFlag : (int val)
 ```
-### `module std::os::netbsd @if(env::NETBSD)`
-### `module std::os::openbsd @if(env::OPENBSD)`
+### `std::os::netbsd @if(env::NETBSD)`
+### `std::os::openbsd @if(env::OPENBSD)`
 ```c3
 fn ZString* backtrace_symbols_fmt(void **addrlist, usz len, ZString fmt)
 ```
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace)
 ```
-### `module std::os::posix @if(env::POSIX)`
+### `std::os::posix @if(env::POSIX)`
 ```c3
 fn CInt clock_gettime(int type, TimeSpec *time)
 ```
@@ -10121,7 +10121,7 @@ typedef Pthread_t = void*
 ```c3
 fn CInt pthread_create(Pthread_t*, Pthread_attr_t*, PosixThreadFn, void*)
 ```
-### `module std::os::process @if(env::WIN32 || env::POSIX)`
+### `std::os::process @if(env::WIN32 || env::POSIX)`
 ```c3
 faultdef
 	FAILED_TO_CREATE_PIPE,
@@ -10176,7 +10176,7 @@ fn usz? SubProcess.read_stderr(&self, char* buffer, usz size)
 ```c3
 fn bool? SubProcess.is_running(&self)
 ```
-### `module std::os::win32`
+### `std::os::win32`
 ```c3
 alias Win32_BOOL = int
 ```
@@ -10867,7 +10867,7 @@ alias Win32_PIMAGEHLP_LINE64 = Win32_IMAGEHLP_LINE64*
 ```c3
 alias Win32_LPMODULEINFO = Win32_MODULEINFO*
 ```
-### `module std::os::win32 @if(env::WIN32)`
+### `std::os::win32 @if(env::WIN32)`
 ```c3
 fn void getSystemTimeAsFileTime(Win32_FILETIME* time) @extern("GetSystemTimeAsFileTime")
 ```
@@ -11173,7 +11173,7 @@ alias Win32_LPFn_ACCEPTEX = fn bool(
 ```c3
 fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT timeout) @extern("WSAPoll")
 ```
-### `module std::sort`
+### `std::sort`
 ```c3
 macro usz binarysearch(list, x, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @builtin
 ```
@@ -11213,7 +11213,7 @@ macro bool @is_cmp_key_fn(#key_fn, #list)
 ```c3
 macro bool is_sorted(list, cmp = EMPTY_MACRO_SLOT, ctx = EMPTY_MACRO_SLOT) @builtin
 ```
-### `module std::sort::cs{Type, KeyFn}`
+### `std::sort::cs{Type, KeyFn}`
 ```c3
 alias ElementType = $typeof((Type){}[0])
 ```
@@ -11238,14 +11238,14 @@ alias CmpCallback @if(!KEY_BY_VALUE && !NO_KEY_FN) = fn int(ElementType*, Elemen
 ```c3
 fn void csort(Type list, usz low, usz high, KeyFn key_fn, uint byte_idx)
 ```
-### `module std::sort::is{Type, CmpFn, Context}`
+### `std::sort::is{Type, CmpFn, Context}`
 ```c3
 alias ElementType = $typeof(((Type){})[0])
 ```
 ```c3
 fn void isort(Type list, usz low, usz high, CmpFn comp, Context context)
 ```
-### `module std::sort::qs{Type, CmpFn, Context}`
+### `std::sort::qs{Type, CmpFn, Context}`
 ```c3
 alias ElementType = $typeof(((Type){})[0])
 ```
@@ -11258,7 +11258,7 @@ fn ElementType? qselect(Type list, isz low, isz high, isz k, CmpFn cmp, Context 
 ```c3
 macro @partition(Type list, isz l, isz h, CmpFn cmp, Context context)
 ```
-### `module std::thread`
+### `std::thread`
 ```c3
 faultdef THREAD_QUEUE_FULL
 ```
@@ -11406,7 +11406,7 @@ macro void? sleep_ms(ulong ms) @maydiscard
 ```c3
 macro void? sleep_ns(NanoDuration ns) @maydiscard
 ```
-### `module std::thread::channel {Type}`
+### `std::thread::channel {Type}`
 ```c3
 typedef UnbufferedChannel = void*
 ```
@@ -11425,7 +11425,7 @@ fn Type? UnbufferedChannel.pop(self)
 ```c3
 fn void? UnbufferedChannel.close(self)
 ```
-### `module std::thread::channel{Type}`
+### `std::thread::channel{Type}`
 ```c3
 typedef BufferedChannel = void*
 ```
@@ -11444,20 +11444,20 @@ fn Type? BufferedChannel.pop(self)
 ```c3
 fn void? BufferedChannel.close(self)
 ```
-### `module std::thread::cpu @if(env::DARWIN)`
+### `std::thread::cpu @if(env::DARWIN)`
 ```c3
 fn uint native_cpu()
 ```
-### `module std::thread::cpu @if(env::LINUX)`
+### `std::thread::cpu @if(env::LINUX)`
 ```c3
 fn uint native_cpu()
 ```
-### `module std::thread::cpu @if(env::WIN32)`
+### `std::thread::cpu @if(env::WIN32)`
 ```c3
 fn uint native_cpu()
 ```
-### `module std::thread::event`
-### `module std::thread::os @if (!env::POSIX && !env::WIN32)`
+### `std::thread::event`
+### `std::thread::os @if (!env::POSIX && !env::WIN32)`
 ```c3
 typedef NativeMutex = int
 ```
@@ -11473,7 +11473,7 @@ typedef NativeOnceFlag = int
 ```c3
 typedef NativeThread = int
 ```
-### `module std::thread::os @if(env::POSIX)`
+### `std::thread::os @if(env::POSIX)`
 ```c3
 struct NativeMutex
 ```
@@ -11561,7 +11561,7 @@ fn void native_thread_yield()
 ```c3
 fn void? native_sleep_nano(NanoDuration nano)
 ```
-### `module std::thread::os @if(env::WIN32)`
+### `std::thread::os @if(env::WIN32)`
 ```c3
 typedef NativeThread = inline Win32_HANDLE
 ```
@@ -11661,7 +11661,7 @@ fn bool NativeThread.equals(thread, NativeThread other)
 ```c3
 fn void? native_sleep_nano(NanoDuration ns)
 ```
-### `module std::thread::pool{SIZE}`
+### `std::thread::pool{SIZE}`
 ```c3
 struct ThreadPool
 ```
@@ -11677,7 +11677,7 @@ fn void? ThreadPool.stop_and_destroy(&self)
 ```c3
 fn void? ThreadPool.push(&self, ThreadFn func, void* arg)
 ```
-### `module std::thread::threadpool @if (env::POSIX || env::WIN32)`
+### `std::thread::threadpool @if (env::POSIX || env::WIN32)`
 ```c3
 alias ThreadPoolFn = fn void(any[] args)
 ```
@@ -11696,7 +11696,7 @@ fn void? FixedThreadPool.stop_and_destroy(&self)
 ```c3
 fn void? FixedThreadPool.push(&self, ThreadPoolFn func, args...)
 ```
-### `module std::time`
+### `std::time`
 ```c3
 typedef Time @structlike = long
 ```
@@ -11808,7 +11808,7 @@ macro Duration Duration.mult(#td, long #val) @operator_s(*) @safemacro
 ```c3
 fn usz? NanoDuration.to_format(&self, Formatter* formatter) @dynamic
 ```
-### `module std::time::clock`
+### `std::time::clock`
 ```c3
 fn Clock now()
 ```
@@ -11833,7 +11833,7 @@ fn NanoDuration Clock.nano_diff(self, Clock other) @operator(-) @inline
 ```c3
 fn NanoDuration Clock.to_now(self) @inline
 ```
-### `module std::time::datetime @if(env::LIBC)`
+### `std::time::datetime @if(env::LIBC)`
 ```c3
 fn DateTime now()
 ```
@@ -11960,18 +11960,18 @@ fn String TzDateTime.format(self, Allocator allocator, DateTimeFormat dt_format)
 ```c3
 fn String DateTime.format(self, Allocator allocator, DateTimeFormat dt_format)
 ```
-### `module std::time::os @if(env::DARWIN)`
+### `std::time::os @if(env::DARWIN)`
 ```c3
 fn Clock native_clock()
 ```
-### `module std::time::os @if(env::POSIX)`
+### `std::time::os @if(env::POSIX)`
 ```c3
 fn Time native_timestamp()
 ```
 ```c3
 fn Clock native_clock() @if(!env::DARWIN)
 ```
-### `module std::time::os @if(env::WIN32)`
+### `std::time::os @if(env::WIN32)`
 ```c3
 fn Clock native_clock()
 ```

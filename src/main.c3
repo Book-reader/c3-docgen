@@ -93,7 +93,7 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String mod = data[i:data[i..].index_of(";") ?? 0];
 					// io::fprintf(out, "### `%s`\n", mod["module".len..].trim())!;
 					i += mod.len - 1;
-					module_name = mod;
+					module_name = mod["module".len..].trim();
 					// if (modules.has_key(module_name))
 					// {
 					// curr_mod = modules.get_ref(module_name) ?? (List {String}){}.init(alloc);
