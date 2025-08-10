@@ -1,20 +1,66 @@
 module docgen;
 import std::io;
+import std::collections::map;
+import std::collections::list;
+import std::sort;
+import std::math;
 
+alias Modules = HashMap {String, List {String}};
 fn int main(String[] args)
 {
 	File out_file = file::open(args[1], "wb")!!;
 	defer (void)out_file.close();
-	foreach (str : args[2..])
+
+	Modules modules;
+	modules.init(tmem);
+	Allocator alloc = tmem;
+	foreach (str : args[2..]) @pool()
 	{
 		String file_data = (String)file::load(tmem, str)!!;
-		print_decls(file_data, &out_file)!!;
+		Path str_path = path::new(alloc, str)!!;
+		collect_decls(alloc, &modules, file_data, str_path.basename()[:^str_path.extension().len + 1])!!;
+	};
+
+	String[] module_list = modules.tkeys();
+	sort::insertionsort(module_list, fn int (String a, String b)
+		{
+			int res;
+			foreach (i, c : a[:math::min(a.len, b.len)])
+			{
+				if (c > b[i])
+				{
+					res = 1;
+					break;
+				}
+				else if (c < b[i])
+				{
+					res = -1;
+					break;
+				}
+			}
+			if (res == 0) res = a.len == b.len ? 0 : 1;
+			// io::printfn("result: %s", res);
+			// return a1.len == b1.len ? 0 : 1;
+			return res;
+		});
+	foreach (mod : module_list)
+	{
+		io::printfn("%s", mod);
+		io::fprintf(&out_file, "### `%s`\n", mod)!!;
+		foreach (decl : modules.get(mod)!!)
+		{
+			io::fprintf(&out_file, "```c3\n%s\n```\n", decl)!!;
+		}
 	}
+
 	return 0;
 }
 
-fn void? print_decls(String data, OutStream out)
+fn void? collect_decls(Allocator alloc, Modules* modules, String data, String filename)
 {
+	String module_name = filename;
+	List {String} curr_mod;// = allocator::new(alloc, List {String});
+	curr_mod.init(alloc);
 	for (usz i = 0; i < data.len; i++) @pool()
 	{
 		switch
@@ -36,52 +82,91 @@ fn void? print_decls(String data, OutStream out)
 			default:
 				if (try idx = data[i..].index_of("module") && idx == 0)
 				{
+					if (curr_mod.len() != 0)
+					{
+						modules.set(module_name, curr_mod);
+					}
 					String mod = data[i:data[i..].index_of(";") ?? 0];
-					io::fprintf(out, "### `%s`\n", mod["module".len..].trim())!;
+					// io::fprintf(out, "### `%s`\n", mod["module".len..].trim())!;
 					i += mod.len - 1;
+					module_name = mod;
+					// if (modules.has_key(module_name))
+					// {
+					// curr_mod = modules.get_ref(module_name) ?? (List {String}){}.init(alloc);
+					/*if (modules.has_key(module_name))
+					{
+						curr_mod = modules.get(module_name)!!;
+					}
+					else
+					{
+						curr_mod.init(alloc);
+						// modules.set()
+					}*/
+					// }
+					curr_mod = modules.@get_or_set(module_name, *(List {String}){}.init(alloc));
+					// if ()
+					// modules.set(module_name)
 				}
 				else if (try idx = data[i..].index_of("struct") && idx == 0)
 				{
 					String struc = data[i:data[i..].index_of("{") ?? 0];
-					io::fprintf(out, "```c3\n%s\n```\n", struc.trim())!;
+					curr_mod.push(struc.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", struc.trim())!;
 					i += struc.len - 1;
 				}
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "fn");
-					io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
+					curr_mod.push(func.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
-					io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
+					curr_mod.push(func.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("typedef") && idx == 0)
 				{
 					String type = data[i:data[i..].index_of(";") ?? 0];
-					io::fprintf(out, "```c3\n%s\n```\n", type.trim())!;
+					curr_mod.push(type.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", type.trim())!;
 					i += type.len - 1;
 				}
 				else if (try idx = data[i..].index_of("alias") && idx == 0)
 				{
 					String al = data[i:data[i..].index_of(";") ?? 0];
-					io::fprintf(out, "```c3\n%s\n```\n", al.trim())!;
+					curr_mod.push(al.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", al.trim())!;
 					i += al.len - 1;
 				}
 				else if (try idx = data[i..].index_of("enum") && idx == 0)
 				{
 					String en = data[i:data[i..].index_of("{") ?? 0];
-					io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
+					curr_mod.push(en.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
 					i += en.len - 1;
 				}
 				else if (try idx = data[i..].index_of("faultdef") && idx == 0)
 				{
 					String faults = data[i:data[i..].index_of(";") ?? 0];
-					io::fprintf(out, "```c3\n%s\n```\n", faults.trim())!;
+					curr_mod.push(faults.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", faults.trim())!;
 					i += faults.len - 1;
+				}
+				else if (try idx = data[i..].index_of("bitstruct") && idx == 0)
+				{
+					String bitstruc = data[i:data[i..].index_of("{") ?? 0];
+					curr_mod.push(bitstruc.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", bitstruc.trim())!;
+					i += bitstruc.len - 1;
 				}
 		}
 	};
+	if (curr_mod.len() != 0)
+	{
+		modules.set(module_name, curr_mod);
+	}
 }
 fn String parse_function(usz* i, String data, String function_str)
 {
