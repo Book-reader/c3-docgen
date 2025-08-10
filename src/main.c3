@@ -95,7 +95,7 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				skip_line_comment(&i, data);
 			case i + 2 < data.len && data[i] == '/' && data[i + 1] == '*':
 				skip_comment(&i, data);
-			case i + 2 < data.len && data[i] == '<' && data[i + 1] == '*':
+			case i + 3 < data.len && data[i] == '<' && data[i + 1] == '*' && data[i + 2] != '>':
 				comment = handle_doc_comment(alloc, &i, data);
 				// io::printfn("comment is: %s", comment.comment);
 			case data[i] == '`':
@@ -277,23 +277,10 @@ fn void skip_comment(usz* i, String data)
 		}
 	}
 }
-fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data)
+fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool()
 {
-	*i += 2;
-	if (*i < data.len && data[*i] == '\n') *i += 1;
-	DocComment doc;
-	doc.comment.init(alloc);
-	doc.contracts.init(alloc);
-	while (try line = data[*i..].tokenize_all("\n").next())
-	{
-		// TODO: properly handle if line starts or ends with \*> or similar
-		if ((line.trim().len > 0 && line.trim()[0] == '@')) break;
-		if (line.trim().len > 1 && (line.trim()[:2] == "*>" || line.trim()[^2..] == "*>")) return doc;
-		// io::printfn("'%s'", line.trim());
-		doc.comment.push(line.trim().copy(alloc));
-		*i += line.len + 1;
-	}
-	if (doc.comment.len() > 0 && doc.comment[^1] == "") doc.comment.remove_last()!!;
+	usz start_idx = *i;
+	*i += 1;
 	for (usz count = 1; count != 0 && *i < data.len; *i += 1)
 	{
 		if (data[*i] == '<' && *i + 2 < data.len && data[*i + 1] == '*')
@@ -301,12 +288,45 @@ fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data)
 			count ++;
 			*i += 1;
 		}
-		if (data[*i] == '*' && *i + 2 < data.len && data[*i + 1] == '>')
+		else if (data[*i] == '*' && *i + 2 < data.len && data[*i + 1] == '>')
 		{
 			count --;
 			*i += 1;
 		}
 	}
+	DocComment doc;
+	doc.comment.init(alloc);
+	doc.contracts.init(alloc);
+
+	String trimmed = data[start_idx..*i];
+	// io::printfn("%s", trimmed);
+	trimmed = trimmed[trimmed.index_of("<*") + 2 ?? 0..trimmed.rindex_of("*>") - 2 ?? trimmed.len - 1].trim();
+
+	bool comment = true;
+
+	String starting_chars;
+	foreach (line : trimmed.tsplit("\n"))
+	{
+		// io::printfn("%s", line.trim());
+		if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
+		{
+			starting_chars = line[:line.len - line.trim_left().len];
+			// io::printfn("'%s'", starting_chars);
+		}
+		String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
+		if (line_trim.len > 0 && line_trim[0] == '@') comment = false;
+		if (comment)
+		{
+			doc.comment.push(line_trim.copy(alloc));
+		}
+		else if (line_trim.len > 0 && line_trim[0] == '@') // skip empty lines between contracts
+		{
+			doc.contracts.push(line_trim.copy(alloc));
+		}
+	}
+	// Remove trailing newline caused by space between comment and contracts
+	if (doc.comment.len() > 0 && doc.comment[^1].len == 0) doc.comment.remove_last();
+	
 	return doc;
 }
 fn void skip_string(usz* i, String data, char string_char)
@@ -331,7 +351,7 @@ fn void skip_block(usz* i, String data, char block_start, char block_end)
 				skip_line_comment(i, data);
 			case *i + 2 < data.len && data[*i] == '/' && data[*i + 1] == '*':
 				skip_comment(i, data);
-			case *i + 2 < data.len && data[*i] == '<' && data[*i + 1] == '*':
+			case *i + 3 < data.len && data[*i] == '<' && data[*i + 1] == '*' && data[*i + 2] != '>':
 				handle_doc_comment(tmem, i, data);
 			case data[*i] == '`':
 				skip_string(i, data, '`');
