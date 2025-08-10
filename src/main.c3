@@ -338,7 +338,7 @@ fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool(
 		{
 			doc.comment.push(line_trim.copy(alloc));
 		}
-		else if (line_trim.len > 0 && line_trim[0] == '@') // skip empty lines between contracts
+		else if (line_trim.trim().len > 0) // skip empty lines between contracts
 		{
 			doc.contracts.push(line_trim.copy(alloc));
 		}

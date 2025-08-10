@@ -8639,6 +8639,7 @@ Initialize an block pool
  @require !self.initialized : "The block pool must not be initialized"
  @require block_size > 0 : "Block size must be non zero"
  @require calculate_actual_capacity(capacity, block_size) * block_size >= block_size
+    : "Total memory would overflow"
 *>
 ```
 ```c3
@@ -8741,6 +8742,7 @@ macro retain(refcounted)
 <*
  @require @assignable_to(refcounted, RefCounted*) : "Expected a ref counted value"
  @require !$defined(refcounted.dealloc()) ||| @typeis(refcounted.dealloc(), void)
+   : "Expected refcounted type to have a valid dealloc"
 *>
 ```
 ```c3
