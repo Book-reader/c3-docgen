@@ -124,6 +124,12 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push(func.trim().copy(alloc));
 					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
+				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
+				{
+					String func = parse_function(&i, data, "extern fn");
+					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push(func.trim().copy(alloc));
+					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
+				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
@@ -165,6 +171,10 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					// io::fprintf(out, "```c3\n%s\n```\n", bitstruc.trim())!;
 					i += bitstruc.len - 1;
 				}
+/*				else
+				{
+					io::printf("%c", data[i]);
+				}*/
 		}
 	};
 	if (curr_mod.len() != 0)
