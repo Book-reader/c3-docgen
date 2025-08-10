@@ -38,7 +38,8 @@ fn int main(String[] args)
 					break;
 				}
 			}
-			if (res == 0) res = a.len == b.len ? 0 : 1;
+			if (res == 0) res = a.len > b.len ? 1 : a.len < b.len ? -1 : 0;
+			// io::printfn("a: '%s', b: '%s'", a, b);
 			// io::printfn("result: %s", res);
 			// return a1.len == b1.len ? 0 : 1;
 			return res;
