@@ -55,12 +55,12 @@ fn int main(String[] args)
 				io::fprintf(&out_file, "\n---\n\n")!!;
 				if (decl.doc_comment.comment.len() > 0)
 				{
-					defer io::fprintf(&out_file, "\n")!!;
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
 					}
+					io::fprintf(&out_file, "\n")!!;
 				}
 				if (decl.doc_comment.contracts.len() > 0)
 				{

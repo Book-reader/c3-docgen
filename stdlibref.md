@@ -458,8 +458,8 @@ const CLOCKS_PER_SEC @if(!env::WIN32)
 
 ---
 
-
 Return a "timespec" from a duration.
+
 ```c3
 <*
  @require self >= time::NANO_DURATION_ZERO
@@ -470,8 +470,8 @@ fn TimeSpec NanoDuration.to_timespec(self) @inline
 
 ---
 
-
 Convert a duration to a timespec.
+
 ```c3
 <*
  @require self >= time::DURATION_ZERO
@@ -482,8 +482,8 @@ fn TimeSpec Duration.to_timespec(self) @inline
 
 ---
 
-
 Convert a timestamp to a timespec.
+
 ```c3
 fn TimeSpec Time.to_timespec(self) @inline
 ```
@@ -2608,8 +2608,8 @@ struct Atomic
 
 ---
 
-
 Loads data atomically, by default this uses SEQ_CONSISTENT ordering.
+
 ```c3
 <*
  @param ordering : "The ordering, cannot be release or acquire-release."
@@ -2621,8 +2621,8 @@ macro Type Atomic.load(&self, AtomicOrdering ordering = SEQ_CONSISTENT)
 
 ---
 
-
 Stores data atomically, by default this uses SEQ_CONSISTENT ordering.
+
 ```c3
 <*
  @param ordering : "The ordering, cannot be acquire or acquire-release."
@@ -3586,7 +3586,6 @@ alias AnyTest = fn bool(any type, any context)
 
 ---
 
-
 The AnyList contains a heterogenous set of types. Anything placed in the
 list will shallowly copied in order to be stored as an `any`. This means
 that the list will copy and free its elements.
@@ -3596,15 +3595,16 @@ need to take an allocator, as we can only copy then pop then return the copy.
 
 If we're not doing pop, then things are easier, since we can just hand over
 the existing any.
+
 ```c3
 struct AnyList (Printable)
 ```
 
 ---
 
-
 Initialize the list. If not initialized then it will use the temp allocator
 when something is pushed to it.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use"
@@ -3616,8 +3616,8 @@ fn AnyList* AnyList.init(&self, Allocator allocator, usz initial_capacity = 16)
 
 ---
 
-
 Initialize the list using the temp allocator.
+
 ```c3
 <*
  @param initial_capacity : "The initial capacity to reserve"
@@ -3634,25 +3634,25 @@ fn bool AnyList.is_initialized(&self) @inline
 
 ---
 
-
 Push an element on the list by cloning it.
+
 ```c3
 macro void AnyList.push(&self, element)
 ```
 
 ---
 
-
 Free a retained element removed using *_retained.
+
 ```c3
 fn void AnyList.free_element(&self, any element) @inline
 ```
 
 ---
 
-
 Pop a value who's type is known. If the type is incorrect, this
 will still pop the element.
+
 ```c3
 <*
  @param $Type : "The type we assume the value has"
@@ -3665,8 +3665,8 @@ macro AnyList.pop(&self, $Type)
 
 ---
 
-
 Copy the last value, pop it and return the copy of it.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use for copying"
@@ -3679,8 +3679,8 @@ fn any? AnyList.copy_pop(&self, Allocator allocator)
 
 ---
 
-
 Copy the last value, pop it and return the copy of it.
+
 ```c3
 <*
  @return "A temp copy of the last value if it exists"
@@ -3692,8 +3692,8 @@ fn any? AnyList.tcopy_pop(&self)
 
 ---
 
-
 Pop the last value. It must later be released using `list.free_element()`.
+
 ```c3
 <*
  @return "The last value if it exists"
@@ -3705,17 +3705,17 @@ fn any? AnyList.pop_retained(&self)
 
 ---
 
-
 Remove all elements in the list.
+
 ```c3
 fn void AnyList.clear(&self)
 ```
 
 ---
 
-
 Pop a value who's type is known. If the type is incorrect, this
 will still pop the element.
+
 ```c3
 <*
  @param $Type : "The type we assume the value has"
@@ -3728,8 +3728,8 @@ macro AnyList.pop_first(&self, $Type)
 
 ---
 
-
 Pop the first value. It must later be released using `list.free_element()`.
+
 ```c3
 <*
  @return "The first value if it exists"
@@ -3741,8 +3741,8 @@ fn any? AnyList.pop_first_retained(&self)
 
 ---
 
-
 Copy the first value, pop it and return the copy of it.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use for copying"
@@ -3755,8 +3755,8 @@ fn any? AnyList.copy_pop_first(&self, Allocator allocator)
 
 ---
 
-
 Copy the first value, pop it and return the temp copy of it.
+
 ```c3
 <*
  @return "A temp copy of the first value if it exists"
@@ -3768,8 +3768,8 @@ fn any? AnyList.tcopy_pop_first(&self)
 
 ---
 
-
 Remove the element at the particular index.
+
 ```c3
 <*
  @param index : "The index of the element to remove"
@@ -3781,8 +3781,8 @@ fn void AnyList.remove_at(&self, usz index)
 
 ---
 
-
 Add all the elements in another AnyList.
+
 ```c3
 <*
  @param [&in] other_list : "The list to add"
@@ -3793,16 +3793,16 @@ fn void AnyList.add_all(&self, AnyList* other_list)
 
 ---
 
-
 Reverse the order of the elements in the list.
+
 ```c3
 fn void AnyList.reverse(&self)
 ```
 
 ---
 
-
 Return a view of the data as a slice.
+
 ```c3
 <*
  @return "The slice view"
@@ -3813,8 +3813,8 @@ fn any[] AnyList.array_view(&self)
 
 ---
 
-
 Push an element to the front of the list.
+
 ```c3
 <*
  @param value : "The value to push to the list"
@@ -3825,8 +3825,8 @@ macro void AnyList.push_front(&self, value)
 
 ---
 
-
 Insert an element at a particular index.
+
 ```c3
 <*
  @param index : "the index where the element should be inserted"
@@ -3839,8 +3839,8 @@ macro void AnyList.insert_at(&self, usz index, type)
 
 ---
 
-
 Remove the last element in the list. The list may not be empty.
+
 ```c3
 <*
  @require self.size > 0 : "The list was already empty"
@@ -3851,8 +3851,8 @@ fn void AnyList.remove_last(&self)
 
 ---
 
-
 Remove the first element in the list, the list may not be empty.
+
 ```c3
 <*
  @require self.size > 0
@@ -3863,8 +3863,8 @@ fn void AnyList.remove_first(&self)
 
 ---
 
-
 Return the first element by value, assuming it is the given type.
+
 ```c3
 <*
  @param $Type : "The type of the first element"
@@ -3877,8 +3877,8 @@ macro AnyList.first(&self, $Type)
 
 ---
 
-
 Return the first element
+
 ```c3
 <*
  @return "The first element"
@@ -3890,8 +3890,8 @@ fn any? AnyList.first_any(&self) @inline
 
 ---
 
-
 Return the last element by value, assuming it is the given type.
+
 ```c3
 <*
  @param $Type : "The type of the last element"
@@ -3904,8 +3904,8 @@ macro AnyList.last(&self, $Type)
 
 ---
 
-
 Return the last element
+
 ```c3
 <*
  @return "The last element"
@@ -3917,8 +3917,8 @@ fn any? AnyList.last_any(&self) @inline
 
 ---
 
-
 Return whether the list is empty.
+
 ```c3
 <*
  @return "True if the list is empty"
@@ -3929,8 +3929,8 @@ fn bool AnyList.is_empty(&self) @inline
 
 ---
 
-
 Return the length of the list.
+
 ```c3
 <*
  @return "The number of elements in the list"
@@ -3941,8 +3941,8 @@ fn usz AnyList.len(&self) @operator(len) @inline
 
 ---
 
-
 Return an element in the list by value, assuming it is the given type.
+
 ```c3
 <*
  @param index : "The index of the element to retrieve"
@@ -3957,8 +3957,8 @@ macro AnyList.get(&self, usz index, $Type)
 
 ---
 
-
 Return an element in the list.
+
 ```c3
 <*
  @param index : "The index of the element to retrieve"
@@ -3972,16 +3972,16 @@ fn any AnyList.get_any(&self, usz index) @inline @operator([])
 
 ---
 
-
 Completely free and clear a list.
+
 ```c3
 fn void AnyList.free(&self)
 ```
 
 ---
 
-
 Swap two elements in a list.
+
 ```c3
 <*
  @param i : "Index of one of the elements"
@@ -3995,16 +3995,16 @@ fn void AnyList.swap(&self, usz i, usz j)
 
 ---
 
-
 Print the list to a formatter.
+
 ```c3
 fn usz? AnyList.to_format(&self, Formatter* formatter) @dynamic
 ```
 
 ---
 
-
 Remove any elements matching the predicate.
+
 ```c3
 <*
  @param filter : "The function to determine if it should be removed or not"
@@ -4016,8 +4016,8 @@ fn usz AnyList.remove_if(&self, AnyPredicate filter)
 
 ---
 
-
 Retain the elements matching the predicate.
+
 ```c3
 <*
  @param selection : "The function to determine if it should be kept or not"
@@ -4029,8 +4029,8 @@ fn usz AnyList.retain_if(&self, AnyPredicate selection)
 
 ---
 
-
 Remove any elements matching the predicate.
+
 ```c3
 <*
  @param filter : "The function to determine if it should be removed or not"
@@ -4043,8 +4043,8 @@ fn usz AnyList.remove_using_test(&self, AnyTest filter, any context)
 
 ---
 
-
 Retain any elements matching the predicate.
+
 ```c3
 <*
  @param selection : "The function to determine if it should be retained or not"
@@ -4057,8 +4057,8 @@ fn usz AnyList.retain_using_test(&self, AnyTest selection, any context)
 
 ---
 
-
 Reserve memory so that at least the `min_capacity` exists.
+
 ```c3
 <*
  @param min_capacity : "The min capacity to hold"
@@ -4069,8 +4069,8 @@ fn void AnyList.reserve(&self, usz min_capacity)
 
 ---
 
-
 Set the element at any index.
+
 ```c3
 <*
  @param index : "The index where to set the value."
@@ -4112,8 +4112,8 @@ fn usz BitSet.cardinality(&self)
 
 ---
 
-
 Set a bit in the bitset.
+
 ```c3
 <*
  @param i : "The index to set"
@@ -4125,8 +4125,8 @@ fn void BitSet.set(&self, usz i)
 
 ---
 
-
 Perform xor over all bits, mutating itself
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4138,8 +4138,8 @@ macro BitSet BitSet.xor_self(&self, BitSet set) @operator(^=)
 
 ---
 
-
 Perform xor over all bits, returning a new bit set.
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4151,8 +4151,8 @@ fn BitSet BitSet.xor(&self, BitSet set) @operator(^)
 
 ---
 
-
 Perform or over all bits, returning a new bit set.
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4164,8 +4164,8 @@ fn BitSet BitSet.or(&self, BitSet set) @operator(|)
 
 ---
 
-
 Perform or over all bits, mutating itself
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4177,8 +4177,8 @@ macro BitSet BitSet.or_self(&self, BitSet set) @operator(|=)
 
 ---
 
-
 Perform & over all bits, returning a new bit set.
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4190,8 +4190,8 @@ fn BitSet BitSet.and(&self, BitSet set) @operator(&)
 
 ---
 
-
 Perform & over all bits, mutating itself.
+
 ```c3
 <*
  @param set : "The bit set to xor with"
@@ -4203,8 +4203,8 @@ macro BitSet BitSet.and_self(&self, BitSet set) @operator(&=)
 
 ---
 
-
 Unset (clear) a bit in the bitset.
+
 ```c3
 <*
  @param i : "The index to set"
@@ -4216,8 +4216,8 @@ fn void BitSet.unset(&self, usz i)
 
 ---
 
-
 Get a particular bit in the bitset
+
 ```c3
 <*
  @param i : "The index of the bit"
@@ -4235,8 +4235,8 @@ fn usz BitSet.len(&self) @operator(len) @inline
 
 ---
 
-
 Change a particular bit in the bitset
+
 ```c3
 <*
  @param i : "The index of the bit"
@@ -4307,8 +4307,8 @@ fn void LinkedBlockingQueue.push(&self, Value value)
 
 ---
 
-
 Get a value from the queue, blocking if there is no element in the queue.
+
 ```c3
 <*
  @require self.is_initialized() : "Queue must be initialized"
@@ -4320,8 +4320,8 @@ fn Value LinkedBlockingQueue.poll(&self)
 
 ---
 
-
 Pop an element from the queue, fail is it is empty.
+
 ```c3
 <*
  @require self.is_initialized() : "Queue must be initialized"
@@ -4334,8 +4334,8 @@ fn Value? LinkedBlockingQueue.pop(&self)
 
 ---
 
-
 Poll with a timeout.
+
 ```c3
 <*
  @param timeout : "Timeout in microseconds"
@@ -4371,8 +4371,8 @@ fn bool LinkedBlockingQueue.is_empty(&self)
 
 ---
 
-
 Try to push, return CAPACITY_EXCEEDED if the queue is full.
+
 ```c3
 <*
  @param value : "Value to add to the queue"
@@ -4385,8 +4385,8 @@ fn void? LinkedBlockingQueue.try_push(&self, Value value)
 
 ---
 
-
 Try to push, return CAPACITY_EXCEEDED if the queue is still full after timeout is reached.
+
 ```c3
 <*
  @param value : "Value to add to the queue"
@@ -4528,18 +4528,18 @@ fn void ElasticArray.add_all(&self, ElasticArray* other_list)
 
 ---
 
-
 Add as many elements as possible to the new array,
 returning the number of elements that didn't fit.
+
 ```c3
 fn usz ElasticArray.add_all_to_limit(&self, ElasticArray* other_list)
 ```
 
 ---
 
-
 Add as many values from this array as possible, returning the
 number of elements that didn't fit.
+
 ```c3
 <*
  @param [in] array
@@ -4550,8 +4550,8 @@ fn usz ElasticArray.add_array_to_limit(&self, Type[] array)
 
 ---
 
-
 Add the values of an array to this list.
+
 ```c3
 <*
  @param [in] array
@@ -4564,8 +4564,8 @@ fn void ElasticArray.add_array(&self, Type[] array)
 
 ---
 
-
 IMPORTANT The returned array must be freed using free_aligned.
+
 ```c3
 fn Type[] ElasticArray.to_aligned_array(&self, Allocator allocator)
 ```
@@ -4588,8 +4588,8 @@ fn Type[] ElasticArray.to_tarray(&self)
 
 ---
 
-
 Reverse the elements in a list.
+
 ```c3
 fn void ElasticArray.reverse(&self)
 ```
@@ -4777,8 +4777,8 @@ fn bool ElasticArray.equals(&self, ElasticArray other_list) @if(ELEMENT_IS_EQUAT
 
 ---
 
-
 Check for presence of a value in a list.
+
 ```c3
 <*
  @param [&in] self : "the list to find elements in"
@@ -5254,8 +5254,8 @@ fn bool LinkedList.remove_last_match(&self, Type t)  @if(ELEMENT_IS_EQUATABLE)
 
 ---
 
-
 IMPORTANT The returned array must be freed using free_aligned.
+
 ```c3
 macro list_to_aligned_array($Type, self, Allocator allocator)
 ```
@@ -5358,8 +5358,8 @@ fn List* List.init(&self, Allocator allocator, usz initial_capacity = 16)
 
 ---
 
-
 Initialize the list using the temp allocator.
+
 ```c3
 <*
  @param initial_capacity : "The initial capacity to reserve"
@@ -5370,8 +5370,8 @@ fn List* List.tinit(&self, usz initial_capacity = 16)
 
 ---
 
-
 Initialize a new list with an array.
+
 ```c3
 <*
  @param [in] values : `The values to initialize the list with.`
@@ -5383,8 +5383,8 @@ fn List* List.init_with_array(&self, Allocator allocator, Type[] values)
 
 ---
 
-
 Initialize a temporary list with an array.
+
 ```c3
 <*
  @param [in] values : `The values to initialize the list with.`
@@ -5458,8 +5458,8 @@ fn void List.add_all(&self, List* other_list)
 
 ---
 
-
 IMPORTANT The returned array must be freed using free_aligned.
+
 ```c3
 fn Type[] List.to_aligned_array(&self, Allocator allocator)
 ```
@@ -5482,8 +5482,8 @@ fn Type[] List.to_tarray(&self)
 
 ---
 
-
 Reverse the elements in a list.
+
 ```c3
 fn void List.reverse(&self)
 ```
@@ -5496,8 +5496,8 @@ fn Type[] List.array_view(&self)
 
 ---
 
-
 Add the values of an array to this list.
+
 ```c3
 <*
  @param [in] array
@@ -5697,8 +5697,8 @@ fn bool List.equals(&self, List other_list) @if(ELEMENT_IS_EQUATABLE)
 
 ---
 
-
 Check for presence of a value in a list.
+
 ```c3
 <*
  @param [&in] self : "the list to find elements in"
@@ -5914,8 +5914,8 @@ fn HashMap* HashMap.tinit_from_keys_and_values(&self, Key[] keys, Value[] values
 
 ---
 
-
 Has this hash map been initialized yet?
+
 ```c3
 <*
  @param [&in] map : "The hash map we are testing"
@@ -5974,8 +5974,8 @@ fn Entry*? HashMap.get_entry(&map, Key key)
 
 ---
 
-
 Get the value or update and
+
 ```c3
 <*
  @require @assignable_to(#expr, Value)
@@ -6253,8 +6253,8 @@ fn LinkedHashMap* LinkedHashMap.tinit_from_keys_and_values(&self, Key[] keys, Va
 
 ---
 
-
 Has this hash map been initialized yet?
+
 ```c3
 <*
  @param [&in] map : "The hash map we are testing"
@@ -6313,8 +6313,8 @@ fn LinkedEntry*? LinkedHashMap.get_entry(&map, Key key)
 
 ---
 
-
 Get the value or update and
+
 ```c3
 <*
  @require @assignable_to(#expr, Value)
@@ -7259,8 +7259,8 @@ const Allocator SET_HEAP_ALLOCATOR
 
 ---
 
-
 Copy the ONHEAP allocator to initialize to a set that is heap allocated
+
 ```c3
 const HashSet ONHEAP
 ```
@@ -7368,8 +7368,8 @@ fn HashSet* HashSet.tinit_from_values(&self, Value[] values, uint capacity = DEF
 
 ---
 
-
 Has this hash set been initialized yet?
+
 ```c3
 <*
  @param [&in] set : "The hash set we are testing"
@@ -7404,8 +7404,8 @@ fn HashSet* HashSet.tinit_from_set(&set, HashSet* other_set)
 
 ---
 
-
 Check if the set is empty
+
 ```c3
 <*
  @return "true if it is empty"
@@ -7417,8 +7417,8 @@ fn bool HashSet.is_empty(&set) @inline
 
 ---
 
-
 Add all elements in the slice to the set.
+
 ```c3
 <*
  @param [in] list
@@ -7454,16 +7454,16 @@ fn bool HashSet.add(&set, Value value)
 
 ---
 
-
 Iterate over all the values in the set
+
 ```c3
 macro HashSet.@each(set; @body(value))
 ```
 
 ---
 
-
 Check if the set contains the given value.
+
 ```c3
 <*
  @param value : "The value to check"
@@ -7475,8 +7475,8 @@ fn bool HashSet.contains(&set, Value value)
 
 ---
 
-
 Remove a single value from the set.
+
 ```c3
 <*
  @param value : "The value to remove"
@@ -7504,16 +7504,16 @@ fn usz HashSet.remove_all_from(&set, HashSet* other)
 
 ---
 
-
 Free all memory allocated by the hash set.
+
 ```c3
 fn void HashSet.free(&set)
 ```
 
 ---
 
-
 Clear all elements from the set while keeping the underlying storage
+
 ```c3
 <*
  @ensure set.count == 0
@@ -7530,8 +7530,8 @@ fn void HashSet.reserve(&set, usz capacity)
 
 ---
 
-
 Returns the union of two sets (A | B)
+
 ```c3
 <*
  @param [&in] other : "The other set to union with"
@@ -7550,8 +7550,8 @@ fn HashSet HashSet.tset_union(&self, HashSet* other)
 
 ---
 
-
 Returns the intersection of the two sets (A & B)
+
 ```c3
 <*
  @param [&in] other : "The other set to intersect with"
@@ -7570,8 +7570,8 @@ fn HashSet HashSet.tintersection(&self, HashSet* other)
 
 ---
 
-
 Return this set - other, so (A & ~B)
+
 ```c3
 <*
  @param [&in] other : "The other set to compare with"
@@ -7590,8 +7590,8 @@ fn HashSet HashSet.tdifference(&self, HashSet* other)
 
 ---
 
-
 Return (A ^ B)
+
 ```c3
 <*
  @param [&in] other : "The other set to compare with"
@@ -7610,8 +7610,8 @@ fn HashSet HashSet.tsymmetric_difference(&self, HashSet* other)
 
 ---
 
-
 Check if this hash set is a subset of another set.
+
 ```c3
 <*
  @param [&in] other : "The other set to check against"
@@ -7760,8 +7760,8 @@ fn LinkedHashSet* LinkedHashSet.tinit_from_values(&self, Value[] values, uint ca
 
 ---
 
-
 Has this linked hash set been initialized yet?
+
 ```c3
 <*
  @param [&in] set : "The linked hash set we are testing"
@@ -7796,8 +7796,8 @@ fn LinkedHashSet* LinkedHashSet.tinit_from_set(&set, LinkedHashSet* other_set)
 
 ---
 
-
 Check if the set is empty
+
 ```c3
 <*
  @return "true if it is empty"
@@ -7809,8 +7809,8 @@ fn bool LinkedHashSet.is_empty(&set) @inline
 
 ---
 
-
 Add all elements in the slice to the set.
+
 ```c3
 <*
  @param [in] list
@@ -7846,16 +7846,16 @@ fn bool LinkedHashSet.add(&set, Value value)
 
 ---
 
-
 Iterate over all the values in the set
+
 ```c3
 macro LinkedHashSet.@each(set; @body(value))
 ```
 
 ---
 
-
 Check if the set contains the given value.
+
 ```c3
 <*
  @param value : "The value to check"
@@ -7867,8 +7867,8 @@ fn bool LinkedHashSet.contains(&set, Value value)
 
 ---
 
-
 Remove a single value from the set.
+
 ```c3
 <*
  @param value : "The value to remove"
@@ -7896,16 +7896,16 @@ fn usz LinkedHashSet.remove_all_from(&set, LinkedHashSet* other)
 
 ---
 
-
 Free all memory allocated by the hash set.
+
 ```c3
 fn void LinkedHashSet.free(&set)
 ```
 
 ---
 
-
 Clear all elements from the set while keeping the underlying storage
+
 ```c3
 <*
  @ensure set.count == 0
@@ -7922,8 +7922,8 @@ fn void LinkedHashSet.reserve(&set, usz capacity)
 
 ---
 
-
 Returns the union of two sets (A | B)
+
 ```c3
 <*
  @param [&in] other : "The other set to union with"
@@ -7942,8 +7942,8 @@ fn LinkedHashSet LinkedHashSet.tset_union(&self, LinkedHashSet* other)
 
 ---
 
-
 Returns the intersection of the two sets (A & B)
+
 ```c3
 <*
  @param [&in] other : "The other set to intersect with"
@@ -7962,8 +7962,8 @@ fn LinkedHashSet LinkedHashSet.tintersection(&self, LinkedHashSet* other)
 
 ---
 
-
 Return this set - other, so (A & ~B)
+
 ```c3
 <*
  @param [&in] other : "The other set to compare with"
@@ -7982,8 +7982,8 @@ fn LinkedHashSet LinkedHashSet.tdifference(&self, LinkedHashSet* other)
 
 ---
 
-
 Return (A ^ B)
+
 ```c3
 <*
  @param [&in] other : "The other set to compare with"
@@ -8002,8 +8002,8 @@ fn LinkedHashSet LinkedHashSet.tsymmetric_difference(&self, LinkedHashSet* other
 
 ---
 
-
 Check if this hash set is a subset of another set.
+
 ```c3
 <*
  @param [&in] other : "The other set to check against"
@@ -8105,45 +8105,44 @@ const uint PIXELS_MAX
 
 ---
 
-
 Colorspace.
 Purely informative. It will be saved to the file header,
 but does not affect how chunks are en-/decoded.
+
 ```c3
 enum QOIColorspace : char (char id)
 ```
 
 ---
 
-
 Channels.
 The channels used in an image.
 AUTO can be used when decoding to automatically determine
 the channels from the file's header.
+
 ```c3
 enum QOIChannels : char (char id)
 ```
 
 ---
 
-
 Descriptor.
 Contains information about an image.
+
 ```c3
 struct QOIDesc
 ```
 
 ---
 
-
 QOI Errors.
 These are all the possible bad outcomes.
+
 ```c3
 faultdef INVALID_PARAMETERS, FILE_OPEN_FAILED, FILE_WRITE_FAILED, INVALID_DATA, TOO_MANY_PIXELS
 ```
 
 ---
-
 
 Encode raw RGB or RGBA pixels into a QOI image in memory.
 
@@ -8153,6 +8152,7 @@ or a char[] pointing to the encoded data on success.
 The returned qoi data should be free()d after use, or the encoding
 and use of the data should be wrapped in a @pool() { ... }; block.
 See the write() function for an example.
+
 ```c3
 <*
  @param [in] input : `The raw RGB or RGBA pixels to encode`
@@ -8164,7 +8164,6 @@ fn char[]? encode(Allocator allocator, char[] input, QOIDesc* desc) @nodiscard
 
 
 ---
-
 
 Decode a QOI image from memory.
 
@@ -8181,6 +8180,7 @@ or a char[] pointing to the decoded pixels on success.
 
 The returned pixel data should be free()d after use, or the decoding
 and use of the data should be wrapped in a @pool() { ... }; block.
+
 ```c3
 <*
  @param [in] data : `The QOI image data to decode`
@@ -8195,7 +8195,6 @@ fn char[]? decode(Allocator allocator, char[] data, QOIDesc* desc, QOIChannels c
 
 ---
 
-
 Encode raw RGB or RGBA pixels into a QOI image and write it to the
 file system.
 
@@ -8205,6 +8204,7 @@ used channels (QOIChannels.RGB or RGBA) and the colorspace
 
 The function returns an optional, which can either be a QOIError
 or the number of bytes written on success.
+
 ```c3
 <*
  @param [in] filename : `The file's name to write the image to`
@@ -8216,7 +8216,6 @@ fn usz? write(String filename, char[] input, QOIDesc* desc)
 
 
 ---
-
 
 Read and decode a QOI image from the file system.
 
@@ -8233,6 +8232,7 @@ or a char[] pointing to the decoded pixels on success.
 
 The returned pixel data should be free()d after use, or the decoding
 and use of the data should be wrapped in a @pool() { ... }; block.
+
 ```c3
 <*
  @param [in] filename : `The file's name to read the image from`
@@ -8247,9 +8247,9 @@ fn char[]? read(Allocator allocator, String filename, QOIDesc* desc, QOIChannels
 
 ---
 
-
 Returns true if the array contains at least one element, else false
  
+
 ```c3
 <*
  @param [in] array
@@ -8263,9 +8263,9 @@ macro bool contains(array, element)
 
 ---
 
-
 Return the first index of element found in the array, searching from the start.
  
+
 ```c3
 <*
  @param [in] array
@@ -8279,8 +8279,8 @@ macro index_of(array, element)
 
 ---
 
-
 Slice a 2d array and create a Slice2d from it.
+
 ```c3
 <*
  @param array_ptr : "the pointer to create a slice from"
@@ -8299,9 +8299,9 @@ macro slice2d(array_ptr, x = 0, xlen = 0, y = 0, ylen = 0)
 
 ---
 
-
 Return the first index of element found in the array, searching in reverse from the end.
  
+
 ```c3
 <*
  @param [in] array
@@ -8315,8 +8315,8 @@ macro rindex_of(array, element)
 
 ---
 
-
 Concatenate two arrays or slices, returning a slice containing the concatenation of them.
+
 ```c3
 <*
  @param [in] arr1
@@ -8333,9 +8333,9 @@ macro concat(Allocator allocator, arr1, arr2) @nodiscard
 
 ---
 
-
 Concatenate two arrays or slices, returning a slice containing the concatenation of them,
 allocated using the temp allocator.
+
 ```c3
 <*
  @param [in] arr1
@@ -8352,9 +8352,9 @@ macro tconcat(arr1, arr2) @nodiscard
 
 ---
 
-
 A slice2d allows slicing an array like int[10][10] into an arbitrary "int[][]"-like counterpart
 Typically you'd use array::slice2d(...) to create one.
+
 ```c3
 struct Slice2d
 ```
@@ -8381,24 +8381,24 @@ fn usz Slice2d.count(&self)
 
 ---
 
-
 Step through each element of the slice.
+
 ```c3
 macro void Slice2d.@each(&self; @body(usz[<2>], Type))
 ```
 
 ---
 
-
 Step through each element of the slice *by reference*
+
 ```c3
 macro void Slice2d.@each_ref(&self; @body(usz[<2>], Type*))
 ```
 
 ---
 
-
 Return a row as a slice.
+
 ```c3
 <*
  @param idy : "The row to return"
@@ -8411,8 +8411,8 @@ macro Type[] Slice2d.get_row(self, usz idy) @operator([])
 
 ---
 
-
 Get the value at a particular x/y position in the slice.
+
 ```c3
 <*
  @param coord : "The xy coordinate"
@@ -8426,8 +8426,8 @@ macro Type Slice2d.get_coord(self, usz[<2>] coord)
 
 ---
 
-
 Get a pointer to the value at a particular x/y position in the slice.
+
 ```c3
 <*
  @param coord : "The xy coordinate"
@@ -8441,8 +8441,8 @@ macro Type* Slice2d.get_coord_ref(self, usz[<2>] coord)
 
 ---
 
-
 Get the value at a particular x/y position in the slice.
+
 ```c3
 <*
  @param x : "The x coordinate"
@@ -8457,8 +8457,8 @@ macro Type Slice2d.get_xy(self, x, y)
 
 ---
 
-
 Get the value at a particular x/y position in the slice by reference.
+
 ```c3
 <*
  @param x : "The x coordinate"
@@ -8473,8 +8473,8 @@ macro Type* Slice2d.get_xy_ref(self, x, y)
 
 ---
 
-
 Set the ´value at a particular x/y position in the slice.
+
 ```c3
 <*
  @param coord : "The xy coordinate"
@@ -8488,8 +8488,8 @@ macro void Slice2d.set_coord(self, usz[<2>] coord, Type value)
 
 ---
 
-
 Set the value at a particular x/y position in the slice.
+
 ```c3
 <*
  @param x : "The x coordinate"
@@ -8504,8 +8504,8 @@ macro void Slice2d.set_xy(self, x, y, Type value)
 
 ---
 
-
 Reslice a slice2d returning a new slice.
+
 ```c3
 <*
  @param x : "The starting x"
@@ -8810,8 +8810,8 @@ macro char char.to_upper(char c)
 
 ---
 
-
 Convert a-f/A-F/0-9 to the appropriate hex value.
+
 ```c3
 <*
  @require c.is_xdigit()
@@ -8979,7 +8979,6 @@ macro bool @is_arrayptr_or_slice_of_char(#bytes) @const
 
 ---
 
-
 EMPTY_MACRO_SLOT is a value used for implementing optional arguments for macros in an efficient
 way. It relies on the fact that distinct types are not implicitly convertable.
 
@@ -8997,6 +8996,7 @@ macro foo(a, #b = EMPTY_MACRO_SLOT)
 		return invoke_foo1(a);
 	$endif
 }
+
 ```c3
 const EmptySlot EMPTY_MACRO_SLOT @builtin
 ```
@@ -9021,8 +9021,8 @@ macro @is_valid_macro_slot(#arg) @const @builtin
 
 ---
 
-
 Returns a random value at compile time.
+
 ```c3
 <*
  @ensure return >= 0.0 && return < 1.0
@@ -9070,9 +9070,9 @@ alias VoidFn = fn void()
 
 ---
 
-
 Stores a variable on the stack, then restores it at the end of the
 macro scope.
+
 ```c3
 <*
  @param #variable : `the variable to store and restore`
@@ -9084,8 +9084,8 @@ macro void @scope(#variable; @body) @builtin
 
 ---
 
-
 Swap two variables
+
 ```c3
 <*
  @require $defined(#a = #b, #b = #a) : `The values must be mutually assignable`
@@ -9108,8 +9108,8 @@ macro usz @bitsizeof(#expr) @builtin @const
 
 ---
 
-
 Convert an `any` type to a type, returning an failure if there is a type mismatch.
+
 ```c3
 <*
  @param v : `the any to convert to the given type.`
@@ -9190,9 +9190,9 @@ fn void panicf(String fmt, String file, String function, uint line, args...)
 
 ---
 
-
 Marks the path as unreachable. This will panic in safe mode, and in fast will simply be assumed
 never happens.
+
 ```c3
 <*
  @param [in] string : "The panic message or format string"
@@ -9203,8 +9203,8 @@ macro void unreachable(String string = "Unreachable statement reached.", ...) @b
 
 ---
 
-
 Marks the path as unsupported, this is similar to unreachable.
+
 ```c3
 <*
  @param [in] string : "The error message"
@@ -9215,8 +9215,8 @@ macro void unsupported(String string = "Unsupported function invoked") @builtin 
 
 ---
 
-
 Unconditionally break into an attached debugger when reached.
+
 ```c3
 macro void breakpoint() @builtin
 ```
@@ -9283,8 +9283,8 @@ macro @enum_from_value($Type, #value, value) @builtin @deprecated("Use Enum.look
 
 ---
 
-
 Mark an expression as likely to be true
+
 ```c3
 <*
  @param #value : "expression to be marked likely"
@@ -9297,8 +9297,8 @@ macro bool @likely(bool #value, $probability = 1.0) @builtin
 
 ---
 
-
 Mark an expression as unlikely to be true
+
 ```c3
 <*
  @param #value : "expression to be marked unlikely"
@@ -9323,17 +9323,17 @@ macro @expect(#value, expected, $probability = 1.0) @builtin
 
 ---
 
-
 Locality for prefetch, levels 0 - 3, corresponding
 to "extremely local" to "no locality"
+
 ```c3
 enum PrefetchLocality
 ```
 
 ---
 
-
 Prefetch a pointer.
+
 ```c3
 <*
  @param [in] ptr : `Pointer to prefetch`
@@ -9358,8 +9358,8 @@ macro swizzle2(v, v2, ...) @builtin
 
 ---
 
-
 Returns the count of leading zero bits from an integer at compile-time.
+
 ```c3
 <*
  @require types::is_int($typeof($value)) : "Input value must be an integer"
@@ -9371,9 +9371,9 @@ macro @clz($value) @builtin @const
 
 ---
 
-
 Return the excuse in the Optional if it is Empty, otherwise
 return a null fault.
+
 ```c3
 <*
  @require @typekind(#expr) == OPTIONAL : `@catch expects an Optional value`
@@ -9384,9 +9384,9 @@ macro fault @catch(#expr) @builtin
 
 ---
 
-
 Check if an Optional expression holds a value or is empty, returning true
 if it has a value.
+
 ```c3
 <*
  @require @typekind(#expr) == OPTIONAL : `@ok expects an Optional value`
@@ -9397,9 +9397,9 @@ macro bool @ok(#expr) @builtin
 
 ---
 
-
 Check if an Optional expression evaluates to a fault. If so, return it;
 else, assign the result to an expression.
+
 ```c3
 <*
  @require $defined(#v = #v) : "#v must be a variable"
@@ -9411,7 +9411,6 @@ macro void? @try(#v, #expr) @builtin
 
 
 ---
-
 
 Check if an Optional expression evaluates to a fault. If so, return true if it is the
 expected fault, the optional if it is unexpected, or false if there was no fault and
@@ -9441,6 +9440,7 @@ fault, we rethrow is. Without this macro, the code is instead written like:
 	}
 	.. use data ..
  }
+
 ```c3
 <*
  @require $defined(#v = #v) : "#v must be a variable"
@@ -9968,8 +9968,8 @@ fn void x86_initialize_cpu_features()
 
 ---
 
-
 The DString offers a dynamic string builder.
+
 ```c3
 typedef DString (OutStream) = DStringOpaque*
 ```
@@ -9982,8 +9982,8 @@ typedef DStringOpaque = void
 
 ---
 
-
 Initialize the DString with a particular allocator.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use"
@@ -9997,9 +9997,9 @@ fn DString DString.init(&self, Allocator allocator, usz capacity = MIN_CAPACITY)
 
 ---
 
-
 Initialize the DString with the temp allocator. Note that if the dstring is never
 initialized, this is the allocator it will default to.
+
 ```c3
 <*
  @param capacity : "Starting capacity, defaults to MIN_CAPACITY and cannot be smaller"
@@ -11132,8 +11132,8 @@ fn usz os_pagesize()
 
 ---
 
-
 Load a vector from memory according to a mask assuming default alignment.
+
 ```c3
 <*
  @param ptr : "The pointer address to load from."
@@ -11150,8 +11150,8 @@ macro masked_load(ptr, bool[<*>] mask, passthru)
 
 ---
 
-
 Load a vector from memory according to a mask.
+
 ```c3
 <*
  @param ptr : "The pointer address to load from."
@@ -11170,8 +11170,8 @@ macro @masked_load_aligned(ptr, bool[<*>] mask, passthru, usz $alignment)
 
 ---
 
-
 Load values from a pointer vector, assuming default alignment.
+
 ```c3
 <*
  @param ptrvec : "The vector of pointers to load from."
@@ -11190,8 +11190,8 @@ macro gather(ptrvec, bool[<*>] mask, passthru)
 
 ---
 
-
 Load values from a pointer vector.
+
 ```c3
 <*
  @param ptrvec : "The vector of pointers to load from."
@@ -11212,8 +11212,8 @@ macro @gather_aligned(ptrvec, bool[<*>] mask, passthru, usz $alignment)
 
 ---
 
-
 Store parts of a vector according to the mask, assuming default alignment.
+
 ```c3
 <*
  @param ptr : "The pointer address to store to."
@@ -11451,8 +11451,8 @@ macro void clear_inline(void* dst, usz $len, usz $dst_align = 0, bool $is_volati
 
 ---
 
-
 Copy memory from src to dst efficiently, assuming the memory ranges do not overlap.
+
 ```c3
 <*
  @param [&out] dst : "The destination to copy to"
@@ -11470,9 +11470,9 @@ macro void copy(void* dst, void* src, usz len, usz $dst_align = 0, usz $src_alig
 
 ---
 
-
 Copy memory from src to dst efficiently, assuming the memory ranges do not overlap, it
 will always be inlined and never call memcopy
+
 ```c3
 <*
  @param [&out] dst : "The destination to copy to"
@@ -11490,8 +11490,8 @@ macro void copy_inline(void* dst, void* src, usz $len, usz $dst_align = 0, usz $
 
 ---
 
-
 Copy memory from src to dst but correctly handle the possibility of overlapping ranges.
+
 ```c3
 <*
  @param [&out] dst : "The destination to copy to"
@@ -11508,8 +11508,8 @@ macro void move(void* dst, void* src, usz len, usz $dst_align = 0, usz $src_alig
 
 ---
 
-
 Sets all memory in a region to that of the provided byte.
+
 ```c3
 <*
  @param [&out] dst : "The destination to copy to"
@@ -11525,8 +11525,8 @@ macro void set(void* dst, char val, usz len, usz $dst_align = 0, bool $is_volati
 
 ---
 
-
 Sets all memory in a region to that of the provided byte. Never calls OS memset.
+
 ```c3
 <*
  @param [&out] dst : "The destination to copy to"
@@ -11542,8 +11542,8 @@ macro void set_inline(void* dst, char val, usz $len, usz $dst_align = 0, bool $i
 
 ---
 
-
 Test if n elements are equal in a slice, pointed to by a pointer etc.
+
 ```c3
 <*
  @require values::@inner_kind(a) == TypeKind.SLICE || values::@inner_kind(a) == TypeKind.POINTER
@@ -11558,8 +11558,8 @@ macro bool equals(a, b, isz len = -1, usz $align = 0)
 
 ---
 
-
 Check if an allocation must be aligned given the type.
+
 ```c3
 <*
  @return `true if the alignment of the type exceeds DEFAULT_MEM_ALIGNMENT.`
@@ -11570,17 +11570,17 @@ macro bool type_alloc_must_be_aligned($Type)
 
 ---
 
-
 Run with a specific allocator inside of the macro body.
+
 ```c3
 macro void @scoped(Allocator allocator; @body())
 ```
 
 ---
 
-
 Run the tracking allocator in the scope, then
 print out stats.
+
 ```c3
 <*
  @param $enabled : "Set to false to disable tracking"
@@ -11591,8 +11591,8 @@ macro void @report_heap_allocs_in_scope($enabled = true; @body())
 
 ---
 
-
 Assert on memory leak in the scope of the macro body.
+
 ```c3
 <*
  @param $report : "Set to false to disable memory report"
@@ -11603,11 +11603,11 @@ macro void @assert_leak($report = true; @body()) @builtin
 
 ---
 
-
 Allocate [size] bytes on the stack to use for allocation,
 with the heap allocator as the backing allocator.
 
 Release everything on scope exit.
+
 ```c3
 <*
  @param $size : `the size of the buffer`
@@ -11624,16 +11624,16 @@ macro void @stack_pool(usz $size; @body) @builtin
 
 ---
 
-
 Push the current temp allocator. A push must always be balanced with a pop using the current state.
+
 ```c3
 fn PoolState temp_push()
 ```
 
 ---
 
-
 Pop the current temp allocator. A pop must always be balanced with a push.
+
 ```c3
 fn void temp_pop(PoolState old_state)
 ```
@@ -11656,12 +11656,12 @@ macro void @pool_init(Allocator allocator, usz pool_size,
 
 ---
 
-
 Create a new temporary allocator.
 
 The `reserve` parameter allows you to determine how many bytes should be reserved for
 allocations on the current temporary allocator, if allocations are made inside of the pool scope.
 It is made available for optimization, and can usually be ignored.
+
 ```c3
 <*
  @param reserve : "The amount of bytes to reserve for out-of-order allocations, 0 gives the default."
@@ -11718,9 +11718,9 @@ fn void* malloc(usz size) @builtin @inline @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 fn void* malloc_aligned(usz size, usz alignment) @builtin @inline @nodiscard
 ```
@@ -11757,9 +11757,9 @@ macro new_with_padding($Type, usz padding, ...) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 <*
  @require $vacount < 2 : "Too many arguments."
@@ -11791,9 +11791,9 @@ macro alloc_with_padding($Type, usz padding) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro alloc_aligned($Type) @nodiscard
 ```
@@ -11844,9 +11844,9 @@ macro new_array($Type, usz elements) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro new_array_aligned($Type, usz elements) @nodiscard
 ```
@@ -11863,9 +11863,9 @@ macro alloc_array($Type, usz elements) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro alloc_array_aligned($Type, usz elements) @nodiscard
 ```
@@ -11890,9 +11890,9 @@ fn void* calloc(usz size) @builtin @inline @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 fn void* calloc_aligned(usz size, usz alignment) @builtin @inline @nodiscard
 ```
@@ -11935,9 +11935,9 @@ fn void* trealloc(void* ptr, usz size, usz alignment = mem::DEFAULT_MEM_ALIGNMEN
 
 ---
 
-
 Takes the address of a possibly unaligned variable or member,
 and offers safe access to that member, by constructing an UnalignedRef.
+
 ```c3
 <*
  @require $defined(&#arg) : "It must be possible to take the address of the argument."
@@ -11970,8 +11970,8 @@ fn void* __memcpy(void* dst, void* src, usz n) @weak @export("memcpy")
 
 ---
 
-
 An UnalignedRef offers correctly aligned access to addresses that may be unaligned or overaligned.
+
 ```c3
 typedef UnalignedRef = Type*
 ```
@@ -11997,8 +11997,8 @@ struct ArenaAllocator (Allocator)
 
 ---
 
-
 Initialize a memory arena for use using the provided bytes.
+
 ```c3
 <*
  @param [inout] data : "The memory to use for the arena."
@@ -12009,16 +12009,16 @@ fn ArenaAllocator* ArenaAllocator.init(&self, char[] data)
 
 ---
 
-
 Reset the usage completely.
+
 ```c3
 fn void ArenaAllocator.clear(&self)
 ```
 
 ---
 
-
 Given some memory, create an arena allocator on the stack for it.
+
 ```c3
 <*
  @param [inout] bytes : `The bytes to use, may be empty.`
@@ -12030,8 +12030,8 @@ macro ArenaAllocator* wrap(char[] bytes)
 
 ---
 
-
 "Mark" the current state of the arena allocator by returning the use count.
+
 ```c3
 <*
  @return `The value to pass to 'reset' in order to reset to the current use.`
@@ -12042,8 +12042,8 @@ fn usz ArenaAllocator.mark(&self)
 
 ---
 
-
 Reset to a previous mark.
+
 ```c3
 <*
  @param mark : `The previous mark.`
@@ -12055,8 +12055,8 @@ fn void ArenaAllocator.reset(&self, usz mark)
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require ptr != null
@@ -12067,8 +12067,8 @@ fn void ArenaAllocator.release(&self, void* ptr, bool) @dynamic
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require !alignment || math::is_power_of_2(alignment)
@@ -12082,8 +12082,8 @@ fn void*? ArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz a
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require !alignment || math::is_power_of_2(alignment)
@@ -12098,7 +12098,6 @@ fn void*? ArenaAllocator.resize(&self, void *old_pointer, usz size, usz alignmen
 
 ---
 
-
 The backed arena allocator provides an allocator that will allocate from a pre-allocated chunk of memory
 provided by it's backing allocator. The allocator supports mark / reset operations, so it can be used
 as a stack (push-pop) allocator. If the initial memory is used up, it will fall back to regular allocations,
@@ -12106,6 +12105,7 @@ that will be safely freed on `reset`.
 
 While this allocator is similar to the dynamic arena, it supports multiple "save points", which the dynamic arena
 doesn't.
+
 ```c3
 struct BackedArenaAllocator (Allocator)
 ```
@@ -12176,7 +12176,6 @@ fn void*? BackedArenaAllocator.acquire(&self, usz size, AllocInitType init_type,
 
 ---
 
-
 The dynamic arena allocator is an arena allocator that can grow by adding additional arena "pages".
 It only supports reset, at which point all pages except the first one is released to the backing
 allocator.
@@ -12186,6 +12185,7 @@ If you want multiple save points, use the BackedArenaAllocator instead.
 The advantage over the BackedArenaAllocator, is that when allocating beyond the first "page", it will
 retain the characteristics of an arena allocator (allocating a large piece of memory then handing off
 memory from that memory), wheras the BackedArenaAllocator will have heap allocator characteristics.
+
 ```c3
 struct DynamicArenaAllocator (Allocator)
 ```
@@ -12251,12 +12251,12 @@ fn void*? DynamicArenaAllocator.acquire(&self, usz size, AllocInitType init_type
 
 ---
 
-
 The SimpleHeapAllocator implements a simple heap allocator on top of an allocator function.
 
 It uses the given allocator function to allocate memory from some source, but never frees it.
 This allocator is intended to be used in environments where there isn't any native libc malloc,
 and it has to be emulated from a memory region, or wrapping linear memory as is the case for plain WASM.
+
 ```c3
 struct SimpleHeapAllocator (Allocator)
 ```
@@ -12292,7 +12292,6 @@ fn void SimpleHeapAllocator.release(&self, void* old_pointer, bool aligned) @dyn
 
 ---
 
-
 The OnStackAllocator is similar to the ArenaAllocator: it allocates from a chunk of memory
 given to it.
 
@@ -12300,14 +12299,15 @@ The difference is that when it runs out of memory it will go directly to its bac
 rather than failing.
 
 It is utilized by the @stack_mem macro as an alternative to the temp allocator.
+
 ```c3
 struct OnStackAllocator (Allocator)
 ```
 
 ---
 
-
 Initialize a memory arena for use using the provided bytes.
+
 ```c3
 <*
  @param [&inout] allocator
@@ -12387,8 +12387,8 @@ struct TrackingAllocator (Allocator)
 
 ---
 
-
 Initialize a tracking allocator to wrap (and track) another allocator.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to track"
@@ -12399,8 +12399,8 @@ fn void TrackingAllocator.init(&self, Allocator allocator)
 
 ---
 
-
 Free this tracking allocator.
+
 ```c3
 fn void TrackingAllocator.free(&self)
 ```
@@ -12621,9 +12621,9 @@ macro new_try(Allocator allocator, $Type, ...) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 <*
  @require $vacount < 2 : "Too many arguments."
@@ -12665,9 +12665,9 @@ macro alloc_try(Allocator allocator, $Type) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro alloc_aligned(Allocator allocator, $Type) @nodiscard
 ```
@@ -12704,9 +12704,9 @@ macro new_array_try(Allocator allocator, $Type, usz elements) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro new_array_aligned(Allocator allocator, $Type, usz elements) @nodiscard
 ```
@@ -12723,9 +12723,9 @@ macro alloc_array(Allocator allocator, $Type, usz elements) @nodiscard
 
 ---
 
-
 Allocate using an aligned allocation. This is necessary for types with a default memory alignment
 exceeding DEFAULT_MEM_ALIGNMENT. IMPORTANT! It must be freed using free_aligned.
+
 ```c3
 macro alloc_array_aligned(Allocator allocator, $Type, usz elements) @nodiscard
 ```
@@ -12742,8 +12742,8 @@ macro alloc_array_try(Allocator allocator, $Type, usz elements) @nodiscard
 
 ---
 
-
 Clone a value.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use to clone"
@@ -12757,8 +12757,8 @@ macro clone(Allocator allocator, value) @nodiscard
 
 ---
 
-
 Clone overaligned values. Must be released using free_aligned.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use to clone"
@@ -12854,8 +12854,8 @@ alias tmem @builtin = current_temp
 
 ---
 
-
 Call this to destroy any memory used by the temp allocators. This will invalidate all temp memory.
+
 ```c3
 fn void destroy_temp_allocators()
 ```
@@ -12976,8 +12976,8 @@ fn TempAllocator*? TempAllocator.derive_allocator(&self, usz reserve = 0)
 
 ---
 
-
 Reset the entire temp allocator, which will merge all the children into it.
+
 ```c3
 fn void TempAllocator.reset(&self)
 ```
@@ -13068,8 +13068,8 @@ fn TempAllocator*? TempAllocator.derive_allocator(&self, usz reserve = 0)
 
 ---
 
-
 Reset the entire temp allocator, destroying all children
+
 ```c3
 fn void TempAllocator.reset(&self)
 ```
@@ -13095,8 +13095,8 @@ fn void TempAllocator.release(&self, void* old_pointer, bool b) @dynamic
 
 ---
 
-
 The LibcAllocator is a wrapper around malloc to conform to the Allocator interface.
+
 ```c3
 typedef LibcAllocator (Allocator) = uptr
 ```
@@ -13128,8 +13128,8 @@ bitstruct VmemOptions : int
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require !reserve_page_size || math::is_power_of_2(reserve_page_size)
@@ -13143,8 +13143,8 @@ fn void? Vmem.init(&self, usz preferred_size, usz reserve_page_size = 0, VmemOpt
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require !alignment || math::is_power_of_2(alignment)
@@ -13164,8 +13164,8 @@ fn bool Vmem.owns_pointer(&self, void* ptr) @inline
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require !alignment || math::is_power_of_2(alignment)
@@ -13180,8 +13180,8 @@ fn void*? Vmem.resize(&self, void *old_pointer, usz size, usz alignment) @dynami
 
 ---
 
-
 Implements the Allocator interface method.
+
 ```c3
 <*
  @require ptr != null
@@ -13271,7 +13271,6 @@ struct FixedBlockPoolEntry
 
 ---
 
-
 Fixed blocks pool pre-allocating blocks backed by an Allocator which are then reserved for the user,
 blocks deallocated by the user are later re-used by future blocks allocations
 
@@ -13279,14 +13278,15 @@ blocks deallocated by the user are later re-used by future blocks allocations
 it has to be greater than 0
 `allocated` number of allocated blocks
 `used` number of used blocks by the user
+
 ```c3
 struct FixedBlockPool
 ```
 
 ---
 
-
 Initialize an block pool
+
 ```c3
 <*
  @param [in] allocator : "The allocator to use"
@@ -13305,8 +13305,8 @@ macro FixedBlockPool* FixedBlockPool.init(&self, Allocator allocator, usz block_
 
 ---
 
-
 Initialize an block pool
+
 ```c3
 <*
  @param [in] allocator : "The allocator to use"
@@ -13320,8 +13320,8 @@ macro FixedBlockPool* FixedBlockPool.init_for_type(&self, Allocator allocator, $
 
 ---
 
-
 Initialize an block pool using Temporary allocator
+
 ```c3
 <*
  @param $Type : "The type used for setting the block size"
@@ -13334,8 +13334,8 @@ macro FixedBlockPool* FixedBlockPool.tinit_for_type(&self, $Type, usz capacity =
 
 ---
 
-
 Initialize an block pool using Temporary allocator
+
 ```c3
 <*
  @param block_size : "The block size to use"
@@ -13348,8 +13348,8 @@ macro FixedBlockPool* FixedBlockPool.tinit(&self, usz block_size, usz capacity =
 
 ---
 
-
 Free up the entire block pool
+
 ```c3
 <*
  @require self.initialized : "The block pool must be initialized"
@@ -13360,8 +13360,8 @@ fn void FixedBlockPool.free(&self)
 
 ---
 
-
 Allocate an block on the block pool, re-uses previously deallocated blocks
+
 ```c3
 <*
  @require self.initialized : "The block pool must be initialized"
@@ -13372,8 +13372,8 @@ fn void* FixedBlockPool.alloc(&self)
 
 ---
 
-
 Deallocate a block from the block pool
+
 ```c3
 <*
  @require self.initialized : "The block pool must be initialized"
@@ -13386,7 +13386,6 @@ fn void FixedBlockPool.dealloc(&self, void* ptr)
 
 ---
 
-
 A RefCounted struct should be an inline base of a struct.
 If a `dealloc` is defined, then it will be called rather than `free`
 
@@ -13397,6 +13396,7 @@ The macros rc::retain and rc::release must be used on the full pointer,
 not on the RefCounted substruct.
 
 So `Foo* f = ...; RefCounted* rc = f; rc::release(rc);` will not do the right thing.
+
 ```c3
 struct RefCounted
 ```
@@ -13468,9 +13468,9 @@ fn void Ref.release(&self)
 
 ---
 
-
 VirtualMemory is an abstraction for working with an allocated virtual memory area. It will invoke vm:: functions
 but will perform more checks and track its size (required to unmap the memory on Posix)
+
 ```c3
 struct VirtualMemory
 ```
@@ -13495,8 +13495,8 @@ fn usz aligned_alloc_size(usz size)
 
 ---
 
-
 Allocate virtual memory, size is rounded up to platform granularity (Win32) / page size (Posix).
+
 ```c3
 <*
  @param size : "The size of the memory to allocate, will be rounded up"
@@ -13510,8 +13510,8 @@ fn void*? alloc(usz size, VirtualMemoryAccess access)
 
 ---
 
-
 Release memory allocated with "alloc".
+
 ```c3
 <*
  @param [&inout] ptr : "Pointer to page to release, should be allocated using vm::alloc"
@@ -13524,8 +13524,8 @@ fn void? release(void* ptr, usz size)
 
 ---
 
-
 Change the access protection of a region in memory. The region must be page aligned.
+
 ```c3
 <*
  @param [&inout] ptr : "Pointer to page to update, must be page aligned"
@@ -13541,9 +13541,9 @@ fn void? protect(void* ptr, usz len, VirtualMemoryAccess access)
 
 ---
 
-
 Makes a region of memory available that was previously retrieved using 'alloc'. This is necessary on Win32,
 but optional on Posix.
+
 ```c3
 <*
  @param [&inout] ptr : "Pointer to page to update, must be page aligned"
@@ -13558,10 +13558,10 @@ fn void? commit(void* ptr, usz len, VirtualMemoryAccess access = READWRITE)
 
 ---
 
-
 Notifies that the memory in the region can be released back to the OS. On Win32 this decommits the region,
 whereas on Posix it tells the system that it may be reused using madvise. The "block" parameter is only
 respected on Posix, and protects the region from read/write/exec. On Win32 this always happens.
+
 ```c3
 <*
  @param [&inout] ptr : "Pointer to page to update, must be page aligned"
@@ -13577,8 +13577,8 @@ fn void? decommit(void* ptr, usz len, bool block = true)
 
 ---
 
-
 Map a portion of an already-opened file into memory.
+
 ```c3
 <*
  @param fd : "File descriptor"
@@ -13595,8 +13595,8 @@ fn void*? mmap_file(Fd fd, usz size, usz offset = 0, VirtualMemoryAccess access 
 
 ---
 
-
 Create a VirtualMemory using
+
 ```c3
 <*
  @param size : "The size of the memory to allocate."
@@ -13609,8 +13609,8 @@ fn VirtualMemory? virtual_alloc(usz size, VirtualMemoryAccess access = PROTECTED
 
 ---
 
-
 Commits memory, using vm::commit
+
 ```c3
 <*
  @param offset : "Starting from what offset to commit"
@@ -13627,8 +13627,8 @@ macro void? VirtualMemory.commit(self, usz offset, usz len)
 
 ---
 
-
 Changes protection of a part of memory using vm::protect
+
 ```c3
 <*
  @param offset : "Starting from what offset to update"
@@ -13645,8 +13645,8 @@ macro void? VirtualMemory.protect(self, usz offset, usz len, VirtualMemoryAccess
 
 ---
 
-
 Decommits a part of memory using vm::decommit
+
 ```c3
 <*
  @param offset : "Starting from what offset to decommit"
@@ -13664,8 +13664,8 @@ fn void? VirtualMemory.decommit(self, usz offset, usz len, bool block = true)
 
 ---
 
-
 Releases the memory region
+
 ```c3
 <*
  @require self.ptr != null : "Virtual memory must be initialized to call destroy"
@@ -13880,7 +13880,6 @@ alias ErrorCallback = fn void (ZString)
 
 ---
 
-
 Marks a memory region ([addr, addr+size)) as unaddressable.
 
 This memory must be previously allocated by your program. Instrumented
@@ -13891,6 +13890,7 @@ alignment restrictions.
 
 NOTE This function is not thread-safe because no two threads can poison or
 unpoison memory in the same memory region simultaneously.
+
 ```c3
 <*
  @param addr : "Start of memory region."
@@ -13902,7 +13902,6 @@ macro poison_memory_region(void* addr, usz size)
 
 ---
 
-
 Marks a memory region ([addr, addr+size)) as addressable.
 
 This memory must be previously allocated by your program. Accessing
@@ -13912,6 +13911,7 @@ to ASan alignment restrictions.
 
 NOTE This function is not thread-safe because no two threads can
 poison or unpoison memory in the same memory region simultaneously.
+
 ```c3
 <*
  @param addr : "Start of memory region."
@@ -13923,8 +13923,8 @@ macro unpoison_memory_region(void* addr, usz size)
 
 ---
 
-
 Checks if an address is poisoned.
+
 ```c3
 <*
  @return "True if 'addr' is poisoned (that is, 1-byte read/write access to this address would result in an error report from ASan). Otherwise returns false."
@@ -13936,11 +13936,11 @@ macro bool address_is_poisoned(void* addr)
 
 ---
 
-
 Checks if a region is poisoned.
 
 If at least one byte in [beg, beg+size) is poisoned, returns the
 address of the first such byte. Otherwise returns 0.
+
 ```c3
 <*
  @param beg : "Start of memory region."
@@ -13953,8 +13953,8 @@ macro void* region_is_poisoned(void* beg, usz size)
 
 ---
 
-
 Sets the callback function to be called during ASan error reporting.
+
 ```c3
 fn void set_error_report_callback(ErrorCallback callback)
 ```
@@ -14108,16 +14108,15 @@ typedef String @if(!$defined(String)) = inline char[]
 
 ---
 
-
 ZString is a pointer to a zero terminated array of chars.
 
 Use ZString when you need to interop with C zero terminated strings.
+
 ```c3
 typedef ZString = inline char*
 ```
 
 ---
-
 
 WString is a pointer to a zero terminated array of Char16.
 
@@ -14126,30 +14125,31 @@ For Windows, wchar_t is generally 16 bits, on MacOS it is 32 bits.
 However, for both MacOS and Linux, regular C strings (ZString)
 will be UTF-8 encoded, so there is no need to use the wchar_t versions
 of functions outside of encoding functions.
+
 ```c3
 typedef WString = inline Char16*
 ```
 
 ---
 
-
 Char32 is a UTF32 codepoint
+
 ```c3
 alias Char32 = uint
 ```
 
 ---
 
-
 Char16 is a UTF16 "character"
+
 ```c3
 alias Char16 = ushort
 ```
 
 ---
 
-
 Common faults used with strings
+
 ```c3
 faultdef INVALID_UTF8, INVALID_UTF16, CONVERSION_FAILED,
          EMPTY_STRING, NEGATIVE_VALUE, MALFORMED_INTEGER,
@@ -14158,8 +14158,8 @@ faultdef INVALID_UTF8, INVALID_UTF16, CONVERSION_FAILED,
 
 ---
 
-
 Create a pointer to an UTF32 encoded string at compile time.
+
 ```c3
 <*
  @param $string : "The string to encode"
@@ -14170,8 +14170,8 @@ macro Char32* @wstring32(String $string) @builtin
 
 ---
 
-
 Create a slice of an UTF32 encoded string at compile time.
+
 ```c3
 <*
  @param $string : "The string to encode"
@@ -14182,8 +14182,8 @@ macro Char32[] @char32(String $string) @builtin
 
 ---
 
-
 Create a WString (an UTF16 encoded string) at compile time.
+
 ```c3
 <*
  @param $string : "The string to encode"
@@ -14194,8 +14194,8 @@ macro WString @wstring(String $string) @builtin
 
 ---
 
-
 Create a slice of an UTF32 encoded string at compile time.
+
 ```c3
 <*
  @param $string : "The string to encode"
@@ -14212,8 +14212,8 @@ macro String @sprintf(String $format, ...) @builtin @const
 
 ---
 
-
 Return a temporary ZString created using the formatting function.
+
 ```c3
 <*
  @param [in] fmt : `The formatting string`
@@ -14224,8 +14224,8 @@ fn ZString tformat_zstr(String fmt, args...) @format(0)
 
 ---
 
-
 Return a new String created using the formatting function.
+
 ```c3
 <*
  @param [inout] allocator : `The allocator to use`
@@ -14237,8 +14237,8 @@ fn String format(Allocator allocator, String fmt, args...) @format(1)
 
 ---
 
-
 Return a new String created using the formatting function.
+
 ```c3
 <*
  @param [inout] buffer : `The buffer to use`
@@ -14250,8 +14250,8 @@ fn String bformat(char[] buffer, String fmt, args...) @format(1)
 
 ---
 
-
 Return a temporary String created using the formatting function.
+
 ```c3
 <*
  @param [in] fmt : `The formatting string`
@@ -14262,8 +14262,8 @@ fn String tformat(String fmt, args...) @format(0)
 
 ---
 
-
 Check if a character is in a set.
+
 ```c3
 <*
  @param c : `the character to check`
@@ -14283,8 +14283,8 @@ fn String join(Allocator allocator, String[] s, String joiner)
 
 ---
 
-
 Replace all instances of one substring with a different string.
+
 ```c3
 <*
  @param [in] self
@@ -14299,8 +14299,8 @@ fn String String.replace(self, Allocator allocator, String needle, String new_st
 
 ---
 
-
 Replace all instances of one substring with a different string, allocating the new string on the temp allocator.
+
 ```c3
 <*
  @param [in] self
@@ -14314,8 +14314,8 @@ fn String String.treplace(self, String needle, String new_str)
 
 ---
 
-
 Remove characters from the front and end of a string.
+
 ```c3
 <*
  @param [in] self : `The string to trim`
@@ -14329,8 +14329,8 @@ fn String String.trim(self, String to_trim = "\t\n\r ")
 
 ---
 
-
 Remove characters from the front of a string.
+
 ```c3
 <*
  @param [in] self : `The string to trim`
@@ -14344,8 +14344,8 @@ fn String String.trim_left(self, String to_trim = "\t\n\r ")
 
 ---
 
-
 Remove characters from the end of a string.
+
 ```c3
 <*
  @param [in] self : `The string to trim`
@@ -14359,8 +14359,8 @@ fn String String.trim_right(self, String to_trim = "\t\n\r ")
 
 ---
 
-
 Check if the String starts with the prefix.
+
 ```c3
 <*
  @param [in] self
@@ -14374,8 +14374,8 @@ fn bool String.starts_with(self, String prefix)
 
 ---
 
-
 Check if the String ends with the suffix.
+
 ```c3
 <*
  @param [in] self
@@ -14389,8 +14389,8 @@ fn bool String.ends_with(self, String suffix)
 
 ---
 
-
 Strip the front of the string if the prefix exists.
+
 ```c3
 <*
  @param [in] self
@@ -14404,8 +14404,8 @@ fn String String.strip(self, String prefix)
 
 ---
 
-
 Strip the end of the string if the suffix exists.
+
 ```c3
 <*
  @param [in] self
@@ -14419,8 +14419,8 @@ fn String String.strip_end(self, String suffix)
 
 ---
 
-
 Split a string into parts, e.g "a|b|c" split with "|" yields { "a", "b", "c" }
+
 ```c3
 <*
  @param [in] self
@@ -14437,9 +14437,9 @@ fn String[] String.split(self, Allocator allocator, String delimiter, usz max = 
 
 ---
 
-
 This function is identical to String.split, but implicitly uses the
 temporary allocator.
+
 ```c3
 <*
  @param [in] s
@@ -14459,8 +14459,8 @@ faultdef BUFFER_EXCEEDED
 
 ---
 
-
 Split a string into parts, e.g "a|b|c" split with "|" yields { "a", "b", "c" }
+
 ```c3
 <*
  @param [in] s
@@ -14477,8 +14477,8 @@ fn String[]? String.split_to_buffer(s, String delimiter, String[] buffer, usz ma
 
 ---
 
-
 Check if a substring is found in the string.
+
 ```c3
 <*
  @param [in] s
@@ -14492,10 +14492,10 @@ fn bool String.contains(s, String substr)
 
 ---
 
-
 Check how many non-overlapping instances of a substring there is.
 
 If the substring has zero length, the number of matches is zero.
+
 ```c3
 <*
  @param [in] self : "The string to search"
@@ -14509,8 +14509,8 @@ fn usz String.count(self, String substr)
 
 ---
 
-
 Find the index of the first incidence of a string.
+
 ```c3
 <*
  @param [in] self
@@ -14526,8 +14526,8 @@ fn usz? String.index_of_char(self, char character)
 
 ---
 
-
 Find the index of the first incidence of a one of the chars.
+
 ```c3
 <*
  @param [in] self
@@ -14543,8 +14543,8 @@ fn usz? String.index_of_chars(String self, char[] characters)
 
 ---
 
-
 Find the index of the first incidence of a character.
+
 ```c3
 <*
  @param [in] self
@@ -14561,8 +14561,8 @@ fn usz? String.index_of_char_from(self, char character, usz start_index)
 
 ---
 
-
 Find the index of the first incidence of a character starting from the end.
+
 ```c3
 <*
  @param [in] self
@@ -14578,8 +14578,8 @@ fn usz? String.rindex_of_char(self, char character)
 
 ---
 
-
 Find the index of the first incidence of a string.
+
 ```c3
 <*
  @param [in] self
@@ -14596,8 +14596,8 @@ fn usz? String.index_of(self, String substr)
 
 ---
 
-
 Find the index of the last incidence of a string.
+
 ```c3
 <*
  @param [in] self
@@ -14668,10 +14668,10 @@ fn ZString String.zstr_tcopy(self)
 
 ---
 
-
 Copy this string, by duplicating the string, always adding a zero byte
 sentinel, so that it safely can be converted to a ZString by a
 cast.
+
 ```c3
 fn String String.copy(self, Allocator allocator)
 ```
@@ -14702,8 +14702,8 @@ fn String ZString.tcopy(self)
 
 ---
 
-
 Convert an UTF-8 string to UTF-16
+
 ```c3
 <*
  @return "The UTF-16 string as a slice, allocated using the given allocator"
@@ -14745,8 +14745,8 @@ fn Char32[]? String.to_temp_utf32(self)
 
 ---
 
-
 Convert a string to ASCII lower case in place.
+
 ```c3
 <*
  @param [inout] self
@@ -14770,8 +14770,8 @@ fn String String.to_lower_tcopy(self)
 
 ---
 
-
 Convert a string to ASCII upper case.
+
 ```c3
 <*
  @param [inout] self
@@ -14783,8 +14783,8 @@ fn void String.convert_to_upper(self)
 
 ---
 
-
 Returns a string converted to ASCII upper case.
+
 ```c3
 <*
  @param [in] self
@@ -14803,8 +14803,8 @@ fn String String.capitalize_copy(self, Allocator allocator)
 
 ---
 
-
 Convert a string from `snake_case` to PascalCase.
+
 ```c3
 <*
  @param [in] self
@@ -14816,8 +14816,8 @@ fn String String.snake_to_pascal_copy(self, Allocator allocator)
 
 ---
 
-
 Movifies the current string from `snake_case` to PascalCase.
+
 ```c3
 <*
  @param [inout] self
@@ -14828,8 +14828,8 @@ fn void String.convert_snake_to_pascal(&self)
 
 ---
 
-
 Convert a string from `PascalCase` to `snake_case`.
+
 ```c3
 <*
  @param [in] self
@@ -14894,7 +14894,6 @@ fn usz String.utf8_codepoints(s)
 
 ---
 
-
 Determine whether the current string actually points to a ZString-like string.
 
 This is done by looking at the byte one step after the end of the string. If this
@@ -14902,12 +14901,12 @@ is zero, it is considered zero terminated.
 
 This function can safely be used with data pointing to null. However, it will not
 work correctly if the pointer is invalid, for example it is already freed.
+
 ```c3
 fn bool String.is_zstr(self) @deprecated("Unsafe, use copy instead")
 ```
 
 ---
-
 
 Return a pointer to the string *iff* it is a pointer
 to a zero terminated string, otherwise return a temp allocated zstring copy.
@@ -14921,6 +14920,7 @@ which means that if that data is then modified after this call, this function
 might behave incorrectly.
 
 For this reason, try to ensure that the resulting ZString is immediately used.
+
 ```c3
 <*
  @ensure return[self.len] == 0
@@ -14931,12 +14931,12 @@ fn ZString String.quick_zstr(self) @deprecated("Unsafe, use zstr_tcopy instead")
 
 ---
 
-
 Convert a number to a given base. If the base is not given, then
 it will be inferred from the number if the string starts with 0x 0o or 0b and the
 base is given as 10.
 
 Furthermore it will skip any spaces before and after the number.
+
 ```c3
 <*
  @param $Type : "The type to convert to"
@@ -15025,10 +15025,10 @@ fn float? String.to_float(self)
 
 ---
 
-
 Create a Splitter to track tokenizing of a string. Tokenize will turn "foo:bar::baz" into
 "foo", "bar" and "baz", if you want the empty string to be present, use `tokenize_all`
 instead.
+
 ```c3
 <*
  @param [in] split : "The string to use for splitting"
@@ -15040,10 +15040,10 @@ fn Splitter String.tokenize(self, String split)
 
 ---
 
-
 Create a Splitter to track tokenizing of a string. Tokenize will turn "foo:bar::baz" into
 "foo", "bar" and "baz", if you want the empty string to be present, use `tokenize_all`
 instead.
+
 ```c3
 <*
  @param [in] split : "The string to use for splitting"
@@ -15062,8 +15062,8 @@ fn Splitter String.splitter(self, String split) @deprecated("Use tokenize_all in
 
 ---
 
-
 This macro will create a string description of a struct.
+
 ```c3
 <*
  @param [&inout] allocator : "The allocator to use"
@@ -15075,8 +15075,8 @@ macro String from_struct(Allocator allocator, x)
 
 ---
 
-
 This macro will create a temporary string description of a struct.
+
 ```c3
 <*
  @param x : "The struct to create a description of"
@@ -15093,8 +15093,8 @@ enum SplitterType
 
 ---
 
-
 Splitter is handles tokenizing strings.
+
 ```c3
 struct Splitter
 ```
@@ -15119,8 +15119,8 @@ faultdef INVALID_ESCAPE_SEQUENCE, UNTERMINATED_STRING, INVALID_HEX_ESCAPE, INVAL
 
 ---
 
-
 Escape a string by adding quotes and converting special characters to escape sequences.
+
 ```c3
 <*
  @param allocator : "The allocator to use for the result"
@@ -15134,8 +15134,8 @@ fn String String.escape(String s, Allocator allocator, bool strip_quotes = true)
 
 ---
 
-
 Escape a string using the temp allocator.
+
 ```c3
 <*
  @param s : "The string to escape"
@@ -15148,8 +15148,8 @@ fn String String.tescape(String s, bool strip_quotes = false)
 
 ---
 
-
 Calculate the length needed for an escaped string (including quotes).
+
 ```c3
 <*
  @param s : "The string to check"
@@ -15161,8 +15161,8 @@ fn usz escape_len(String s)
 
 ---
 
-
 Unescape a quoted string by parsing escape sequences.
+
 ```c3
 <*
  @param allocator : "The allocator to use for the result"
@@ -15177,8 +15177,8 @@ fn String? String.unescape(String s, Allocator allocator, bool allow_unquoted = 
 
 ---
 
-
 Unescape a quoted string using the temp allocator.
+
 ```c3
 <*
  @param s : "The quoted string to unescape"
@@ -15192,8 +15192,8 @@ fn String? String.tunescape(String s, bool allow_unquoted = false)
 
 ---
 
-
 Check if a character needs to be escaped in a string literal.
+
 ```c3
 <*
  @param c : "The character to check"
@@ -15252,8 +15252,8 @@ enum Ansi : const inline String
 
 ---
 
-
 8-bit color code
+
 ```c3
 <*
  @return `the formatting char for the given background color`
@@ -15264,8 +15264,8 @@ macro String color_8bit(char $index, bool $bg = false) @const
 
 ---
 
-
 24-bit color code
+
 ```c3
 <*
  @return `the string for the given foreground color`
@@ -15276,8 +15276,8 @@ macro String color_rgb(char $r, char $g, char $b, bool $bg = false) @const
 
 ---
 
-
 24-bit color code rgb
+
 ```c3
 <*
  @require $rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
@@ -15289,8 +15289,8 @@ macro String color(uint $rgb, bool $bg = false) @const
 
 ---
 
-
 24-bit color code rgb
+
 ```c3
 <*
  @require rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
@@ -15302,8 +15302,8 @@ fn String make_color(Allocator mem, uint rgb, bool bg = false)
 
 ---
 
-
 24-bit color code rgb
+
 ```c3
 <*
  @require rgb <= 0xFF_FF_FF : `Expected a 24 bit RGB value`
@@ -15315,8 +15315,8 @@ fn String make_tcolor(uint rgb, bool bg = false)
 
 ---
 
-
 24-bit color code rgb
+
 ```c3
 <*
  @return `the string char for the given foreground color`
@@ -15327,8 +15327,8 @@ fn String make_color_rgb(Allocator mem, char r, char g, char b, bool bg = false)
 
 ---
 
-
 24-bit color code rgb
+
 ```c3
 <*
  @return `the string char for the given foreground color`
@@ -15352,8 +15352,8 @@ fn usz? char32_to_utf8(Char32 c, char[] output)
 
 ---
 
-
 Convert a code pointer into 1-2 UTF16 characters.
+
 ```c3
 <*
  @param c : `The character to convert.`
@@ -15365,8 +15365,8 @@ fn void char32_to_utf16_unsafe(Char32 c, Char16** output)
 
 ---
 
-
 Convert 1-2 UTF16 data points into UTF8.
+
 ```c3
 <*
  @param [in] ptr : `The UTF16 data to convert.`
@@ -15413,8 +15413,8 @@ fn usz utf8_codepoints(String utf8)
 
 ---
 
-
 Calculate the UTF8 length required to encode an UTF32 array.
+
 ```c3
 <*
  @param [in] utf32 : `the utf32 data to calculate from`
@@ -15426,8 +15426,8 @@ fn usz utf8len_for_utf32(Char32[] utf32)
 
 ---
 
-
 Calculate the UTF8 length required to encode an UTF16 array.
+
 ```c3
 <*
  @param [in] utf16 : `the utf16 data to calculate from`
@@ -15439,8 +15439,8 @@ fn usz utf8len_for_utf16(Char16[] utf16)
 
 ---
 
-
 Calculate the UTF16 length required to encode a UTF8 array.
+
 ```c3
 <*
  @param utf8 : `the utf8 data to calculate from`
@@ -15463,8 +15463,8 @@ fn usz utf16len_for_utf32(Char32[] utf32)
 
 ---
 
-
 Convert an UTF32 array to an UTF8 array.
+
 ```c3
 <*
  @param [in] utf32
@@ -15477,8 +15477,8 @@ fn usz? utf32to8(Char32[] utf32, char[] utf8_buffer)
 
 ---
 
-
 Convert an UTF8 array to an UTF32 array.
+
 ```c3
 <*
  @param [in] utf8
@@ -15491,10 +15491,10 @@ fn usz? utf8to32(String utf8, Char32[] utf32_buffer)
 
 ---
 
-
 Copy an array of UTF16 data into an UTF8 buffer without bounds
 checking. This will assume the buffer is sufficiently large to hold
 the converted data.
+
 ```c3
 <*
  @param [in] utf16 : `The UTF16 array containing the data to convert.`
@@ -15506,10 +15506,10 @@ fn void? utf16to8_unsafe(Char16[] utf16, char* utf8_buffer)
 
 ---
 
-
 Copy an array of UTF8 data into an UTF32 buffer without bounds
 checking. This will assume the buffer is sufficiently large to hold
 the converted data.
+
 ```c3
 <*
  @param [in] utf8 : `The UTF8 buffer containing the data to convert.`
@@ -15521,10 +15521,10 @@ fn void? utf8to32_unsafe(String utf8, Char32* utf32_buffer)
 
 ---
 
-
 Copy an array of UTF8 data into an UTF16 buffer without bounds
 checking. This will assume the buffer is sufficiently large to hold
 the converted data.
+
 ```c3
 <*
  @param [in] utf8 : `The UTF8 buffer containing the data to convert.`
@@ -15536,10 +15536,10 @@ fn void? utf8to16_unsafe(String utf8, Char16* utf16_buffer)
 
 ---
 
-
 Copy an array of UTF32 code points into an UTF8 buffer without bounds
 checking. This will assume the buffer is sufficiently large to hold
 the converted data.
+
 ```c3
 <*
  @param [in] utf32 : `The UTF32 buffer containing the data to convert.`
@@ -15589,8 +15589,8 @@ fn Char32? StringIterator.get(&self)
 
 ---
 
-
 Initializes test case context.
+
 ```c3
 <*
  @param setup_fn : `initializer function for test case`
@@ -15604,8 +15604,8 @@ macro @setup(TestFn setup_fn, TestFn teardown_fn = null)
 
 ---
 
-
 Checks condition and fails assertion if not true
+
 ```c3
 <*
  @param #condition : `any boolean condition, will be expanded by text`
@@ -15619,8 +15619,8 @@ macro @check(#condition, String format = "", args...)
 
 ---
 
-
 Check if function returns specific error
+
 ```c3
 <*
  @param #funcresult : `result of function execution`
@@ -15633,8 +15633,8 @@ macro @error(#funcresult, fault error_expected)
 
 ---
 
-
 Check if left == right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15647,8 +15647,8 @@ macro eq(left, right)
 
 ---
 
-
 Check left floating point value is approximately equals to right value
+
 ```c3
 <*
  @param places : `number of decimal places to compare (default: 7)`
@@ -15664,8 +15664,8 @@ macro void eq_approx(double left, double right, uint places = 7, double delta = 
 
 ---
 
-
 Check if left != right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15678,8 +15678,8 @@ macro void ne(left, right)
 
 ---
 
-
 Check if left > right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15692,8 +15692,8 @@ macro gt(left, right)
 
 ---
 
-
 Check if left >= right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15706,8 +15706,8 @@ macro ge(left, right)
 
 ---
 
-
 Check if left < right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15720,8 +15720,8 @@ macro lt(left, right)
 
 ---
 
-
 Check if left <= right
+
 ```c3
 <*
  @param left : `left argument of any comparable type`
@@ -15951,8 +15951,8 @@ macro bool is_equatable_type($Type) @const
 
 ---
 
-
 Checks if a type implements the copy protocol.
+
 ```c3
 macro bool implements_copy($Type) @const
 ```
@@ -15984,8 +15984,8 @@ struct TypeEnum
 
 ---
 
-
 Return true if two values have the same type before any conversions.
+
 ```c3
 macro bool @is_same_type(#value1, #value2) @const
 ```
@@ -16070,11 +16070,11 @@ macro promote_int(x)
 
 ---
 
-
 Select between two values at compile time,
 the values do not have to be of the same type.
 
 This acts like `$bool ? #value_1 : #value_2` but at compile time.
+
 ```c3
 <*
  @param $bool : `true for picking the first value, false for the other`
@@ -16139,8 +16139,8 @@ alias Ed25519Signature = char[2 * Ed25519PublicKey.len]
 
 ---
 
-
 Generate a public key from a private key.
+
 ```c3
 <*
  @param [in] private_key : "32 bytes of cryptographically secure random data"
@@ -16152,8 +16152,8 @@ fn Ed25519PublicKey public_keygen(char[] private_key)
 
 ---
 
-
 Sign a message.
+
 ```c3
 <*
  @param [in] message
@@ -16168,8 +16168,8 @@ fn Ed25519Signature sign(char[] message, char[] private_key, char[] public_key)
 
 ---
 
-
 Verify the signature of a message.
+
 ```c3
 <*
  @param [in] message
@@ -16191,8 +16191,8 @@ struct Rc4
 
 ---
 
-
 Initialize the RC4 state.
+
 ```c3
 <*
  @param [in] key : "The key to use"
@@ -16204,8 +16204,8 @@ fn void Rc4.init(&self, char[] key)
 
 ---
 
-
 Run a single pass of en/decryption using a particular key.
+
 ```c3
 <*
  @param [in] key
@@ -16217,8 +16217,8 @@ fn void crypt(char[] key, char[] data)
 
 ---
 
-
 Encrypt or decrypt a sequence of bytes.
+
 ```c3
 <*
  @param [in] in : "The input"
@@ -16231,8 +16231,8 @@ fn void Rc4.crypt(&self, char[] in, char[] out)
 
 ---
 
-
 Clear the rc4 state.
+
 ```c3
 <*
  @param [&out] self : "The RC4 State"
@@ -16269,8 +16269,8 @@ const char DEFAULT_PAD
 
 ---
 
-
 Encode the content of src into a newly allocated string
+
 ```c3
 <*
  @param [in] src : "The input to be encoded."
@@ -16285,8 +16285,8 @@ fn String? encode(Allocator allocator, char[] src, char padding = DEFAULT_PAD, B
 
 ---
 
-
 Decode the content of src into a newly allocated char array.
+
 ```c3
 <*
  @param [in] src : "The input to be encoded."
@@ -16313,8 +16313,8 @@ fn char[]? tdecode(char[] code, char padding = DEFAULT_PAD, Base32Alphabet* alph
 
 ---
 
-
 Calculate the length in bytes of the decoded data.
+
 ```c3
 <*
  @param n : "Length in bytes of input."
@@ -16328,8 +16328,8 @@ fn usz decode_len(usz n, char padding)
 
 ---
 
-
 Calculate the length in bytes of the encoded data.
+
 ```c3
 <*
  @param n : "Length in bytes on input."
@@ -16343,8 +16343,8 @@ fn usz encode_len(usz n, char padding)
 
 ---
 
-
 Decode the content of src into dst, which must be properly sized.
+
 ```c3
 <*
  @param src : "The input to be decoded."
@@ -16362,8 +16362,8 @@ fn char[]? decode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Bas
 
 ---
 
-
 Encode the content of src into dst, which must be properly sized.
+
 ```c3
 <*
  @param [in] src : "The input to be encoded."
@@ -16489,8 +16489,8 @@ fn char[]? tdecode(char[] code, char padding = DEFAULT_PAD, Base64Alphabet* alph
 
 ---
 
-
 Calculate the size of the encoded data.
+
 ```c3
 <*
  @param n : "Size of the input to be encoded."
@@ -16504,8 +16504,8 @@ fn usz encode_len(usz n, char padding)
 
 ---
 
-
 Calculate the size of the decoded data.
+
 ```c3
 <*
  @param n : "Size of the input to be decoded."
@@ -16520,8 +16520,8 @@ fn usz? decode_len(usz n, char padding)
 
 ---
 
-
 Encode the content of src into dst, which must be properly sized.
+
 ```c3
 <*
  @param src : "The input to be encoded."
@@ -16537,8 +16537,8 @@ fn String encode_buffer(char[] src, char[] dst, char padding = DEFAULT_PAD, Base
 
 ---
 
-
 Decode the content of src into dst, which must be properly sized.
+
 ```c3
 <*
  @param src : "The input to be decoded."
@@ -16678,8 +16678,8 @@ fn char[]? tdecode(char[] code) @inline
 
 ---
 
-
 Calculate the size of the encoded data.
+
 ```c3
 <*
  @param n : "Size of the input to be encoded."
@@ -16691,8 +16691,8 @@ fn usz encode_len(usz n)
 
 ---
 
-
 Encode the content of src into dst, which must be properly sized.
+
 ```c3
 <*
  @param src : "The input to be encoded."
@@ -16706,8 +16706,8 @@ fn usz encode_bytes(char[] src, char[] dst)
 
 ---
 
-
 Calculate the size of the decoded data.
+
 ```c3
 <*
  @param n : "Size of the input to be decoded."
@@ -16719,11 +16719,11 @@ macro usz decode_len(usz n)
 
 ---
 
-
 Decodes src into bytes. Returns the actual number of bytes written to dst.
 
 Expects that src only contains hexadecimal characters and that src has even
 length.
+
 ```c3
 <*
  @param src : "The input to be decoded."
@@ -17666,8 +17666,8 @@ macro bool is_struct_with_default_print($Type)
 
 ---
 
-
 Introspect a struct and print it to a formatter
+
 ```c3
 <*
  @require @typekind(value) == STRUCT || @typekind(value) == BITSTRUCT : `This macro is only valid on macros`
@@ -17858,10 +17858,10 @@ faultdef
 
 ---
 
-
 Read from a stream (default is stdin) to the next "\n"
 or to the end of the stream, whatever comes first.
 "\r" will be filtered from the String.
+
 ```c3
 <*
  @param stream : `The stream to read from.`
@@ -17876,9 +17876,9 @@ macro String? readline(Allocator allocator, stream = io::stdin())
 
 ---
 
-
 Reads a string, see `readline`, except the it is allocated
 on the temporary allocator and does not need to be freed.
+
 ```c3
 <*
  @param stream : `The stream to read from.`
@@ -17892,8 +17892,8 @@ macro String? treadline(stream = io::stdin())
 
 ---
 
-
 Reads a string, see `readline`, the data is passed to an outstream
+
 ```c3
 <*
  @param out_stream : `The stream to write to`
@@ -17910,8 +17910,8 @@ macro usz? readline_to_stream(out_stream, in_stream = io::stdin())
 
 ---
 
-
 Print a value to a stream.
+
 ```c3
 <*
  @param out : `the stream to print to`
@@ -17925,9 +17925,9 @@ macro usz? fprint(out, x)
 
 ---
 
-
 Prints using a 'printf'-style formatting string.
 See `printf` for details on formatting.
+
 ```c3
 <*
  @param [inout] out : `The OutStream to print to`
@@ -17940,9 +17940,9 @@ fn usz? fprintf(OutStream out, String format, args...) @format(1)
 
 ---
 
-
 Prints using a 'printf'-style formatting string,
 appending '\n' at the end. See `printf`.
+
 ```c3
 <*
  @param [inout] out : `The OutStream to print to`
@@ -17965,16 +17965,16 @@ macro usz? fprintn(out, x = "")
 
 ---
 
-
 Print any value to stdout.
+
 ```c3
 macro void print(x)
 ```
 
 ---
 
-
 Print any value to stdout, appending an '\n’ after.
+
 ```c3
 <*
  @param x : "The value to print"
@@ -17985,16 +17985,16 @@ macro void printn(x = "")
 
 ---
 
-
 Print any value to stderr.
+
 ```c3
 macro void eprint(x)
 ```
 
 ---
 
-
 Print any value to stderr, appending an '\n’ after.
+
 ```c3
 <*
  @param x : "The value to print"
@@ -18005,7 +18005,6 @@ macro void eprintn(x = "")
 
 ---
 
-
 Prints using a 'printf'-style formatting string.
 To print integer numbers, use "%d" or "%x"/"%X,
 the latter gives the hexadecimal representation.
@@ -18015,6 +18014,7 @@ the default representation of the value.
 
 To create a custom output for a type, implement
 the Printable interface.
+
 ```c3
 <*
  @param [in] format : `The printf-style format string`
@@ -18026,9 +18026,9 @@ fn usz? printf(String format, args...) @format(0) @maydiscard
 
 ---
 
-
 Prints using a 'printf'-style formatting string,
 appending '\n' at the end. See `printf`.
+
 ```c3
 <*
  @param [in] format : `The printf-style format string`
@@ -18040,9 +18040,9 @@ fn usz? printfn(String format, args...) @format(0) @maydiscard
 
 ---
 
-
 Prints using a 'printf'-style formatting string
 to stderr.
+
 ```c3
 <*
  @param [in] format : `The printf-style format string`
@@ -18054,9 +18054,9 @@ fn usz? eprintf(String format, args...) @maydiscard
 
 ---
 
-
 Prints using a 'printf'-style formatting string,
 to stderr appending '\n' at the end. See `printf`.
+
 ```c3
 <*
  @param [in] format : `The printf-style format string`
@@ -18068,9 +18068,9 @@ fn usz? eprintfn(String format, args...) @maydiscard
 
 ---
 
-
 Prints using a 'printf'-style formatting string,
 to a string buffer. See `printf`.
+
 ```c3
 <*
  @param [inout] buffer : `The buffer to print to`
@@ -18380,8 +18380,8 @@ macro char[]? read_short_bytearray(stream, Allocator allocator)
 
 ---
 
-
 Wrap bytes for reading using io functions.
+
 ```c3
 fn ByteReader wrap_bytes(char[] bytes)
 ```
@@ -18394,8 +18394,8 @@ struct ReadBuffer (InStream)
 
 ---
 
-
 Buffer reads from a stream.
+
 ```c3
 <*
  @param [inout] self
@@ -18438,8 +18438,8 @@ struct WriteBuffer (OutStream)
 
 ---
 
-
 Buffer writes to a stream. Call `flush` when done writing to the buffer.
+
 ```c3
 <*
  @param [inout] self
@@ -18488,9 +18488,9 @@ struct ByteBuffer (InStream, OutStream)
 
 ---
 
-
 ByteBuffer provides a streamable read/write buffer.
 max_read defines how many bytes might be kept before its internal buffer is shrinked.
+
 ```c3
 <*
  @require self.bytes.len == 0 : "Buffer already initialized."
@@ -18548,8 +18548,8 @@ fn char? ByteBuffer.read_byte(&self) @dynamic
 
 ---
 
-
 Only the last byte of a successful read can be pushed back.
+
 ```c3
 fn void? ByteBuffer.pushback_byte(&self) @dynamic
 ```
@@ -18857,10 +18857,10 @@ struct Scanner (InStream)
 
 ---
 
-
 Scanner provides a way to read delimited data (with newlines as the default).
 The supplied buffer must be at least as large as the expected data length
 including its pattern.
+
 ```c3
 <*
  @param [&in] stream : "The stream to read data from."
@@ -18872,8 +18872,8 @@ fn void Scanner.init(&self, InStream stream, char[] buffer)
 
 ---
 
-
 Return and clear any remaining unscanned data.
+
 ```c3
 fn char[] Scanner.flush(&self) @dynamic
 ```
@@ -18886,8 +18886,8 @@ fn void? Scanner.close(&self) @dynamic
 
 ---
 
-
 Scan the stream for the next split character and return data up to the match.
+
 ```c3
 <*
  @require pattern.len > 0 : "Non-empty pattern required."
@@ -18917,9 +18917,9 @@ struct TeeReader (InStream)
 
 ---
 
-
 Returns a reader that implements InStream and that will write any data read
 from the wrapped reader r to the writer w. There is no internal buffering.
+
 ```c3
 <*
  @param [&inout] r : "Stream r to read from."
@@ -18956,16 +18956,16 @@ fn char? TeeReader.read_byte(&self) @dynamic
 
 ---
 
-
 Libc `putchar`, prints a single character to stdout.
+
 ```c3
 fn void putchar(char c) @inline
 ```
 
 ---
 
-
 Get standard out.
+
 ```c3
 <*
  @return `stdout as a File`
@@ -18976,8 +18976,8 @@ fn File* stdout()
 
 ---
 
-
 Get standard err.
+
 ```c3
 <*
  @return `stderr as a File`
@@ -18988,8 +18988,8 @@ fn File* stderr()
 
 ---
 
-
 Get standard in.
+
 ```c3
 <*
  @return `stdin as a File`
@@ -19163,9 +19163,9 @@ fn char? File.read_byte(&self) @dynamic
 
 ---
 
-
 Load up to buffer.len characters. Returns io::OVERFLOW if the file is longer
 than the buffer.
+
 ```c3
 <*
  @param filename : "The path to the file to read"
@@ -19218,8 +19218,8 @@ fn void? File.flush(&self) @dynamic
 
 ---
 
-
 Maps a region of an already-opened file into memory
+
 ```c3
 <*
  @param file : "Already opened file created on the caller scope"
@@ -19234,8 +19234,8 @@ fn mmap::FileMmap? mmap_file(File file, usz offset = 0, usz len = 0, vm::Virtual
 
 ---
 
-
 Maps a region of the given file into memory
+
 ```c3
 <*
  @param filename : "File path"
@@ -19258,8 +19258,8 @@ struct FileMmap
 
 ---
 
-
 Provides a slice of bytes to the expected mapped range discarding the extra bytes due to misaligment of offset and/or size.
+
 ```c3
 <*
  @return "Slice of the mapped range where the first byte matches the file's byte at the offset specified to File::file_mmap()"
@@ -19270,8 +19270,8 @@ fn char[] FileMmap.bytes(&self)
 
 ---
 
-
 Destroys the underlyng VirtualMemory object ie. calls munmap()"
+
 ```c3
 fn void? FileMmap.destroy(&self) @maydiscard
 ```
@@ -19477,8 +19477,8 @@ fn @weak @if(!$defined(native_fopen_fn))
 
 ---
 
-
 Delete a file.
+
 ```c3
 <*
  @require filename.len > 0
@@ -19715,8 +19715,8 @@ enum MkdirPermissions
 
 ---
 
-
 Create a directory on a given path, optionally recursive.
+
 ```c3
 <*
  @param path : `The path to create`
@@ -19730,8 +19730,8 @@ macro bool? mkdir(path, bool recursive = false, MkdirPermissions permissions = N
 
 ---
 
-
 Tries to delete directory, which must be empty.
+
 ```c3
 <*
  @param path : `The path to delete`
@@ -19745,16 +19745,16 @@ macro bool? rmdir(path)
 
 ---
 
-
 Like [rmdir] but deletes a directory even if it contains items.
+
 ```c3
 fn void? rmtree(Path path)
 ```
 
 ---
 
-
 Creates a new path.
+
 ```c3
 <*
  @return? INVALID_PATH : `if the path was invalid`
@@ -19765,8 +19765,8 @@ fn Path? new(Allocator allocator, String path, PathEnv path_env = DEFAULT_ENV)
 
 ---
 
-
 Creates a new path using the temp allocator.
+
 ```c3
 <*
  @return? INVALID_PATH : `if the path was invalid`
@@ -19807,8 +19807,8 @@ fn bool Path.equals(self, Path p2) @operator(==)
 
 ---
 
-
 Append the string to the current path.
+
 ```c3
 <*
  @param [in] filename
@@ -19889,9 +19889,9 @@ fn String Path.dirname(self)
 
 ---
 
-
 Test if the path has the given extension, so given the path /foo/bar.c3
 this would be true matching the extension "c3"
+
 ```c3
 <*
  @param [in] extension : `The extension name (not including the leading '.')`
@@ -19928,9 +19928,9 @@ fn Path? String.to_tpath(self)
 
 ---
 
-
 Get the path of the parent. This does not allocate, but returns a slice
 of the path itself.
+
 ```c3
 <*
  @return `The parent of the path as a non-allocated path`
@@ -19966,9 +19966,9 @@ alias PathWalker = fn bool? (Path, bool is_dir, void*)
 
 ---
 
-
 Walk the path recursively. PathWalker is run on every file and
 directory found. Return true to abort the walk.
+
 ```c3
 <*
  @require self.env == DEFAULT_ENV : "This method is only available on native paths"
@@ -19985,9 +19985,9 @@ alias TraverseCallback = fn bool? (Path, bool is_dir, any data)
 
 ---
 
-
 Walk the path recursively. TraverseCallback is run for every file and
 directory found. Return true to abort the walk.
+
 ```c3
 <*
  @require path.env == DEFAULT_ENV : "This method is only available on native paths"
@@ -20463,8 +20463,8 @@ macro sincos_ref(x, sinp, cosp)
 
 ---
 
-
 Return a vector with sin / cos of the given angle.
+
 ```c3
 <*
  @param x : `the angle in radians`
@@ -20546,8 +20546,8 @@ macro ceil(x)
 
 ---
 
-
 Ceil for compile time evaluation.
+
 ```c3
 <*
  @require @typeis($input, double) || @typeis($input, float) : "Only float and double may be used"
@@ -20558,8 +20558,8 @@ macro @ceil($input) @const
 
 ---
 
-
 Constrain the value to lie within the given interval.
+
 ```c3
 <*
  @param x : "the value to clamp, may be a number or a numerical vector."
@@ -20990,8 +20990,8 @@ macro trunc(x)
 
 ---
 
-
 Use a mask to select values from either "then" or "else" vectors.
+
 ```c3
 <*
  @param mask : "The mask to use for the select, 'true' will pick the then_value, 'false' the else_value"
@@ -23236,8 +23236,8 @@ macro ulong[<*>] ulong[<*>].muldiv(self, mul, div)
 
 ---
 
-
 Calculate the least common multiple for the provided arguments.
+
 ```c3
 <*
  @require $vacount >= 2 : "At least two arguments are required."
@@ -23248,8 +23248,8 @@ macro lcm(...)
 
 ---
 
-
 Calculate the greatest common divisor for the provided arguments.
+
 ```c3
 <*
  @require $vacount >= 2 : "At least two arguments are required."
@@ -23645,10 +23645,10 @@ fn BigInt BigInt.mod_pow(&self, BigInt exp, BigInt mod)
 
 ---
 
-
 Fast calculation of modular reduction using Barrett's reduction.
 Requires x < b^(2k), where b is the base.  In this case, base is
 2^32 (uint).
+
 ```c3
 fn BigInt barrett_reduction(BigInt x, BigInt n, BigInt constant)
 ```
@@ -25044,8 +25044,8 @@ fn int __rem_pio2_large(double* x, double* y, int e0, int nx, int prec)
 
 ---
 
-
 caller must handle the case when reduction is not needed: |x| ~<= pi/4
+
 ```c3
 fn int __rem_pio2(double x, double *y)
 ```
@@ -25232,8 +25232,8 @@ macro void seed(random, seed)
 
 ---
 
-
 Seed the random with some best effort entropy.
+
 ```c3
 <*
  @require is_random(random)
@@ -25244,8 +25244,8 @@ macro void seed_entropy(random)
 
 ---
 
-
 Get the next value between 0 and range (not including range).
+
 ```c3
 <*
  @require is_random(random)
@@ -25257,8 +25257,8 @@ macro int next(random, uint range)
 
 ---
 
-
 Get a random in the range [min, max], both included.
+
 ```c3
 <*
  @require is_random(random)
@@ -25276,24 +25276,24 @@ alias DefaultRandom = Sfc64Random
 
 ---
 
-
 Seed the default random function.
+
 ```c3
 fn void srand(ulong seed) @builtin
 ```
 
 ---
 
-
 Get a default random value between 0 and range (not including range)
+
 ```c3
 fn int rand(int range) @builtin
 ```
 
 ---
 
-
 Get a random in the range, both included.
+
 ```c3
 <*
  @require max >= min
@@ -25310,8 +25310,8 @@ fn double rnd() @builtin
 
 ---
 
-
 Get 'true' or 'false'
+
 ```c3
 <*
  @require is_random(random)
@@ -25322,8 +25322,8 @@ macro bool next_bool(random)
 
 ---
 
-
 Get a float between 0 and 1.0, not including 1.0.
+
 ```c3
 <*
  @require is_random(random)
@@ -25334,8 +25334,8 @@ macro float next_float(random)
 
 ---
 
-
 Get a double between 0 and 1.0, not including 1.0.
+
 ```c3
 <*
  @require is_random(random)
@@ -26590,16 +26590,16 @@ typedef Uuid (Printable) = char[16]
 
 ---
 
-
 Generate a version 4 UUID from the default random.
+
 ```c3
 fn Uuid generate()
 ```
 
 ---
 
-
 Generate a version 4 UUID from the given random.
+
 ```c3
 fn Uuid generate_from_random(Random random)
 ```
@@ -29931,7 +29931,6 @@ faultdef
 
 ---
 
-
 Represents the actual (decoded) Url.
 
 An Url can be parsed from a String with `new_parse()` or `temp_parse()`. The
@@ -29945,14 +29944,15 @@ If the Url struct fields are filled in manually, use the actual (un-encoded)
 values. To create a raw query string, initialize an `UrlQueryValues` map, use
 `UrlQueryValues.add()` to add the query parameters and, finally, call
 `UrlQueryValues.to_string()`.
+
 ```c3
 struct Url(Printable)
 ```
 
 ---
 
-
 Parse a URL string into a Url struct.
+
 ```c3
 <*
  @param [in] url_string
@@ -29965,8 +29965,8 @@ fn Url? tparse(String url_string)
 
 ---
 
-
 Parse a URL string into a Url struct.
+
 ```c3
 <*
  @param [in] url_string
@@ -30003,8 +30003,8 @@ struct UrlQueryValues
 
 ---
 
-
 Parse the query parameters of the Url into a UrlQueryValues map.
+
 ```c3
 <*
  @param [in] query
@@ -30016,8 +30016,8 @@ fn UrlQueryValues parse_query_to_temp(String query)
 
 ---
 
-
 Parse the query parameters of the Url into a UrlQueryValues map.
+
 ```c3
 <*
  @param [in] query
@@ -30030,9 +30030,9 @@ fn UrlQueryValues parse_query(Allocator allocator, String query)
 
 ---
 
-
 Add copies of the key and value strings to the UrlQueryValues map. These
 copies are freed when the UrlQueryValues map is freed.
+
 ```c3
 <*
  @param [in] self
@@ -30058,8 +30058,8 @@ fn void UrlQueryValues.free(&self)
 
 ---
 
-
 Free an Url struct.
+
 ```c3
 <*
  @param [in] self
@@ -30082,17 +30082,17 @@ faultdef INVALID_HEX
 
 ---
 
-
 Calculate the length of the percent-encoded string.
+
 ```c3
 fn usz encode_len(String s, UrlEncodingMode mode) @inline
 ```
 
 ---
 
-
 Encode the string s for a given encoding mode.
 Returned string must be freed.
+
 ```c3
 <*
  @param s : "String to encode"
@@ -30106,8 +30106,8 @@ fn String encode(Allocator allocator, String s, UrlEncodingMode mode)
 
 ---
 
-
 Encode string s for a given encoding mode, stored on the temp allocator.
+
 ```c3
 <*
  @param s : "String to encode"
@@ -30120,8 +30120,8 @@ fn String tencode(String s, UrlEncodingMode mode)
 
 ---
 
-
 Calculate the length of the percent-decoded string.
+
 ```c3
 <*
  @return? INVALID_HEX
@@ -30132,9 +30132,9 @@ fn usz? decode_len(String s, UrlEncodingMode mode) @inline
 
 ---
 
-
 Decode string s for a given encoding mode.
 Returned string must be freed.
+
 ```c3
 <*
  @param s : "String to decode"
@@ -30148,8 +30148,8 @@ fn String? decode(Allocator allocator, String s, UrlEncodingMode  mode)
 
 ---
 
-
 Decode string s for a given encoding mode, stored on the temp allocator.
+
 ```c3
 <*
  @param s : "String to decode"
@@ -30163,17 +30163,17 @@ fn String? tdecode(String s, UrlEncodingMode  mode)
 
 ---
 
-
 Exit the process with a given exit code. This will typically call 'exit' in LibC
+
 ```c3
 fn void exit(int result) @weak @noreturn
 ```
 
 ---
 
-
 Exit the process with a given exit code. This will typically call '_Exit' in LibC
 usually bypassing '@finalizer' functions.
+
 ```c3
 fn void fastexit(int result) @weak @noreturn
 ```
@@ -30609,16 +30609,16 @@ fn bool set_var(String name, String value, bool overwrite = true)
 
 ---
 
-
 Returns the current user's home directory.
+
 ```c3
 fn String? get_home_dir(Allocator allocator)
 ```
 
 ---
 
-
 Returns the current user's config directory.
+
 ```c3
 fn Path? get_config_dir(Allocator allocator)
 ```
@@ -34041,9 +34041,9 @@ extern fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT tim
 
 ---
 
-
 Perform a binary search over the sorted array and return the index
 in [0, array.len) where x would be inserted or cmp(i) is true and cmp(j) is true for j in [i, array.len).
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be sortable"
@@ -34056,8 +34056,8 @@ macro usz binarysearch(list, x, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SL
 
 ---
 
-
 Sort list using the counting sort algorithm.
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
@@ -34081,8 +34081,8 @@ macro quicksort_indexed(list, start, end, cmp = EMPTY_MACRO_SLOT, context = EMPT
 
 ---
 
-
 Sort list using the quick sort algorithm.
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
@@ -34094,8 +34094,8 @@ macro insertionsort(list, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @b
 
 ---
 
-
 Sort list using the quick sort algorithm.
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
@@ -34108,10 +34108,10 @@ macro quicksort(list, cmp = EMPTY_MACRO_SLOT, context = EMPTY_MACRO_SLOT) @built
 
 ---
 
-
 Select the (k+1)th smallest element in an unordered list using Hoare's
 selection algorithm (Quickselect). k should be between 0 and len-1. The data
 list will be partially sorted.
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
@@ -34154,8 +34154,8 @@ macro bool @is_cmp_key_fn(#key_fn, #list)
 
 ---
 
-
 Returns true if list is sorted in either ascending or descending order.
+
 ```c3
 <*
  @require @is_sortable(list) : "The list must be indexable and support .len or .len()"
@@ -34492,8 +34492,8 @@ macro void? ConditionVariable.wait_until(&cond, Mutex* mutex, Time time)
 
 ---
 
-
 Create and start a thread.
+
 ```c3
 <*
  @require thread_fn != null : "A non null thread function is required"
@@ -35438,27 +35438,27 @@ fn void? ThreadPool.init(&self)
 
 ---
 
-
 Stop all the threads and cleanup the pool.
 Any pending work will be dropped.
+
 ```c3
 fn void? ThreadPool.destroy(&self)
 ```
 
 ---
 
-
 Stop all the threads and cleanup the pool.
 Any pending work will be processed.
+
 ```c3
 fn void? ThreadPool.stop_and_destroy(&self)
 ```
 
 ---
 
-
 Push a new job to the pool.
 Returns whether the queue is full, in which case the job is ignored.
+
 ```c3
 fn void? ThreadPool.push(&self, ThreadFn func, void* arg)
 ```
@@ -35490,27 +35490,27 @@ fn void? FixedThreadPool.init(&self, usz threads, usz queue_size = 0)
 
 ---
 
-
 Stop all the threads and cleanup the pool.
 Any pending work will be dropped.
+
 ```c3
 fn void? FixedThreadPool.destroy(&self)
 ```
 
 ---
 
-
 Stop all the threads and cleanup the pool.
 Any pending work will be processed.
+
 ```c3
 fn void? FixedThreadPool.stop_and_destroy(&self)
 ```
 
 ---
 
-
 Push a new job to the pool.
 return Excuse if the queue is full, in which case the job is ignored.
+
 ```c3
 fn void? FixedThreadPool.push(&self, ThreadPoolFn func, args...)
 ```
@@ -35915,9 +35915,9 @@ fn TzDateTime DateTime.to_local(&self)
 
 ---
 
-
 Update timestamp to gmt_offset while keeping the date and time
 values unchanged.
+
 ```c3
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
@@ -35928,9 +35928,9 @@ fn TzDateTime DateTime.with_gmt_offset(self, int gmt_offset)
 
 ---
 
-
 Update timestamp to gmt_offset while keeping the date and time
 values unchanged.
+
 ```c3
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
@@ -35941,9 +35941,9 @@ fn TzDateTime TzDateTime.with_gmt_offset(self, int gmt_offset)
 
 ---
 
-
 Update the date and time values to gmt_offset while keeping the
 timestamp unchanged.
+
 ```c3
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
@@ -35955,9 +35955,9 @@ fn TzDateTime DateTime.to_gmt_offset(self, int gmt_offset)
 
 ---
 
-
 Update the date and time values to gmt_offset while keeping the
 timestamp unchanged.
+
 ```c3
 <*
  @require gmt_offset >= -12 * 3600 && gmt_offset <= 14 * 3600
