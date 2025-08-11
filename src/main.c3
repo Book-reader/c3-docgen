@@ -52,9 +52,10 @@ fn int main(String[] args)
 			io::fprintf(&out_file, "### `%s`\n", mod)!!;
 			foreach (decl : modules.get(mod)!!)
 			{
+				io::fprintf(&out_file, "\n---\n\n")!!;
 				if (decl.doc_comment.comment.len() > 0)
 				{
-					io::fprintf(&out_file, "\n")!!;
+					defer io::fprintf(&out_file, "\n")!!;
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
@@ -63,19 +64,27 @@ fn int main(String[] args)
 				}
 				if (decl.doc_comment.contracts.len() > 0)
 				{
-					if (decl.doc_comment.comment.len() == 0) io::fprintf(&out_file, "\n")!!;
 					io::fprintf(&out_file, "```c3\n<*\n")!!;
 					foreach (str : decl.doc_comment.contracts)
 					{
 						io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 					}
 					io::fprintf(&out_file, "*>\n")!!;
-					io::fprintf(&out_file, "%s\n```\n", decl.item)!!;
+					io::fprintf(&out_file, "%s\n```\n\n", decl.item)!!;
 				}
 				else
 				{
 					io::fprintf(&out_file, "```c3\n%s\n```\n", decl.item)!!;
 				}
+				/*if (decl.doc_comment.comment.len() > 0)
+				{
+					io::fprintf(&out_file, "\n")!!;
+					foreach (str : decl.doc_comment.comment)
+					{
+						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
+					}
+				}*/
 			}
 		}
 	}
