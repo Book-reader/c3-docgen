@@ -203,7 +203,7 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 						{{"enum", "{"}, default_getname_fn("enum")},
 						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim().treplace("\n", "").treplace("\t", " ").treplace("  ", " ")},
 						{{"bitstruct", "{"}, default_getname_fn("bitstruct")},
-						{{"const", "="}, fn String(String val) => val[val.rindex_of(" ") ?? val.rindex_of("\t") ?? val.rindex_of("\n") ?? 0..].trim()},
+						{{"const", ";"}, fn String(String val) { String s = val[..val.index_of("=") - 1 ?? 0].trim(); return s[s.rindex_of(" ") ?? s.rindex_of("\t") ?? s.rindex_of("\n") ?? 0..].trim();}},
 					};
 					foreach (check : MATCHES)
 					{
