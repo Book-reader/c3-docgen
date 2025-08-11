@@ -143,7 +143,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
 					String[2] func = parse_function(&i, data, "fn");
-					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
 					bool dupe = false;
 					foreach (&item : curr_mod) if (item.name == func[0])
 					{
@@ -161,7 +160,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
 				{
 					String[2] func = parse_function(&i, data, "extern fn");
-					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
 					bool dupe = false;
 					foreach (&item : curr_mod) if (item.name == func[0])
 					{
@@ -179,7 +177,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String[2] func = parse_function(&i, data, "macro");
-					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
 					bool dupe = false;
 					foreach (&item : curr_mod) if (item.name == func[0])
 					{
@@ -201,38 +198,44 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 						{{"struct", "{"}, default_getname_fn("struct")},
 						{{"alias", ";"}, default_getname_fn("alias")},
 						{{"enum", "{"}, default_getname_fn("enum")},
-						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim().treplace("\n", "").treplace("\t", " ").treplace("  ", " ")},
+						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim()},
 						{{"bitstruct", "{"}, default_getname_fn("bitstruct")},
 						{{"const", ";"}, fn String(String val) { String s = val[..val.index_of("=") - 1 ?? 0].trim(); return s[s.rindex_of(" ") ?? s.rindex_of("\t") ?? s.rindex_of("\n") ?? 0..].trim();}},
 					};
-					foreach (check : MATCHES)
+					const MAX_LEN = 128;
+					foreach (check : MATCHES) @pool()
 					{
 						if (try idx = data[i..].index_of(check.first[0]) && idx == 0)
 						{
-							String val = data[i:data[i..].index_of(check.first[1]) ?? 0];
-							io::printfn("checking '%s'", val.trim());
-							String name = check.second(val.trim());
-							io::printfn("name was '%s'", name.trim());
+							String val = data[i:data[i..].index_of(check.first[1]) ?? 0].trim().treplace("\n", " ").treplace("\t", " ");
+							{
+								String val1;
+								while ((val1 = val.treplace("  ", " ")).len != val.len) val = val1;
+							}
+							String name = check.second(val);
+							// io::printfn("name was '%s'", name);
+							if (val.len > MAX_LEN) val = val[:MAX_LEN - "...".len].tconcat("...");
+							// io::printfn("val was: %s", val);
 							if (!is_hidden(val))
 							{
 								bool dupe = false;
 								foreach (&item : curr_mod) if (item.name == name)
 								{
-									item.contents.push(val.trim().copy(alloc));
+									item.contents.push(val.copy(alloc));
 									item.doc_comments.push(comment);
 									dupe = true;
 									break;
 								}
 								if (!dupe)
 								{
-									curr_mod.push({name.copy(alloc), list_of_with(String, alloc, val.trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+									curr_mod.push({name.copy(alloc), list_of_with(String, alloc, val.copy(alloc)), list_of_with(DocComment, alloc, comment)});
 								}
 							}
 							comment = {};
 							i += val.len - 1;
 							break;
 						}
-					}
+					};
 				}
 		}
 	};
@@ -401,7 +404,6 @@ macro slice_while(array, func)
 	}
 	return array[..];
 }
-
 macro list_of_with($Type, Allocator alloc, val) => *(List {$Type}){}.init_with_array(alloc, {val});
 
 alias GetNameFn = fn String(String);
