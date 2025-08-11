@@ -48,7 +48,7 @@ fn int main(String[] args)
 			foreach (decl : modules.get(mod)!!)
 			{
 				io::fprintf(&out_file, "\n---\n\n")!!;
-				io::fprintf(&out_file, "#### `%s`\n", decl.name)!!;
+				io::fprintf(&out_file, "#### `%s`\n\n", decl.name)!!;
 				/*if (decl.doc_comment.comment.len() > 0)
 				{
 					foreach (str : decl.doc_comment.comment)
@@ -57,26 +57,30 @@ fn int main(String[] args)
 					}
 					io::fprintf(&out_file, "\n")!!;
 				}*/
-				if (decl.doc_comment.contracts.len() > 0)
+				foreach (i, comment : decl.doc_comments)
 				{
-					io::fprintf(&out_file, "```c3\n<*\n")!!;
-					foreach (str : decl.doc_comment.contracts)
+					if (comment.contracts.len() > 0)
 					{
-						io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+						io::fprintf(&out_file, "```c3\n<*\n")!!;
+						foreach (str : comment.contracts)
+						{
+							io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+						}
+						io::fprintf(&out_file, "*>\n")!!;
+						io::fprintf(&out_file, "%s\n```\n", decl.contents[i])!!;
 					}
-					io::fprintf(&out_file, "*>\n")!!;
-					io::fprintf(&out_file, "%s\n```\n\n", decl.contents)!!;
-				}
-				else
-				{
-					io::fprintf(&out_file, "```c3\n%s\n```\n", decl.contents)!!;
-				}
-				if (decl.doc_comment.comment.len() > 0)
-				{
-					io::fprintf(&out_file, "\n")!!;
-					foreach (str : decl.doc_comment.comment)
+					else
 					{
-						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+						io::fprintf(&out_file, "```c3\n%s\n```\n", decl.contents[i])!!;
+					}
+					if (comment.comment.len() > 0)
+					{
+						io::fprintf(&out_file, "\n")!!;
+						foreach (str : comment.comment)
+						{
+							io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
+						}
+						io::fprintf(&out_file, "\n")!!;
 					}
 				}
 			}
@@ -89,8 +93,8 @@ fn int main(String[] args)
 struct Item
 {
 	String name;
-	String contents;
-	DocComment doc_comment;
+	List {String} contents;
+	List {DocComment} doc_comments;
 }
 
 struct DocComment
@@ -98,7 +102,7 @@ struct DocComment
 	List {String} comment;
 	List {String} contracts;
 }
-alias GetNameFn = fn String(String);
+
 fn void? collect_decls(Allocator alloc, Modules* modules, String data, String filename)
 {
 	String module_name = filename;
@@ -138,31 +142,67 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				}
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
-					String func = parse_function(&i, data, "fn");
-					if (!is_hidden(func)) curr_mod.push({"func", func.trim().copy(alloc), comment});
+					String[2] func = parse_function(&i, data, "fn");
+					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					bool dupe = false;
+					foreach (&item : curr_mod) if (item.name == func[0])
+					{
+						item.contents.push(func[1].trim().copy(alloc));
+						item.doc_comments.push(comment);
+						dupe = true;
+						break;
+					}
+					if (!dupe)
+					{
+						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					}
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
 				{
-					String func = parse_function(&i, data, "extern fn");
-					if (!is_hidden(func)) curr_mod.push({"extern func", func.trim().copy(alloc), comment});
+					String[2] func = parse_function(&i, data, "extern fn");
+					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					bool dupe = false;
+					foreach (&item : curr_mod) if (item.name == func[0])
+					{
+						item.contents.push(func[1].trim().copy(alloc));
+						item.doc_comments.push(comment);
+						dupe = true;
+						break;
+					}
+					if (!dupe)
+					{
+						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					}
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
-					String func = parse_function(&i, data, "macro");
-					if (!is_hidden(func)) curr_mod.push({"macro", func.trim().copy(alloc), comment});
+					String[2] func = parse_function(&i, data, "macro");
+					// if (!is_hidden(func[1])) curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					bool dupe = false;
+					foreach (&item : curr_mod) if (item.name == func[0])
+					{
+						item.contents.push(func[1].trim().copy(alloc));
+						item.doc_comments.push(comment);
+						dupe = true;
+						break;
+					}
+					if (!dupe)
+					{
+						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
+					}
 					comment = {};
 				}
 				else
 				{
 					const Pair {String[2], GetNameFn}[*] MATCHES = {
-						{{"typedef", ";"}, fn String(String val) => slice_while(val["typedef".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
-						{{"struct", "{"}, fn String(String val) => slice_while(val["struct".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
-						{{"alias", ";"}, fn String(String val) => slice_while(val["alias".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
-						{{"enum", "{"}, fn String(String val) => slice_while(val["enum".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"typedef", ";"}, default_getname_fn("typedef")},
+						{{"struct", "{"}, default_getname_fn("struct")},
+						{{"alias", ";"}, default_getname_fn("alias")},
+						{{"enum", "{"}, default_getname_fn("enum")},
 						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim().treplace("\n", "").treplace("\t", " ").treplace("  ", " ")},
-						{{"bitstruct", "{"}, fn String(String val) => slice_while(val["bitstruct".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"bitstruct", "{"}, default_getname_fn("bitstruct")},
 						{{"const", "="}, fn String(String val) => val[val.rindex_of(" ") ?? val.rindex_of("\t") ?? val.rindex_of("\n") ?? 0..].trim()},
 					};
 					foreach (check : MATCHES)
@@ -178,15 +218,14 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 								bool dupe = false;
 								foreach (&item : curr_mod) if (item.name == name)
 								{
-									item.contents = string::join(alloc, {item.contents, val}, "\n");
-									item.doc_comment.comment.add_all(&comment.comment);
-									item.doc_comment.contracts.add_all(&comment.contracts);
+									item.contents.push(val.trim().copy(alloc));
+									item.doc_comments.push(comment);
 									dupe = true;
 									break;
 								}
 								if (!dupe)
 								{
-									curr_mod.push({name.copy(alloc), val.trim().copy(alloc), comment});
+									curr_mod.push({name.copy(alloc), list_of_with(String, alloc, val.trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
 								}
 							}
 							comment = {};
@@ -202,10 +241,13 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 		modules.set(module_name, curr_mod);
 	}
 }
-fn String parse_function(usz* i, String data, String function_str)
+fn String[2] parse_function(usz* i, String data, String function_str)
 {
+	String[2] ret;
 	usz start_idx = *i;
 	while (*i < data.len && data[*i] != '(') *i += 1;
+	ret[0] = data[start_idx..*i - 1];
+	ret[0] = ret[0][ret[0].rindex_of(" ") ?? ret[0].rindex_of("\t") ?? ret[0].rindex_of("\n") ?? 0..^1].trim();
 	skip_block(i, data, '(', ')');
 	while (*i < data.len)
 	{
@@ -237,7 +279,8 @@ fn String parse_function(usz* i, String data, String function_str)
 			skip_block(i, data, '{', '}');
 		}
 	}
-	return data[start_idx..*i];
+	ret[1] = data[start_idx..*i];
+	return ret;
 }
 
 fn void skip_line_comment(usz* i, String data)
@@ -358,3 +401,8 @@ macro slice_while(array, func)
 	}
 	return array[..];
 }
+
+macro list_of_with($Type, Allocator alloc, val) => *(List {$Type}){}.init_with_array(alloc, {val});
+
+alias GetNameFn = fn String(String);
+macro GetNameFn default_getname_fn(String $name) => fn String(String val) => slice_while(val[$name.len..].trim(), fn bool(char c) => c.is_alpha() || c == '_');
