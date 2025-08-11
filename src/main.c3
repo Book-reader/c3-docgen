@@ -2,6 +2,7 @@ module docgen;
 import std::io;
 import std::collections::map;
 import std::collections::list;
+import std::collections::pair;
 import std::sort;
 import std::math;
 
@@ -47,14 +48,15 @@ fn int main(String[] args)
 			foreach (decl : modules.get(mod)!!)
 			{
 				io::fprintf(&out_file, "\n---\n\n")!!;
-				if (decl.doc_comment.comment.len() > 0)
+				io::fprintf(&out_file, "#### `%s`\n", decl.name)!!;
+				/*if (decl.doc_comment.comment.len() > 0)
 				{
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 					}
 					io::fprintf(&out_file, "\n")!!;
-				}
+				}*/
 				if (decl.doc_comment.contracts.len() > 0)
 				{
 					io::fprintf(&out_file, "```c3\n<*\n")!!;
@@ -63,20 +65,20 @@ fn int main(String[] args)
 						io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 					}
 					io::fprintf(&out_file, "*>\n")!!;
-					io::fprintf(&out_file, "%s\n```\n\n", decl.item)!!;
+					io::fprintf(&out_file, "%s\n```\n\n", decl.contents)!!;
 				}
 				else
 				{
-					io::fprintf(&out_file, "```c3\n%s\n```\n", decl.item)!!;
+					io::fprintf(&out_file, "```c3\n%s\n```\n", decl.contents)!!;
 				}
-				/*if (decl.doc_comment.comment.len() > 0)
+				if (decl.doc_comment.comment.len() > 0)
 				{
 					io::fprintf(&out_file, "\n")!!;
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 					}
-				}*/
+				}
 			}
 		}
 	}
@@ -86,7 +88,8 @@ fn int main(String[] args)
 
 struct Item
 {
-	String item;
+	String name;
+	String contents;
 	DocComment doc_comment;
 }
 
@@ -95,7 +98,7 @@ struct DocComment
 	List {String} comment;
 	List {String} contracts;
 }
-
+alias GetNameFn = fn String(String);
 fn void? collect_decls(Allocator alloc, Modules* modules, String data, String filename)
 {
 	String module_name = filename;
@@ -136,38 +139,56 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "fn");
-					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({"func", func.trim().copy(alloc), comment});
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "extern fn");
-					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({"extern func", func.trim().copy(alloc), comment});
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
-					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({"macro", func.trim().copy(alloc), comment});
 					comment = {};
 				}
 				else
 				{
-					const String[2][*] MATCHES = {
-						{"typedef", ";"},
-						{"struct", "{"},
-						{"alias", ";"},
-						{"enum", "{"},
-						{"faultdef", ";"},
-						{"bitstruct", "{"},
-						{"const", "="},
+					const Pair {String[2], GetNameFn}[*] MATCHES = {
+						{{"typedef", ";"}, fn String(String val) => slice_while(val["typedef".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"struct", "{"}, fn String(String val) => slice_while(val["struct".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"alias", ";"}, fn String(String val) => slice_while(val["alias".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"enum", "{"}, fn String(String val) => slice_while(val["enum".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim().treplace("\n", "").treplace("\t", " ").treplace("  ", " ")},
+						{{"bitstruct", "{"}, fn String(String val) => slice_while(val["bitstruct".len..].trim(), fn bool(char c) => c.is_alpha() || c == '_')},
+						{{"const", "="}, fn String(String val) => val[val.rindex_of(" ") ?? val.rindex_of("\t") ?? val.rindex_of("\n") ?? 0..].trim()},
 					};
 					foreach (check : MATCHES)
 					{
-						if (try idx = data[i..].index_of(check[0]) && idx == 0)
+						if (try idx = data[i..].index_of(check.first[0]) && idx == 0)
 						{
-							String val = data[i:data[i..].index_of(check[1]) ?? 0];
-							if (!is_hidden(val)) curr_mod.push({val.trim().copy(alloc), comment});
+							String val = data[i:data[i..].index_of(check.first[1]) ?? 0];
+							io::printfn("checking '%s'", val.trim());
+							String name = check.second(val.trim());
+							io::printfn("name was '%s'", name.trim());
+							if (!is_hidden(val))
+							{
+								bool dupe = false;
+								foreach (&item : curr_mod) if (item.name == name)
+								{
+									item.contents = string::join(alloc, {item.contents, val}, "\n");
+									item.doc_comment.comment.add_all(&comment.comment);
+									item.doc_comment.contracts.add_all(&comment.contracts);
+									dupe = true;
+									break;
+								}
+								if (!dupe)
+								{
+									curr_mod.push({name.copy(alloc), val.trim().copy(alloc), comment});
+								}
+							}
 							comment = {};
 							i += val.len - 1;
 							break;
@@ -328,3 +349,12 @@ fn void skip_block(usz* i, String data, char block_start, char block_end)
 	};
 }
 fn bool is_hidden(String s) => s.contains("@private") || s.contains("@local");
+
+macro slice_while(array, func)
+{
+	foreach (i, c : array)
+	{
+		if (!func(c)) return array[..i - 1];
+	}
+	return array[..];
+}
