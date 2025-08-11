@@ -5,7 +5,7 @@
 #### `EXIT_FAILURE`
 
 ```c3
-const int EXIT_FAILURE = 1
+const int EXIT_FAILURE
 ```
 
 ---
@@ -13,7 +13,7 @@ const int EXIT_FAILURE = 1
 #### `EXIT_SUCCESS`
 
 ```c3
-const int EXIT_SUCCESS = 0
+const int EXIT_SUCCESS
 ```
 
 ---
@@ -21,7 +21,7 @@ const int EXIT_SUCCESS = 0
 #### `RAND_MAX`
 
 ```c3
-const int RAND_MAX = 0x7fffffff
+const int RAND_MAX
 ```
 
 ---
@@ -139,7 +139,7 @@ alias SignalFunction = fn void(CInt)
 #### `SIGHUP`
 
 ```c3
-const CInt SIGHUP = 1
+const CInt SIGHUP
 ```
 
 ---
@@ -147,7 +147,7 @@ const CInt SIGHUP = 1
 #### `SIGINT`
 
 ```c3
-const CInt SIGINT = 2
+const CInt SIGINT
 ```
 
 ---
@@ -155,7 +155,7 @@ const CInt SIGINT = 2
 #### `SIGQUIT`
 
 ```c3
-const CInt SIGQUIT = 3
+const CInt SIGQUIT
 ```
 
 ---
@@ -163,7 +163,7 @@ const CInt SIGQUIT = 3
 #### `SIGILL`
 
 ```c3
-const CInt SIGILL = 4
+const CInt SIGILL
 ```
 
 ---
@@ -171,7 +171,7 @@ const CInt SIGILL = 4
 #### `SIGTRAP`
 
 ```c3
-const CInt SIGTRAP = 5
+const CInt SIGTRAP
 ```
 
 ---
@@ -179,7 +179,7 @@ const CInt SIGTRAP = 5
 #### `SIGABRT`
 
 ```c3
-const CInt SIGABRT = 6
+const CInt SIGABRT
 ```
 
 ---
@@ -187,7 +187,7 @@ const CInt SIGABRT = 6
 #### `SIGBUS`
 
 ```c3
-const CInt SIGBUS = BSD_FLAVOR_SIG ? 10 : 7
+const CInt SIGBUS
 ```
 
 ---
@@ -195,7 +195,7 @@ const CInt SIGBUS = BSD_FLAVOR_SIG ? 10 : 7
 #### `SIGFPE`
 
 ```c3
-const CInt SIGFPE = 8
+const CInt SIGFPE
 ```
 
 ---
@@ -203,7 +203,7 @@ const CInt SIGFPE = 8
 #### `SIGKILL`
 
 ```c3
-const CInt SIGKILL = 9
+const CInt SIGKILL
 ```
 
 ---
@@ -211,7 +211,7 @@ const CInt SIGKILL = 9
 #### `SIGSEGV`
 
 ```c3
-const CInt SIGSEGV = 11
+const CInt SIGSEGV
 ```
 
 ---
@@ -219,7 +219,7 @@ const CInt SIGSEGV = 11
 #### `SIGSYS`
 
 ```c3
-const CInt SIGSYS = BSD_FLAVOR_SIG ? 12 : 31
+const CInt SIGSYS
 ```
 
 ---
@@ -227,7 +227,7 @@ const CInt SIGSYS = BSD_FLAVOR_SIG ? 12 : 31
 #### `SIGPIPE`
 
 ```c3
-const CInt SIGPIPE = 13
+const CInt SIGPIPE
 ```
 
 ---
@@ -235,7 +235,7 @@ const CInt SIGPIPE = 13
 #### `SIGALRM`
 
 ```c3
-const CInt SIGALRM = 14
+const CInt SIGALRM
 ```
 
 ---
@@ -243,7 +243,7 @@ const CInt SIGALRM = 14
 #### `SIGTERM`
 
 ```c3
-const CInt SIGTERM = 15
+const CInt SIGTERM
 ```
 
 ---
@@ -251,7 +251,7 @@ const CInt SIGTERM = 15
 #### `SIGURG`
 
 ```c3
-const CInt SIGURG = BSD_FLAVOR_SIG ? 16 : 23
+const CInt SIGURG
 ```
 
 ---
@@ -259,7 +259,7 @@ const CInt SIGURG = BSD_FLAVOR_SIG ? 16 : 23
 #### `SIGSTOP`
 
 ```c3
-const CInt SIGSTOP = BSD_FLAVOR_SIG ? 17 : 19
+const CInt SIGSTOP
 ```
 
 ---
@@ -267,7 +267,7 @@ const CInt SIGSTOP = BSD_FLAVOR_SIG ? 17 : 19
 #### `SIGTSTP`
 
 ```c3
-const CInt SIGTSTP = BSD_FLAVOR_SIG ? 18 : 20
+const CInt SIGTSTP
 ```
 
 ---
@@ -275,7 +275,7 @@ const CInt SIGTSTP = BSD_FLAVOR_SIG ? 18 : 20
 #### `SIGCONT`
 
 ```c3
-const CInt SIGCONT = BSD_FLAVOR_SIG ? 19 : 18
+const CInt SIGCONT
 ```
 
 ---
@@ -283,7 +283,7 @@ const CInt SIGCONT = BSD_FLAVOR_SIG ? 19 : 18
 #### `SIGCHLD`
 
 ```c3
-const CInt SIGCHLD = BSD_FLAVOR_SIG ? 20 : 17
+const CInt SIGCHLD
 ```
 
 ---
@@ -315,7 +315,7 @@ alias CFile = void*
 #### `HAS_MALLOC_SIZE`
 
 ```c3
-const HAS_MALLOC_SIZE = env::LINUX || env::ANDROID || env::WIN32 || env::DARWIN
+const HAS_MALLOC_SIZE
 ```
 
 ---
@@ -323,7 +323,7 @@ const HAS_MALLOC_SIZE = env::LINUX || env::ANDROID || env::WIN32 || env::DARWIN
 #### `SEEK_SET`
 
 ```c3
-const int SEEK_SET = 0
+const int SEEK_SET
 ```
 
 ---
@@ -331,7 +331,7 @@ const int SEEK_SET = 0
 #### `SEEK_CUR`
 
 ```c3
-const int SEEK_CUR = 1
+const int SEEK_CUR
 ```
 
 ---
@@ -339,7 +339,7 @@ const int SEEK_CUR = 1
 #### `SEEK_END`
 
 ```c3
-const int SEEK_END = 2
+const int SEEK_END
 ```
 
 ---
@@ -347,7 +347,7 @@ const int SEEK_END = 2
 #### `_IOFBF`
 
 ```c3
-const int _IOFBF = 0
+const int _IOFBF
 ```
 
 ---
@@ -355,7 +355,7 @@ const int _IOFBF = 0
 #### `_IOLBF`
 
 ```c3
-const int _IOLBF = 1
+const int _IOLBF
 ```
 
 ---
@@ -363,7 +363,7 @@ const int _IOLBF = 1
 #### `_IONBF`
 
 ```c3
-const int _IONBF = 2
+const int _IONBF
 ```
 
 ---
@@ -371,7 +371,7 @@ const int _IONBF = 2
 #### `BUFSIZ`
 
 ```c3
-const int BUFSIZ = 1024
+const int BUFSIZ
 ```
 
 ---
@@ -379,7 +379,7 @@ const int BUFSIZ = 1024
 #### `EOF`
 
 ```c3
-const int EOF = -1
+const int EOF
 ```
 
 ---
@@ -387,7 +387,7 @@ const int EOF = -1
 #### `FOPEN_MAX`
 
 ```c3
-const int FOPEN_MAX = 20
+const int FOPEN_MAX
 ```
 
 ---
@@ -395,7 +395,7 @@ const int FOPEN_MAX = 20
 #### `FILENAME_MAX`
 
 ```c3
-const int FILENAME_MAX = 1024
+const int FILENAME_MAX
 ```
 
 ---
@@ -411,7 +411,7 @@ macro bool libc_S_ISTYPE(value, mask) @builtin
 #### `S_IFMT`
 
 ```c3
-const S_IFMT   = 0o170000
+const S_IFMT
 ```
 
 ---
@@ -419,7 +419,7 @@ const S_IFMT   = 0o170000
 #### `S_IFIFO`
 
 ```c3
-const S_IFIFO  = 0o010000
+const S_IFIFO
 ```
 
 ---
@@ -427,7 +427,7 @@ const S_IFIFO  = 0o010000
 #### `S_IFCHR`
 
 ```c3
-const S_IFCHR  = 0o020000
+const S_IFCHR
 ```
 
 ---
@@ -435,7 +435,7 @@ const S_IFCHR  = 0o020000
 #### `S_IFDIR`
 
 ```c3
-const S_IFDIR  = 0o040000
+const S_IFDIR
 ```
 
 ---
@@ -443,7 +443,7 @@ const S_IFDIR  = 0o040000
 #### `S_IFBLK`
 
 ```c3
-const S_IFBLK  = 0o060000
+const S_IFBLK
 ```
 
 ---
@@ -451,7 +451,7 @@ const S_IFBLK  = 0o060000
 #### `S_IFREG`
 
 ```c3
-const S_IFREG  = 0o100000
+const S_IFREG
 ```
 
 ---
@@ -459,7 +459,7 @@ const S_IFREG  = 0o100000
 #### `S_IFLNK`
 
 ```c3
-const S_IFLNK  = 0o120000
+const S_IFLNK
 ```
 
 ---
@@ -467,7 +467,7 @@ const S_IFLNK  = 0o120000
 #### `S_IFSOCK`
 
 ```c3
-const S_IFSOCK = 0o140000
+const S_IFSOCK
 ```
 
 ---
@@ -475,7 +475,7 @@ const S_IFSOCK = 0o140000
 #### `S_ISUID`
 
 ```c3
-const S_ISUID  = 0o004000
+const S_ISUID
 ```
 
 ---
@@ -483,7 +483,7 @@ const S_ISUID  = 0o004000
 #### `S_ISGID`
 
 ```c3
-const S_ISGID  = 0o002000
+const S_ISGID
 ```
 
 ---
@@ -491,7 +491,7 @@ const S_ISGID  = 0o002000
 #### `S_ISVTX`
 
 ```c3
-const S_ISVTX  = 0o001000
+const S_ISVTX
 ```
 
 ---
@@ -499,7 +499,7 @@ const S_ISVTX  = 0o001000
 #### `S_IRUSR`
 
 ```c3
-const S_IRUSR  = 0o000400
+const S_IRUSR
 ```
 
 ---
@@ -507,7 +507,7 @@ const S_IRUSR  = 0o000400
 #### `S_IWUSR`
 
 ```c3
-const S_IWUSR  = 0o000200
+const S_IWUSR
 ```
 
 ---
@@ -515,7 +515,7 @@ const S_IWUSR  = 0o000200
 #### `S_IXUSR`
 
 ```c3
-const S_IXUSR  = 0o000100
+const S_IXUSR
 ```
 
 ---
@@ -569,7 +569,7 @@ alias TimeOffset @if(!env::WASI) = CLong
 #### `TIME_UTC`
 
 ```c3
-const int TIME_UTC = 1
+const int TIME_UTC
 ```
 
 ---
@@ -577,7 +577,7 @@ const int TIME_UTC = 1
 #### `@if(env::WIN32)`
 
 ```c3
-const CLOCKS_PER_SEC @if(env::WIN32) = 1000
+const CLOCKS_PER_SEC @if(env::WIN32)
 ```
 
 ---
@@ -585,7 +585,7 @@ const CLOCKS_PER_SEC @if(env::WIN32) = 1000
 #### `@if(!env::WIN32)`
 
 ```c3
-const CLOCKS_PER_SEC @if(!env::WIN32) = 1000000
+const CLOCKS_PER_SEC @if(!env::WIN32)
 ```
 
 ---
@@ -1253,7 +1253,7 @@ extern fn CInt stat(ZString path, Stat* stat)
 #### `SHUT_RD`
 
 ```c3
-const CInt SHUT_RD = 0
+const CInt SHUT_RD
 ```
 
 ---
@@ -1261,7 +1261,7 @@ const CInt SHUT_RD = 0
 #### `SHUT_WR`
 
 ```c3
-const CInt SHUT_WR = 1
+const CInt SHUT_WR
 ```
 
 ---
@@ -1269,7 +1269,7 @@ const CInt SHUT_WR = 1
 #### `SHUT_RDWR`
 
 ```c3
-const CInt SHUT_RDWR = 2
+const CInt SHUT_RDWR
 ```
 
 ---
@@ -1391,7 +1391,7 @@ extern fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
 #### `OK`
 
 ```c3
-const Errno OK                       = 0
+const Errno OK
 ```
 
 ---
@@ -1399,7 +1399,7 @@ const Errno OK                       = 0
 #### `EPERM`
 
 ```c3
-const Errno EPERM                    = 1
+const Errno EPERM
 ```
 
 ---
@@ -1407,7 +1407,7 @@ const Errno EPERM                    = 1
 #### `ENOENT`
 
 ```c3
-const Errno ENOENT                   = 2
+const Errno ENOENT
 ```
 
 ---
@@ -1415,7 +1415,7 @@ const Errno ENOENT                   = 2
 #### `ESRCH`
 
 ```c3
-const Errno ESRCH                    = 3
+const Errno ESRCH
 ```
 
 ---
@@ -1423,7 +1423,7 @@ const Errno ESRCH                    = 3
 #### `EINTR`
 
 ```c3
-const Errno EINTR                    = 4
+const Errno EINTR
 ```
 
 ---
@@ -1431,7 +1431,7 @@ const Errno EINTR                    = 4
 #### `EIO`
 
 ```c3
-const Errno EIO                      = 5
+const Errno EIO
 ```
 
 ---
@@ -1439,7 +1439,7 @@ const Errno EIO                      = 5
 #### `ENXIO`
 
 ```c3
-const Errno ENXIO                    = 6
+const Errno ENXIO
 ```
 
 ---
@@ -1447,7 +1447,7 @@ const Errno ENXIO                    = 6
 #### `E2BIG`
 
 ```c3
-const Errno E2BIG                    = 7
+const Errno E2BIG
 ```
 
 ---
@@ -1455,7 +1455,7 @@ const Errno E2BIG                    = 7
 #### `ENOEXEC`
 
 ```c3
-const Errno ENOEXEC                  = 8
+const Errno ENOEXEC
 ```
 
 ---
@@ -1463,7 +1463,7 @@ const Errno ENOEXEC                  = 8
 #### `EBADF`
 
 ```c3
-const Errno EBADF                    = 9
+const Errno EBADF
 ```
 
 ---
@@ -1471,7 +1471,7 @@ const Errno EBADF                    = 9
 #### `ECHILD`
 
 ```c3
-const Errno ECHILD                   = 10
+const Errno ECHILD
 ```
 
 ---
@@ -1479,7 +1479,7 @@ const Errno ECHILD                   = 10
 #### `@if(env::DARWIN)`
 
 ```c3
-const Errno EAGAIN @if(env::DARWIN)  = 35
+const Errno EAGAIN @if(env::DARWIN)
 ```
 
 ---
@@ -1487,7 +1487,7 @@ const Errno EAGAIN @if(env::DARWIN)  = 35
 #### `@if(!env::DARWIN)`
 
 ```c3
-const Errno EAGAIN @if(!env::DARWIN) = 11
+const Errno EAGAIN @if(!env::DARWIN)
 ```
 
 ---
@@ -1495,7 +1495,7 @@ const Errno EAGAIN @if(!env::DARWIN) = 11
 #### `ENOMEM`
 
 ```c3
-const Errno ENOMEM                   = 12
+const Errno ENOMEM
 ```
 
 ---
@@ -1503,7 +1503,7 @@ const Errno ENOMEM                   = 12
 #### `EACCES`
 
 ```c3
-const Errno EACCES                   = 13
+const Errno EACCES
 ```
 
 ---
@@ -1511,7 +1511,7 @@ const Errno EACCES                   = 13
 #### `EFAULT`
 
 ```c3
-const Errno EFAULT                   = 14
+const Errno EFAULT
 ```
 
 ---
@@ -1519,7 +1519,7 @@ const Errno EFAULT                   = 14
 #### `ENOTBLK`
 
 ```c3
-const Errno ENOTBLK                  = 15
+const Errno ENOTBLK
 ```
 
 ---
@@ -1527,7 +1527,7 @@ const Errno ENOTBLK                  = 15
 #### `EBUSY`
 
 ```c3
-const Errno EBUSY                    = 16
+const Errno EBUSY
 ```
 
 ---
@@ -1535,7 +1535,7 @@ const Errno EBUSY                    = 16
 #### `EEXIST`
 
 ```c3
-const Errno EEXIST                   = 17
+const Errno EEXIST
 ```
 
 ---
@@ -1543,7 +1543,7 @@ const Errno EEXIST                   = 17
 #### `EXDEV`
 
 ```c3
-const Errno EXDEV                    = 18
+const Errno EXDEV
 ```
 
 ---
@@ -1551,7 +1551,7 @@ const Errno EXDEV                    = 18
 #### `ENODEV`
 
 ```c3
-const Errno ENODEV                   = 19
+const Errno ENODEV
 ```
 
 ---
@@ -1559,7 +1559,7 @@ const Errno ENODEV                   = 19
 #### `ENOTDIR`
 
 ```c3
-const Errno ENOTDIR                  = 20
+const Errno ENOTDIR
 ```
 
 ---
@@ -1567,7 +1567,7 @@ const Errno ENOTDIR                  = 20
 #### `EISDIR`
 
 ```c3
-const Errno EISDIR                   = 21
+const Errno EISDIR
 ```
 
 ---
@@ -1575,7 +1575,7 @@ const Errno EISDIR                   = 21
 #### `EINVAL`
 
 ```c3
-const Errno EINVAL                   = 22
+const Errno EINVAL
 ```
 
 ---
@@ -1583,7 +1583,7 @@ const Errno EINVAL                   = 22
 #### `ENFILE`
 
 ```c3
-const Errno ENFILE                   = 23
+const Errno ENFILE
 ```
 
 ---
@@ -1591,7 +1591,7 @@ const Errno ENFILE                   = 23
 #### `EMFILE`
 
 ```c3
-const Errno EMFILE                   = 24
+const Errno EMFILE
 ```
 
 ---
@@ -1599,7 +1599,7 @@ const Errno EMFILE                   = 24
 #### `ENOTTY`
 
 ```c3
-const Errno ENOTTY                   = 25
+const Errno ENOTTY
 ```
 
 ---
@@ -1607,7 +1607,7 @@ const Errno ENOTTY                   = 25
 #### `ETXTBSY`
 
 ```c3
-const Errno ETXTBSY                  = 26
+const Errno ETXTBSY
 ```
 
 ---
@@ -1615,7 +1615,7 @@ const Errno ETXTBSY                  = 26
 #### `EFBIG`
 
 ```c3
-const Errno EFBIG                    = 27
+const Errno EFBIG
 ```
 
 ---
@@ -1623,7 +1623,7 @@ const Errno EFBIG                    = 27
 #### `ENOSPC`
 
 ```c3
-const Errno ENOSPC                   = 28
+const Errno ENOSPC
 ```
 
 ---
@@ -1631,7 +1631,7 @@ const Errno ENOSPC                   = 28
 #### `ESPIPE`
 
 ```c3
-const Errno ESPIPE                   = 29
+const Errno ESPIPE
 ```
 
 ---
@@ -1639,7 +1639,7 @@ const Errno ESPIPE                   = 29
 #### `EROFS`
 
 ```c3
-const Errno EROFS                    = 30
+const Errno EROFS
 ```
 
 ---
@@ -1647,7 +1647,7 @@ const Errno EROFS                    = 30
 #### `EMLINK`
 
 ```c3
-const Errno EMLINK                   = 31
+const Errno EMLINK
 ```
 
 ---
@@ -1655,7 +1655,7 @@ const Errno EMLINK                   = 31
 #### `EPIPE`
 
 ```c3
-const Errno EPIPE                    = 32
+const Errno EPIPE
 ```
 
 ---
@@ -1663,7 +1663,7 @@ const Errno EPIPE                    = 32
 #### `EDOM`
 
 ```c3
-const Errno EDOM                     = 33
+const Errno EDOM
 ```
 
 ---
@@ -1671,7 +1671,7 @@ const Errno EDOM                     = 33
 #### `ERANGE`
 
 ```c3
-const Errno ERANGE                   = 34
+const Errno ERANGE
 ```
 ### `libc::errno @if(!env::WIN32 && !env::DARWIN)`
 
@@ -1680,7 +1680,7 @@ const Errno ERANGE                   = 34
 #### `EDEADLK`
 
 ```c3
-const Errno EDEADLK                  = 35
+const Errno EDEADLK
 ```
 
 ---
@@ -1688,7 +1688,7 @@ const Errno EDEADLK                  = 35
 #### `ENAMETOOLONG`
 
 ```c3
-const Errno ENAMETOOLONG             = 36
+const Errno ENAMETOOLONG
 ```
 
 ---
@@ -1696,7 +1696,7 @@ const Errno ENAMETOOLONG             = 36
 #### `ENOTEMPTY`
 
 ```c3
-const Errno ENOTEMPTY                = 39
+const Errno ENOTEMPTY
 ```
 
 ---
@@ -1704,7 +1704,7 @@ const Errno ENOTEMPTY                = 39
 #### `ELOOP`
 
 ```c3
-const Errno ELOOP                    = 40
+const Errno ELOOP
 ```
 
 ---
@@ -1712,7 +1712,7 @@ const Errno ELOOP                    = 40
 #### `EWOULDBLOCK`
 
 ```c3
-const Errno EWOULDBLOCK              = EAGAIN
+const Errno EWOULDBLOCK
 ```
 
 ---
@@ -1720,7 +1720,7 @@ const Errno EWOULDBLOCK              = EAGAIN
 #### `EOVERFLOW`
 
 ```c3
-const Errno EOVERFLOW                = 75
+const Errno EOVERFLOW
 ```
 
 ---
@@ -1728,7 +1728,7 @@ const Errno EOVERFLOW                = 75
 #### `ENOTSOCK`
 
 ```c3
-const Errno ENOTSOCK                 = 88
+const Errno ENOTSOCK
 ```
 
 ---
@@ -1736,7 +1736,7 @@ const Errno ENOTSOCK                 = 88
 #### `EOPNOTSUPP`
 
 ```c3
-const Errno EOPNOTSUPP               = 95
+const Errno EOPNOTSUPP
 ```
 
 ---
@@ -1744,7 +1744,7 @@ const Errno EOPNOTSUPP               = 95
 #### `EADDRINUSE`
 
 ```c3
-const Errno EADDRINUSE               = 98
+const Errno EADDRINUSE
 ```
 
 ---
@@ -1752,7 +1752,7 @@ const Errno EADDRINUSE               = 98
 #### `EADDRNOTAVAIL`
 
 ```c3
-const Errno EADDRNOTAVAIL            = 99
+const Errno EADDRNOTAVAIL
 ```
 
 ---
@@ -1760,7 +1760,7 @@ const Errno EADDRNOTAVAIL            = 99
 #### `ENETDOWN`
 
 ```c3
-const Errno ENETDOWN                 = 100
+const Errno ENETDOWN
 ```
 
 ---
@@ -1768,7 +1768,7 @@ const Errno ENETDOWN                 = 100
 #### `ENETUNREACH`
 
 ```c3
-const Errno ENETUNREACH              = 101
+const Errno ENETUNREACH
 ```
 
 ---
@@ -1776,7 +1776,7 @@ const Errno ENETUNREACH              = 101
 #### `ENETRESET`
 
 ```c3
-const Errno ENETRESET                = 102
+const Errno ENETRESET
 ```
 
 ---
@@ -1784,7 +1784,7 @@ const Errno ENETRESET                = 102
 #### `ECONNRESET`
 
 ```c3
-const Errno ECONNRESET               = 104
+const Errno ECONNRESET
 ```
 
 ---
@@ -1792,7 +1792,7 @@ const Errno ECONNRESET               = 104
 #### `EISCONN`
 
 ```c3
-const Errno EISCONN                  = 106
+const Errno EISCONN
 ```
 
 ---
@@ -1800,7 +1800,7 @@ const Errno EISCONN                  = 106
 #### `ETIMEDOUT`
 
 ```c3
-const Errno ETIMEDOUT                = 110
+const Errno ETIMEDOUT
 ```
 
 ---
@@ -1808,7 +1808,7 @@ const Errno ETIMEDOUT                = 110
 #### `ECONNREFUSED`
 
 ```c3
-const Errno ECONNREFUSED             = 111
+const Errno ECONNREFUSED
 ```
 
 ---
@@ -1816,7 +1816,7 @@ const Errno ECONNREFUSED             = 111
 #### `EALREADY`
 
 ```c3
-const Errno EALREADY                 = 114
+const Errno EALREADY
 ```
 
 ---
@@ -1824,7 +1824,7 @@ const Errno EALREADY                 = 114
 #### `EINPROGRESS`
 
 ```c3
-const Errno EINPROGRESS              = 115
+const Errno EINPROGRESS
 ```
 
 ---
@@ -1832,7 +1832,7 @@ const Errno EINPROGRESS              = 115
 #### `EDQUOT`
 
 ```c3
-const Errno EDQUOT                   = 122
+const Errno EDQUOT
 ```
 ### `libc::errno @if(env::DARWIN)`
 
@@ -1841,7 +1841,7 @@ const Errno EDQUOT                   = 122
 #### `EWOULDBLOCK`
 
 ```c3
-const Errno EWOULDBLOCK              = EAGAIN
+const Errno EWOULDBLOCK
 ```
 
 ---
@@ -1849,7 +1849,7 @@ const Errno EWOULDBLOCK              = EAGAIN
 #### `EDEADLK`
 
 ```c3
-const Errno EDEADLK                  = 11
+const Errno EDEADLK
 ```
 
 ---
@@ -1857,7 +1857,7 @@ const Errno EDEADLK                  = 11
 #### `EINPROGRESS`
 
 ```c3
-const Errno EINPROGRESS              = 36
+const Errno EINPROGRESS
 ```
 
 ---
@@ -1865,7 +1865,7 @@ const Errno EINPROGRESS              = 36
 #### `EALREADY`
 
 ```c3
-const Errno EALREADY                 = 37
+const Errno EALREADY
 ```
 
 ---
@@ -1873,7 +1873,7 @@ const Errno EALREADY                 = 37
 #### `ENOTSOCK`
 
 ```c3
-const Errno ENOTSOCK                 = 38
+const Errno ENOTSOCK
 ```
 
 ---
@@ -1881,7 +1881,7 @@ const Errno ENOTSOCK                 = 38
 #### `EDESTADDRREQ`
 
 ```c3
-const Errno EDESTADDRREQ             = 39
+const Errno EDESTADDRREQ
 ```
 
 ---
@@ -1889,7 +1889,7 @@ const Errno EDESTADDRREQ             = 39
 #### `EMSGSIZE`
 
 ```c3
-const Errno EMSGSIZE                 = 40
+const Errno EMSGSIZE
 ```
 
 ---
@@ -1897,7 +1897,7 @@ const Errno EMSGSIZE                 = 40
 #### `EPROTOTYPE`
 
 ```c3
-const Errno EPROTOTYPE               = 41
+const Errno EPROTOTYPE
 ```
 
 ---
@@ -1905,7 +1905,7 @@ const Errno EPROTOTYPE               = 41
 #### `ENOPROTOOPT`
 
 ```c3
-const Errno ENOPROTOOPT              = 42
+const Errno ENOPROTOOPT
 ```
 
 ---
@@ -1913,7 +1913,7 @@ const Errno ENOPROTOOPT              = 42
 #### `EPROTONOSUPPORT`
 
 ```c3
-const Errno EPROTONOSUPPORT          = 43
+const Errno EPROTONOSUPPORT
 ```
 
 ---
@@ -1921,7 +1921,7 @@ const Errno EPROTONOSUPPORT          = 43
 #### `ESOCKTNOSUPPORT`
 
 ```c3
-const Errno ESOCKTNOSUPPORT          = 44
+const Errno ESOCKTNOSUPPORT
 ```
 
 ---
@@ -1929,7 +1929,7 @@ const Errno ESOCKTNOSUPPORT          = 44
 #### `ENOTSUP`
 
 ```c3
-const Errno ENOTSUP                  = 45
+const Errno ENOTSUP
 ```
 
 ---
@@ -1937,7 +1937,7 @@ const Errno ENOTSUP                  = 45
 #### `EPFNOSUPPORT`
 
 ```c3
-const Errno EPFNOSUPPORT             = 46
+const Errno EPFNOSUPPORT
 ```
 
 ---
@@ -1945,7 +1945,7 @@ const Errno EPFNOSUPPORT             = 46
 #### `EAFNOSUPPORT`
 
 ```c3
-const Errno EAFNOSUPPORT             = 47
+const Errno EAFNOSUPPORT
 ```
 
 ---
@@ -1953,7 +1953,7 @@ const Errno EAFNOSUPPORT             = 47
 #### `EADDRINUSE`
 
 ```c3
-const Errno EADDRINUSE               = 48
+const Errno EADDRINUSE
 ```
 
 ---
@@ -1961,7 +1961,7 @@ const Errno EADDRINUSE               = 48
 #### `EADDRNOTAVAIL`
 
 ```c3
-const Errno EADDRNOTAVAIL            = 49
+const Errno EADDRNOTAVAIL
 ```
 
 ---
@@ -1969,7 +1969,7 @@ const Errno EADDRNOTAVAIL            = 49
 #### `ENETDOWN`
 
 ```c3
-const Errno ENETDOWN                 = 50
+const Errno ENETDOWN
 ```
 
 ---
@@ -1977,7 +1977,7 @@ const Errno ENETDOWN                 = 50
 #### `ENETUNREACH`
 
 ```c3
-const Errno ENETUNREACH              = 51
+const Errno ENETUNREACH
 ```
 
 ---
@@ -1985,7 +1985,7 @@ const Errno ENETUNREACH              = 51
 #### `ENETRESET`
 
 ```c3
-const Errno ENETRESET                = 52
+const Errno ENETRESET
 ```
 
 ---
@@ -1993,7 +1993,7 @@ const Errno ENETRESET                = 52
 #### `ECONNABORTED`
 
 ```c3
-const Errno ECONNABORTED             = 53
+const Errno ECONNABORTED
 ```
 
 ---
@@ -2001,7 +2001,7 @@ const Errno ECONNABORTED             = 53
 #### `ECONNRESET`
 
 ```c3
-const Errno ECONNRESET               = 54
+const Errno ECONNRESET
 ```
 
 ---
@@ -2009,7 +2009,7 @@ const Errno ECONNRESET               = 54
 #### `ENOBUFS`
 
 ```c3
-const Errno ENOBUFS                  = 55
+const Errno ENOBUFS
 ```
 
 ---
@@ -2017,7 +2017,7 @@ const Errno ENOBUFS                  = 55
 #### `EISCONN`
 
 ```c3
-const Errno EISCONN                  = 56
+const Errno EISCONN
 ```
 
 ---
@@ -2025,7 +2025,7 @@ const Errno EISCONN                  = 56
 #### `ENOTCONN`
 
 ```c3
-const Errno ENOTCONN                 = 57
+const Errno ENOTCONN
 ```
 
 ---
@@ -2033,7 +2033,7 @@ const Errno ENOTCONN                 = 57
 #### `ESHUTDOWN`
 
 ```c3
-const Errno ESHUTDOWN                = 58
+const Errno ESHUTDOWN
 ```
 
 ---
@@ -2041,7 +2041,7 @@ const Errno ESHUTDOWN                = 58
 #### `ETIMEDOUT`
 
 ```c3
-const Errno ETIMEDOUT                = 60
+const Errno ETIMEDOUT
 ```
 
 ---
@@ -2049,7 +2049,7 @@ const Errno ETIMEDOUT                = 60
 #### `ECONNREFUSED`
 
 ```c3
-const Errno ECONNREFUSED             = 61
+const Errno ECONNREFUSED
 ```
 
 ---
@@ -2057,7 +2057,7 @@ const Errno ECONNREFUSED             = 61
 #### `ELOOP`
 
 ```c3
-const Errno ELOOP                    = 62
+const Errno ELOOP
 ```
 
 ---
@@ -2065,7 +2065,7 @@ const Errno ELOOP                    = 62
 #### `ENAMETOOLONG`
 
 ```c3
-const Errno ENAMETOOLONG             = 63
+const Errno ENAMETOOLONG
 ```
 
 ---
@@ -2073,7 +2073,7 @@ const Errno ENAMETOOLONG             = 63
 #### `EHOSTDOWN`
 
 ```c3
-const Errno EHOSTDOWN                = 64
+const Errno EHOSTDOWN
 ```
 
 ---
@@ -2081,7 +2081,7 @@ const Errno EHOSTDOWN                = 64
 #### `EHOSTUNREACH`
 
 ```c3
-const Errno EHOSTUNREACH             = 65
+const Errno EHOSTUNREACH
 ```
 
 ---
@@ -2089,7 +2089,7 @@ const Errno EHOSTUNREACH             = 65
 #### `ENOTEMPTY`
 
 ```c3
-const Errno ENOTEMPTY                = 66
+const Errno ENOTEMPTY
 ```
 
 ---
@@ -2097,7 +2097,7 @@ const Errno ENOTEMPTY                = 66
 #### `EPROCLIM`
 
 ```c3
-const Errno EPROCLIM                 = 67
+const Errno EPROCLIM
 ```
 
 ---
@@ -2105,7 +2105,7 @@ const Errno EPROCLIM                 = 67
 #### `EUSERS`
 
 ```c3
-const Errno EUSERS                   = 68
+const Errno EUSERS
 ```
 
 ---
@@ -2113,7 +2113,7 @@ const Errno EUSERS                   = 68
 #### `EDQUOT`
 
 ```c3
-const Errno EDQUOT                   = 69
+const Errno EDQUOT
 ```
 
 ---
@@ -2121,7 +2121,7 @@ const Errno EDQUOT                   = 69
 #### `ESTALE`
 
 ```c3
-const Errno ESTALE                   = 70
+const Errno ESTALE
 ```
 
 ---
@@ -2129,7 +2129,7 @@ const Errno ESTALE                   = 70
 #### `EBADRPC`
 
 ```c3
-const Errno EBADRPC                  = 72
+const Errno EBADRPC
 ```
 
 ---
@@ -2137,7 +2137,7 @@ const Errno EBADRPC                  = 72
 #### `ERPCMISMATCH`
 
 ```c3
-const Errno ERPCMISMATCH             = 73
+const Errno ERPCMISMATCH
 ```
 
 ---
@@ -2145,7 +2145,7 @@ const Errno ERPCMISMATCH             = 73
 #### `EPROGUNAVAIL`
 
 ```c3
-const Errno EPROGUNAVAIL             = 74
+const Errno EPROGUNAVAIL
 ```
 
 ---
@@ -2153,7 +2153,7 @@ const Errno EPROGUNAVAIL             = 74
 #### `EPROGMISMATCH`
 
 ```c3
-const Errno EPROGMISMATCH            = 75
+const Errno EPROGMISMATCH
 ```
 
 ---
@@ -2161,7 +2161,7 @@ const Errno EPROGMISMATCH            = 75
 #### `EPROCUNAVAIL`
 
 ```c3
-const Errno EPROCUNAVAIL             = 76
+const Errno EPROCUNAVAIL
 ```
 
 ---
@@ -2169,7 +2169,7 @@ const Errno EPROCUNAVAIL             = 76
 #### `ENOLCK`
 
 ```c3
-const Errno ENOLCK                   = 77
+const Errno ENOLCK
 ```
 
 ---
@@ -2177,7 +2177,7 @@ const Errno ENOLCK                   = 77
 #### `ENOSYS`
 
 ```c3
-const Errno ENOSYS                   = 78
+const Errno ENOSYS
 ```
 
 ---
@@ -2185,7 +2185,7 @@ const Errno ENOSYS                   = 78
 #### `EFTYPE`
 
 ```c3
-const Errno EFTYPE                   = 79
+const Errno EFTYPE
 ```
 
 ---
@@ -2193,7 +2193,7 @@ const Errno EFTYPE                   = 79
 #### `EAUTH`
 
 ```c3
-const Errno EAUTH                    = 80
+const Errno EAUTH
 ```
 
 ---
@@ -2201,7 +2201,7 @@ const Errno EAUTH                    = 80
 #### `ENEEDAUTH`
 
 ```c3
-const Errno ENEEDAUTH                = 81
+const Errno ENEEDAUTH
 ```
 
 ---
@@ -2209,7 +2209,7 @@ const Errno ENEEDAUTH                = 81
 #### `EPWROFF`
 
 ```c3
-const Errno EPWROFF                  = 82
+const Errno EPWROFF
 ```
 
 ---
@@ -2217,7 +2217,7 @@ const Errno EPWROFF                  = 82
 #### `EDEVERR`
 
 ```c3
-const Errno EDEVERR                  = 83
+const Errno EDEVERR
 ```
 
 ---
@@ -2225,7 +2225,7 @@ const Errno EDEVERR                  = 83
 #### `EOVERFLOW`
 
 ```c3
-const Errno EOVERFLOW                = 84
+const Errno EOVERFLOW
 ```
 
 ---
@@ -2233,7 +2233,7 @@ const Errno EOVERFLOW                = 84
 #### `EBADEXEC`
 
 ```c3
-const Errno EBADEXEC                 = 85
+const Errno EBADEXEC
 ```
 
 ---
@@ -2241,7 +2241,7 @@ const Errno EBADEXEC                 = 85
 #### `EBADARCH`
 
 ```c3
-const Errno EBADARCH                 = 86
+const Errno EBADARCH
 ```
 
 ---
@@ -2249,7 +2249,7 @@ const Errno EBADARCH                 = 86
 #### `ESHLIBVERS`
 
 ```c3
-const Errno ESHLIBVERS               = 87
+const Errno ESHLIBVERS
 ```
 
 ---
@@ -2257,7 +2257,7 @@ const Errno ESHLIBVERS               = 87
 #### `EBADMACHO`
 
 ```c3
-const Errno EBADMACHO                = 88
+const Errno EBADMACHO
 ```
 
 ---
@@ -2265,7 +2265,7 @@ const Errno EBADMACHO                = 88
 #### `ECANCELED`
 
 ```c3
-const Errno ECANCELED                = 89
+const Errno ECANCELED
 ```
 
 ---
@@ -2273,7 +2273,7 @@ const Errno ECANCELED                = 89
 #### `EIDRM`
 
 ```c3
-const Errno EIDRM                    = 90
+const Errno EIDRM
 ```
 
 ---
@@ -2281,7 +2281,7 @@ const Errno EIDRM                    = 90
 #### `ENOMSG`
 
 ```c3
-const Errno ENOMSG                   = 91
+const Errno ENOMSG
 ```
 
 ---
@@ -2289,7 +2289,7 @@ const Errno ENOMSG                   = 91
 #### `EILSEQ`
 
 ```c3
-const Errno EILSEQ                   = 92
+const Errno EILSEQ
 ```
 
 ---
@@ -2297,7 +2297,7 @@ const Errno EILSEQ                   = 92
 #### `ENOATTR`
 
 ```c3
-const Errno ENOATTR                  = 93
+const Errno ENOATTR
 ```
 
 ---
@@ -2305,7 +2305,7 @@ const Errno ENOATTR                  = 93
 #### `EBADMSG`
 
 ```c3
-const Errno EBADMSG                  = 94
+const Errno EBADMSG
 ```
 
 ---
@@ -2313,7 +2313,7 @@ const Errno EBADMSG                  = 94
 #### `EMULTIHOP`
 
 ```c3
-const Errno EMULTIHOP                = 95
+const Errno EMULTIHOP
 ```
 
 ---
@@ -2321,7 +2321,7 @@ const Errno EMULTIHOP                = 95
 #### `ENODATA`
 
 ```c3
-const Errno ENODATA                  = 96
+const Errno ENODATA
 ```
 
 ---
@@ -2329,7 +2329,7 @@ const Errno ENODATA                  = 96
 #### `ENOLINK`
 
 ```c3
-const Errno ENOLINK                  = 97
+const Errno ENOLINK
 ```
 
 ---
@@ -2337,7 +2337,7 @@ const Errno ENOLINK                  = 97
 #### `ENOSR`
 
 ```c3
-const Errno ENOSR                    = 98
+const Errno ENOSR
 ```
 
 ---
@@ -2345,7 +2345,7 @@ const Errno ENOSR                    = 98
 #### `ENOSTR`
 
 ```c3
-const Errno ENOSTR                   = 99
+const Errno ENOSTR
 ```
 
 ---
@@ -2353,7 +2353,7 @@ const Errno ENOSTR                   = 99
 #### `EPROTO`
 
 ```c3
-const Errno EPROTO                   = 100
+const Errno EPROTO
 ```
 
 ---
@@ -2361,7 +2361,7 @@ const Errno EPROTO                   = 100
 #### `ETIME`
 
 ```c3
-const Errno ETIME                    = 101
+const Errno ETIME
 ```
 
 ---
@@ -2369,7 +2369,7 @@ const Errno ETIME                    = 101
 #### `EOPNOTSUPP`
 
 ```c3
-const Errno EOPNOTSUPP               = 102
+const Errno EOPNOTSUPP
 ```
 ### `libc::errno @if(env::WIN32)`
 
@@ -2378,7 +2378,7 @@ const Errno EOPNOTSUPP               = 102
 #### `EDEADLK`
 
 ```c3
-const Errno EDEADLK                  = 36
+const Errno EDEADLK
 ```
 
 ---
@@ -2386,7 +2386,7 @@ const Errno EDEADLK                  = 36
 #### `ENAMETOOLONG`
 
 ```c3
-const Errno ENAMETOOLONG             = 38
+const Errno ENAMETOOLONG
 ```
 
 ---
@@ -2394,7 +2394,7 @@ const Errno ENAMETOOLONG             = 38
 #### `ENOTEMPTY`
 
 ```c3
-const Errno ENOTEMPTY                = 41
+const Errno ENOTEMPTY
 ```
 
 ---
@@ -2402,7 +2402,7 @@ const Errno ENOTEMPTY                = 41
 #### `ELOOP`
 
 ```c3
-const Errno ELOOP                    = 114
+const Errno ELOOP
 ```
 
 ---
@@ -2410,7 +2410,7 @@ const Errno ELOOP                    = 114
 #### `EOVERFLOW`
 
 ```c3
-const Errno EOVERFLOW                = 132
+const Errno EOVERFLOW
 ```
 
 ---
@@ -2418,7 +2418,7 @@ const Errno EOVERFLOW                = 132
 #### `ENETDOWN`
 
 ```c3
-const Errno ENETDOWN                 = 116
+const Errno ENETDOWN
 ```
 
 ---
@@ -2426,7 +2426,7 @@ const Errno ENETDOWN                 = 116
 #### `ECONNRESET`
 
 ```c3
-const Errno ECONNRESET               = 108
+const Errno ECONNRESET
 ```
 
 ---
@@ -2434,7 +2434,7 @@ const Errno ECONNRESET               = 108
 #### `ENETUNREACH`
 
 ```c3
-const Errno ENETUNREACH              = 118
+const Errno ENETUNREACH
 ```
 
 ---
@@ -2442,7 +2442,7 @@ const Errno ENETUNREACH              = 118
 #### `ENETRESET`
 
 ```c3
-const Errno ENETRESET                = 117
+const Errno ENETRESET
 ```
 
 ---
@@ -2450,7 +2450,7 @@ const Errno ENETRESET                = 117
 #### `EOPNOTSUPP`
 
 ```c3
-const Errno EOPNOTSUPP               = 130
+const Errno EOPNOTSUPP
 ```
 
 ---
@@ -2458,7 +2458,7 @@ const Errno EOPNOTSUPP               = 130
 #### `ETIMEDOUT`
 
 ```c3
-const Errno ETIMEDOUT                = 138
+const Errno ETIMEDOUT
 ```
 
 ---
@@ -2466,7 +2466,7 @@ const Errno ETIMEDOUT                = 138
 #### `EALREADY`
 
 ```c3
-const Errno EALREADY                 = 103
+const Errno EALREADY
 ```
 
 ---
@@ -2474,7 +2474,7 @@ const Errno EALREADY                 = 103
 #### `EINPROGRESS`
 
 ```c3
-const Errno EINPROGRESS              = 112
+const Errno EINPROGRESS
 ```
 
 ---
@@ -2482,7 +2482,7 @@ const Errno EINPROGRESS              = 112
 #### `EDQUOT`
 
 ```c3
-const Errno EDQUOT                   = -122
+const Errno EDQUOT
 ```
 
 ---
@@ -2490,7 +2490,7 @@ const Errno EDQUOT                   = -122
 #### `EWOULDBLOCK`
 
 ```c3
-const Errno EWOULDBLOCK              = 140
+const Errno EWOULDBLOCK
 ```
 ### `libc::os @if(env::LIBC)`
 
@@ -5313,7 +5313,7 @@ macro usz AnyList._remove_if(&self, AnyPredicate filter, bool $invert) @local
 #### `BITS`
 
 ```c3
-const BITS = uint.sizeof * 8
+const BITS
 ```
 
 ---
@@ -5321,7 +5321,7 @@ const BITS = uint.sizeof * 8
 #### `SZ`
 
 ```c3
-const SZ = (SIZE + BITS - 1) / BITS
+const SZ
 ```
 
 ---
@@ -5508,7 +5508,7 @@ Change a particular bit in the bitset
 #### `INITIAL_CAPACITY`
 
 ```c3
-const INITIAL_CAPACITY = 16
+const INITIAL_CAPACITY
 ```
 
 ---
@@ -5737,7 +5737,7 @@ alias ElementTest = fn bool(Type *type, any context)
 #### `ELEMENT_IS_EQUATABLE`
 
 ```c3
-const ELEMENT_IS_EQUATABLE = types::is_equatable_type(Type)
+const ELEMENT_IS_EQUATABLE
 ```
 
 ---
@@ -5745,7 +5745,7 @@ const ELEMENT_IS_EQUATABLE = types::is_equatable_type(Type)
 #### `ELEMENT_IS_POINTER`
 
 ```c3
-const ELEMENT_IS_POINTER = Type.kindof == POINTER
+const ELEMENT_IS_POINTER
 ```
 
 ---
@@ -6309,7 +6309,7 @@ fn void EnumMap.set(&self, Enum key, ValueType value) @operator([]=) @inline
 #### `IS_CHAR_ARRAY`
 
 ```c3
-const IS_CHAR_ARRAY = ENUM_COUNT > 128
+const IS_CHAR_ARRAY
 ```
 
 ---
@@ -6430,7 +6430,7 @@ macro typeid type_for_enum_elements(usz $elements) @local
 #### `BITS`
 
 ```c3
-const BITS = Type.sizeof * 8
+const BITS
 ```
 
 ---
@@ -6531,7 +6531,7 @@ fn void GrowableBitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 #### `ELEMENT_IS_EQUATABLE`
 
 ```c3
-const ELEMENT_IS_EQUATABLE = types::is_equatable_type(Type)
+const ELEMENT_IS_EQUATABLE
 ```
 
 ---
@@ -6906,7 +6906,7 @@ alias ElementTest = fn bool(Type *type, any context)
 #### `ELEMENT_IS_EQUATABLE`
 
 ```c3
-const ELEMENT_IS_EQUATABLE = types::is_equatable_type(Type)
+const ELEMENT_IS_EQUATABLE
 ```
 
 ---
@@ -6914,7 +6914,7 @@ const ELEMENT_IS_EQUATABLE = types::is_equatable_type(Type)
 #### `ELEMENT_IS_POINTER`
 
 ```c3
-const ELEMENT_IS_POINTER = Type.kindof == POINTER
+const ELEMENT_IS_POINTER
 ```
 
 ---
@@ -6922,7 +6922,7 @@ const ELEMENT_IS_POINTER = Type.kindof == POINTER
 #### `LIST_HEAP_ALLOCATOR`
 
 ```c3
-const Allocator LIST_HEAP_ALLOCATOR = (Allocator)&dummy
+const Allocator LIST_HEAP_ALLOCATOR
 ```
 
 ---
@@ -6930,7 +6930,7 @@ const Allocator LIST_HEAP_ALLOCATOR = (Allocator)&dummy
 #### `ONHEAP`
 
 ```c3
-const List ONHEAP = { .allocator = LIST_HEAP_ALLOCATOR }
+const List ONHEAP
 ```
 
 ---
@@ -7503,7 +7503,7 @@ fn usz List.compact(&self) @if(ELEMENT_IS_POINTER)
 #### `DEFAULT_INITIAL_CAPACITY`
 
 ```c3
-const uint DEFAULT_INITIAL_CAPACITY = 16
+const uint DEFAULT_INITIAL_CAPACITY
 ```
 
 ---
@@ -7511,7 +7511,7 @@ const uint DEFAULT_INITIAL_CAPACITY = 16
 #### `MAXIMUM_CAPACITY`
 
 ```c3
-const uint MAXIMUM_CAPACITY = 1u << 31
+const uint MAXIMUM_CAPACITY
 ```
 
 ---
@@ -7519,7 +7519,7 @@ const uint MAXIMUM_CAPACITY = 1u << 31
 #### `DEFAULT_LOAD_FACTOR`
 
 ```c3
-const float DEFAULT_LOAD_FACTOR = 0.75
+const float DEFAULT_LOAD_FACTOR
 ```
 
 ---
@@ -7527,7 +7527,7 @@ const float DEFAULT_LOAD_FACTOR = 0.75
 #### `VALUE_IS_EQUATABLE`
 
 ```c3
-const VALUE_IS_EQUATABLE = Value.is_eq
+const VALUE_IS_EQUATABLE
 ```
 
 ---
@@ -7535,7 +7535,7 @@ const VALUE_IS_EQUATABLE = Value.is_eq
 #### `COPY_KEYS`
 
 ```c3
-const bool COPY_KEYS = types::implements_copy(Key)
+const bool COPY_KEYS
 ```
 
 ---
@@ -7543,7 +7543,7 @@ const bool COPY_KEYS = types::implements_copy(Key)
 #### `MAP_HEAP_ALLOCATOR`
 
 ```c3
-const Allocator MAP_HEAP_ALLOCATOR = (Allocator)&dummy
+const Allocator MAP_HEAP_ALLOCATOR
 ```
 
 ---
@@ -7551,7 +7551,7 @@ const Allocator MAP_HEAP_ALLOCATOR = (Allocator)&dummy
 #### `ONHEAP`
 
 ```c3
-const HashMap ONHEAP = { .allocator = MAP_HEAP_ALLOCATOR }
+const HashMap ONHEAP
 ```
 
 ---
@@ -8055,7 +8055,7 @@ macro uint index_for(uint hash, uint capacity) @private
 #### `LINKEDONHEAP`
 
 ```c3
-const LinkedHashMap LINKEDONHEAP = { .allocator = MAP_HEAP_ALLOCATOR }
+const LinkedHashMap LINKEDONHEAP
 ```
 
 ---
@@ -8597,7 +8597,7 @@ fn Maybe value(Type val)
 #### `EMPTY`
 
 ```c3
-const Maybe EMPTY = { }
+const Maybe EMPTY
 ```
 
 ---
@@ -8622,7 +8622,7 @@ fn bool Maybe.equals(self, Maybe other) @operator(==) @if(types::is_equatable_ty
 #### `TRUE_OBJECT`
 
 ```c3
-const Object TRUE_OBJECT = { .b = true, .type = bool.typeid }
+const Object TRUE_OBJECT
 ```
 
 ---
@@ -8630,7 +8630,7 @@ const Object TRUE_OBJECT = { .b = true, .type = bool.typeid }
 #### `FALSE_OBJECT`
 
 ```c3
-const Object FALSE_OBJECT = { .b = false, .type = bool.typeid }
+const Object FALSE_OBJECT
 ```
 
 ---
@@ -8638,7 +8638,7 @@ const Object FALSE_OBJECT = { .b = false, .type = bool.typeid }
 #### `NULL_OBJECT`
 
 ```c3
-const Object NULL_OBJECT = { .type = void*.typeid }
+const Object NULL_OBJECT
 ```
 
 ---
@@ -9559,7 +9559,7 @@ fn void RingBuffer.write(&self, Element[] buffer)
 #### `DEFAULT_INITIAL_CAPACITY`
 
 ```c3
-const uint DEFAULT_INITIAL_CAPACITY = 16
+const uint DEFAULT_INITIAL_CAPACITY
 ```
 
 ---
@@ -9567,7 +9567,7 @@ const uint DEFAULT_INITIAL_CAPACITY = 16
 #### `MAXIMUM_CAPACITY`
 
 ```c3
-const uint MAXIMUM_CAPACITY = 1u << 31
+const uint MAXIMUM_CAPACITY
 ```
 
 ---
@@ -9575,7 +9575,7 @@ const uint MAXIMUM_CAPACITY = 1u << 31
 #### `DEFAULT_LOAD_FACTOR`
 
 ```c3
-const float DEFAULT_LOAD_FACTOR = 0.75
+const float DEFAULT_LOAD_FACTOR
 ```
 
 ---
@@ -9583,7 +9583,7 @@ const float DEFAULT_LOAD_FACTOR = 0.75
 #### `SET_HEAP_ALLOCATOR`
 
 ```c3
-const Allocator SET_HEAP_ALLOCATOR = (Allocator)&dummy
+const Allocator SET_HEAP_ALLOCATOR
 ```
 
 ---
@@ -9591,7 +9591,7 @@ const Allocator SET_HEAP_ALLOCATOR = (Allocator)&dummy
 #### `ONHEAP`
 
 ```c3
-const HashSet ONHEAP = { .allocator = SET_HEAP_ALLOCATOR }
+const HashSet ONHEAP
 ```
 
 Copy the ONHEAP allocator to initialize to a set that is heap allocated
@@ -10152,7 +10152,7 @@ macro uint index_for(uint hash, uint capacity) @private
 #### `LINKEDONHEAP`
 
 ```c3
-const LinkedHashSet LINKEDONHEAP = { .allocator = SET_HEAP_ALLOCATOR }
+const LinkedHashSet LINKEDONHEAP
 ```
 
 ---
@@ -10744,7 +10744,7 @@ struct Tuple @deprecated("Use 'Pair' instead")
 #### `PIXELS_MAX`
 
 ```c3
-const uint PIXELS_MAX = 400000000
+const uint PIXELS_MAX
 ```
 
 ---
@@ -11627,13 +11627,7 @@ Convert a-f/A-F/0-9 to the appropriate hex value.
 #### `HEX_VALUE`
 
 ```c3
-const char[256] HEX_VALUE = {
-	['0'] =  0, ['1'] =  1, ['2'] =  2, ['3'] =  3, ['4'] =  4,
-	['5'] =  5, ['6'] =  6, ['7'] =  7, ['8'] =  8, ['9'] =  9,
-	['A'] = 10, ['B'] = 11, ['C'] = 12, ['D'] = 13, ['E'] = 14,
-	['F'] = 15, ['a'] = 10, ['b'] = 11, ['c'] = 12, ['d'] = 13,
-	['e'] = 14, ['f'] = 15
-}
+const char[256] HEX_VALUE
 ```
 ### `std::core::bitorder`
 
@@ -11825,7 +11819,7 @@ macro bool @is_arrayptr_or_slice_of_char(#bytes) @const
 #### `@builtin`
 
 ```c3
-const EmptySlot EMPTY_MACRO_SLOT @builtin = null
+const EmptySlot EMPTY_MACRO_SLOT @builtin
 ```
 
 EMPTY_MACRO_SLOT is a value used for implementing optional arguments for macros in an efficient
@@ -12767,7 +12761,7 @@ macro uint hash_vec(vec) @local
 #### `MAX_FRAMEADDRESS`
 
 ```c3
-const MAX_FRAMEADDRESS = 128
+const MAX_FRAMEADDRESS
 ```
 
 ---
@@ -12921,7 +12915,7 @@ fn void install_signal_handlers() @init(101) @local @if(env::BACKTRACE)
 #### `C_INT_SIZE`
 
 ```c3
-const C_INT_SIZE = $$C_INT_SIZE
+const C_INT_SIZE
 ```
 
 ---
@@ -12929,7 +12923,7 @@ const C_INT_SIZE = $$C_INT_SIZE
 #### `C_LONG_SIZE`
 
 ```c3
-const C_LONG_SIZE = $$C_LONG_SIZE
+const C_LONG_SIZE
 ```
 
 ---
@@ -12937,7 +12931,7 @@ const C_LONG_SIZE = $$C_LONG_SIZE
 #### `C_SHORT_SIZE`
 
 ```c3
-const C_SHORT_SIZE = $$C_SHORT_SIZE
+const C_SHORT_SIZE
 ```
 
 ---
@@ -12945,7 +12939,7 @@ const C_SHORT_SIZE = $$C_SHORT_SIZE
 #### `C_LONG_LONG_SIZE`
 
 ```c3
-const C_LONG_LONG_SIZE = $$C_LONG_LONG_SIZE
+const C_LONG_LONG_SIZE
 ```
 
 ---
@@ -13642,7 +13636,7 @@ enum ArchType
 #### `COMPILER_BUILD_HASH`
 
 ```c3
-const String COMPILER_BUILD_HASH = $$BUILD_HASH
+const String COMPILER_BUILD_HASH
 ```
 
 ---
@@ -13650,7 +13644,7 @@ const String COMPILER_BUILD_HASH = $$BUILD_HASH
 #### `COMPILER_BUILD_DATE`
 
 ```c3
-const String COMPILER_BUILD_DATE = $$BUILD_DATE
+const String COMPILER_BUILD_DATE
 ```
 
 ---
@@ -13658,7 +13652,7 @@ const String COMPILER_BUILD_DATE = $$BUILD_DATE
 #### `OS_TYPE`
 
 ```c3
-const OsType OS_TYPE = OsType.from_ordinal($$OS_TYPE)
+const OsType OS_TYPE
 ```
 
 ---
@@ -13666,7 +13660,7 @@ const OsType OS_TYPE = OsType.from_ordinal($$OS_TYPE)
 #### `ARCH_TYPE`
 
 ```c3
-const ArchType ARCH_TYPE = ArchType.from_ordinal($$ARCH_TYPE)
+const ArchType ARCH_TYPE
 ```
 
 ---
@@ -13674,7 +13668,7 @@ const ArchType ARCH_TYPE = ArchType.from_ordinal($$ARCH_TYPE)
 #### `MAX_VECTOR_SIZE`
 
 ```c3
-const usz MAX_VECTOR_SIZE = $$MAX_VECTOR_SIZE
+const usz MAX_VECTOR_SIZE
 ```
 
 ---
@@ -13682,7 +13676,7 @@ const usz MAX_VECTOR_SIZE = $$MAX_VECTOR_SIZE
 #### `ARCH_32_BIT`
 
 ```c3
-const bool ARCH_32_BIT = $$REGISTER_SIZE == 32
+const bool ARCH_32_BIT
 ```
 
 ---
@@ -13690,7 +13684,7 @@ const bool ARCH_32_BIT = $$REGISTER_SIZE == 32
 #### `ARCH_64_BIT`
 
 ```c3
-const bool ARCH_64_BIT = $$REGISTER_SIZE == 64
+const bool ARCH_64_BIT
 ```
 
 ---
@@ -13698,7 +13692,7 @@ const bool ARCH_64_BIT = $$REGISTER_SIZE == 64
 #### `LIBC`
 
 ```c3
-const bool LIBC = $$COMPILER_LIBC_AVAILABLE
+const bool LIBC
 ```
 
 ---
@@ -13706,7 +13700,7 @@ const bool LIBC = $$COMPILER_LIBC_AVAILABLE
 #### `NO_LIBC`
 
 ```c3
-const bool NO_LIBC = !$$COMPILER_LIBC_AVAILABLE
+const bool NO_LIBC
 ```
 
 ---
@@ -13714,7 +13708,7 @@ const bool NO_LIBC = !$$COMPILER_LIBC_AVAILABLE
 #### `COMPILER_OPT_LEVEL`
 
 ```c3
-const CompilerOptLevel COMPILER_OPT_LEVEL = CompilerOptLevel.from_ordinal($$COMPILER_OPT_LEVEL)
+const CompilerOptLevel COMPILER_OPT_LEVEL
 ```
 
 ---
@@ -13722,7 +13716,7 @@ const CompilerOptLevel COMPILER_OPT_LEVEL = CompilerOptLevel.from_ordinal($$COMP
 #### `BIG_ENDIAN`
 
 ```c3
-const bool BIG_ENDIAN = $$PLATFORM_BIG_ENDIAN
+const bool BIG_ENDIAN
 ```
 
 ---
@@ -13730,7 +13724,7 @@ const bool BIG_ENDIAN = $$PLATFORM_BIG_ENDIAN
 #### `I128_NATIVE_SUPPORT`
 
 ```c3
-const bool I128_NATIVE_SUPPORT = $$PLATFORM_I128_SUPPORTED
+const bool I128_NATIVE_SUPPORT
 ```
 
 ---
@@ -13738,7 +13732,7 @@ const bool I128_NATIVE_SUPPORT = $$PLATFORM_I128_SUPPORTED
 #### `F16_SUPPORT`
 
 ```c3
-const bool F16_SUPPORT = $$PLATFORM_F16_SUPPORTED
+const bool F16_SUPPORT
 ```
 
 ---
@@ -13746,7 +13740,7 @@ const bool F16_SUPPORT = $$PLATFORM_F16_SUPPORTED
 #### `F128_SUPPORT`
 
 ```c3
-const bool F128_SUPPORT = $$PLATFORM_F128_SUPPORTED
+const bool F128_SUPPORT
 ```
 
 ---
@@ -13754,7 +13748,7 @@ const bool F128_SUPPORT = $$PLATFORM_F128_SUPPORTED
 #### `REGISTER_SIZE`
 
 ```c3
-const REGISTER_SIZE = $$REGISTER_SIZE
+const REGISTER_SIZE
 ```
 
 ---
@@ -13762,7 +13756,7 @@ const REGISTER_SIZE = $$REGISTER_SIZE
 #### `COMPILER_SAFE_MODE`
 
 ```c3
-const bool COMPILER_SAFE_MODE = $$COMPILER_SAFE_MODE
+const bool COMPILER_SAFE_MODE
 ```
 
 ---
@@ -13770,7 +13764,7 @@ const bool COMPILER_SAFE_MODE = $$COMPILER_SAFE_MODE
 #### `DEBUG_SYMBOLS`
 
 ```c3
-const bool DEBUG_SYMBOLS = $$DEBUG_SYMBOLS
+const bool DEBUG_SYMBOLS
 ```
 
 ---
@@ -13778,7 +13772,7 @@ const bool DEBUG_SYMBOLS = $$DEBUG_SYMBOLS
 #### `BACKTRACE`
 
 ```c3
-const bool BACKTRACE = $$BACKTRACE
+const bool BACKTRACE
 ```
 
 ---
@@ -13786,7 +13780,7 @@ const bool BACKTRACE = $$BACKTRACE
 #### `LLVM_VERSION`
 
 ```c3
-const usz LLVM_VERSION = $$LLVM_VERSION
+const usz LLVM_VERSION
 ```
 
 ---
@@ -13794,7 +13788,7 @@ const usz LLVM_VERSION = $$LLVM_VERSION
 #### `BENCHMARKING`
 
 ```c3
-const bool BENCHMARKING = $$BENCHMARKING
+const bool BENCHMARKING
 ```
 
 ---
@@ -13802,7 +13796,7 @@ const bool BENCHMARKING = $$BENCHMARKING
 #### `TESTING`
 
 ```c3
-const bool TESTING = $$TESTING
+const bool TESTING
 ```
 
 ---
@@ -13810,7 +13804,7 @@ const bool TESTING = $$TESTING
 #### `PANIC_MSG`
 
 ```c3
-const bool PANIC_MSG = $$PANIC_MSG
+const bool PANIC_MSG
 ```
 
 ---
@@ -13818,7 +13812,7 @@ const bool PANIC_MSG = $$PANIC_MSG
 #### `MEMORY_ENV`
 
 ```c3
-const MemoryEnvironment MEMORY_ENV = MemoryEnvironment.from_ordinal($$MEMORY_ENVIRONMENT)
+const MemoryEnvironment MEMORY_ENV
 ```
 
 ---
@@ -13826,7 +13820,7 @@ const MemoryEnvironment MEMORY_ENV = MemoryEnvironment.from_ordinal($$MEMORY_ENV
 #### `TRACK_MEMORY`
 
 ```c3
-const bool TRACK_MEMORY = DEBUG_SYMBOLS && (COMPILER_SAFE_MODE || TESTING)
+const bool TRACK_MEMORY
 ```
 
 ---
@@ -13834,7 +13828,7 @@ const bool TRACK_MEMORY = DEBUG_SYMBOLS && (COMPILER_SAFE_MODE || TESTING)
 #### `X86_64`
 
 ```c3
-const bool X86_64 = ARCH_TYPE == X86_64
+const bool X86_64
 ```
 
 ---
@@ -13842,7 +13836,7 @@ const bool X86_64 = ARCH_TYPE == X86_64
 #### `X86`
 
 ```c3
-const bool X86 = ARCH_TYPE == X86
+const bool X86
 ```
 
 ---
@@ -13850,7 +13844,7 @@ const bool X86 = ARCH_TYPE == X86
 #### `AARCH64`
 
 ```c3
-const bool AARCH64 = ARCH_TYPE == AARCH64
+const bool AARCH64
 ```
 
 ---
@@ -13858,7 +13852,7 @@ const bool AARCH64 = ARCH_TYPE == AARCH64
 #### `NATIVE_STACKTRACE`
 
 ```c3
-const bool NATIVE_STACKTRACE = LINUX || DARWIN || OPENBSD || WIN32
+const bool NATIVE_STACKTRACE
 ```
 
 ---
@@ -13866,7 +13860,7 @@ const bool NATIVE_STACKTRACE = LINUX || DARWIN || OPENBSD || WIN32
 #### `LINUX`
 
 ```c3
-const bool LINUX = LIBC && OS_TYPE == LINUX
+const bool LINUX
 ```
 
 ---
@@ -13874,7 +13868,7 @@ const bool LINUX = LIBC && OS_TYPE == LINUX
 #### `DARWIN`
 
 ```c3
-const bool DARWIN = LIBC && os_is_darwin()
+const bool DARWIN
 ```
 
 ---
@@ -13882,7 +13876,7 @@ const bool DARWIN = LIBC && os_is_darwin()
 #### `WIN32`
 
 ```c3
-const bool WIN32 = LIBC && OS_TYPE == WIN32
+const bool WIN32
 ```
 
 ---
@@ -13890,7 +13884,7 @@ const bool WIN32 = LIBC && OS_TYPE == WIN32
 #### `POSIX`
 
 ```c3
-const bool POSIX = LIBC && os_is_posix()
+const bool POSIX
 ```
 
 ---
@@ -13898,7 +13892,7 @@ const bool POSIX = LIBC && os_is_posix()
 #### `OPENBSD`
 
 ```c3
-const bool OPENBSD = LIBC && OS_TYPE == OPENBSD
+const bool OPENBSD
 ```
 
 ---
@@ -13906,7 +13900,7 @@ const bool OPENBSD = LIBC && OS_TYPE == OPENBSD
 #### `FREEBSD`
 
 ```c3
-const bool FREEBSD = LIBC && OS_TYPE == FREEBSD
+const bool FREEBSD
 ```
 
 ---
@@ -13914,7 +13908,7 @@ const bool FREEBSD = LIBC && OS_TYPE == FREEBSD
 #### `NETBSD`
 
 ```c3
-const bool NETBSD = LIBC && OS_TYPE == NETBSD
+const bool NETBSD
 ```
 
 ---
@@ -13922,7 +13916,7 @@ const bool NETBSD = LIBC && OS_TYPE == NETBSD
 #### `BSD_FAMILY`
 
 ```c3
-const bool BSD_FAMILY = env::FREEBSD || env::OPENBSD || env::NETBSD
+const bool BSD_FAMILY
 ```
 
 ---
@@ -13930,7 +13924,7 @@ const bool BSD_FAMILY = env::FREEBSD || env::OPENBSD || env::NETBSD
 #### `WASI`
 
 ```c3
-const bool WASI = LIBC && OS_TYPE == WASI
+const bool WASI
 ```
 
 ---
@@ -13938,7 +13932,7 @@ const bool WASI = LIBC && OS_TYPE == WASI
 #### `ANDROID`
 
 ```c3
-const bool ANDROID = LIBC && OS_TYPE == ANDROID
+const bool ANDROID
 ```
 
 ---
@@ -13946,7 +13940,7 @@ const bool ANDROID = LIBC && OS_TYPE == ANDROID
 #### `@builtin`
 
 ```c3
-const bool WASM_NOLIBC @builtin = !LIBC && ARCH_TYPE == ArchType.WASM32 || ARCH_TYPE == ArchType.WASM64
+const bool WASM_NOLIBC @builtin
 ```
 
 ---
@@ -13954,7 +13948,7 @@ const bool WASM_NOLIBC @builtin = !LIBC && ARCH_TYPE == ArchType.WASM32 || ARCH_
 #### `ADDRESS_SANITIZER`
 
 ```c3
-const bool ADDRESS_SANITIZER = $$ADDRESS_SANITIZER
+const bool ADDRESS_SANITIZER
 ```
 
 ---
@@ -13962,7 +13956,7 @@ const bool ADDRESS_SANITIZER = $$ADDRESS_SANITIZER
 #### `MEMORY_SANITIZER`
 
 ```c3
-const bool MEMORY_SANITIZER = $$MEMORY_SANITIZER
+const bool MEMORY_SANITIZER
 ```
 
 ---
@@ -13970,7 +13964,7 @@ const bool MEMORY_SANITIZER = $$MEMORY_SANITIZER
 #### `THREAD_SANITIZER`
 
 ```c3
-const bool THREAD_SANITIZER = $$THREAD_SANITIZER
+const bool THREAD_SANITIZER
 ```
 
 ---
@@ -13978,7 +13972,7 @@ const bool THREAD_SANITIZER = $$THREAD_SANITIZER
 #### `ANY_SANITIZER`
 
 ```c3
-const bool ANY_SANITIZER = ADDRESS_SANITIZER || MEMORY_SANITIZER || THREAD_SANITIZER
+const bool ANY_SANITIZER
 ```
 
 ---
@@ -13986,7 +13980,7 @@ const bool ANY_SANITIZER = ADDRESS_SANITIZER || MEMORY_SANITIZER || THREAD_SANIT
 #### `LANGUAGE_DEV_VERSION`
 
 ```c3
-const int LANGUAGE_DEV_VERSION = $$LANGUAGE_DEV_VERSION
+const int LANGUAGE_DEV_VERSION
 ```
 
 ---
@@ -13994,7 +13988,7 @@ const int LANGUAGE_DEV_VERSION = $$LANGUAGE_DEV_VERSION
 #### `HAS_NATIVE_ERRNO`
 
 ```c3
-const bool HAS_NATIVE_ERRNO = env::LINUX || env::ANDROID || env::OPENBSD || env::DARWIN || env::WIN32
+const bool HAS_NATIVE_ERRNO
 ```
 
 ---
@@ -14018,7 +14012,7 @@ macro bool os_is_posix() @const
 #### `AUTHORS`
 
 ```c3
-const String[] AUTHORS = $$AUTHORS
+const String[] AUTHORS
 ```
 
 ---
@@ -14026,7 +14020,7 @@ const String[] AUTHORS = $$AUTHORS
 #### `AUTHOR_EMAILS`
 
 ```c3
-const String[] AUTHOR_EMAILS = $$AUTHOR_EMAILS
+const String[] AUTHOR_EMAILS
 ```
 
 ---
@@ -14034,7 +14028,7 @@ const String[] AUTHOR_EMAILS = $$AUTHOR_EMAILS
 #### `BUILTIN_EXPECT_IS_DISABLED`
 
 ```c3
-const BUILTIN_EXPECT_IS_DISABLED = $feature(DISABLE_BUILTIN_EXPECT)
+const BUILTIN_EXPECT_IS_DISABLED
 ```
 
 ---
@@ -14042,7 +14036,7 @@ const BUILTIN_EXPECT_IS_DISABLED = $feature(DISABLE_BUILTIN_EXPECT)
 #### `BUILTIN_PREFETCH_IS_DISABLED`
 
 ```c3
-const BUILTIN_PREFETCH_IS_DISABLED = $feature(DISABLE_BUILTIN_PREFETCH)
+const BUILTIN_PREFETCH_IS_DISABLED
 ```
 ### `std::core::log`
 
@@ -14051,7 +14045,7 @@ const BUILTIN_PREFETCH_IS_DISABLED = $feature(DISABLE_BUILTIN_PREFETCH)
 #### `FULL_LOG`
 
 ```c3
-const FULL_LOG = env::COMPILER_SAFE_MODE || $feature(FULL_LOG)
+const FULL_LOG
 ```
 
 ---
@@ -14075,7 +14069,7 @@ typedef LogTag = char[12]
 #### `CATEGORY_APPLICATION`
 
 ```c3
-const LogCategory CATEGORY_APPLICATION  = 0
+const LogCategory CATEGORY_APPLICATION
 ```
 
 ---
@@ -14083,7 +14077,7 @@ const LogCategory CATEGORY_APPLICATION  = 0
 #### `CATEGORY_SYSTEM`
 
 ```c3
-const LogCategory CATEGORY_SYSTEM       = 1
+const LogCategory CATEGORY_SYSTEM
 ```
 
 ---
@@ -14091,7 +14085,7 @@ const LogCategory CATEGORY_SYSTEM       = 1
 #### `CATEGORY_KERNEL`
 
 ```c3
-const LogCategory CATEGORY_KERNEL       = 2
+const LogCategory CATEGORY_KERNEL
 ```
 
 ---
@@ -14099,7 +14093,7 @@ const LogCategory CATEGORY_KERNEL       = 2
 #### `CATEGORY_AUDIO`
 
 ```c3
-const LogCategory CATEGORY_AUDIO        = 3
+const LogCategory CATEGORY_AUDIO
 ```
 
 ---
@@ -14107,7 +14101,7 @@ const LogCategory CATEGORY_AUDIO        = 3
 #### `CATEGORY_VIDEO`
 
 ```c3
-const LogCategory CATEGORY_VIDEO        = 4
+const LogCategory CATEGORY_VIDEO
 ```
 
 ---
@@ -14115,7 +14109,7 @@ const LogCategory CATEGORY_VIDEO        = 4
 #### `CATEGORY_RENDER`
 
 ```c3
-const LogCategory CATEGORY_RENDER       = 5
+const LogCategory CATEGORY_RENDER
 ```
 
 ---
@@ -14123,7 +14117,7 @@ const LogCategory CATEGORY_RENDER       = 5
 #### `CATEGORY_INPUT`
 
 ```c3
-const LogCategory CATEGORY_INPUT        = 6
+const LogCategory CATEGORY_INPUT
 ```
 
 ---
@@ -14131,7 +14125,7 @@ const LogCategory CATEGORY_INPUT        = 6
 #### `CATEGORY_NETWORK`
 
 ```c3
-const LogCategory CATEGORY_NETWORK      = 7
+const LogCategory CATEGORY_NETWORK
 ```
 
 ---
@@ -14139,7 +14133,7 @@ const LogCategory CATEGORY_NETWORK      = 7
 #### `CATEGORY_SOCKET`
 
 ```c3
-const LogCategory CATEGORY_SOCKET       = 8
+const LogCategory CATEGORY_SOCKET
 ```
 
 ---
@@ -14147,7 +14141,7 @@ const LogCategory CATEGORY_SOCKET       = 8
 #### `CATEGORY_SECURITY`
 
 ```c3
-const LogCategory CATEGORY_SECURITY     = 9
+const LogCategory CATEGORY_SECURITY
 ```
 
 ---
@@ -14155,7 +14149,7 @@ const LogCategory CATEGORY_SECURITY     = 9
 #### `CATEGORY_TEST`
 
 ```c3
-const LogCategory CATEGORY_TEST         = 10
+const LogCategory CATEGORY_TEST
 ```
 
 ---
@@ -14163,7 +14157,7 @@ const LogCategory CATEGORY_TEST         = 10
 #### `CATEGORY_ERROR`
 
 ```c3
-const LogCategory CATEGORY_ERROR        = 11
+const LogCategory CATEGORY_ERROR
 ```
 
 ---
@@ -14171,7 +14165,7 @@ const LogCategory CATEGORY_ERROR        = 11
 #### `CATEGORY_ASSERT`
 
 ```c3
-const LogCategory CATEGORY_ASSERT       = 12
+const LogCategory CATEGORY_ASSERT
 ```
 
 ---
@@ -14179,7 +14173,7 @@ const LogCategory CATEGORY_ASSERT       = 12
 #### `CATEGORY_CRASH`
 
 ```c3
-const LogCategory CATEGORY_CRASH        = 13
+const LogCategory CATEGORY_CRASH
 ```
 
 ---
@@ -14187,7 +14181,7 @@ const LogCategory CATEGORY_CRASH        = 13
 #### `CATEGORY_STATS`
 
 ```c3
-const LogCategory CATEGORY_STATS        = 14
+const LogCategory CATEGORY_STATS
 ```
 
 ---
@@ -14195,7 +14189,7 @@ const LogCategory CATEGORY_STATS        = 14
 #### `CATEGORY_CUSTOM_START`
 
 ```c3
-const LogCategory CATEGORY_CUSTOM_START = 100
+const LogCategory CATEGORY_CUSTOM_START
 ```
 
 ---
@@ -14599,7 +14593,7 @@ macro int @wmain_to_void_main_args(#m, int argc, Char16** argv)
 #### `MAX_MEMORY_ALIGNMENT`
 
 ```c3
-const MAX_MEMORY_ALIGNMENT = 0x1000_0000
+const MAX_MEMORY_ALIGNMENT
 ```
 
 ---
@@ -14607,7 +14601,7 @@ const MAX_MEMORY_ALIGNMENT = 0x1000_0000
 #### `DEFAULT_MEM_ALIGNMENT`
 
 ```c3
-const DEFAULT_MEM_ALIGNMENT = (void*.alignof) * 2
+const DEFAULT_MEM_ALIGNMENT
 ```
 
 ---
@@ -14615,7 +14609,7 @@ const DEFAULT_MEM_ALIGNMENT = (void*.alignof) * 2
 #### `KB`
 
 ```c3
-const ulong KB = 1024
+const ulong KB
 ```
 
 ---
@@ -14623,7 +14617,7 @@ const ulong KB = 1024
 #### `MB`
 
 ```c3
-const ulong MB = KB * 1024
+const ulong MB
 ```
 
 ---
@@ -14631,7 +14625,7 @@ const ulong MB = KB * 1024
 #### `GB`
 
 ```c3
-const ulong GB = MB * 1024
+const ulong GB
 ```
 
 ---
@@ -14639,7 +14633,7 @@ const ulong GB = MB * 1024
 #### `TB`
 
 ```c3
-const ulong TB = GB * 1024
+const ulong TB
 ```
 
 ---
@@ -16217,7 +16211,7 @@ fn void*? OnStackAllocator.acquire(&self, usz size, AllocInitType init_type, usz
 #### `MAX_BACKTRACE`
 
 ```c3
-const MAX_BACKTRACE = 16
+const MAX_BACKTRACE
 ```
 
 ---
@@ -16382,7 +16376,7 @@ fn void? TrackingAllocator.fprint_report(&self, OutStream out)
 #### `DEFAULT_SIZE_PREFIX`
 
 ```c3
-const DEFAULT_SIZE_PREFIX = usz.sizeof
+const DEFAULT_SIZE_PREFIX
 ```
 
 ---
@@ -16390,7 +16384,7 @@ const DEFAULT_SIZE_PREFIX = usz.sizeof
 #### `DEFAULT_SIZE_PREFIX_ALIGNMENT`
 
 ```c3
-const DEFAULT_SIZE_PREFIX_ALIGNMENT = usz.alignof
+const DEFAULT_SIZE_PREFIX_ALIGNMENT
 ```
 
 ---
@@ -16927,7 +16921,7 @@ fn void LazyTempAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 #### `NULL_ALLOCATOR`
 
 ```c3
-const NullAllocator NULL_ALLOCATOR = {}
+const NullAllocator NULL_ALLOCATOR
 ```
 
 ---
@@ -16967,7 +16961,7 @@ fn void NullAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 #### `WASM_BLOCK_SIZE`
 
 ```c3
-const usz WASM_BLOCK_SIZE = 65536
+const usz WASM_BLOCK_SIZE
 ```
 
 ---
@@ -17242,7 +17236,7 @@ The LibcAllocator is a wrapper around malloc to conform to the Allocator interfa
 #### `LIBC_ALLOCATOR`
 
 ```c3
-const LibcAllocator LIBC_ALLOCATOR = {}
+const LibcAllocator LIBC_ALLOCATOR
 ```
 ### `std::core::mem::allocator @if(env::POSIX || env::WIN32)`
 
@@ -17443,7 +17437,7 @@ fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 #### `INITIAL_CAPACITY`
 
 ```c3
-const INITIAL_CAPACITY = 0
+const INITIAL_CAPACITY
 ```
 
 ---
@@ -18088,7 +18082,7 @@ fn BenchmarkUnit[] benchmark_collection_create(Allocator allocator)
 #### `DEFAULT_BENCHMARK_WARMUP_ITERATIONS`
 
 ```c3
-const DEFAULT_BENCHMARK_WARMUP_ITERATIONS = 3
+const DEFAULT_BENCHMARK_WARMUP_ITERATIONS
 ```
 
 ---
@@ -18096,7 +18090,7 @@ const DEFAULT_BENCHMARK_WARMUP_ITERATIONS = 3
 #### `DEFAULT_BENCHMARK_MAX_ITERATIONS`
 
 ```c3
-const DEFAULT_BENCHMARK_MAX_ITERATIONS = 10000
+const DEFAULT_BENCHMARK_MAX_ITERATIONS
 ```
 
 ---
@@ -18434,7 +18428,7 @@ typedef MutexFlags = inline CUInt
 #### `MUTEX_LINKER_INIT`
 
 ```c3
-const MutexFlags MUTEX_LINKER_INIT      = 1 << 0
+const MutexFlags MUTEX_LINKER_INIT
 ```
 
 ---
@@ -18442,7 +18436,7 @@ const MutexFlags MUTEX_LINKER_INIT      = 1 << 0
 #### `MUTEX_WRITE_REENTRANT`
 
 ```c3
-const MutexFlags MUTEX_WRITE_REENTRANT  = 1 << 1
+const MutexFlags MUTEX_WRITE_REENTRANT
 ```
 
 ---
@@ -18450,7 +18444,7 @@ const MutexFlags MUTEX_WRITE_REENTRANT  = 1 << 1
 #### `MUTEX_READ_REENTRANT`
 
 ```c3
-const MutexFlags MUTEX_READ_REENTRANT   = 1 << 2
+const MutexFlags MUTEX_READ_REENTRANT
 ```
 
 ---
@@ -18458,7 +18452,7 @@ const MutexFlags MUTEX_READ_REENTRANT   = 1 << 2
 #### `MUTEX_NOT_STATIC`
 
 ```c3
-const MutexFlags MUTEX_NOT_STATIC       = 1 << 8
+const MutexFlags MUTEX_NOT_STATIC
 ```
 
 ---
@@ -18466,7 +18460,7 @@ const MutexFlags MUTEX_NOT_STATIC       = 1 << 8
 #### `MUTEX_READ_LOCK`
 
 ```c3
-const MutexFlags MUTEX_READ_LOCK        = 1 << 3
+const MutexFlags MUTEX_READ_LOCK
 ```
 
 ---
@@ -18474,7 +18468,7 @@ const MutexFlags MUTEX_READ_LOCK        = 1 << 3
 #### `MUTEX_TRY_LOCK`
 
 ```c3
-const MutexFlags MUTEX_TRY_LOCK         = 1 << 4
+const MutexFlags MUTEX_TRY_LOCK
 ```
 
 ---
@@ -18482,7 +18476,7 @@ const MutexFlags MUTEX_TRY_LOCK         = 1 << 4
 #### `MUTEX_TRY_LOCK_FAILED`
 
 ```c3
-const MutexFlags MUTEX_TRY_LOCK_FAILED  = 1 << 5
+const MutexFlags MUTEX_TRY_LOCK_FAILED
 ```
 
 ---
@@ -18490,7 +18484,7 @@ const MutexFlags MUTEX_TRY_LOCK_FAILED  = 1 << 5
 #### `MUTEX_RECURSIVE_LOCK`
 
 ```c3
-const MutexFlags MUTEX_RECURSIVE_LOCK   = 1 << 6
+const MutexFlags MUTEX_RECURSIVE_LOCK
 ```
 
 ---
@@ -18498,7 +18492,7 @@ const MutexFlags MUTEX_RECURSIVE_LOCK   = 1 << 6
 #### `MUTEX_RECURSIVE_UNLOCK`
 
 ```c3
-const MutexFlags MUTEX_RECURSIVE_UNLOCK = 1 << 7
+const MutexFlags MUTEX_RECURSIVE_UNLOCK
 ```
 
 ---
@@ -18506,7 +18500,7 @@ const MutexFlags MUTEX_RECURSIVE_UNLOCK = 1 << 7
 #### `MUTEX_TRY_READ_LOCK`
 
 ```c3
-const MutexFlags MUTEX_TRY_READ_LOCK = MUTEX_READ_LOCK | MUTEX_TRY_LOCK
+const MutexFlags MUTEX_TRY_READ_LOCK
 ```
 
 ---
@@ -18514,7 +18508,7 @@ const MutexFlags MUTEX_TRY_READ_LOCK = MUTEX_READ_LOCK | MUTEX_TRY_LOCK
 #### `MUTEX_TRY_READ_LOCK_FAILED`
 
 ```c3
-const MutexFlags MUTEX_TRY_READ_LOCK_FAILED = MUTEX_TRY_READ_LOCK | MUTEX_TRY_LOCK_FAILED
+const MutexFlags MUTEX_TRY_READ_LOCK_FAILED
 ```
 
 ---
@@ -19920,7 +19914,7 @@ Check if a character needs to be escaped in a string literal.
 #### `KMAX`
 
 ```c3
-const KMAX = 128
+const KMAX
 ```
 
 ---
@@ -19928,7 +19922,7 @@ const KMAX = 128
 #### `MASK`
 
 ```c3
-const MASK = KMAX - 1
+const MASK
 ```
 
 ---
@@ -19936,7 +19930,7 @@ const MASK = KMAX - 1
 #### `B1B_DIG`
 
 ```c3
-const B1B_DIG = 2
+const B1B_DIG
 ```
 
 ---
@@ -19944,7 +19938,7 @@ const B1B_DIG = 2
 #### `B1B_MAX`
 
 ```c3
-const uint[2] B1B_MAX = { 9007199, 254740991 }
+const uint[2] B1B_MAX
 ```
 
 ---
@@ -21219,7 +21213,7 @@ struct Base32Alphabet
 #### `NO_PAD`
 
 ```c3
-const char NO_PAD = 0
+const char NO_PAD
 ```
 
 ---
@@ -21227,7 +21221,7 @@ const char NO_PAD = 0
 #### `DEFAULT_PAD`
 
 ```c3
-const char DEFAULT_PAD = '='
+const char DEFAULT_PAD
 ```
 
 ---
@@ -21362,7 +21356,7 @@ Encode the content of src into dst, which must be properly sized.
 #### `STD_PADDING`
 
 ```c3
-const int STD_PADDING = '='
+const int STD_PADDING
 ```
 
 ---
@@ -21370,7 +21364,7 @@ const int STD_PADDING = '='
 #### `NO_PADDING`
 
 ```c3
-const int NO_PADDING = -1
+const int NO_PADDING
 ```
 
 ---
@@ -21386,7 +21380,7 @@ typedef Alphabet = char[32]
 #### `STD_ALPHABET`
 
 ```c3
-const Alphabet STD_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+const Alphabet STD_ALPHABET
 ```
 
 ---
@@ -21394,7 +21388,7 @@ const Alphabet STD_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 #### `HEX_ALPHABET`
 
 ```c3
-const Alphabet HEX_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
+const Alphabet HEX_ALPHABET
 ```
 
 ---
@@ -21402,17 +21396,7 @@ const Alphabet HEX_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
 #### `STANDARD`
 
 ```c3
-const Base32Alphabet STANDARD = {
-	.encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567",
-	.reverse = x`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffff1a1b1c1d1e1fffffffffffffffff
-                 ff000102030405060708090a0b0c0d0e0f10111213141516171819ffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
-}
+const Base32Alphabet STANDARD
 ```
 
 ---
@@ -21420,17 +21404,7 @@ const Base32Alphabet STANDARD = {
 #### `HEX`
 
 ```c3
-const Base32Alphabet HEX = {
-	.encoding = "0123456789ABCDEFGHIJKLMNOPQRSTUV",
-	.reverse = x`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffff00010203040506070809ffffffffffff
-                 ff0a0b0c0d0e0f101112131415161718191a1b1c1d1e1fffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
-}
+const Base32Alphabet HEX
 ```
 ### `std::encoding::base64`
 
@@ -21439,7 +21413,7 @@ const Base32Alphabet HEX = {
 #### `NO_PAD`
 
 ```c3
-const char NO_PAD = 0
+const char NO_PAD
 ```
 
 ---
@@ -21447,7 +21421,7 @@ const char NO_PAD = 0
 #### `DEFAULT_PAD`
 
 ```c3
-const char DEFAULT_PAD = '='
+const char DEFAULT_PAD
 ```
 
 ---
@@ -21463,18 +21437,7 @@ struct Base64Alphabet
 #### `STANDARD`
 
 ```c3
-const Base64Alphabet STANDARD = {
-	.encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-	.reverse =
-	x`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffff3effffff3f3435363738393a3b3c3dffffffffffff
-	  ff000102030405060708090a0b0c0d0e0f10111213141516171819ffffffffff
-	  ff1a1b1c1d1e1f202122232425262728292a2b2c2d2e2f30313233ffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
-}
+const Base64Alphabet STANDARD
 ```
 
 ---
@@ -21482,18 +21445,7 @@ const Base64Alphabet STANDARD = {
 #### `URL`
 
 ```c3
-const Base64Alphabet URL = {
-	.encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",
-	.reverse =
-	x`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffff3effff3435363738393a3b3c3dffffffffffff
-	  ff000102030405060708090a0b0c0d0e0f10111213141516171819ffffffff3f
-	  ff1a1b1c1d1e1f202122232425262728292a2b2c2d2e2f30313233ffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-	  ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`
-}
+const Base64Alphabet URL
 ```
 
 ---
@@ -21501,7 +21453,7 @@ const Base64Alphabet URL = {
 #### `STD_ALPHABET`
 
 ```c3
-const STD_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+const STD_ALPHABET
 ```
 
 ---
@@ -21509,7 +21461,7 @@ const STD_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
 #### `URL_ALPHABET`
 
 ```c3
-const URL_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+const URL_ALPHABET
 ```
 
 ---
@@ -22382,7 +22334,7 @@ fn ulong hash(char[] data, ulong seed = 0)
 #### `BLOCK_BYTES`
 
 ```c3
-const BLOCK_BYTES = 64
+const BLOCK_BYTES
 ```
 
 ---
@@ -22390,7 +22342,7 @@ const BLOCK_BYTES = 64
 #### `HASH_BYTES`
 
 ```c3
-const HASH_BYTES = 16
+const HASH_BYTES
 ```
 
 ---
@@ -22545,7 +22497,7 @@ fn ulong MetroHash64.final(&self)
 #### `BLOCK_BYTES`
 
 ```c3
-const BLOCK_BYTES = 64
+const BLOCK_BYTES
 ```
 
 ---
@@ -22553,7 +22505,7 @@ const BLOCK_BYTES = 64
 #### `HASH_BYTES`
 
 ```c3
-const HASH_BYTES = 20
+const HASH_BYTES
 ```
 
 ---
@@ -22698,7 +22650,7 @@ fn void sha1_transform(uint[5]* state, char* buffer) @local
 #### `BLOCK_SIZE`
 
 ```c3
-const BLOCK_SIZE = 64
+const BLOCK_SIZE
 ```
 
 ---
@@ -22706,7 +22658,7 @@ const BLOCK_SIZE = 64
 #### `HASH_SIZE`
 
 ```c3
-const HASH_SIZE = 32
+const HASH_SIZE
 ```
 
 ---
@@ -22851,7 +22803,7 @@ fn void sha256_transform(uint* state, char* buffer) @local
 #### `BLOCK_SIZE`
 
 ```c3
-const BLOCK_SIZE = 128
+const BLOCK_SIZE
 ```
 
 ---
@@ -22859,7 +22811,7 @@ const BLOCK_SIZE = 128
 #### `HASH_SIZE`
 
 ```c3
-const HASH_SIZE = 64
+const HASH_SIZE
 ```
 
 ---
@@ -23135,7 +23087,7 @@ alias hash = siphash::hash { uint128, 4, 8 }
 #### `BLOCK_SIZE`
 
 ```c3
-const BLOCK_SIZE = 64
+const BLOCK_SIZE
 ```
 
 ---
@@ -23143,7 +23095,7 @@ const BLOCK_SIZE = 64
 #### `HASH_SIZE`
 
 ```c3
-const HASH_SIZE = 64
+const HASH_SIZE
 ```
 
 ---
@@ -23151,7 +23103,7 @@ const HASH_SIZE = 64
 #### `BLOCK_128`
 
 ```c3
-const BLOCK_128 = 64 / int128.sizeof
+const BLOCK_128
 ```
 
 ---
@@ -23234,7 +23186,7 @@ macro ulong @w_op(#src, $shift) @private
 #### `ROUNDS`
 
 ```c3
-const ROUNDS = 10
+const ROUNDS
 ```
 
 ---
@@ -23315,7 +23267,7 @@ struct BitWriter
 #### `WRITER_BITS`
 
 ```c3
-const int WRITER_BITS = 24
+const int WRITER_BITS
 ```
 
 ---
@@ -23358,7 +23310,7 @@ struct File (InStream, OutStream)
 #### `PRINTF_NTOA_BUFFER_SIZE`
 
 ```c3
-const int PRINTF_NTOA_BUFFER_SIZE = 256
+const int PRINTF_NTOA_BUFFER_SIZE
 ```
 
 ---
@@ -23525,7 +23477,7 @@ fn usz? Formatter.print(&self, String str)
 #### `XDIGITS_H`
 
 ```c3
-const char[16] XDIGITS_H = "0123456789ABCDEF"
+const char[16] XDIGITS_H
 ```
 
 ---
@@ -23533,7 +23485,7 @@ const char[16] XDIGITS_H = "0123456789ABCDEF"
 #### `XDIGITS_L`
 
 ```c3
-const char[16] XDIGITS_L = "0123456789abcdef"
+const char[16] XDIGITS_L
 ```
 
 ---
@@ -25931,7 +25883,7 @@ fn void? native_rmtree(Path path)
 #### `DEFAULT_ENV`
 
 ```c3
-const PathEnv DEFAULT_ENV = env::WIN32 ? PathEnv.WIN32 : PathEnv.POSIX
+const PathEnv DEFAULT_ENV
 ```
 
 ---
@@ -25939,7 +25891,7 @@ const PathEnv DEFAULT_ENV = env::WIN32 ? PathEnv.WIN32 : PathEnv.POSIX
 #### `PREFERRED_SEPARATOR_WIN32`
 
 ```c3
-const char PREFERRED_SEPARATOR_WIN32 = '\\'
+const char PREFERRED_SEPARATOR_WIN32
 ```
 
 ---
@@ -25947,7 +25899,7 @@ const char PREFERRED_SEPARATOR_WIN32 = '\\'
 #### `PREFERRED_SEPARATOR_POSIX`
 
 ```c3
-const char PREFERRED_SEPARATOR_POSIX = '/'
+const char PREFERRED_SEPARATOR_POSIX
 ```
 
 ---
@@ -25955,7 +25907,7 @@ const char PREFERRED_SEPARATOR_POSIX = '/'
 #### `PREFERRED_SEPARATOR`
 
 ```c3
-const char PREFERRED_SEPARATOR = env::WIN32 ? PREFERRED_SEPARATOR_WIN32 : PREFERRED_SEPARATOR_POSIX
+const char PREFERRED_SEPARATOR
 ```
 
 ---
@@ -26530,10 +26482,7 @@ fn usz? Path.to_format(&self, Formatter* formatter) @dynamic
 #### `RESERVED_PATH_CHAR_POSIX`
 
 ```c3
-const bool[256] RESERVED_PATH_CHAR_POSIX = {
-	[0] = true,
-	['/'] = true,
-}
+const bool[256] RESERVED_PATH_CHAR_POSIX
 ```
 
 ---
@@ -26541,18 +26490,7 @@ const bool[256] RESERVED_PATH_CHAR_POSIX = {
 #### `RESERVED_PATH_CHAR_WIN32`
 
 ```c3
-const bool[256] RESERVED_PATH_CHAR_WIN32 = {
-	[0..31] = true,
-	['>'] = true,
-	['<'] = true,
-	[':'] = true,
-	['\"'] = true,
-	['/'] = true,
-	['\\'] = true,
-	['|'] = true,
-	['?'] = true,
-	['*'] = true,
-}
+const bool[256] RESERVED_PATH_CHAR_WIN32
 ```
 
 ---
@@ -26657,7 +26595,7 @@ alias I_F @builtin = complex::IMAGINARY { float }
 #### `E`
 
 ```c3
-const E = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427427466
+const E
 ```
 
 ---
@@ -26665,7 +26603,7 @@ const E = 2.71828182845904523536028747135266249775724709369995957496696762772407
 #### `LOG2E`
 
 ```c3
-const LOG2E = 1.44269504088896340735992468100189214
+const LOG2E
 ```
 
 ---
@@ -26673,7 +26611,7 @@ const LOG2E = 1.44269504088896340735992468100189214
 #### `LOG10E`
 
 ```c3
-const LOG10E = 0.434294481903251827651128918916605082
+const LOG10E
 ```
 
 ---
@@ -26681,7 +26619,7 @@ const LOG10E = 0.434294481903251827651128918916605082
 #### `LN2`
 
 ```c3
-const LN2 = 0.693147180559945309417232121458176568
+const LN2
 ```
 
 ---
@@ -26689,7 +26627,7 @@ const LN2 = 0.693147180559945309417232121458176568
 #### `LN10`
 
 ```c3
-const LN10 = 2.30258509299404568401799145468436421
+const LN10
 ```
 
 ---
@@ -26697,7 +26635,7 @@ const LN10 = 2.30258509299404568401799145468436421
 #### `PI`
 
 ```c3
-const PI = 3.14159265358979323846264338327950288419716939937510
+const PI
 ```
 
 ---
@@ -26705,7 +26643,7 @@ const PI = 3.14159265358979323846264338327950288419716939937510
 #### `PI_2`
 
 ```c3
-const PI_2 = 1.57079632679489661923132169163975144
+const PI_2
 ```
 
 ---
@@ -26713,7 +26651,7 @@ const PI_2 = 1.57079632679489661923132169163975144
 #### `PI_4`
 
 ```c3
-const PI_4 = 0.785398163397448309615660845819875721
+const PI_4
 ```
 
 ---
@@ -26721,7 +26659,7 @@ const PI_4 = 0.785398163397448309615660845819875721
 #### `DIV_PI`
 
 ```c3
-const DIV_PI = 0.318309886183790671537767526745028724
+const DIV_PI
 ```
 
 ---
@@ -26729,7 +26667,7 @@ const DIV_PI = 0.318309886183790671537767526745028724
 #### `DIV_2_PI`
 
 ```c3
-const DIV_2_PI = 0.636619772367581343075535053490057448
+const DIV_2_PI
 ```
 
 ---
@@ -26737,7 +26675,7 @@ const DIV_2_PI = 0.636619772367581343075535053490057448
 #### `DIV_2_SQRTPI`
 
 ```c3
-const DIV_2_SQRTPI = 1.12837916709551257389615890312154517
+const DIV_2_SQRTPI
 ```
 
 ---
@@ -26745,7 +26683,7 @@ const DIV_2_SQRTPI = 1.12837916709551257389615890312154517
 #### `SQRT2`
 
 ```c3
-const SQRT2 = 1.41421356237309504880168872420969808
+const SQRT2
 ```
 
 ---
@@ -26753,7 +26691,7 @@ const SQRT2 = 1.41421356237309504880168872420969808
 #### `DIV_1_SQRT2`
 
 ```c3
-const double DIV_1_SQRT2 = 0.707106781186547524400844362104849039
+const double DIV_1_SQRT2
 ```
 
 ---
@@ -26761,7 +26699,7 @@ const double DIV_1_SQRT2 = 0.707106781186547524400844362104849039
 #### `HALF_MAX`
 
 ```c3
-const HALF_MAX = 6.5504e+4
+const HALF_MAX
 ```
 
 ---
@@ -26769,7 +26707,7 @@ const HALF_MAX = 6.5504e+4
 #### `HALF_MIN`
 
 ```c3
-const HALF_MIN = 6.103515625e-5
+const HALF_MIN
 ```
 
 ---
@@ -26777,7 +26715,7 @@ const HALF_MIN = 6.103515625e-5
 #### `HALF_DENORM_MIN`
 
 ```c3
-const HALF_DENORM_MIN = 5.9604644775390625e-8
+const HALF_DENORM_MIN
 ```
 
 ---
@@ -26785,7 +26723,7 @@ const HALF_DENORM_MIN = 5.9604644775390625e-8
 #### `HALF_DIG`
 
 ```c3
-const HALF_DIG = 3
+const HALF_DIG
 ```
 
 ---
@@ -26793,7 +26731,7 @@ const HALF_DIG = 3
 #### `HALF_DEC_DIGITS`
 
 ```c3
-const HALF_DEC_DIGITS = 5
+const HALF_DEC_DIGITS
 ```
 
 ---
@@ -26801,7 +26739,7 @@ const HALF_DEC_DIGITS = 5
 #### `HALF_MANT_DIG`
 
 ```c3
-const HALF_MANT_DIG = 11
+const HALF_MANT_DIG
 ```
 
 ---
@@ -26809,7 +26747,7 @@ const HALF_MANT_DIG = 11
 #### `HALF_MAX_10_EXP`
 
 ```c3
-const HALF_MAX_10_EXP = 4
+const HALF_MAX_10_EXP
 ```
 
 ---
@@ -26817,7 +26755,7 @@ const HALF_MAX_10_EXP = 4
 #### `HALF_MIN_10_EXP`
 
 ```c3
-const HALF_MIN_10_EXP = -4
+const HALF_MIN_10_EXP
 ```
 
 ---
@@ -26825,7 +26763,7 @@ const HALF_MIN_10_EXP = -4
 #### `HALF_MAX_EXP`
 
 ```c3
-const HALF_MAX_EXP = 16
+const HALF_MAX_EXP
 ```
 
 ---
@@ -26833,7 +26771,7 @@ const HALF_MAX_EXP = 16
 #### `HALF_MIN_EXP`
 
 ```c3
-const HALF_MIN_EXP = -13
+const HALF_MIN_EXP
 ```
 
 ---
@@ -26841,7 +26779,7 @@ const HALF_MIN_EXP = -13
 #### `HALF_EPSILON`
 
 ```c3
-const HALF_EPSILON = 9.765625e-4
+const HALF_EPSILON
 ```
 
 ---
@@ -26849,7 +26787,7 @@ const HALF_EPSILON = 9.765625e-4
 #### `FLOAT_MAX`
 
 ```c3
-const FLOAT_MAX = 0x1.fffffep+127
+const FLOAT_MAX
 ```
 
 ---
@@ -26857,7 +26795,7 @@ const FLOAT_MAX = 0x1.fffffep+127
 #### `FLOAT_MIN`
 
 ```c3
-const FLOAT_MIN = 1.17549435e-38
+const FLOAT_MIN
 ```
 
 ---
@@ -26865,7 +26803,7 @@ const FLOAT_MIN = 1.17549435e-38
 #### `FLOAT_DENORM_MIN`
 
 ```c3
-const FLOAT_DENORM_MIN = 1.40129846432481707092e-45
+const FLOAT_DENORM_MIN
 ```
 
 ---
@@ -26873,7 +26811,7 @@ const FLOAT_DENORM_MIN = 1.40129846432481707092e-45
 #### `FLOAT_DIG`
 
 ```c3
-const FLOAT_DIG = 6
+const FLOAT_DIG
 ```
 
 ---
@@ -26881,7 +26819,7 @@ const FLOAT_DIG = 6
 #### `FLOAT_DEC_DIGITS`
 
 ```c3
-const FLOAT_DEC_DIGITS = 9
+const FLOAT_DEC_DIGITS
 ```
 
 ---
@@ -26889,7 +26827,7 @@ const FLOAT_DEC_DIGITS = 9
 #### `FLOAT_MANT_DIG`
 
 ```c3
-const FLOAT_MANT_DIG = 24
+const FLOAT_MANT_DIG
 ```
 
 ---
@@ -26897,7 +26835,7 @@ const FLOAT_MANT_DIG = 24
 #### `FLOAT_MAX_10_EXP`
 
 ```c3
-const FLOAT_MAX_10_EXP = 38
+const FLOAT_MAX_10_EXP
 ```
 
 ---
@@ -26905,7 +26843,7 @@ const FLOAT_MAX_10_EXP = 38
 #### `FLOAT_MIN_10_EXP`
 
 ```c3
-const FLOAT_MIN_10_EXP = -37
+const FLOAT_MIN_10_EXP
 ```
 
 ---
@@ -26913,7 +26851,7 @@ const FLOAT_MIN_10_EXP = -37
 #### `FLOAT_MAX_EXP`
 
 ```c3
-const FLOAT_MAX_EXP = 128
+const FLOAT_MAX_EXP
 ```
 
 ---
@@ -26921,7 +26859,7 @@ const FLOAT_MAX_EXP = 128
 #### `FLOAT_MIN_EXP`
 
 ```c3
-const FLOAT_MIN_EXP = -125
+const FLOAT_MIN_EXP
 ```
 
 ---
@@ -26929,7 +26867,7 @@ const FLOAT_MIN_EXP = -125
 #### `FLOAT_EPSILON`
 
 ```c3
-const FLOAT_EPSILON = 1.1920928955078125e-07
+const FLOAT_EPSILON
 ```
 
 ---
@@ -26937,7 +26875,7 @@ const FLOAT_EPSILON = 1.1920928955078125e-07
 #### `DOUBLE_MAX`
 
 ```c3
-const DOUBLE_MAX = 1.79769313486231570815e+308
+const DOUBLE_MAX
 ```
 
 ---
@@ -26945,7 +26883,7 @@ const DOUBLE_MAX = 1.79769313486231570815e+308
 #### `DOUBLE_MIN`
 
 ```c3
-const DOUBLE_MIN = 2.2250738585072014e-308
+const DOUBLE_MIN
 ```
 
 ---
@@ -26953,7 +26891,7 @@ const DOUBLE_MIN = 2.2250738585072014e-308
 #### `DOUBLE_DENORM_MIN`
 
 ```c3
-const DOUBLE_DENORM_MIN = 4.94065645841246544177e-324
+const DOUBLE_DENORM_MIN
 ```
 
 ---
@@ -26961,7 +26899,7 @@ const DOUBLE_DENORM_MIN = 4.94065645841246544177e-324
 #### `DOUBLE_DIG`
 
 ```c3
-const DOUBLE_DIG = 15
+const DOUBLE_DIG
 ```
 
 ---
@@ -26969,7 +26907,7 @@ const DOUBLE_DIG = 15
 #### `DOUBLE_DEC_DIGITS`
 
 ```c3
-const DOUBLE_DEC_DIGITS = 17
+const DOUBLE_DEC_DIGITS
 ```
 
 ---
@@ -26977,7 +26915,7 @@ const DOUBLE_DEC_DIGITS = 17
 #### `DOUBLE_MANT_DIG`
 
 ```c3
-const DOUBLE_MANT_DIG = 53
+const DOUBLE_MANT_DIG
 ```
 
 ---
@@ -26985,7 +26923,7 @@ const DOUBLE_MANT_DIG = 53
 #### `DOUBLE_MAX_10_EXP`
 
 ```c3
-const DOUBLE_MAX_10_EXP = 308
+const DOUBLE_MAX_10_EXP
 ```
 
 ---
@@ -26993,7 +26931,7 @@ const DOUBLE_MAX_10_EXP = 308
 #### `DOUBLE_MIN_10_EXP`
 
 ```c3
-const DOUBLE_MIN_10_EXP = -307
+const DOUBLE_MIN_10_EXP
 ```
 
 ---
@@ -27001,7 +26939,7 @@ const DOUBLE_MIN_10_EXP = -307
 #### `DOUBLE_MAX_EXP`
 
 ```c3
-const DOUBLE_MAX_EXP = 1024
+const DOUBLE_MAX_EXP
 ```
 
 ---
@@ -27009,7 +26947,7 @@ const DOUBLE_MAX_EXP = 1024
 #### `DOUBLE_MIN_EXP`
 
 ```c3
-const DOUBLE_MIN_EXP = -1021
+const DOUBLE_MIN_EXP
 ```
 
 ---
@@ -27017,7 +26955,7 @@ const DOUBLE_MIN_EXP = -1021
 #### `DOUBLE_EPSILON`
 
 ```c3
-const DOUBLE_EPSILON = 2.22044604925031308085e-16
+const DOUBLE_EPSILON
 ```
 
 ---
@@ -30861,7 +30799,7 @@ alias QUATERNIONF_IDENTITY @builtin = quaternion::IDENTITY {float}
 #### `MAX_LEN`
 
 ```c3
-const MAX_LEN = 4096 * 2 / 32
+const MAX_LEN
 ```
 
 ---
@@ -30869,7 +30807,7 @@ const MAX_LEN = 4096 * 2 / 32
 #### `ZERO`
 
 ```c3
-const BigInt ZERO = { .len = 1 }
+const BigInt ZERO
 ```
 
 ---
@@ -30877,7 +30815,7 @@ const BigInt ZERO = { .len = 1 }
 #### `ONE`
 
 ```c3
-const BigInt ONE = { .len = 1, .data[0] = 1 }
+const BigInt ONE
 ```
 
 ---
@@ -31319,7 +31257,7 @@ fn void BigInt.randomize_bits(&self, Random random, int bits)
 #### `IDENTITY`
 
 ```c3
-const Complex IDENTITY = { 1, 0 }
+const Complex IDENTITY
 ```
 
 ---
@@ -31327,7 +31265,7 @@ const Complex IDENTITY = { 1, 0 }
 #### `IMAGINARY`
 
 ```c3
-const Complex IMAGINARY = { 0, 1 }
+const Complex IMAGINARY
 ```
 
 ---
@@ -32360,7 +32298,7 @@ fn Matrix4x4 perspective(Real fov, Real aspect_ratio, Real near, Real far)
 #### `IDENTITY2`
 
 ```c3
-const Matrix2x2 IDENTITY2 = { .m = { [0] = 1, [3] = 1 } }
+const Matrix2x2 IDENTITY2
 ```
 
 ---
@@ -32368,7 +32306,7 @@ const Matrix2x2 IDENTITY2 = { .m = { [0] = 1, [3] = 1 } }
 #### `IDENTITY3`
 
 ```c3
-const Matrix3x3 IDENTITY3 = { .m = { [0] = 1, [4] = 1, [8] = 1 } }
+const Matrix3x3 IDENTITY3
 ```
 
 ---
@@ -32376,7 +32314,7 @@ const Matrix3x3 IDENTITY3 = { .m = { [0] = 1, [4] = 1, [8] = 1 } }
 #### `IDENTITY4`
 
 ```c3
-const Matrix4x4 IDENTITY4 = { .m = { [0] = 1, [5] = 1, [10] = 1, [15] = 1 } }
+const Matrix4x4 IDENTITY4
 ```
 
 ---
@@ -32465,21 +32403,7 @@ fn float __sindf(double x) @extern("__sindf") @weak @nostrip
 #### `TAN_T`
 
 ```c3
-const double[*] TAN_T = {
-             3.33333333333334091986e-01, /* 3FD55555, 55555563 */
-             1.33333333333201242699e-01, /* 3FC11111, 1110FE7A */
-             5.39682539762260521377e-02, /* 3FABA1BA, 1BB341FE */
-             2.18694882948595424599e-02, /* 3F9664F4, 8406D637 */
-             8.86323982359930005737e-03, /* 3F8226E3, E96E8493 */
-             3.59207910759131235356e-03, /* 3F6D6D22, C9560328 */
-             1.45620945432529025516e-03, /* 3F57DBC8, FEE08315 */
-             5.88041240820264096874e-04, /* 3F4344D8, F2F26501 */
-             2.46463134818469906812e-04, /* 3F3026F7, 1A8D1068 */
-             7.81794442939557092300e-05, /* 3F147E88, A03792A6 */
-             7.14072491382608190305e-05, /* 3F12B80F, 32F0A7E9 */
-            -1.85586374855275456654e-05, /* BEF375CB, DB605373 */
-             2.59073051863633712884e-05, /* 3EFB2A70, 74BF7AD4 */
-}
+const double[*] TAN_T
 ```
 
 ---
@@ -32495,14 +32419,7 @@ fn double __tan(double x, double y, int odd) @extern("__tan") @weak @nostrip
 #### `TANDF`
 
 ```c3
-const double[*] TANDF = {
-	0x15554d3418c99f.0p-54, /* 0.333331395030791399758 */
-	0x1112fd38999f72.0p-55, /* 0.133392002712976742718 */
-	0x1b54c91d865afe.0p-57, /* 0.0533812378445670393523 */
-	0x191df3908c33ce.0p-58, /* 0.0245283181166547278873 */
-	0x185dadfcecf44e.0p-61, /* 0.00297435743359967304927 */
-	0x1362b9bf971bcd.0p-59, /* 0.00946564784943673166728 */
-}
+const double[*] TANDF
 ```
 
 ---
@@ -32652,7 +32569,7 @@ fn double _cos(double x) @extern("cos")  @weak @nostrip
 #### `EXP_LN2_HI`
 
 ```c3
-const double EXP_LN2_HI = 6.93147180369123816490e-01
+const double EXP_LN2_HI
 ```
 
 ---
@@ -32660,7 +32577,7 @@ const double EXP_LN2_HI = 6.93147180369123816490e-01
 #### `EXP_LN2_LO`
 
 ```c3
-const double EXP_LN2_LO = 1.90821492927058770002e-10
+const double EXP_LN2_LO
 ```
 
 ---
@@ -32668,7 +32585,7 @@ const double EXP_LN2_LO = 1.90821492927058770002e-10
 #### `EXP_INV_LN2`
 
 ```c3
-const double EXP_INV_LN2 = 1.44269504088896338700e+00
+const double EXP_INV_LN2
 ```
 
 ---
@@ -32676,7 +32593,7 @@ const double EXP_INV_LN2 = 1.44269504088896338700e+00
 #### `EXP_P1`
 
 ```c3
-const double EXP_P1 = 1.66666666666666019037e-01
+const double EXP_P1
 ```
 
 ---
@@ -32684,7 +32601,7 @@ const double EXP_P1 = 1.66666666666666019037e-01
 #### `EXP_P2`
 
 ```c3
-const double EXP_P2 = -2.77777777770155933842e-03
+const double EXP_P2
 ```
 
 ---
@@ -32692,7 +32609,7 @@ const double EXP_P2 = -2.77777777770155933842e-03
 #### `EXP_P3`
 
 ```c3
-const double EXP_P3 = 6.61375632143793436117e-05
+const double EXP_P3
 ```
 
 ---
@@ -32700,7 +32617,7 @@ const double EXP_P3 = 6.61375632143793436117e-05
 #### `EXP_P4`
 
 ```c3
-const double EXP_P4 = -1.65339022054652515390e-06
+const double EXP_P4
 ```
 
 ---
@@ -32708,7 +32625,7 @@ const double EXP_P4 = -1.65339022054652515390e-06
 #### `EXP_P5`
 
 ```c3
-const double EXP_P5 = 4.13813679705723846039e-08
+const double EXP_P5
 ```
 
 ---
@@ -32716,7 +32633,7 @@ const double EXP_P5 = 4.13813679705723846039e-08
 #### `EXPF_LN2_HI`
 
 ```c3
-const float EXPF_LN2_HI = 6.9314575195e-01f
+const float EXPF_LN2_HI
 ```
 
 ---
@@ -32724,7 +32641,7 @@ const float EXPF_LN2_HI = 6.9314575195e-01f
 #### `EXPF_LN2_LO`
 
 ```c3
-const float EXPF_LN2_LO = 1.4286067653e-06f
+const float EXPF_LN2_LO
 ```
 
 ---
@@ -32732,7 +32649,7 @@ const float EXPF_LN2_LO = 1.4286067653e-06f
 #### `EXPF_INV_LN2`
 
 ```c3
-const float EXPF_INV_LN2 = 1.4426950216e+00f
+const float EXPF_INV_LN2
 ```
 
 ---
@@ -32740,7 +32657,7 @@ const float EXPF_INV_LN2 = 1.4426950216e+00f
 #### `EXPF_P1`
 
 ```c3
-const float EXPF_P1 = 1.6666667163e-01f
+const float EXPF_P1
 ```
 
 ---
@@ -32748,7 +32665,7 @@ const float EXPF_P1 = 1.6666667163e-01f
 #### `EXPF_P2`
 
 ```c3
-const float EXPF_P2 = -2.7777778450e-03f
+const float EXPF_P2
 ```
 
 ---
@@ -32756,7 +32673,7 @@ const float EXPF_P2 = -2.7777778450e-03f
 #### `EXPF_P3`
 
 ```c3
-const float EXPF_P3 = 6.6137559770e-05f
+const float EXPF_P3
 ```
 
 ---
@@ -32764,7 +32681,7 @@ const float EXPF_P3 = 6.6137559770e-05f
 #### `EXPF_P4`
 
 ```c3
-const float EXPF_P4 = -1.6533901999e-06f
+const float EXPF_P4
 ```
 
 ---
@@ -32892,7 +32809,7 @@ fn float ldexpf(float x, int exp) @extern("ldexpf")
 #### `LOG_LN2_HI`
 
 ```c3
-const double LOG_LN2_HI = 6.93147180369123816490e-01
+const double LOG_LN2_HI
 ```
 
 ---
@@ -32900,7 +32817,7 @@ const double LOG_LN2_HI = 6.93147180369123816490e-01
 #### `LOG_LN2_LO`
 
 ```c3
-const double LOG_LN2_LO = 1.90821492927058770002e-10
+const double LOG_LN2_LO
 ```
 
 ---
@@ -32908,7 +32825,7 @@ const double LOG_LN2_LO = 1.90821492927058770002e-10
 #### `LOG_L1`
 
 ```c3
-const double LOG_L1 = 6.666666666666735130e-01
+const double LOG_L1
 ```
 
 ---
@@ -32916,7 +32833,7 @@ const double LOG_L1 = 6.666666666666735130e-01
 #### `LOG_L2`
 
 ```c3
-const double LOG_L2 = 3.999999999940941908e-01
+const double LOG_L2
 ```
 
 ---
@@ -32924,7 +32841,7 @@ const double LOG_L2 = 3.999999999940941908e-01
 #### `LOG_L3`
 
 ```c3
-const double LOG_L3 = 2.857142874366239149e-01
+const double LOG_L3
 ```
 
 ---
@@ -32932,7 +32849,7 @@ const double LOG_L3 = 2.857142874366239149e-01
 #### `LOG_L4`
 
 ```c3
-const double LOG_L4 = 2.222219843214978396e-01
+const double LOG_L4
 ```
 
 ---
@@ -32940,7 +32857,7 @@ const double LOG_L4 = 2.222219843214978396e-01
 #### `LOG_L5`
 
 ```c3
-const double LOG_L5 = 1.818357216161805012e-01
+const double LOG_L5
 ```
 
 ---
@@ -32948,7 +32865,7 @@ const double LOG_L5 = 1.818357216161805012e-01
 #### `LOG_L6`
 
 ```c3
-const double LOG_L6 = 1.531383769920937332e-01
+const double LOG_L6
 ```
 
 ---
@@ -32956,7 +32873,7 @@ const double LOG_L6 = 1.531383769920937332e-01
 #### `LOGF_LN2_HI`
 
 ```c3
-const float LOGF_LN2_HI = 6.9313812256e-01f
+const float LOGF_LN2_HI
 ```
 
 ---
@@ -32964,7 +32881,7 @@ const float LOGF_LN2_HI = 6.9313812256e-01f
 #### `LOGF_LN2_LO`
 
 ```c3
-const float LOGF_LN2_LO = 9.0580006145e-06f
+const float LOGF_LN2_LO
 ```
 
 ---
@@ -32972,7 +32889,7 @@ const float LOGF_LN2_LO = 9.0580006145e-06f
 #### `LOGF_L1`
 
 ```c3
-const float LOGF_L1 = 6.6666662693e-01f
+const float LOGF_L1
 ```
 
 ---
@@ -32980,7 +32897,7 @@ const float LOGF_L1 = 6.6666662693e-01f
 #### `LOGF_L2`
 
 ```c3
-const float LOGF_L2 = 4.0000972152e-01f
+const float LOGF_L2
 ```
 
 ---
@@ -32988,7 +32905,7 @@ const float LOGF_L2 = 4.0000972152e-01f
 #### `LOGF_L3`
 
 ```c3
-const float LOGF_L3 = 2.8498786688e-01f
+const float LOGF_L3
 ```
 
 ---
@@ -32996,7 +32913,7 @@ const float LOGF_L3 = 2.8498786688e-01f
 #### `LOGF_L4`
 
 ```c3
-const float LOGF_L4 = 2.4279078841e-01f
+const float LOGF_L4
 ```
 
 ---
@@ -33004,7 +32921,7 @@ const float LOGF_L4 = 2.4279078841e-01f
 #### `SQRT2`
 
 ```c3
-const double SQRT2 = 1.41421356237309504880
+const double SQRT2
 ```
 
 ---
@@ -33012,7 +32929,7 @@ const double SQRT2 = 1.41421356237309504880
 #### `SQRT2F`
 
 ```c3
-const float SQRT2F = 1.41421356237309504880f
+const float SQRT2F
 ```
 
 ---
@@ -33052,7 +32969,7 @@ fn float _log1pf(float x) @weak @extern("log1pf") @nostrip
 #### `TOINT`
 
 ```c3
-const double TOINT = 1 / math::DOUBLE_EPSILON
+const double TOINT
 ```
 
 ---
@@ -33060,7 +32977,7 @@ const double TOINT = 1 / math::DOUBLE_EPSILON
 #### `TOINT15`
 
 ```c3
-const double TOINT15 = 1.5 / math::DOUBLE_EPSILON
+const double TOINT15
 ```
 
 ---
@@ -33068,7 +32985,7 @@ const double TOINT15 = 1.5 / math::DOUBLE_EPSILON
 #### `TOINTF`
 
 ```c3
-const float TOINTF = (float)(1 / math::FLOAT_EPSILON)
+const float TOINTF
 ```
 
 ---
@@ -33076,7 +32993,7 @@ const float TOINTF = (float)(1 / math::FLOAT_EPSILON)
 #### `EXP_TABLE_BITS`
 
 ```c3
-const EXP_TABLE_BITS = 7
+const EXP_TABLE_BITS
 ```
 
 ---
@@ -33084,7 +33001,7 @@ const EXP_TABLE_BITS = 7
 #### `EXP_POLY_ORDER`
 
 ```c3
-const EXP_POLY_ORDER = 5
+const EXP_POLY_ORDER
 ```
 
 ---
@@ -33092,7 +33009,7 @@ const EXP_POLY_ORDER = 5
 #### `EXP2_POLY_ORDER`
 
 ```c3
-const EXP2_POLY_ORDER = 5
+const EXP2_POLY_ORDER
 ```
 
 ---
@@ -33100,7 +33017,7 @@ const EXP2_POLY_ORDER = 5
 #### `EXP_DATA_WIDTH`
 
 ```c3
-const EXP_DATA_WIDTH = 1 << EXP_TABLE_BITS
+const EXP_DATA_WIDTH
 ```
 
 ---
@@ -33108,172 +33025,7 @@ const EXP_DATA_WIDTH = 1 << EXP_TABLE_BITS
 #### `__EXP2_DATA`
 
 ```c3
-const Exp2Data __EXP2_DATA = {
-	// N/ln2
-	.invln2N = 0x1.71547652b82fep0 * EXP_DATA_WIDTH,
-	// -ln2/N
-	.negln2hiN = -0x1.62e42fefa0000p-8,
-	.negln2loN = -0x1.cf79abc9e3b3ap-47,
-	.shift = 0x1.8p52,
-	// exp polynomial coefficients.
-	.poly = {
-		// abs error: 1.555*2^-66
-		// ulp error: 0.509 (0.511 without fma)
-		// if |x| < ln2/256+eps
-		// abs error if |x| < ln2/256+0x1p-15: 1.09*2^-65
-		// abs error if |x| < ln2/128: 1.7145*2^-56
-		0x1.ffffffffffdbdp-2,
-		0x1.555555555543cp-3,
-		0x1.55555cf172b91p-5,
-		0x1.1111167a4d017p-7,
-	},
-	.exp2_shift = 0x1.8p52 / EXP_DATA_WIDTH,
-	// exp2 polynomial coefficients.
-	.exp2_poly = {
-		// abs error: 1.2195*2^-65
-		// ulp error: 0.507 (0.511 without fma)
-		// if |x| < 1/256
-		// abs error if |x| < 1/128: 1.9941*2^-56
-		0x1.62e42fefa39efp-1,
-		0x1.ebfbdff82c424p-3,
-		0x1.c6b08d70cf4b5p-5,
-		0x1.3b2abd24650ccp-7,
-		0x1.5d7e09b4e3a84p-10,
-	},
-	// 2^(k/N) ~= H[k]*(1 + T[k]) for int k in [0,N)
-	// tab[2*k] = asuint64(T[k])
-	// tab[2*k+1] = asuint64(H[k]) - (k << 52)/N
-	.tab = {
-		0x0, 0x3ff0000000000000,
-		0x3c9b3b4f1a88bf6e, 0x3feff63da9fb3335,
-		0xbc7160139cd8dc5d, 0x3fefec9a3e778061,
-		0xbc905e7a108766d1, 0x3fefe315e86e7f85,
-		0x3c8cd2523567f613, 0x3fefd9b0d3158574,
-		0xbc8bce8023f98efa, 0x3fefd06b29ddf6de,
-		0x3c60f74e61e6c861, 0x3fefc74518759bc8,
-		0x3c90a3e45b33d399, 0x3fefbe3ecac6f383,
-		0x3c979aa65d837b6d, 0x3fefb5586cf9890f,
-		0x3c8eb51a92fdeffc, 0x3fefac922b7247f7,
-		0x3c3ebe3d702f9cd1, 0x3fefa3ec32d3d1a2,
-		0xbc6a033489906e0b, 0x3fef9b66affed31b,
-		0xbc9556522a2fbd0e, 0x3fef9301d0125b51,
-		0xbc5080ef8c4eea55, 0x3fef8abdc06c31cc,
-		0xbc91c923b9d5f416, 0x3fef829aaea92de0,
-		0x3c80d3e3e95c55af, 0x3fef7a98c8a58e51,
-		0xbc801b15eaa59348, 0x3fef72b83c7d517b,
-		0xbc8f1ff055de323d, 0x3fef6af9388c8dea,
-		0x3c8b898c3f1353bf, 0x3fef635beb6fcb75,
-		0xbc96d99c7611eb26, 0x3fef5be084045cd4,
-		0x3c9aecf73e3a2f60, 0x3fef54873168b9aa,
-		0xbc8fe782cb86389d, 0x3fef4d5022fcd91d,
-		0x3c8a6f4144a6c38d, 0x3fef463b88628cd6,
-		0x3c807a05b0e4047d, 0x3fef3f49917ddc96,
-		0x3c968efde3a8a894, 0x3fef387a6e756238,
-		0x3c875e18f274487d, 0x3fef31ce4fb2a63f,
-		0x3c80472b981fe7f2, 0x3fef2b4565e27cdd,
-		0xbc96b87b3f71085e, 0x3fef24dfe1f56381,
-		0x3c82f7e16d09ab31, 0x3fef1e9df51fdee1,
-		0xbc3d219b1a6fbffa, 0x3fef187fd0dad990,
-		0x3c8b3782720c0ab4, 0x3fef1285a6e4030b,
-		0x3c6e149289cecb8f, 0x3fef0cafa93e2f56,
-		0x3c834d754db0abb6, 0x3fef06fe0a31b715,
-		0x3c864201e2ac744c, 0x3fef0170fc4cd831,
-		0x3c8fdd395dd3f84a, 0x3feefc08b26416ff,
-		0xbc86a3803b8e5b04, 0x3feef6c55f929ff1,
-		0xbc924aedcc4b5068, 0x3feef1a7373aa9cb,
-		0xbc9907f81b512d8e, 0x3feeecae6d05d866,
-		0xbc71d1e83e9436d2, 0x3feee7db34e59ff7,
-		0xbc991919b3ce1b15, 0x3feee32dc313a8e5,
-		0x3c859f48a72a4c6d, 0x3feedea64c123422,
-		0xbc9312607a28698a, 0x3feeda4504ac801c,
-		0xbc58a78f4817895b, 0x3feed60a21f72e2a,
-		0xbc7c2c9b67499a1b, 0x3feed1f5d950a897,
-		0x3c4363ed60c2ac11, 0x3feece086061892d,
-		0x3c9666093b0664ef, 0x3feeca41ed1d0057,
-		0x3c6ecce1daa10379, 0x3feec6a2b5c13cd0,
-		0x3c93ff8e3f0f1230, 0x3feec32af0d7d3de,
-		0x3c7690cebb7aafb0, 0x3feebfdad5362a27,
-		0x3c931dbdeb54e077, 0x3feebcb299fddd0d,
-		0xbc8f94340071a38e, 0x3feeb9b2769d2ca7,
-		0xbc87deccdc93a349, 0x3feeb6daa2cf6642,
-		0xbc78dec6bd0f385f, 0x3feeb42b569d4f82,
-		0xbc861246ec7b5cf6, 0x3feeb1a4ca5d920f,
-		0x3c93350518fdd78e, 0x3feeaf4736b527da,
-		0x3c7b98b72f8a9b05, 0x3feead12d497c7fd,
-		0x3c9063e1e21c5409, 0x3feeab07dd485429,
-		0x3c34c7855019c6ea, 0x3feea9268a5946b7,
-		0x3c9432e62b64c035, 0x3feea76f15ad2148,
-		0xbc8ce44a6199769f, 0x3feea5e1b976dc09,
-		0xbc8c33c53bef4da8, 0x3feea47eb03a5585,
-		0xbc845378892be9ae, 0x3feea34634ccc320,
-		0xbc93cedd78565858, 0x3feea23882552225,
-		0x3c5710aa807e1964, 0x3feea155d44ca973,
-		0xbc93b3efbf5e2228, 0x3feea09e667f3bcd,
-		0xbc6a12ad8734b982, 0x3feea012750bdabf,
-		0xbc6367efb86da9ee, 0x3fee9fb23c651a2f,
-		0xbc80dc3d54e08851, 0x3fee9f7df9519484,
-		0xbc781f647e5a3ecf, 0x3fee9f75e8ec5f74,
-		0xbc86ee4ac08b7db0, 0x3fee9f9a48a58174,
-		0xbc8619321e55e68a, 0x3fee9feb564267c9,
-		0x3c909ccb5e09d4d3, 0x3feea0694fde5d3f,
-		0xbc7b32dcb94da51d, 0x3feea11473eb0187,
-		0x3c94ecfd5467c06b, 0x3feea1ed0130c132,
-		0x3c65ebe1abd66c55, 0x3feea2f336cf4e62,
-		0xbc88a1c52fb3cf42, 0x3feea427543e1a12,
-		0xbc9369b6f13b3734, 0x3feea589994cce13,
-		0xbc805e843a19ff1e, 0x3feea71a4623c7ad,
-		0xbc94d450d872576e, 0x3feea8d99b4492ed,
-		0x3c90ad675b0e8a00, 0x3feeaac7d98a6699,
-		0x3c8db72fc1f0eab4, 0x3feeace5422aa0db,
-		0xbc65b6609cc5e7ff, 0x3feeaf3216b5448c,
-		0x3c7bf68359f35f44, 0x3feeb1ae99157736,
-		0xbc93091fa71e3d83, 0x3feeb45b0b91ffc6,
-		0xbc5da9b88b6c1e29, 0x3feeb737b0cdc5e5,
-		0xbc6c23f97c90b959, 0x3feeba44cbc8520f,
-		0xbc92434322f4f9aa, 0x3feebd829fde4e50,
-		0xbc85ca6cd7668e4b, 0x3feec0f170ca07ba,
-		0x3c71affc2b91ce27, 0x3feec49182a3f090,
-		0x3c6dd235e10a73bb, 0x3feec86319e32323,
-		0xbc87c50422622263, 0x3feecc667b5de565,
-		0x3c8b1c86e3e231d5, 0x3feed09bec4a2d33,
-		0xbc91bbd1d3bcbb15, 0x3feed503b23e255d,
-		0x3c90cc319cee31d2, 0x3feed99e1330b358,
-		0x3c8469846e735ab3, 0x3feede6b5579fdbf,
-		0xbc82dfcd978e9db4, 0x3feee36bbfd3f37a,
-		0x3c8c1a7792cb3387, 0x3feee89f995ad3ad,
-		0xbc907b8f4ad1d9fa, 0x3feeee07298db666,
-		0xbc55c3d956dcaeba, 0x3feef3a2b84f15fb,
-		0xbc90a40e3da6f640, 0x3feef9728de5593a,
-		0xbc68d6f438ad9334, 0x3feeff76f2fb5e47,
-		0xbc91eee26b588a35, 0x3fef05b030a1064a,
-		0x3c74ffd70a5fddcd, 0x3fef0c1e904bc1d2,
-		0xbc91bdfbfa9298ac, 0x3fef12c25bd71e09,
-		0x3c736eae30af0cb3, 0x3fef199bdd85529c,
-		0x3c8ee3325c9ffd94, 0x3fef20ab5fffd07a,
-		0x3c84e08fd10959ac, 0x3fef27f12e57d14b,
-		0x3c63cdaf384e1a67, 0x3fef2f6d9406e7b5,
-		0x3c676b2c6c921968, 0x3fef3720dcef9069,
-		0xbc808a1883ccb5d2, 0x3fef3f0b555dc3fa,
-		0xbc8fad5d3ffffa6f, 0x3fef472d4a07897c,
-		0xbc900dae3875a949, 0x3fef4f87080d89f2,
-		0x3c74a385a63d07a7, 0x3fef5818dcfba487,
-		0xbc82919e2040220f, 0x3fef60e316c98398,
-		0x3c8e5a50d5c192ac, 0x3fef69e603db3285,
-		0x3c843a59ac016b4b, 0x3fef7321f301b460,
-		0xbc82d52107b43e1f, 0x3fef7c97337b9b5f,
-		0xbc892ab93b470dc9, 0x3fef864614f5a129,
-		0x3c74b604603a88d3, 0x3fef902ee78b3ff6,
-		0x3c83c5ec519d7271, 0x3fef9a51fbc74c83,
-		0xbc8ff7128fd391f0, 0x3fefa4afa2a490da,
-		0xbc8dae98e223747d, 0x3fefaf482d8e67f1,
-		0x3c8ec3bc41aa2008, 0x3fefba1bee615a27,
-		0x3c842b94c3a9eb32, 0x3fefc52b376bba97,
-		0x3c8a64a931d185ee, 0x3fefd0765b6e4540,
-		0xbc8e37bae43be3ed, 0x3fefdbfdad9cbe14,
-		0x3c77893b4d91cd9d, 0x3fefe7c1819e90d8,
-		0x3c5305c14160cc89, 0x3feff3c22b8f71f1,
-	}
-}
+const Exp2Data __EXP2_DATA
 ```
 
 ---
@@ -33281,7 +33033,7 @@ const Exp2Data __EXP2_DATA = {
 #### `WANT_ROUNDING`
 
 ```c3
-const bool WANT_ROUNDING = true
+const bool WANT_ROUNDING
 ```
 
 ---
@@ -33361,7 +33113,7 @@ fn int __rem_pio2f(float x, double *y)
 #### `INIT_JK`
 
 ```c3
-const int[*] INIT_JK = {3,4,4,6}
+const int[*] INIT_JK
 ```
 
 ---
@@ -33369,18 +33121,7 @@ const int[*] INIT_JK = {3,4,4,6}
 #### `IPIO2`
 
 ```c3
-const int[*] IPIO2 = {
-0xA2F983, 0x6E4E44, 0x1529FC, 0x2757D1, 0xF534DD, 0xC0DB62,
-0x95993C, 0x439041, 0xFE5163, 0xABDEBB, 0xC561B7, 0x246E3A,
-0x424DD2, 0xE00649, 0x2EEA09, 0xD1921C, 0xFE1DEB, 0x1CB129,
-0xA73EE8, 0x8235F5, 0x2EBB44, 0x84E99C, 0x7026B4, 0x5F7E41,
-0x3991D6, 0x398353, 0x39F49C, 0x845F8B, 0xBDF928, 0x3B1FF8,
-0x97FFDE, 0x05980F, 0xEF2F11, 0x8B5A0A, 0x6D1F6D, 0x367ECF,
-0x27CB09, 0xB74F46, 0x3F669E, 0x5FEA2D, 0x7527BA, 0xC7EBE5,
-0xF17B3D, 0x0739F7, 0x8A5292, 0xEA6BFB, 0x5FB11F, 0x8D5D08,
-0x560330, 0x46FC7B, 0x6BABF0, 0xCFBC20, 0x9AF436, 0x1DA9E3,
-0x91615E, 0xE61B08, 0x659985, 0x5F14A0, 0x68408D, 0xFFD880,
-0x4D7327, 0x310606, 0x1556CA, 0x73A8C9, 0x60E27B, 0xC08C6B, }
+const int[*] IPIO2
 ```
 
 ---
@@ -33504,7 +33245,7 @@ fn float _truncf(float x) @weak @extern("truncf") @nostrip
 #### `IDENTITY`
 
 ```c3
-const Quaternion IDENTITY = { 0, 0, 0, 1 }
+const Quaternion IDENTITY
 ```
 
 ---
@@ -35966,7 +35707,7 @@ macro void @loop_over_ai(AddrInfo* ai; @body(NativeSocket fd, AddrInfo* ai))
 #### `POLL_FOREVER`
 
 ```c3
-const Duration POLL_FOREVER = (Duration)-1
+const Duration POLL_FOREVER
 ```
 
 ---
@@ -35990,7 +35731,7 @@ typedef PollEvents = ushort
 #### `SUBSCRIBE_ANY_READ`
 
 ```c3
-const PollSubscribes SUBSCRIBE_ANY_READ     = os::POLLIN
+const PollSubscribes SUBSCRIBE_ANY_READ
 ```
 
 ---
@@ -35998,7 +35739,7 @@ const PollSubscribes SUBSCRIBE_ANY_READ     = os::POLLIN
 #### `SUBSCRIBE_PRIO_READ`
 
 ```c3
-const PollSubscribes SUBSCRIBE_PRIO_READ    = os::POLLPRI
+const PollSubscribes SUBSCRIBE_PRIO_READ
 ```
 
 ---
@@ -36006,7 +35747,7 @@ const PollSubscribes SUBSCRIBE_PRIO_READ    = os::POLLPRI
 #### `SUBSCRIBE_OOB_READ`
 
 ```c3
-const PollSubscribes SUBSCRIBE_OOB_READ     = os::POLLRDBAND
+const PollSubscribes SUBSCRIBE_OOB_READ
 ```
 
 ---
@@ -36014,7 +35755,7 @@ const PollSubscribes SUBSCRIBE_OOB_READ     = os::POLLRDBAND
 #### `SUBSCRIBE_READ`
 
 ```c3
-const PollSubscribes SUBSCRIBE_READ         = os::POLLRDNORM
+const PollSubscribes SUBSCRIBE_READ
 ```
 
 ---
@@ -36022,7 +35763,7 @@ const PollSubscribes SUBSCRIBE_READ         = os::POLLRDNORM
 #### `SUBSCRIBE_ANY_WRITE`
 
 ```c3
-const PollSubscribes SUBSCRIBE_ANY_WRITE    = os::POLLOUT
+const PollSubscribes SUBSCRIBE_ANY_WRITE
 ```
 
 ---
@@ -36030,7 +35771,7 @@ const PollSubscribes SUBSCRIBE_ANY_WRITE    = os::POLLOUT
 #### `SUBSCRIBE_OOB_WRITE`
 
 ```c3
-const PollSubscribes SUBSCRIBE_OOB_WRITE    = os::POLLWRBAND
+const PollSubscribes SUBSCRIBE_OOB_WRITE
 ```
 
 ---
@@ -36038,7 +35779,7 @@ const PollSubscribes SUBSCRIBE_OOB_WRITE    = os::POLLWRBAND
 #### `SUBSCRIBE_WRITE`
 
 ```c3
-const PollSubscribes SUBSCRIBE_WRITE        = os::POLLWRNORM
+const PollSubscribes SUBSCRIBE_WRITE
 ```
 
 ---
@@ -36046,7 +35787,7 @@ const PollSubscribes SUBSCRIBE_WRITE        = os::POLLWRNORM
 #### `POLL_EVENT_READ_PRIO`
 
 ```c3
-const PollEvents POLL_EVENT_READ_PRIO  = os::POLLPRI
+const PollEvents POLL_EVENT_READ_PRIO
 ```
 
 ---
@@ -36054,7 +35795,7 @@ const PollEvents POLL_EVENT_READ_PRIO  = os::POLLPRI
 #### `POLL_EVENT_READ_OOB`
 
 ```c3
-const PollEvents POLL_EVENT_READ_OOB   = os::POLLRDBAND
+const PollEvents POLL_EVENT_READ_OOB
 ```
 
 ---
@@ -36062,7 +35803,7 @@ const PollEvents POLL_EVENT_READ_OOB   = os::POLLRDBAND
 #### `POLL_EVENT_READ`
 
 ```c3
-const PollEvents POLL_EVENT_READ       = os::POLLRDNORM
+const PollEvents POLL_EVENT_READ
 ```
 
 ---
@@ -36070,7 +35811,7 @@ const PollEvents POLL_EVENT_READ       = os::POLLRDNORM
 #### `POLL_EVENT_WRITE_OOB`
 
 ```c3
-const PollEvents POLL_EVENT_WRITE_OOB  = os::POLLWRBAND
+const PollEvents POLL_EVENT_WRITE_OOB
 ```
 
 ---
@@ -36078,7 +35819,7 @@ const PollEvents POLL_EVENT_WRITE_OOB  = os::POLLWRBAND
 #### `POLL_EVENT_WRITE`
 
 ```c3
-const PollEvents POLL_EVENT_WRITE      = os::POLLWRNORM
+const PollEvents POLL_EVENT_WRITE
 ```
 
 ---
@@ -36086,7 +35827,7 @@ const PollEvents POLL_EVENT_WRITE      = os::POLLWRNORM
 #### `POLL_EVENT_DISCONNECT`
 
 ```c3
-const PollEvents POLL_EVENT_DISCONNECT = os::POLLHUP
+const PollEvents POLL_EVENT_DISCONNECT
 ```
 
 ---
@@ -36094,7 +35835,7 @@ const PollEvents POLL_EVENT_DISCONNECT = os::POLLHUP
 #### `POLL_EVENT_ERROR`
 
 ```c3
-const PollEvents POLL_EVENT_ERROR      = os::POLLERR
+const PollEvents POLL_EVENT_ERROR
 ```
 
 ---
@@ -36102,7 +35843,7 @@ const PollEvents POLL_EVENT_ERROR      = os::POLLERR
 #### `POLL_EVENT_INVALID`
 
 ```c3
-const PollEvents POLL_EVENT_INVALID    = os::POLLNVAL
+const PollEvents POLL_EVENT_INVALID
 ```
 
 ---
@@ -36375,7 +36116,7 @@ macro @network_loop_over_ai(network, host, port; @body(fd, ai)) @private
 #### `SUPPORTS_INET`
 
 ```c3
-const bool SUPPORTS_INET = env::LIBC && (env::WIN32 || env::DARWIN || env::LINUX || env::ANDROID || env::OPENBSD)
+const bool SUPPORTS_INET
 ```
 
 ---
@@ -36442,7 +36183,7 @@ struct AddrInfo
 #### `@if(!$defined(PLATFORM_O_NONBLOCK))`
 
 ```c3
-const PLATFORM_O_NONBLOCK @if(!$defined(PLATFORM_O_NONBLOCK)) = 0
+const PLATFORM_O_NONBLOCK @if(!$defined(PLATFORM_O_NONBLOCK))
 ```
 
 ---
@@ -36450,7 +36191,7 @@ const PLATFORM_O_NONBLOCK @if(!$defined(PLATFORM_O_NONBLOCK)) = 0
 #### `SOCK_STREAM`
 
 ```c3
-const AISockType SOCK_STREAM                    = 1
+const AISockType SOCK_STREAM
 ```
 
 ---
@@ -36458,7 +36199,7 @@ const AISockType SOCK_STREAM                    = 1
 #### `SOCK_DGRAM`
 
 ```c3
-const AISockType SOCK_DGRAM                     = 2
+const AISockType SOCK_DGRAM
 ```
 
 ---
@@ -36466,7 +36207,7 @@ const AISockType SOCK_DGRAM                     = 2
 #### `SOCK_RAW`
 
 ```c3
-const AISockType SOCK_RAW                       = 3
+const AISockType SOCK_RAW
 ```
 
 ---
@@ -36474,7 +36215,7 @@ const AISockType SOCK_RAW                       = 3
 #### `SOCK_RDM`
 
 ```c3
-const AISockType SOCK_RDM                       = 4
+const AISockType SOCK_RDM
 ```
 
 ---
@@ -36482,7 +36223,7 @@ const AISockType SOCK_RDM                       = 4
 #### `SOCK_SEQPACKET`
 
 ```c3
-const AISockType SOCK_SEQPACKET                 = 5
+const AISockType SOCK_SEQPACKET
 ```
 
 ---
@@ -36490,7 +36231,7 @@ const AISockType SOCK_SEQPACKET                 = 5
 #### `AI_PASSIVE`
 
 ```c3
-const AIFlags AI_PASSIVE                        = 0x1
+const AIFlags AI_PASSIVE
 ```
 
 ---
@@ -36498,7 +36239,7 @@ const AIFlags AI_PASSIVE                        = 0x1
 #### `AI_CANONNAME`
 
 ```c3
-const AIFlags AI_CANONNAME                      = 0x2
+const AIFlags AI_CANONNAME
 ```
 
 ---
@@ -36506,7 +36247,7 @@ const AIFlags AI_CANONNAME                      = 0x2
 #### `AI_NUMERICHOST`
 
 ```c3
-const AIFlags AI_NUMERICHOST                    = 0x4
+const AIFlags AI_NUMERICHOST
 ```
 
 ---
@@ -36514,7 +36255,7 @@ const AIFlags AI_NUMERICHOST                    = 0x4
 #### `AF_UNSPEC`
 
 ```c3
-const AIFamily AF_UNSPEC                        = 0
+const AIFamily AF_UNSPEC
 ```
 
 ---
@@ -36522,7 +36263,7 @@ const AIFamily AF_UNSPEC                        = 0
 #### `AF_UNIX`
 
 ```c3
-const AIFamily AF_UNIX                          = 1
+const AIFamily AF_UNIX
 ```
 
 ---
@@ -36530,7 +36271,7 @@ const AIFamily AF_UNIX                          = 1
 #### `AF_INET`
 
 ```c3
-const AIFamily AF_INET                          = 2
+const AIFamily AF_INET
 ```
 
 ---
@@ -36538,7 +36279,7 @@ const AIFamily AF_INET                          = 2
 #### `AF_INET6`
 
 ```c3
-const AIFamily AF_INET6                         = PLATFORM_AF_INET6
+const AIFamily AF_INET6
 ```
 
 ---
@@ -36546,7 +36287,7 @@ const AIFamily AF_INET6                         = PLATFORM_AF_INET6
 #### `AF_IPX`
 
 ```c3
-const AIFamily AF_IPX                           = PLATFORM_AF_IPX
+const AIFamily AF_IPX
 ```
 
 ---
@@ -36554,7 +36295,7 @@ const AIFamily AF_IPX                           = PLATFORM_AF_IPX
 #### `AF_APPLETALK`
 
 ```c3
-const AIFamily AF_APPLETALK                     = PLATFORM_AF_APPLETALK
+const AIFamily AF_APPLETALK
 ```
 
 ---
@@ -36562,7 +36303,7 @@ const AIFamily AF_APPLETALK                     = PLATFORM_AF_APPLETALK
 #### `O_NONBLOCK`
 
 ```c3
-const O_NONBLOCK = PLATFORM_O_NONBLOCK
+const O_NONBLOCK
 ```
 
 ---
@@ -36579,7 +36320,7 @@ extern fn CInt getaddrinfo(ZString nodename, ZString servname, AddrInfo* hints, 
 #### `PLATFORM_AF_AX25`
 
 ```c3
-const AIFamily PLATFORM_AF_AX25         = 3
+const AIFamily PLATFORM_AF_AX25
 ```
 
 ---
@@ -36587,7 +36328,7 @@ const AIFamily PLATFORM_AF_AX25         = 3
 #### `PLATFORM_AF_IPX`
 
 ```c3
-const AIFamily PLATFORM_AF_IPX          = 4
+const AIFamily PLATFORM_AF_IPX
 ```
 
 ---
@@ -36595,7 +36336,7 @@ const AIFamily PLATFORM_AF_IPX          = 4
 #### `PLATFORM_AF_APPLETALK`
 
 ```c3
-const AIFamily PLATFORM_AF_APPLETALK    = 5
+const AIFamily PLATFORM_AF_APPLETALK
 ```
 
 ---
@@ -36603,7 +36344,7 @@ const AIFamily PLATFORM_AF_APPLETALK    = 5
 #### `PLATFORM_AF_NETROM`
 
 ```c3
-const AIFamily PLATFORM_AF_NETROM       = 6
+const AIFamily PLATFORM_AF_NETROM
 ```
 
 ---
@@ -36611,7 +36352,7 @@ const AIFamily PLATFORM_AF_NETROM       = 6
 #### `PLATFORM_AF_BRIDGE`
 
 ```c3
-const AIFamily PLATFORM_AF_BRIDGE       = 7
+const AIFamily PLATFORM_AF_BRIDGE
 ```
 
 ---
@@ -36619,7 +36360,7 @@ const AIFamily PLATFORM_AF_BRIDGE       = 7
 #### `PLATFORM_AF_AAL5`
 
 ```c3
-const AIFamily PLATFORM_AF_AAL5         = 8
+const AIFamily PLATFORM_AF_AAL5
 ```
 
 ---
@@ -36627,7 +36368,7 @@ const AIFamily PLATFORM_AF_AAL5         = 8
 #### `PLATFORM_AF_X25`
 
 ```c3
-const AIFamily PLATFORM_AF_X25          = 9
+const AIFamily PLATFORM_AF_X25
 ```
 
 ---
@@ -36635,7 +36376,7 @@ const AIFamily PLATFORM_AF_X25          = 9
 #### `PLATFORM_AF_INET6`
 
 ```c3
-const AIFamily PLATFORM_AF_INET6        = 10
+const AIFamily PLATFORM_AF_INET6
 ```
 
 ---
@@ -36643,7 +36384,7 @@ const AIFamily PLATFORM_AF_INET6        = 10
 #### `PLATFORM_O_NONBLOCK`
 
 ```c3
-const PLATFORM_O_NONBLOCK = 0o4000
+const PLATFORM_O_NONBLOCK
 ```
 
 ---
@@ -36651,7 +36392,7 @@ const PLATFORM_O_NONBLOCK = 0o4000
 #### `SOL_SOCKET`
 
 ```c3
-const int SOL_SOCKET = 1
+const int SOL_SOCKET
 ```
 
 ---
@@ -36659,7 +36400,7 @@ const int SOL_SOCKET = 1
 #### `SO_DEBUG`
 
 ```c3
-const int SO_DEBUG                   = 1
+const int SO_DEBUG
 ```
 
 ---
@@ -36667,7 +36408,7 @@ const int SO_DEBUG                   = 1
 #### `SO_REUSEADDR`
 
 ```c3
-const int SO_REUSEADDR               = 2
+const int SO_REUSEADDR
 ```
 
 ---
@@ -36675,7 +36416,7 @@ const int SO_REUSEADDR               = 2
 #### `SO_TYPE`
 
 ```c3
-const int SO_TYPE                    = 3
+const int SO_TYPE
 ```
 
 ---
@@ -36683,7 +36424,7 @@ const int SO_TYPE                    = 3
 #### `SO_ERROR`
 
 ```c3
-const int SO_ERROR                   = 4
+const int SO_ERROR
 ```
 
 ---
@@ -36691,7 +36432,7 @@ const int SO_ERROR                   = 4
 #### `SO_DONTROUTE`
 
 ```c3
-const int SO_DONTROUTE               = 5
+const int SO_DONTROUTE
 ```
 
 ---
@@ -36699,7 +36440,7 @@ const int SO_DONTROUTE               = 5
 #### `SO_BROADCAST`
 
 ```c3
-const int SO_BROADCAST               = 6
+const int SO_BROADCAST
 ```
 
 ---
@@ -36707,7 +36448,7 @@ const int SO_BROADCAST               = 6
 #### `SO_SNDBUF`
 
 ```c3
-const int SO_SNDBUF                  = 7
+const int SO_SNDBUF
 ```
 
 ---
@@ -36715,7 +36456,7 @@ const int SO_SNDBUF                  = 7
 #### `SO_RCVBUF`
 
 ```c3
-const int SO_RCVBUF                  = 8
+const int SO_RCVBUF
 ```
 
 ---
@@ -36723,7 +36464,7 @@ const int SO_RCVBUF                  = 8
 #### `SO_KEEPALIVE`
 
 ```c3
-const int SO_KEEPALIVE               = 9
+const int SO_KEEPALIVE
 ```
 
 ---
@@ -36731,7 +36472,7 @@ const int SO_KEEPALIVE               = 9
 #### `SO_OOBINLINE`
 
 ```c3
-const int SO_OOBINLINE	             = 10
+const int SO_OOBINLINE
 ```
 
 ---
@@ -36739,7 +36480,7 @@ const int SO_OOBINLINE	             = 10
 #### `SO_NO_CHECK`
 
 ```c3
-const int SO_NO_CHECK                = 11
+const int SO_NO_CHECK
 ```
 
 ---
@@ -36747,7 +36488,7 @@ const int SO_NO_CHECK                = 11
 #### `SO_PRIORITY`
 
 ```c3
-const int SO_PRIORITY                = 12
+const int SO_PRIORITY
 ```
 
 ---
@@ -36755,7 +36496,7 @@ const int SO_PRIORITY                = 12
 #### `SO_LINGER`
 
 ```c3
-const int SO_LINGER	                 = 13
+const int SO_LINGER
 ```
 
 ---
@@ -36763,7 +36504,7 @@ const int SO_LINGER	                 = 13
 #### `SO_BSDCOMPAT`
 
 ```c3
-const int SO_BSDCOMPAT               = 14
+const int SO_BSDCOMPAT
 ```
 
 ---
@@ -36771,7 +36512,7 @@ const int SO_BSDCOMPAT               = 14
 #### `SO_REUSEPORT`
 
 ```c3
-const int SO_REUSEPORT               = 15
+const int SO_REUSEPORT
 ```
 
 ---
@@ -36779,7 +36520,7 @@ const int SO_REUSEPORT               = 15
 #### `SO_RCVLOWAT`
 
 ```c3
-const int SO_RCVLOWAT                = 18
+const int SO_RCVLOWAT
 ```
 
 ---
@@ -36787,7 +36528,7 @@ const int SO_RCVLOWAT                = 18
 #### `SO_SNDLOWAT`
 
 ```c3
-const int SO_SNDLOWAT                = 19
+const int SO_SNDLOWAT
 ```
 
 ---
@@ -36795,7 +36536,7 @@ const int SO_SNDLOWAT                = 19
 #### `SO_RCVTIMEO`
 
 ```c3
-const int SO_RCVTIMEO                = 20
+const int SO_RCVTIMEO
 ```
 
 ---
@@ -36803,7 +36544,7 @@ const int SO_RCVTIMEO                = 20
 #### `SO_SNDTIMEO`
 
 ```c3
-const int SO_SNDTIMEO                = 21
+const int SO_SNDTIMEO
 ```
 
 ---
@@ -36811,7 +36552,7 @@ const int SO_SNDTIMEO                = 21
 #### `SO_BINDTODEVICE`
 
 ```c3
-const int SO_BINDTODEVICE            = 25
+const int SO_BINDTODEVICE
 ```
 
 ---
@@ -36819,7 +36560,7 @@ const int SO_BINDTODEVICE            = 25
 #### `SO_ATTACH_FILTER`
 
 ```c3
-const int SO_ATTACH_FILTER           = 26
+const int SO_ATTACH_FILTER
 ```
 
 ---
@@ -36827,7 +36568,7 @@ const int SO_ATTACH_FILTER           = 26
 #### `SO_DETACH_FILTER`
 
 ```c3
-const int SO_DETACH_FILTER           = 27
+const int SO_DETACH_FILTER
 ```
 
 ---
@@ -36835,7 +36576,7 @@ const int SO_DETACH_FILTER           = 27
 #### `SO_PEERNAME`
 
 ```c3
-const int SO_PEERNAME                = 28
+const int SO_PEERNAME
 ```
 
 ---
@@ -36843,7 +36584,7 @@ const int SO_PEERNAME                = 28
 #### `SO_TIMESTAMP`
 
 ```c3
-const int SO_TIMESTAMP	             = 29
+const int SO_TIMESTAMP
 ```
 
 ---
@@ -36851,7 +36592,7 @@ const int SO_TIMESTAMP	             = 29
 #### `SO_ACCEPTCONN`
 
 ```c3
-const int SO_ACCEPTCONN              = 30
+const int SO_ACCEPTCONN
 ```
 
 ---
@@ -36859,7 +36600,7 @@ const int SO_ACCEPTCONN              = 30
 #### `SO_PEERSEC`
 
 ```c3
-const int SO_PEERSEC                 = 31
+const int SO_PEERSEC
 ```
 
 ---
@@ -36867,7 +36608,7 @@ const int SO_PEERSEC                 = 31
 #### `SO_SNDBUFFORCE`
 
 ```c3
-const int SO_SNDBUFFORCE             = 32
+const int SO_SNDBUFFORCE
 ```
 
 ---
@@ -36875,7 +36616,7 @@ const int SO_SNDBUFFORCE             = 32
 #### `SO_RCVBUFFORCE`
 
 ```c3
-const int SO_RCVBUFFORCE             = 33
+const int SO_RCVBUFFORCE
 ```
 
 ---
@@ -36883,7 +36624,7 @@ const int SO_RCVBUFFORCE             = 33
 #### `SO_PASSSEC`
 
 ```c3
-const int SO_PASSSEC                 = 34
+const int SO_PASSSEC
 ```
 
 ---
@@ -36891,7 +36632,7 @@ const int SO_PASSSEC                 = 34
 #### `SO_MARK`
 
 ```c3
-const int SO_MARK                    = 36
+const int SO_MARK
 ```
 
 ---
@@ -36899,7 +36640,7 @@ const int SO_MARK                    = 36
 #### `SO_PROTOCOL`
 
 ```c3
-const int SO_PROTOCOL                = 38
+const int SO_PROTOCOL
 ```
 
 ---
@@ -36907,7 +36648,7 @@ const int SO_PROTOCOL                = 38
 #### `SO_DOMAIN`
 
 ```c3
-const int SO_DOMAIN                  = 39
+const int SO_DOMAIN
 ```
 
 ---
@@ -36915,7 +36656,7 @@ const int SO_DOMAIN                  = 39
 #### `SO_RXQ_OVFL`
 
 ```c3
-const int SO_RXQ_OVFL                = 40
+const int SO_RXQ_OVFL
 ```
 
 ---
@@ -36923,7 +36664,7 @@ const int SO_RXQ_OVFL                = 40
 #### `SO_WIFI_STATUS`
 
 ```c3
-const int SO_WIFI_STATUS             = 41
+const int SO_WIFI_STATUS
 ```
 
 ---
@@ -36931,7 +36672,7 @@ const int SO_WIFI_STATUS             = 41
 #### `SO_PEEK_OFF`
 
 ```c3
-const int SO_PEEK_OFF                = 42
+const int SO_PEEK_OFF
 ```
 
 ---
@@ -36939,7 +36680,7 @@ const int SO_PEEK_OFF                = 42
 #### `SO_NOFCS`
 
 ```c3
-const int SO_NOFCS                   = 43
+const int SO_NOFCS
 ```
 
 ---
@@ -36947,7 +36688,7 @@ const int SO_NOFCS                   = 43
 #### `SO_LOCK_FILTER`
 
 ```c3
-const int SO_LOCK_FILTER             = 44
+const int SO_LOCK_FILTER
 ```
 
 ---
@@ -36955,7 +36696,7 @@ const int SO_LOCK_FILTER             = 44
 #### `SO_SELECT_ERR_QUEUE`
 
 ```c3
-const int SO_SELECT_ERR_QUEUE        = 45
+const int SO_SELECT_ERR_QUEUE
 ```
 
 ---
@@ -36963,7 +36704,7 @@ const int SO_SELECT_ERR_QUEUE        = 45
 #### `SO_BUSY_POLL`
 
 ```c3
-const int SO_BUSY_POLL               = 46
+const int SO_BUSY_POLL
 ```
 
 ---
@@ -36971,7 +36712,7 @@ const int SO_BUSY_POLL               = 46
 #### `SO_MAX_PACING_RATE`
 
 ```c3
-const int SO_MAX_PACING_RATE         = 47
+const int SO_MAX_PACING_RATE
 ```
 
 ---
@@ -36979,7 +36720,7 @@ const int SO_MAX_PACING_RATE         = 47
 #### `SO_BPF_EXTENSIONS`
 
 ```c3
-const int SO_BPF_EXTENSIONS          = 48
+const int SO_BPF_EXTENSIONS
 ```
 
 ---
@@ -36987,7 +36728,7 @@ const int SO_BPF_EXTENSIONS          = 48
 #### `SO_INCOMING_CPU`
 
 ```c3
-const int SO_INCOMING_CPU            = 49
+const int SO_INCOMING_CPU
 ```
 
 ---
@@ -36995,7 +36736,7 @@ const int SO_INCOMING_CPU            = 49
 #### `SO_ATTACH_BPF`
 
 ```c3
-const int SO_ATTACH_BPF              = 50
+const int SO_ATTACH_BPF
 ```
 
 ---
@@ -37003,7 +36744,7 @@ const int SO_ATTACH_BPF              = 50
 #### `SO_ATTACH_REUSEPORT_CBPF`
 
 ```c3
-const int SO_ATTACH_REUSEPORT_CBPF   = 51
+const int SO_ATTACH_REUSEPORT_CBPF
 ```
 
 ---
@@ -37011,7 +36752,7 @@ const int SO_ATTACH_REUSEPORT_CBPF   = 51
 #### `SO_ATTACH_REUSEPORT_EBPF`
 
 ```c3
-const int SO_ATTACH_REUSEPORT_EBPF   = 52
+const int SO_ATTACH_REUSEPORT_EBPF
 ```
 
 ---
@@ -37019,7 +36760,7 @@ const int SO_ATTACH_REUSEPORT_EBPF   = 52
 #### `SO_CNX_ADVICE`
 
 ```c3
-const int SO_CNX_ADVICE              = 53
+const int SO_CNX_ADVICE
 ```
 
 ---
@@ -37027,7 +36768,7 @@ const int SO_CNX_ADVICE              = 53
 #### `SO_MEMINFO`
 
 ```c3
-const int SO_MEMINFO                 = 55
+const int SO_MEMINFO
 ```
 
 ---
@@ -37035,7 +36776,7 @@ const int SO_MEMINFO                 = 55
 #### `SO_INCOMING_NAPI_ID`
 
 ```c3
-const int SO_INCOMING_NAPI_ID        = 56
+const int SO_INCOMING_NAPI_ID
 ```
 
 ---
@@ -37043,7 +36784,7 @@ const int SO_INCOMING_NAPI_ID        = 56
 #### `SO_COOKIE`
 
 ```c3
-const int SO_COOKIE                  = 57
+const int SO_COOKIE
 ```
 
 ---
@@ -37051,7 +36792,7 @@ const int SO_COOKIE                  = 57
 #### `SO_PEERGROUPS`
 
 ```c3
-const int SO_PEERGROUPS              = 59
+const int SO_PEERGROUPS
 ```
 
 ---
@@ -37059,7 +36800,7 @@ const int SO_PEERGROUPS              = 59
 #### `SO_ZEROCOPY`
 
 ```c3
-const int SO_ZEROCOPY                = 60
+const int SO_ZEROCOPY
 ```
 
 ---
@@ -37067,7 +36808,7 @@ const int SO_ZEROCOPY                = 60
 #### `SO_TXTIME`
 
 ```c3
-const int SO_TXTIME                  = 61
+const int SO_TXTIME
 ```
 
 ---
@@ -37075,7 +36816,7 @@ const int SO_TXTIME                  = 61
 #### `SO_BINDTOIFINDEX`
 
 ```c3
-const int SO_BINDTOIFINDEX           = 62
+const int SO_BINDTOIFINDEX
 ```
 
 ---
@@ -37083,7 +36824,7 @@ const int SO_BINDTOIFINDEX           = 62
 #### `SO_DETACH_REUSEPORT_BPF`
 
 ```c3
-const int SO_DETACH_REUSEPORT_BPF    = 68
+const int SO_DETACH_REUSEPORT_BPF
 ```
 
 ---
@@ -37091,7 +36832,7 @@ const int SO_DETACH_REUSEPORT_BPF    = 68
 #### `SO_PREFER_BUSY_POLL`
 
 ```c3
-const int SO_PREFER_BUSY_POLL        = 69
+const int SO_PREFER_BUSY_POLL
 ```
 
 ---
@@ -37099,7 +36840,7 @@ const int SO_PREFER_BUSY_POLL        = 69
 #### `SO_BUSY_POLL_BUDGET`
 
 ```c3
-const int SO_BUSY_POLL_BUDGET        = 70
+const int SO_BUSY_POLL_BUDGET
 ```
 
 ---
@@ -37107,7 +36848,7 @@ const int SO_BUSY_POLL_BUDGET        = 70
 #### `SO_NETNS_COOKIE`
 
 ```c3
-const int SO_NETNS_COOKIE            = 71
+const int SO_NETNS_COOKIE
 ```
 
 ---
@@ -37115,7 +36856,7 @@ const int SO_NETNS_COOKIE            = 71
 #### `SO_BUF_LOCK`
 
 ```c3
-const int SO_BUF_LOCK                = 72
+const int SO_BUF_LOCK
 ```
 
 ---
@@ -37123,7 +36864,7 @@ const int SO_BUF_LOCK                = 72
 #### `SO_RESERVE_MEM`
 
 ```c3
-const int SO_RESERVE_MEM             = 73
+const int SO_RESERVE_MEM
 ```
 
 ---
@@ -37131,7 +36872,7 @@ const int SO_RESERVE_MEM             = 73
 #### `SO_TXREHASH`
 
 ```c3
-const int SO_TXREHASH                = 74
+const int SO_TXREHASH
 ```
 
 ---
@@ -37139,7 +36880,7 @@ const int SO_TXREHASH                = 74
 #### `SO_RCVMARK`
 
 ```c3
-const int SO_RCVMARK                 = 75
+const int SO_RCVMARK
 ```
 
 ---
@@ -37147,7 +36888,7 @@ const int SO_RCVMARK                 = 75
 #### `SO_PASSPIDFD`
 
 ```c3
-const int SO_PASSPIDFD               = 76
+const int SO_PASSPIDFD
 ```
 
 ---
@@ -37155,7 +36896,7 @@ const int SO_PASSPIDFD               = 76
 #### `SO_PEERPIDFD`
 
 ```c3
-const int SO_PEERPIDFD               = 77
+const int SO_PEERPIDFD
 ```
 
 ---
@@ -37163,7 +36904,7 @@ const int SO_PEERPIDFD               = 77
 #### `POLLRDNORM`
 
 ```c3
-const CUShort POLLRDNORM              = 0x0040
+const CUShort POLLRDNORM
 ```
 
 ---
@@ -37171,7 +36912,7 @@ const CUShort POLLRDNORM              = 0x0040
 #### `POLLRDBAND`
 
 ```c3
-const CUShort POLLRDBAND              = 0x0080
+const CUShort POLLRDBAND
 ```
 
 ---
@@ -37179,7 +36920,7 @@ const CUShort POLLRDBAND              = 0x0080
 #### `POLLWRNORM`
 
 ```c3
-const CUShort POLLWRNORM              = 0x0100
+const CUShort POLLWRNORM
 ```
 
 ---
@@ -37187,7 +36928,7 @@ const CUShort POLLWRNORM              = 0x0100
 #### `POLLWRBAND`
 
 ```c3
-const CUShort POLLWRBAND              = 0x0200
+const CUShort POLLWRBAND
 ```
 
 ---
@@ -37195,7 +36936,7 @@ const CUShort POLLWRBAND              = 0x0200
 #### `POLLMSG`
 
 ```c3
-const CUShort POLLMSG                 = 0x0400
+const CUShort POLLMSG
 ```
 
 ---
@@ -37203,7 +36944,7 @@ const CUShort POLLMSG                 = 0x0400
 #### `POLLREMOVE`
 
 ```c3
-const CUShort POLLREMOVE              = 0x1000
+const CUShort POLLREMOVE
 ```
 
 ---
@@ -37211,7 +36952,7 @@ const CUShort POLLREMOVE              = 0x1000
 #### `POLLRDHUP`
 
 ```c3
-const CUShort POLLRDHUP               = 0x2000
+const CUShort POLLRDHUP
 ```
 
 ---
@@ -37219,7 +36960,7 @@ const CUShort POLLRDHUP               = 0x2000
 #### `POLLFREE`
 
 ```c3
-const CUShort POLLFREE                = 0x4000
+const CUShort POLLFREE
 ```
 
 ---
@@ -37227,7 +36968,7 @@ const CUShort POLLFREE                = 0x4000
 #### `POLL_BUSY_LOOP`
 
 ```c3
-const CUShort POLL_BUSY_LOOP          = 0x8000
+const CUShort POLL_BUSY_LOOP
 ```
 
 ---
@@ -37235,7 +36976,7 @@ const CUShort POLL_BUSY_LOOP          = 0x8000
 #### `MSG_PEEK`
 
 ```c3
-const CInt MSG_PEEK = 0x0002
+const CInt MSG_PEEK
 ```
 ### `std::net::os @if(env::DARWIN)`
 
@@ -37244,7 +36985,7 @@ const CInt MSG_PEEK = 0x0002
 #### `AI_NUMERICSERV`
 
 ```c3
-const AIFlags AI_NUMERICSERV = 0x1000
+const AIFlags AI_NUMERICSERV
 ```
 
 ---
@@ -37252,7 +36993,7 @@ const AIFlags AI_NUMERICSERV = 0x1000
 #### `AI_ALL`
 
 ```c3
-const AIFlags AI_ALL = 0x100
+const AIFlags AI_ALL
 ```
 
 ---
@@ -37260,7 +37001,7 @@ const AIFlags AI_ALL = 0x100
 #### `AI_V4MAPPED_CFG`
 
 ```c3
-const AIFlags AI_V4MAPPED_CFG = 0x200
+const AIFlags AI_V4MAPPED_CFG
 ```
 
 ---
@@ -37268,7 +37009,7 @@ const AIFlags AI_V4MAPPED_CFG = 0x200
 #### `AI_ADDRCONFIG`
 
 ```c3
-const AIFlags AI_ADDRCONFIG = 0x400
+const AIFlags AI_ADDRCONFIG
 ```
 
 ---
@@ -37276,7 +37017,7 @@ const AIFlags AI_ADDRCONFIG = 0x400
 #### `AI_V4MAPPED`
 
 ```c3
-const AIFlags AI_V4MAPPED = 0x800
+const AIFlags AI_V4MAPPED
 ```
 
 ---
@@ -37284,7 +37025,7 @@ const AIFlags AI_V4MAPPED = 0x800
 #### `AI_UNUSABLE`
 
 ```c3
-const AIFlags AI_UNUSABLE = 0x10000000
+const AIFlags AI_UNUSABLE
 ```
 
 ---
@@ -37292,7 +37033,7 @@ const AIFlags AI_UNUSABLE = 0x10000000
 #### `AI_DEFAULT`
 
 ```c3
-const AIFlags AI_DEFAULT = AI_V4MAPPED_CFG | AI_ADDRCONFIG
+const AIFlags AI_DEFAULT
 ```
 
 ---
@@ -37300,7 +37041,7 @@ const AIFlags AI_DEFAULT = AI_V4MAPPED_CFG | AI_ADDRCONFIG
 #### `PLATFORM_AF_IMPLINK`
 
 ```c3
-const AIFamily PLATFORM_AF_IMPLINK         = 3
+const AIFamily PLATFORM_AF_IMPLINK
 ```
 
 ---
@@ -37308,7 +37049,7 @@ const AIFamily PLATFORM_AF_IMPLINK         = 3
 #### `PLATFORM_AF_PUP`
 
 ```c3
-const AIFamily PLATFORM_AF_PUP             = 4
+const AIFamily PLATFORM_AF_PUP
 ```
 
 ---
@@ -37316,7 +37057,7 @@ const AIFamily PLATFORM_AF_PUP             = 4
 #### `PLATFORM_AF_CHAOS`
 
 ```c3
-const AIFamily PLATFORM_AF_CHAOS           = 5
+const AIFamily PLATFORM_AF_CHAOS
 ```
 
 ---
@@ -37324,7 +37065,7 @@ const AIFamily PLATFORM_AF_CHAOS           = 5
 #### `PLATFORM_AF_NS`
 
 ```c3
-const AIFamily PLATFORM_AF_NS              = 6
+const AIFamily PLATFORM_AF_NS
 ```
 
 ---
@@ -37332,7 +37073,7 @@ const AIFamily PLATFORM_AF_NS              = 6
 #### `PLATFORM_AF_ISO`
 
 ```c3
-const AIFamily PLATFORM_AF_ISO             = 7
+const AIFamily PLATFORM_AF_ISO
 ```
 
 ---
@@ -37340,7 +37081,7 @@ const AIFamily PLATFORM_AF_ISO             = 7
 #### `PLATFORM_AF_ECMA`
 
 ```c3
-const AIFamily PLATFORM_AF_ECMA            = 8
+const AIFamily PLATFORM_AF_ECMA
 ```
 
 ---
@@ -37348,7 +37089,7 @@ const AIFamily PLATFORM_AF_ECMA            = 8
 #### `PLATFORM_AF_DATAKIT`
 
 ```c3
-const AIFamily PLATFORM_AF_DATAKIT         = 9
+const AIFamily PLATFORM_AF_DATAKIT
 ```
 
 ---
@@ -37356,7 +37097,7 @@ const AIFamily PLATFORM_AF_DATAKIT         = 9
 #### `PLATFORM_AF_CCITT`
 
 ```c3
-const AIFamily PLATFORM_AF_CCITT           = 10
+const AIFamily PLATFORM_AF_CCITT
 ```
 
 ---
@@ -37364,7 +37105,7 @@ const AIFamily PLATFORM_AF_CCITT           = 10
 #### `PLATFORM_AF_SNA`
 
 ```c3
-const AIFamily PLATFORM_AF_SNA             = 11
+const AIFamily PLATFORM_AF_SNA
 ```
 
 ---
@@ -37372,7 +37113,7 @@ const AIFamily PLATFORM_AF_SNA             = 11
 #### `PLATFORM_AF_DECNET`
 
 ```c3
-const AIFamily PLATFORM_AF_DECNET          = 12
+const AIFamily PLATFORM_AF_DECNET
 ```
 
 ---
@@ -37380,7 +37121,7 @@ const AIFamily PLATFORM_AF_DECNET          = 12
 #### `PLATFORM_AF_DLI`
 
 ```c3
-const AIFamily PLATFORM_AF_DLI             = 13
+const AIFamily PLATFORM_AF_DLI
 ```
 
 ---
@@ -37388,7 +37129,7 @@ const AIFamily PLATFORM_AF_DLI             = 13
 #### `PLATFORM_AF_LAT`
 
 ```c3
-const AIFamily PLATFORM_AF_LAT             = 14
+const AIFamily PLATFORM_AF_LAT
 ```
 
 ---
@@ -37396,7 +37137,7 @@ const AIFamily PLATFORM_AF_LAT             = 14
 #### `PLATFORM_AF_HYLINK`
 
 ```c3
-const AIFamily PLATFORM_AF_HYLINK          = 15
+const AIFamily PLATFORM_AF_HYLINK
 ```
 
 ---
@@ -37404,7 +37145,7 @@ const AIFamily PLATFORM_AF_HYLINK          = 15
 #### `PLATFORM_AF_APPLETALK`
 
 ```c3
-const AIFamily PLATFORM_AF_APPLETALK       = 16
+const AIFamily PLATFORM_AF_APPLETALK
 ```
 
 ---
@@ -37412,7 +37153,7 @@ const AIFamily PLATFORM_AF_APPLETALK       = 16
 #### `PLATFORM_AF_ROUTE`
 
 ```c3
-const AIFamily PLATFORM_AF_ROUTE           = 17
+const AIFamily PLATFORM_AF_ROUTE
 ```
 
 ---
@@ -37420,7 +37161,7 @@ const AIFamily PLATFORM_AF_ROUTE           = 17
 #### `PLATFORM_AF_LINK`
 
 ```c3
-const AIFamily PLATFORM_AF_LINK            = 18
+const AIFamily PLATFORM_AF_LINK
 ```
 
 ---
@@ -37428,7 +37169,7 @@ const AIFamily PLATFORM_AF_LINK            = 18
 #### `PLATFORM_PSEUDO_AF_XTP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_XTP      = 19
+const AIFamily PLATFORM_PSEUDO_AF_XTP
 ```
 
 ---
@@ -37436,7 +37177,7 @@ const AIFamily PLATFORM_PSEUDO_AF_XTP      = 19
 #### `PLATFORM_AF_COIP`
 
 ```c3
-const AIFamily PLATFORM_AF_COIP            = 20
+const AIFamily PLATFORM_AF_COIP
 ```
 
 ---
@@ -37444,7 +37185,7 @@ const AIFamily PLATFORM_AF_COIP            = 20
 #### `PLATFORM_AF_CNT`
 
 ```c3
-const AIFamily PLATFORM_AF_CNT             = 21
+const AIFamily PLATFORM_AF_CNT
 ```
 
 ---
@@ -37452,7 +37193,7 @@ const AIFamily PLATFORM_AF_CNT             = 21
 #### `PLATFORM_PSEUDO_AF_RTIP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_RTIP     = 22
+const AIFamily PLATFORM_PSEUDO_AF_RTIP
 ```
 
 ---
@@ -37460,7 +37201,7 @@ const AIFamily PLATFORM_PSEUDO_AF_RTIP     = 22
 #### `PLATFORM_AF_IPX`
 
 ```c3
-const AIFamily PLATFORM_AF_IPX             = 23
+const AIFamily PLATFORM_AF_IPX
 ```
 
 ---
@@ -37468,7 +37209,7 @@ const AIFamily PLATFORM_AF_IPX             = 23
 #### `PLATFORM_AF_SIP`
 
 ```c3
-const AIFamily PLATFORM_AF_SIP             = 24
+const AIFamily PLATFORM_AF_SIP
 ```
 
 ---
@@ -37476,7 +37217,7 @@ const AIFamily PLATFORM_AF_SIP             = 24
 #### `PLATFORM_PSEUDO_AF_PIP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_PIP      = 25
+const AIFamily PLATFORM_PSEUDO_AF_PIP
 ```
 
 ---
@@ -37484,7 +37225,7 @@ const AIFamily PLATFORM_PSEUDO_AF_PIP      = 25
 #### `PLATFORM_AF_NDRV`
 
 ```c3
-const AIFamily PLATFORM_AF_NDRV            = 27
+const AIFamily PLATFORM_AF_NDRV
 ```
 
 ---
@@ -37492,7 +37233,7 @@ const AIFamily PLATFORM_AF_NDRV            = 27
 #### `PLATFORM_AF_ISDN`
 
 ```c3
-const AIFamily PLATFORM_AF_ISDN            = 28
+const AIFamily PLATFORM_AF_ISDN
 ```
 
 ---
@@ -37500,7 +37241,7 @@ const AIFamily PLATFORM_AF_ISDN            = 28
 #### `PLATFORM_PSEUDO_AF_KEY`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_KEY      = 29
+const AIFamily PLATFORM_PSEUDO_AF_KEY
 ```
 
 ---
@@ -37508,7 +37249,7 @@ const AIFamily PLATFORM_PSEUDO_AF_KEY      = 29
 #### `PLATFORM_AF_INET6`
 
 ```c3
-const AIFamily PLATFORM_AF_INET6           = 30
+const AIFamily PLATFORM_AF_INET6
 ```
 
 ---
@@ -37516,7 +37257,7 @@ const AIFamily PLATFORM_AF_INET6           = 30
 #### `PLATFORM_AF_NATM`
 
 ```c3
-const AIFamily PLATFORM_AF_NATM            = 31
+const AIFamily PLATFORM_AF_NATM
 ```
 
 ---
@@ -37524,7 +37265,7 @@ const AIFamily PLATFORM_AF_NATM            = 31
 #### `PLATFORM_AF_SYSTEM`
 
 ```c3
-const AIFamily PLATFORM_AF_SYSTEM          = 32
+const AIFamily PLATFORM_AF_SYSTEM
 ```
 
 ---
@@ -37532,7 +37273,7 @@ const AIFamily PLATFORM_AF_SYSTEM          = 32
 #### `PLATFORM_AF_NETBIOS`
 
 ```c3
-const AIFamily PLATFORM_AF_NETBIOS         = 33
+const AIFamily PLATFORM_AF_NETBIOS
 ```
 
 ---
@@ -37540,7 +37281,7 @@ const AIFamily PLATFORM_AF_NETBIOS         = 33
 #### `PLATFORM_AF_PPP`
 
 ```c3
-const AIFamily PLATFORM_AF_PPP             = 34
+const AIFamily PLATFORM_AF_PPP
 ```
 
 ---
@@ -37548,7 +37289,7 @@ const AIFamily PLATFORM_AF_PPP             = 34
 #### `PLATFORM_PSEUDO_AF_HDRCMPLT`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT = 35
+const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT
 ```
 
 ---
@@ -37556,7 +37297,7 @@ const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT = 35
 #### `PLATFORM_AF_IEEE80211`
 
 ```c3
-const AIFamily PLATFORM_AF_IEEE80211       = 37
+const AIFamily PLATFORM_AF_IEEE80211
 ```
 
 ---
@@ -37564,7 +37305,7 @@ const AIFamily PLATFORM_AF_IEEE80211       = 37
 #### `PLATFORM_AF_UTUN`
 
 ```c3
-const AIFamily PLATFORM_AF_UTUN            = 38
+const AIFamily PLATFORM_AF_UTUN
 ```
 
 ---
@@ -37572,7 +37313,7 @@ const AIFamily PLATFORM_AF_UTUN            = 38
 #### `PLATFORM_AF_VSOCK`
 
 ```c3
-const AIFamily PLATFORM_AF_VSOCK           = 40
+const AIFamily PLATFORM_AF_VSOCK
 ```
 
 ---
@@ -37580,7 +37321,7 @@ const AIFamily PLATFORM_AF_VSOCK           = 40
 #### `PLATFORM_AF_MAX`
 
 ```c3
-const AIFamily PLATFORM_AF_MAX             = 41
+const AIFamily PLATFORM_AF_MAX
 ```
 
 ---
@@ -37588,7 +37329,7 @@ const AIFamily PLATFORM_AF_MAX             = 41
 #### `PLATFORM_O_NONBLOCK`
 
 ```c3
-const int PLATFORM_O_NONBLOCK = 0x04
+const int PLATFORM_O_NONBLOCK
 ```
 
 ---
@@ -37596,7 +37337,7 @@ const int PLATFORM_O_NONBLOCK = 0x04
 #### `SOL_SOCKET`
 
 ```c3
-const int SOL_SOCKET             = 0xffff
+const int SOL_SOCKET
 ```
 
 ---
@@ -37604,7 +37345,7 @@ const int SOL_SOCKET             = 0xffff
 #### `SO_DEBUG`
 
 ```c3
-const int SO_DEBUG               = 0x0001
+const int SO_DEBUG
 ```
 
 ---
@@ -37612,7 +37353,7 @@ const int SO_DEBUG               = 0x0001
 #### `SO_ACCEPTCONN`
 
 ```c3
-const int SO_ACCEPTCONN          = 0x0002
+const int SO_ACCEPTCONN
 ```
 
 ---
@@ -37620,7 +37361,7 @@ const int SO_ACCEPTCONN          = 0x0002
 #### `SO_REUSEADDR`
 
 ```c3
-const int SO_REUSEADDR           = 0x0004
+const int SO_REUSEADDR
 ```
 
 ---
@@ -37628,7 +37369,7 @@ const int SO_REUSEADDR           = 0x0004
 #### `SO_KEEPALIVE`
 
 ```c3
-const int SO_KEEPALIVE           = 0x0008
+const int SO_KEEPALIVE
 ```
 
 ---
@@ -37636,7 +37377,7 @@ const int SO_KEEPALIVE           = 0x0008
 #### `SO_DONTROUTE`
 
 ```c3
-const int SO_DONTROUTE           = 0x0010
+const int SO_DONTROUTE
 ```
 
 ---
@@ -37644,7 +37385,7 @@ const int SO_DONTROUTE           = 0x0010
 #### `SO_BROADCAST`
 
 ```c3
-const int SO_BROADCAST           = 0x0020
+const int SO_BROADCAST
 ```
 
 ---
@@ -37652,7 +37393,7 @@ const int SO_BROADCAST           = 0x0020
 #### `SO_USELOOPBACK`
 
 ```c3
-const int SO_USELOOPBACK         = 0x0040
+const int SO_USELOOPBACK
 ```
 
 ---
@@ -37660,7 +37401,7 @@ const int SO_USELOOPBACK         = 0x0040
 #### `SO_LINGER`
 
 ```c3
-const int SO_LINGER	             = 0x0080
+const int SO_LINGER
 ```
 
 ---
@@ -37668,7 +37409,7 @@ const int SO_LINGER	             = 0x0080
 #### `SO_OOBINLINE`
 
 ```c3
-const int SO_OOBINLINE	         = 0x0100
+const int SO_OOBINLINE
 ```
 
 ---
@@ -37676,7 +37417,7 @@ const int SO_OOBINLINE	         = 0x0100
 #### `SO_REUSEPORT`
 
 ```c3
-const int SO_REUSEPORT           = 0x0200
+const int SO_REUSEPORT
 ```
 
 ---
@@ -37684,7 +37425,7 @@ const int SO_REUSEPORT           = 0x0200
 #### `SO_TIMESTAMP`
 
 ```c3
-const int SO_TIMESTAMP	         = 0x0400
+const int SO_TIMESTAMP
 ```
 
 ---
@@ -37692,7 +37433,7 @@ const int SO_TIMESTAMP	         = 0x0400
 #### `SO_TIMESTAMP_MONOTONIC`
 
 ```c3
-const int SO_TIMESTAMP_MONOTONIC = 0x0800
+const int SO_TIMESTAMP_MONOTONIC
 ```
 
 ---
@@ -37700,7 +37441,7 @@ const int SO_TIMESTAMP_MONOTONIC = 0x0800
 #### `SO_DONTTRUNC`
 
 ```c3
-const int SO_DONTTRUNC           = 0x2000
+const int SO_DONTTRUNC
 ```
 
 ---
@@ -37708,7 +37449,7 @@ const int SO_DONTTRUNC           = 0x2000
 #### `SO_WANTMORE`
 
 ```c3
-const int SO_WANTMORE            = 0x4000
+const int SO_WANTMORE
 ```
 
 ---
@@ -37716,7 +37457,7 @@ const int SO_WANTMORE            = 0x4000
 #### `SO_WANTOOBFLAG`
 
 ```c3
-const int SO_WANTOOBFLAG         = 0x8000
+const int SO_WANTOOBFLAG
 ```
 
 ---
@@ -37724,7 +37465,7 @@ const int SO_WANTOOBFLAG         = 0x8000
 #### `SO_SNDBUF`
 
 ```c3
-const int SO_SNDBUF              = 0x1001
+const int SO_SNDBUF
 ```
 
 ---
@@ -37732,7 +37473,7 @@ const int SO_SNDBUF              = 0x1001
 #### `SO_RCVBUF`
 
 ```c3
-const int SO_RCVBUF              = 0x1002
+const int SO_RCVBUF
 ```
 
 ---
@@ -37740,7 +37481,7 @@ const int SO_RCVBUF              = 0x1002
 #### `SO_SNDLOWAT`
 
 ```c3
-const int SO_SNDLOWAT            = 0x1003
+const int SO_SNDLOWAT
 ```
 
 ---
@@ -37748,7 +37489,7 @@ const int SO_SNDLOWAT            = 0x1003
 #### `SO_RCVLOWAT`
 
 ```c3
-const int SO_RCVLOWAT            = 0x1004
+const int SO_RCVLOWAT
 ```
 
 ---
@@ -37756,7 +37497,7 @@ const int SO_RCVLOWAT            = 0x1004
 #### `SO_SNDTIMEO`
 
 ```c3
-const int SO_SNDTIMEO            = 0x1005
+const int SO_SNDTIMEO
 ```
 
 ---
@@ -37764,7 +37505,7 @@ const int SO_SNDTIMEO            = 0x1005
 #### `SO_RCVTIMEO`
 
 ```c3
-const int SO_RCVTIMEO            = 0x1006
+const int SO_RCVTIMEO
 ```
 
 ---
@@ -37772,7 +37513,7 @@ const int SO_RCVTIMEO            = 0x1006
 #### `SO_ERROR`
 
 ```c3
-const int SO_ERROR               = 0x1007
+const int SO_ERROR
 ```
 
 ---
@@ -37780,7 +37521,7 @@ const int SO_ERROR               = 0x1007
 #### `SO_TYPE`
 
 ```c3
-const int SO_TYPE                = 0x1008
+const int SO_TYPE
 ```
 
 ---
@@ -37788,7 +37529,7 @@ const int SO_TYPE                = 0x1008
 #### `SO_LABEL`
 
 ```c3
-const int SO_LABEL               = 0x1010
+const int SO_LABEL
 ```
 
 ---
@@ -37796,7 +37537,7 @@ const int SO_LABEL               = 0x1010
 #### `SO_PEERLABEL`
 
 ```c3
-const int SO_PEERLABEL           = 0x1011
+const int SO_PEERLABEL
 ```
 
 ---
@@ -37804,7 +37545,7 @@ const int SO_PEERLABEL           = 0x1011
 #### `SO_NREAD`
 
 ```c3
-const int SO_NREAD               = 0x1020
+const int SO_NREAD
 ```
 
 ---
@@ -37812,7 +37553,7 @@ const int SO_NREAD               = 0x1020
 #### `SO_NKE`
 
 ```c3
-const int SO_NKE                 = 0x1021
+const int SO_NKE
 ```
 
 ---
@@ -37820,7 +37561,7 @@ const int SO_NKE                 = 0x1021
 #### `SO_NOSIGPIPE`
 
 ```c3
-const int SO_NOSIGPIPE           = 0x1022
+const int SO_NOSIGPIPE
 ```
 
 ---
@@ -37828,7 +37569,7 @@ const int SO_NOSIGPIPE           = 0x1022
 #### `SO_NOADDRERR`
 
 ```c3
-const int SO_NOADDRERR           = 0x1023
+const int SO_NOADDRERR
 ```
 
 ---
@@ -37836,7 +37577,7 @@ const int SO_NOADDRERR           = 0x1023
 #### `SO_NWRITE`
 
 ```c3
-const int SO_NWRITE              = 0x1024
+const int SO_NWRITE
 ```
 
 ---
@@ -37844,7 +37585,7 @@ const int SO_NWRITE              = 0x1024
 #### `SO_REUSESHAREUID`
 
 ```c3
-const int SO_REUSESHAREUID       = 0x1025
+const int SO_REUSESHAREUID
 ```
 
 ---
@@ -37852,7 +37593,7 @@ const int SO_REUSESHAREUID       = 0x1025
 #### `SO_LINGER_SEC`
 
 ```c3
-const int SO_LINGER_SEC          = 0x1080
+const int SO_LINGER_SEC
 ```
 
 ---
@@ -37860,7 +37601,7 @@ const int SO_LINGER_SEC          = 0x1080
 #### `POLLRDNORM`
 
 ```c3
-const CShort POLLRDNORM          = 0x0040
+const CShort POLLRDNORM
 ```
 
 ---
@@ -37868,7 +37609,7 @@ const CShort POLLRDNORM          = 0x0040
 #### `POLLRDBAND`
 
 ```c3
-const CShort POLLRDBAND          = 0x0080
+const CShort POLLRDBAND
 ```
 
 ---
@@ -37876,7 +37617,7 @@ const CShort POLLRDBAND          = 0x0080
 #### `POLLWRNORM`
 
 ```c3
-const CShort POLLWRNORM          = POLLOUT
+const CShort POLLWRNORM
 ```
 
 ---
@@ -37884,7 +37625,7 @@ const CShort POLLWRNORM          = POLLOUT
 #### `POLLWRBAND`
 
 ```c3
-const CShort POLLWRBAND          = 0x0100
+const CShort POLLWRBAND
 ```
 
 ---
@@ -37892,7 +37633,7 @@ const CShort POLLWRBAND          = 0x0100
 #### `POLLEXTEND`
 
 ```c3
-const CShort POLLEXTEND          = 0x0200
+const CShort POLLEXTEND
 ```
 
 ---
@@ -37900,7 +37641,7 @@ const CShort POLLEXTEND          = 0x0200
 #### `POLLATTRIB`
 
 ```c3
-const CShort POLLATTRIB          = 0x0400
+const CShort POLLATTRIB
 ```
 
 ---
@@ -37908,7 +37649,7 @@ const CShort POLLATTRIB          = 0x0400
 #### `POLLNLINK`
 
 ```c3
-const CShort POLLNLINK           = 0x0800
+const CShort POLLNLINK
 ```
 
 ---
@@ -37916,7 +37657,7 @@ const CShort POLLNLINK           = 0x0800
 #### `POLLWRITE`
 
 ```c3
-const CShort POLLWRITE           = 0x1000
+const CShort POLLWRITE
 ```
 
 ---
@@ -37924,7 +37665,7 @@ const CShort POLLWRITE           = 0x1000
 #### `MSG_PEEK`
 
 ```c3
-const CInt MSG_PEEK = 0x0002
+const CInt MSG_PEEK
 ```
 ### `std::net::os @if(env::LINUX)`
 
@@ -37933,7 +37674,7 @@ const CInt MSG_PEEK = 0x0002
 #### `PLATFORM_AF_AX25`
 
 ```c3
-const AIFamily PLATFORM_AF_AX25         = 3
+const AIFamily PLATFORM_AF_AX25
 ```
 
 ---
@@ -37941,7 +37682,7 @@ const AIFamily PLATFORM_AF_AX25         = 3
 #### `PLATFORM_AF_IPX`
 
 ```c3
-const AIFamily PLATFORM_AF_IPX          = 4
+const AIFamily PLATFORM_AF_IPX
 ```
 
 ---
@@ -37949,7 +37690,7 @@ const AIFamily PLATFORM_AF_IPX          = 4
 #### `PLATFORM_AF_APPLETALK`
 
 ```c3
-const AIFamily PLATFORM_AF_APPLETALK    = 5
+const AIFamily PLATFORM_AF_APPLETALK
 ```
 
 ---
@@ -37957,7 +37698,7 @@ const AIFamily PLATFORM_AF_APPLETALK    = 5
 #### `PLATFORM_AF_NETROM`
 
 ```c3
-const AIFamily PLATFORM_AF_NETROM       = 6
+const AIFamily PLATFORM_AF_NETROM
 ```
 
 ---
@@ -37965,7 +37706,7 @@ const AIFamily PLATFORM_AF_NETROM       = 6
 #### `PLATFORM_AF_BRIDGE`
 
 ```c3
-const AIFamily PLATFORM_AF_BRIDGE       = 7
+const AIFamily PLATFORM_AF_BRIDGE
 ```
 
 ---
@@ -37973,7 +37714,7 @@ const AIFamily PLATFORM_AF_BRIDGE       = 7
 #### `PLATFORM_AF_AAL5`
 
 ```c3
-const AIFamily PLATFORM_AF_AAL5         = 8
+const AIFamily PLATFORM_AF_AAL5
 ```
 
 ---
@@ -37981,7 +37722,7 @@ const AIFamily PLATFORM_AF_AAL5         = 8
 #### `PLATFORM_AF_X25`
 
 ```c3
-const AIFamily PLATFORM_AF_X25          = 9
+const AIFamily PLATFORM_AF_X25
 ```
 
 ---
@@ -37989,7 +37730,7 @@ const AIFamily PLATFORM_AF_X25          = 9
 #### `PLATFORM_AF_INET6`
 
 ```c3
-const AIFamily PLATFORM_AF_INET6        = 10
+const AIFamily PLATFORM_AF_INET6
 ```
 
 ---
@@ -37997,7 +37738,7 @@ const AIFamily PLATFORM_AF_INET6        = 10
 #### `PLATFORM_O_NONBLOCK`
 
 ```c3
-const PLATFORM_O_NONBLOCK = 0o4000
+const PLATFORM_O_NONBLOCK
 ```
 
 ---
@@ -38005,7 +37746,7 @@ const PLATFORM_O_NONBLOCK = 0o4000
 #### `SOL_SOCKET`
 
 ```c3
-const int SOL_SOCKET = 1
+const int SOL_SOCKET
 ```
 
 ---
@@ -38013,7 +37754,7 @@ const int SOL_SOCKET = 1
 #### `SO_DEBUG`
 
 ```c3
-const int SO_DEBUG                   = 1
+const int SO_DEBUG
 ```
 
 ---
@@ -38021,7 +37762,7 @@ const int SO_DEBUG                   = 1
 #### `SO_REUSEADDR`
 
 ```c3
-const int SO_REUSEADDR               = 2
+const int SO_REUSEADDR
 ```
 
 ---
@@ -38029,7 +37770,7 @@ const int SO_REUSEADDR               = 2
 #### `SO_TYPE`
 
 ```c3
-const int SO_TYPE                    = 3
+const int SO_TYPE
 ```
 
 ---
@@ -38037,7 +37778,7 @@ const int SO_TYPE                    = 3
 #### `SO_ERROR`
 
 ```c3
-const int SO_ERROR                   = 4
+const int SO_ERROR
 ```
 
 ---
@@ -38045,7 +37786,7 @@ const int SO_ERROR                   = 4
 #### `SO_DONTROUTE`
 
 ```c3
-const int SO_DONTROUTE               = 5
+const int SO_DONTROUTE
 ```
 
 ---
@@ -38053,7 +37794,7 @@ const int SO_DONTROUTE               = 5
 #### `SO_BROADCAST`
 
 ```c3
-const int SO_BROADCAST               = 6
+const int SO_BROADCAST
 ```
 
 ---
@@ -38061,7 +37802,7 @@ const int SO_BROADCAST               = 6
 #### `SO_SNDBUF`
 
 ```c3
-const int SO_SNDBUF                  = 7
+const int SO_SNDBUF
 ```
 
 ---
@@ -38069,7 +37810,7 @@ const int SO_SNDBUF                  = 7
 #### `SO_RCVBUF`
 
 ```c3
-const int SO_RCVBUF                  = 8
+const int SO_RCVBUF
 ```
 
 ---
@@ -38077,7 +37818,7 @@ const int SO_RCVBUF                  = 8
 #### `SO_KEEPALIVE`
 
 ```c3
-const int SO_KEEPALIVE               = 9
+const int SO_KEEPALIVE
 ```
 
 ---
@@ -38085,7 +37826,7 @@ const int SO_KEEPALIVE               = 9
 #### `SO_OOBINLINE`
 
 ```c3
-const int SO_OOBINLINE	             = 10
+const int SO_OOBINLINE
 ```
 
 ---
@@ -38093,7 +37834,7 @@ const int SO_OOBINLINE	             = 10
 #### `SO_NO_CHECK`
 
 ```c3
-const int SO_NO_CHECK                = 11
+const int SO_NO_CHECK
 ```
 
 ---
@@ -38101,7 +37842,7 @@ const int SO_NO_CHECK                = 11
 #### `SO_PRIORITY`
 
 ```c3
-const int SO_PRIORITY                = 12
+const int SO_PRIORITY
 ```
 
 ---
@@ -38109,7 +37850,7 @@ const int SO_PRIORITY                = 12
 #### `SO_LINGER`
 
 ```c3
-const int SO_LINGER	                 = 13
+const int SO_LINGER
 ```
 
 ---
@@ -38117,7 +37858,7 @@ const int SO_LINGER	                 = 13
 #### `SO_BSDCOMPAT`
 
 ```c3
-const int SO_BSDCOMPAT               = 14
+const int SO_BSDCOMPAT
 ```
 
 ---
@@ -38125,7 +37866,7 @@ const int SO_BSDCOMPAT               = 14
 #### `SO_REUSEPORT`
 
 ```c3
-const int SO_REUSEPORT               = 15
+const int SO_REUSEPORT
 ```
 
 ---
@@ -38133,7 +37874,7 @@ const int SO_REUSEPORT               = 15
 #### `SO_RCVLOWAT`
 
 ```c3
-const int SO_RCVLOWAT                = 18
+const int SO_RCVLOWAT
 ```
 
 ---
@@ -38141,7 +37882,7 @@ const int SO_RCVLOWAT                = 18
 #### `SO_SNDLOWAT`
 
 ```c3
-const int SO_SNDLOWAT                = 19
+const int SO_SNDLOWAT
 ```
 
 ---
@@ -38149,7 +37890,7 @@ const int SO_SNDLOWAT                = 19
 #### `SO_RCVTIMEO`
 
 ```c3
-const int SO_RCVTIMEO                = 20
+const int SO_RCVTIMEO
 ```
 
 ---
@@ -38157,7 +37898,7 @@ const int SO_RCVTIMEO                = 20
 #### `SO_SNDTIMEO`
 
 ```c3
-const int SO_SNDTIMEO                = 21
+const int SO_SNDTIMEO
 ```
 
 ---
@@ -38165,7 +37906,7 @@ const int SO_SNDTIMEO                = 21
 #### `SO_BINDTODEVICE`
 
 ```c3
-const int SO_BINDTODEVICE            = 25
+const int SO_BINDTODEVICE
 ```
 
 ---
@@ -38173,7 +37914,7 @@ const int SO_BINDTODEVICE            = 25
 #### `SO_ATTACH_FILTER`
 
 ```c3
-const int SO_ATTACH_FILTER           = 26
+const int SO_ATTACH_FILTER
 ```
 
 ---
@@ -38181,7 +37922,7 @@ const int SO_ATTACH_FILTER           = 26
 #### `SO_DETACH_FILTER`
 
 ```c3
-const int SO_DETACH_FILTER           = 27
+const int SO_DETACH_FILTER
 ```
 
 ---
@@ -38189,7 +37930,7 @@ const int SO_DETACH_FILTER           = 27
 #### `SO_PEERNAME`
 
 ```c3
-const int SO_PEERNAME                = 28
+const int SO_PEERNAME
 ```
 
 ---
@@ -38197,7 +37938,7 @@ const int SO_PEERNAME                = 28
 #### `SO_TIMESTAMP`
 
 ```c3
-const int SO_TIMESTAMP	             = 29
+const int SO_TIMESTAMP
 ```
 
 ---
@@ -38205,7 +37946,7 @@ const int SO_TIMESTAMP	             = 29
 #### `SO_ACCEPTCONN`
 
 ```c3
-const int SO_ACCEPTCONN              = 30
+const int SO_ACCEPTCONN
 ```
 
 ---
@@ -38213,7 +37954,7 @@ const int SO_ACCEPTCONN              = 30
 #### `SO_PEERSEC`
 
 ```c3
-const int SO_PEERSEC                 = 31
+const int SO_PEERSEC
 ```
 
 ---
@@ -38221,7 +37962,7 @@ const int SO_PEERSEC                 = 31
 #### `SO_SNDBUFFORCE`
 
 ```c3
-const int SO_SNDBUFFORCE             = 32
+const int SO_SNDBUFFORCE
 ```
 
 ---
@@ -38229,7 +37970,7 @@ const int SO_SNDBUFFORCE             = 32
 #### `SO_RCVBUFFORCE`
 
 ```c3
-const int SO_RCVBUFFORCE             = 33
+const int SO_RCVBUFFORCE
 ```
 
 ---
@@ -38237,7 +37978,7 @@ const int SO_RCVBUFFORCE             = 33
 #### `SO_PASSSEC`
 
 ```c3
-const int SO_PASSSEC                 = 34
+const int SO_PASSSEC
 ```
 
 ---
@@ -38245,7 +37986,7 @@ const int SO_PASSSEC                 = 34
 #### `SO_MARK`
 
 ```c3
-const int SO_MARK                    = 36
+const int SO_MARK
 ```
 
 ---
@@ -38253,7 +37994,7 @@ const int SO_MARK                    = 36
 #### `SO_PROTOCOL`
 
 ```c3
-const int SO_PROTOCOL                = 38
+const int SO_PROTOCOL
 ```
 
 ---
@@ -38261,7 +38002,7 @@ const int SO_PROTOCOL                = 38
 #### `SO_DOMAIN`
 
 ```c3
-const int SO_DOMAIN                  = 39
+const int SO_DOMAIN
 ```
 
 ---
@@ -38269,7 +38010,7 @@ const int SO_DOMAIN                  = 39
 #### `SO_RXQ_OVFL`
 
 ```c3
-const int SO_RXQ_OVFL                = 40
+const int SO_RXQ_OVFL
 ```
 
 ---
@@ -38277,7 +38018,7 @@ const int SO_RXQ_OVFL                = 40
 #### `SO_WIFI_STATUS`
 
 ```c3
-const int SO_WIFI_STATUS             = 41
+const int SO_WIFI_STATUS
 ```
 
 ---
@@ -38285,7 +38026,7 @@ const int SO_WIFI_STATUS             = 41
 #### `SO_PEEK_OFF`
 
 ```c3
-const int SO_PEEK_OFF                = 42
+const int SO_PEEK_OFF
 ```
 
 ---
@@ -38293,7 +38034,7 @@ const int SO_PEEK_OFF                = 42
 #### `SO_NOFCS`
 
 ```c3
-const int SO_NOFCS                   = 43
+const int SO_NOFCS
 ```
 
 ---
@@ -38301,7 +38042,7 @@ const int SO_NOFCS                   = 43
 #### `SO_LOCK_FILTER`
 
 ```c3
-const int SO_LOCK_FILTER             = 44
+const int SO_LOCK_FILTER
 ```
 
 ---
@@ -38309,7 +38050,7 @@ const int SO_LOCK_FILTER             = 44
 #### `SO_SELECT_ERR_QUEUE`
 
 ```c3
-const int SO_SELECT_ERR_QUEUE        = 45
+const int SO_SELECT_ERR_QUEUE
 ```
 
 ---
@@ -38317,7 +38058,7 @@ const int SO_SELECT_ERR_QUEUE        = 45
 #### `SO_BUSY_POLL`
 
 ```c3
-const int SO_BUSY_POLL               = 46
+const int SO_BUSY_POLL
 ```
 
 ---
@@ -38325,7 +38066,7 @@ const int SO_BUSY_POLL               = 46
 #### `SO_MAX_PACING_RATE`
 
 ```c3
-const int SO_MAX_PACING_RATE         = 47
+const int SO_MAX_PACING_RATE
 ```
 
 ---
@@ -38333,7 +38074,7 @@ const int SO_MAX_PACING_RATE         = 47
 #### `SO_BPF_EXTENSIONS`
 
 ```c3
-const int SO_BPF_EXTENSIONS          = 48
+const int SO_BPF_EXTENSIONS
 ```
 
 ---
@@ -38341,7 +38082,7 @@ const int SO_BPF_EXTENSIONS          = 48
 #### `SO_INCOMING_CPU`
 
 ```c3
-const int SO_INCOMING_CPU            = 49
+const int SO_INCOMING_CPU
 ```
 
 ---
@@ -38349,7 +38090,7 @@ const int SO_INCOMING_CPU            = 49
 #### `SO_ATTACH_BPF`
 
 ```c3
-const int SO_ATTACH_BPF              = 50
+const int SO_ATTACH_BPF
 ```
 
 ---
@@ -38357,7 +38098,7 @@ const int SO_ATTACH_BPF              = 50
 #### `SO_ATTACH_REUSEPORT_CBPF`
 
 ```c3
-const int SO_ATTACH_REUSEPORT_CBPF   = 51
+const int SO_ATTACH_REUSEPORT_CBPF
 ```
 
 ---
@@ -38365,7 +38106,7 @@ const int SO_ATTACH_REUSEPORT_CBPF   = 51
 #### `SO_ATTACH_REUSEPORT_EBPF`
 
 ```c3
-const int SO_ATTACH_REUSEPORT_EBPF   = 52
+const int SO_ATTACH_REUSEPORT_EBPF
 ```
 
 ---
@@ -38373,7 +38114,7 @@ const int SO_ATTACH_REUSEPORT_EBPF   = 52
 #### `SO_CNX_ADVICE`
 
 ```c3
-const int SO_CNX_ADVICE              = 53
+const int SO_CNX_ADVICE
 ```
 
 ---
@@ -38381,7 +38122,7 @@ const int SO_CNX_ADVICE              = 53
 #### `SO_MEMINFO`
 
 ```c3
-const int SO_MEMINFO                 = 55
+const int SO_MEMINFO
 ```
 
 ---
@@ -38389,7 +38130,7 @@ const int SO_MEMINFO                 = 55
 #### `SO_INCOMING_NAPI_ID`
 
 ```c3
-const int SO_INCOMING_NAPI_ID        = 56
+const int SO_INCOMING_NAPI_ID
 ```
 
 ---
@@ -38397,7 +38138,7 @@ const int SO_INCOMING_NAPI_ID        = 56
 #### `SO_COOKIE`
 
 ```c3
-const int SO_COOKIE                  = 57
+const int SO_COOKIE
 ```
 
 ---
@@ -38405,7 +38146,7 @@ const int SO_COOKIE                  = 57
 #### `SO_PEERGROUPS`
 
 ```c3
-const int SO_PEERGROUPS              = 59
+const int SO_PEERGROUPS
 ```
 
 ---
@@ -38413,7 +38154,7 @@ const int SO_PEERGROUPS              = 59
 #### `SO_ZEROCOPY`
 
 ```c3
-const int SO_ZEROCOPY                = 60
+const int SO_ZEROCOPY
 ```
 
 ---
@@ -38421,7 +38162,7 @@ const int SO_ZEROCOPY                = 60
 #### `SO_TXTIME`
 
 ```c3
-const int SO_TXTIME                  = 61
+const int SO_TXTIME
 ```
 
 ---
@@ -38429,7 +38170,7 @@ const int SO_TXTIME                  = 61
 #### `SO_BINDTOIFINDEX`
 
 ```c3
-const int SO_BINDTOIFINDEX           = 62
+const int SO_BINDTOIFINDEX
 ```
 
 ---
@@ -38437,7 +38178,7 @@ const int SO_BINDTOIFINDEX           = 62
 #### `SO_DETACH_REUSEPORT_BPF`
 
 ```c3
-const int SO_DETACH_REUSEPORT_BPF    = 68
+const int SO_DETACH_REUSEPORT_BPF
 ```
 
 ---
@@ -38445,7 +38186,7 @@ const int SO_DETACH_REUSEPORT_BPF    = 68
 #### `SO_PREFER_BUSY_POLL`
 
 ```c3
-const int SO_PREFER_BUSY_POLL        = 69
+const int SO_PREFER_BUSY_POLL
 ```
 
 ---
@@ -38453,7 +38194,7 @@ const int SO_PREFER_BUSY_POLL        = 69
 #### `SO_BUSY_POLL_BUDGET`
 
 ```c3
-const int SO_BUSY_POLL_BUDGET        = 70
+const int SO_BUSY_POLL_BUDGET
 ```
 
 ---
@@ -38461,7 +38202,7 @@ const int SO_BUSY_POLL_BUDGET        = 70
 #### `SO_NETNS_COOKIE`
 
 ```c3
-const int SO_NETNS_COOKIE            = 71
+const int SO_NETNS_COOKIE
 ```
 
 ---
@@ -38469,7 +38210,7 @@ const int SO_NETNS_COOKIE            = 71
 #### `SO_BUF_LOCK`
 
 ```c3
-const int SO_BUF_LOCK                = 72
+const int SO_BUF_LOCK
 ```
 
 ---
@@ -38477,7 +38218,7 @@ const int SO_BUF_LOCK                = 72
 #### `SO_RESERVE_MEM`
 
 ```c3
-const int SO_RESERVE_MEM             = 73
+const int SO_RESERVE_MEM
 ```
 
 ---
@@ -38485,7 +38226,7 @@ const int SO_RESERVE_MEM             = 73
 #### `SO_TXREHASH`
 
 ```c3
-const int SO_TXREHASH                = 74
+const int SO_TXREHASH
 ```
 
 ---
@@ -38493,7 +38234,7 @@ const int SO_TXREHASH                = 74
 #### `SO_RCVMARK`
 
 ```c3
-const int SO_RCVMARK                 = 75
+const int SO_RCVMARK
 ```
 
 ---
@@ -38501,7 +38242,7 @@ const int SO_RCVMARK                 = 75
 #### `SO_PASSPIDFD`
 
 ```c3
-const int SO_PASSPIDFD               = 76
+const int SO_PASSPIDFD
 ```
 
 ---
@@ -38509,7 +38250,7 @@ const int SO_PASSPIDFD               = 76
 #### `SO_PEERPIDFD`
 
 ```c3
-const int SO_PEERPIDFD               = 77
+const int SO_PEERPIDFD
 ```
 
 ---
@@ -38517,7 +38258,7 @@ const int SO_PEERPIDFD               = 77
 #### `POLLRDNORM`
 
 ```c3
-const CUShort POLLRDNORM              = 0x0040
+const CUShort POLLRDNORM
 ```
 
 ---
@@ -38525,7 +38266,7 @@ const CUShort POLLRDNORM              = 0x0040
 #### `POLLRDBAND`
 
 ```c3
-const CUShort POLLRDBAND              = 0x0080
+const CUShort POLLRDBAND
 ```
 
 ---
@@ -38533,7 +38274,7 @@ const CUShort POLLRDBAND              = 0x0080
 #### `POLLWRNORM`
 
 ```c3
-const CUShort POLLWRNORM              = 0x0100
+const CUShort POLLWRNORM
 ```
 
 ---
@@ -38541,7 +38282,7 @@ const CUShort POLLWRNORM              = 0x0100
 #### `POLLWRBAND`
 
 ```c3
-const CUShort POLLWRBAND              = 0x0200
+const CUShort POLLWRBAND
 ```
 
 ---
@@ -38549,7 +38290,7 @@ const CUShort POLLWRBAND              = 0x0200
 #### `POLLMSG`
 
 ```c3
-const CUShort POLLMSG                 = 0x0400
+const CUShort POLLMSG
 ```
 
 ---
@@ -38557,7 +38298,7 @@ const CUShort POLLMSG                 = 0x0400
 #### `POLLREMOVE`
 
 ```c3
-const CUShort POLLREMOVE              = 0x1000
+const CUShort POLLREMOVE
 ```
 
 ---
@@ -38565,7 +38306,7 @@ const CUShort POLLREMOVE              = 0x1000
 #### `POLLRDHUP`
 
 ```c3
-const CUShort POLLRDHUP               = 0x2000
+const CUShort POLLRDHUP
 ```
 
 ---
@@ -38573,7 +38314,7 @@ const CUShort POLLRDHUP               = 0x2000
 #### `POLLFREE`
 
 ```c3
-const CUShort POLLFREE                = 0x4000
+const CUShort POLLFREE
 ```
 
 ---
@@ -38581,7 +38322,7 @@ const CUShort POLLFREE                = 0x4000
 #### `POLL_BUSY_LOOP`
 
 ```c3
-const CUShort POLL_BUSY_LOOP          = 0x8000
+const CUShort POLL_BUSY_LOOP
 ```
 
 ---
@@ -38589,7 +38330,7 @@ const CUShort POLL_BUSY_LOOP          = 0x8000
 #### `MSG_PEEK`
 
 ```c3
-const CInt MSG_PEEK = 0x0002
+const CInt MSG_PEEK
 ```
 ### `std::net::os @if(env::OPENBSD)`
 
@@ -38598,7 +38339,7 @@ const CInt MSG_PEEK = 0x0002
 #### `AI_EXT`
 
 ```c3
-const AIFlags AI_EXT                    = 0x8
+const AIFlags AI_EXT
 ```
 
 ---
@@ -38606,7 +38347,7 @@ const AIFlags AI_EXT                    = 0x8
 #### `AI_NUMERICSERV`
 
 ```c3
-const AIFlags AI_NUMERICSERV            = 0x10
+const AIFlags AI_NUMERICSERV
 ```
 
 ---
@@ -38614,7 +38355,7 @@ const AIFlags AI_NUMERICSERV            = 0x10
 #### `AI_FQDN`
 
 ```c3
-const AIFlags AI_FQDN                   = 0x20
+const AIFlags AI_FQDN
 ```
 
 ---
@@ -38622,7 +38363,7 @@ const AIFlags AI_FQDN                   = 0x20
 #### `AI_ADDRCONFIG`
 
 ```c3
-const AIFlags AI_ADDRCONFIG             = 0x40
+const AIFlags AI_ADDRCONFIG
 ```
 
 ---
@@ -38630,7 +38371,7 @@ const AIFlags AI_ADDRCONFIG             = 0x40
 #### `PLATFORM_AF_LOCAL`
 
 ```c3
-const AIFamily PLATFORM_AF_LOCAL                = AF_UNIX
+const AIFamily PLATFORM_AF_LOCAL
 ```
 
 ---
@@ -38638,7 +38379,7 @@ const AIFamily PLATFORM_AF_LOCAL                = AF_UNIX
 #### `PLATFORM_AF_IMPLINK`
 
 ```c3
-const AIFamily PLATFORM_AF_IMPLINK              =  3
+const AIFamily PLATFORM_AF_IMPLINK
 ```
 
 ---
@@ -38646,7 +38387,7 @@ const AIFamily PLATFORM_AF_IMPLINK              =  3
 #### `PLATFORM_AF_PUP`
 
 ```c3
-const AIFamily PLATFORM_AF_PUP                  =  4
+const AIFamily PLATFORM_AF_PUP
 ```
 
 ---
@@ -38654,7 +38395,7 @@ const AIFamily PLATFORM_AF_PUP                  =  4
 #### `PLATFORM_AF_CHAOS`
 
 ```c3
-const AIFamily PLATFORM_AF_CHAOS                =  5
+const AIFamily PLATFORM_AF_CHAOS
 ```
 
 ---
@@ -38662,7 +38403,7 @@ const AIFamily PLATFORM_AF_CHAOS                =  5
 #### `PLATFORM_AF_NS`
 
 ```c3
-const AIFamily PLATFORM_AF_NS                   =  6
+const AIFamily PLATFORM_AF_NS
 ```
 
 ---
@@ -38670,7 +38411,7 @@ const AIFamily PLATFORM_AF_NS                   =  6
 #### `PLATFORM_AF_ISO`
 
 ```c3
-const AIFamily PLATFORM_AF_ISO                  =  7
+const AIFamily PLATFORM_AF_ISO
 ```
 
 ---
@@ -38678,7 +38419,7 @@ const AIFamily PLATFORM_AF_ISO                  =  7
 #### `PLATFORM_AF_OSI`
 
 ```c3
-const AIFamily PLATFORM_AF_OSI                  = PLATFORM_AF_ISO
+const AIFamily PLATFORM_AF_OSI
 ```
 
 ---
@@ -38686,7 +38427,7 @@ const AIFamily PLATFORM_AF_OSI                  = PLATFORM_AF_ISO
 #### `PLATFORM_AF_ECMA`
 
 ```c3
-const AIFamily PLATFORM_AF_ECMA                 =  8
+const AIFamily PLATFORM_AF_ECMA
 ```
 
 ---
@@ -38694,7 +38435,7 @@ const AIFamily PLATFORM_AF_ECMA                 =  8
 #### `PLATFORM_AF_DATAKIT`
 
 ```c3
-const AIFamily PLATFORM_AF_DATAKIT              =  9
+const AIFamily PLATFORM_AF_DATAKIT
 ```
 
 ---
@@ -38702,7 +38443,7 @@ const AIFamily PLATFORM_AF_DATAKIT              =  9
 #### `PLATFORM_AF_CCITT`
 
 ```c3
-const AIFamily PLATFORM_AF_CCITT                = 10
+const AIFamily PLATFORM_AF_CCITT
 ```
 
 ---
@@ -38710,7 +38451,7 @@ const AIFamily PLATFORM_AF_CCITT                = 10
 #### `PLATFORM_AF_SNA`
 
 ```c3
-const AIFamily PLATFORM_AF_SNA                  = 11
+const AIFamily PLATFORM_AF_SNA
 ```
 
 ---
@@ -38718,7 +38459,7 @@ const AIFamily PLATFORM_AF_SNA                  = 11
 #### `PLATFORM_AF_DECNET`
 
 ```c3
-const AIFamily PLATFORM_AF_DECNET               = 12
+const AIFamily PLATFORM_AF_DECNET
 ```
 
 ---
@@ -38726,7 +38467,7 @@ const AIFamily PLATFORM_AF_DECNET               = 12
 #### `PLATFORM_AF_DLI`
 
 ```c3
-const AIFamily PLATFORM_AF_DLI                  = 13
+const AIFamily PLATFORM_AF_DLI
 ```
 
 ---
@@ -38734,7 +38475,7 @@ const AIFamily PLATFORM_AF_DLI                  = 13
 #### `PLATFORM_AF_LAT`
 
 ```c3
-const AIFamily PLATFORM_AF_LAT                  = 14
+const AIFamily PLATFORM_AF_LAT
 ```
 
 ---
@@ -38742,7 +38483,7 @@ const AIFamily PLATFORM_AF_LAT                  = 14
 #### `PLATFORM_AF_HYLINK`
 
 ```c3
-const AIFamily PLATFORM_AF_HYLINK               = 15
+const AIFamily PLATFORM_AF_HYLINK
 ```
 
 ---
@@ -38750,7 +38491,7 @@ const AIFamily PLATFORM_AF_HYLINK               = 15
 #### `PLATFORM_AF_APPLETALK`
 
 ```c3
-const AIFamily PLATFORM_AF_APPLETALK            = 16
+const AIFamily PLATFORM_AF_APPLETALK
 ```
 
 ---
@@ -38758,7 +38499,7 @@ const AIFamily PLATFORM_AF_APPLETALK            = 16
 #### `PLATFORM_AF_ROUTE`
 
 ```c3
-const AIFamily PLATFORM_AF_ROUTE                = 17
+const AIFamily PLATFORM_AF_ROUTE
 ```
 
 ---
@@ -38766,7 +38507,7 @@ const AIFamily PLATFORM_AF_ROUTE                = 17
 #### `PLATFORM_AF_LINK`
 
 ```c3
-const AIFamily PLATFORM_AF_LINK                 = 18
+const AIFamily PLATFORM_AF_LINK
 ```
 
 ---
@@ -38774,7 +38515,7 @@ const AIFamily PLATFORM_AF_LINK                 = 18
 #### `PLATFORM_PSEUDO_AF_XTP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_XTP           = 19
+const AIFamily PLATFORM_PSEUDO_AF_XTP
 ```
 
 ---
@@ -38782,7 +38523,7 @@ const AIFamily PLATFORM_PSEUDO_AF_XTP           = 19
 #### `PLATFORM_AF_COIP`
 
 ```c3
-const AIFamily PLATFORM_AF_COIP                 = 20
+const AIFamily PLATFORM_AF_COIP
 ```
 
 ---
@@ -38790,7 +38531,7 @@ const AIFamily PLATFORM_AF_COIP                 = 20
 #### `PLATFORM_AF_CNT`
 
 ```c3
-const AIFamily PLATFORM_AF_CNT                  = 21
+const AIFamily PLATFORM_AF_CNT
 ```
 
 ---
@@ -38798,7 +38539,7 @@ const AIFamily PLATFORM_AF_CNT                  = 21
 #### `PLATFORM_PSEUDO_AF_RTIP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_RTIP          = 22
+const AIFamily PLATFORM_PSEUDO_AF_RTIP
 ```
 
 ---
@@ -38806,7 +38547,7 @@ const AIFamily PLATFORM_PSEUDO_AF_RTIP          = 22
 #### `PLATFORM_AF_IPX`
 
 ```c3
-const AIFamily PLATFORM_AF_IPX                  = 23
+const AIFamily PLATFORM_AF_IPX
 ```
 
 ---
@@ -38814,7 +38555,7 @@ const AIFamily PLATFORM_AF_IPX                  = 23
 #### `PLATFORM_AF_INET6`
 
 ```c3
-const AIFamily PLATFORM_AF_INET6                = 24
+const AIFamily PLATFORM_AF_INET6
 ```
 
 ---
@@ -38822,7 +38563,7 @@ const AIFamily PLATFORM_AF_INET6                = 24
 #### `PLATFORM_PSEUDO_AF_PIP`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_PIP           = 25
+const AIFamily PLATFORM_PSEUDO_AF_PIP
 ```
 
 ---
@@ -38830,7 +38571,7 @@ const AIFamily PLATFORM_PSEUDO_AF_PIP           = 25
 #### `PLATFORM_AF_ISDN`
 
 ```c3
-const AIFamily PLATFORM_AF_ISDN                 = 26
+const AIFamily PLATFORM_AF_ISDN
 ```
 
 ---
@@ -38838,7 +38579,7 @@ const AIFamily PLATFORM_AF_ISDN                 = 26
 #### `PLATFORM_AF_E164`
 
 ```c3
-const AIFamily PLATFORM_AF_E164                 = PLATFORM_AF_ISDN
+const AIFamily PLATFORM_AF_E164
 ```
 
 ---
@@ -38846,7 +38587,7 @@ const AIFamily PLATFORM_AF_E164                 = PLATFORM_AF_ISDN
 #### `PLATFORM_AF_NATM`
 
 ```c3
-const AIFamily PLATFORM_AF_NATM                 = 27
+const AIFamily PLATFORM_AF_NATM
 ```
 
 ---
@@ -38854,7 +38595,7 @@ const AIFamily PLATFORM_AF_NATM                 = 27
 #### `PLATFORM_AF_ENCAP`
 
 ```c3
-const AIFamily PLATFORM_AF_ENCAP                = 28
+const AIFamily PLATFORM_AF_ENCAP
 ```
 
 ---
@@ -38862,7 +38603,7 @@ const AIFamily PLATFORM_AF_ENCAP                = 28
 #### `PLATFORM_AF_SIP`
 
 ```c3
-const AIFamily PLATFORM_AF_SIP                  = 29
+const AIFamily PLATFORM_AF_SIP
 ```
 
 ---
@@ -38870,7 +38611,7 @@ const AIFamily PLATFORM_AF_SIP                  = 29
 #### `PLATFORM_AF_KEY`
 
 ```c3
-const AIFamily PLATFORM_AF_KEY                  = 30
+const AIFamily PLATFORM_AF_KEY
 ```
 
 ---
@@ -38878,7 +38619,7 @@ const AIFamily PLATFORM_AF_KEY                  = 30
 #### `PLATFORM_PSEUDO_AF_HDRCMPLT`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT      = 31
+const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT
 ```
 
 ---
@@ -38886,7 +38627,7 @@ const AIFamily PLATFORM_PSEUDO_AF_HDRCMPLT      = 31
 #### `PLATFORM_AF_BLUETOOTH`
 
 ```c3
-const AIFamily PLATFORM_AF_BLUETOOTH            = 32
+const AIFamily PLATFORM_AF_BLUETOOTH
 ```
 
 ---
@@ -38894,7 +38635,7 @@ const AIFamily PLATFORM_AF_BLUETOOTH            = 32
 #### `PLATFORM_AF_MPLS`
 
 ```c3
-const AIFamily PLATFORM_AF_MPLS                 = 33
+const AIFamily PLATFORM_AF_MPLS
 ```
 
 ---
@@ -38902,7 +38643,7 @@ const AIFamily PLATFORM_AF_MPLS                 = 33
 #### `PLATFORM_PSEUDO_AF_PFLOW`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_PFLOW         = 34
+const AIFamily PLATFORM_PSEUDO_AF_PFLOW
 ```
 
 ---
@@ -38910,7 +38651,7 @@ const AIFamily PLATFORM_PSEUDO_AF_PFLOW         = 34
 #### `PLATFORM_PSEUDO_AF_PIPEX`
 
 ```c3
-const AIFamily PLATFORM_PSEUDO_AF_PIPEX         = 35
+const AIFamily PLATFORM_PSEUDO_AF_PIPEX
 ```
 
 ---
@@ -38918,7 +38659,7 @@ const AIFamily PLATFORM_PSEUDO_AF_PIPEX         = 35
 #### `PLATFORM_AF_FRAME`
 
 ```c3
-const AIFamily PLATFORM_AF_FRAME                = 36
+const AIFamily PLATFORM_AF_FRAME
 ```
 
 ---
@@ -38926,7 +38667,7 @@ const AIFamily PLATFORM_AF_FRAME                = 36
 #### `PLATFORM_AF_MAX`
 
 ```c3
-const AIFamily PLATFORM_AF_MAX                  = 37
+const AIFamily PLATFORM_AF_MAX
 ```
 
 ---
@@ -38934,7 +38675,7 @@ const AIFamily PLATFORM_AF_MAX                  = 37
 #### `SOL_SOCKET`
 
 ```c3
-const int SOL_SOCKET = 0xFFFF
+const int SOL_SOCKET
 ```
 
 ---
@@ -38942,7 +38683,7 @@ const int SOL_SOCKET = 0xFFFF
 #### `SO_DEBUG`
 
 ```c3
-const int SO_DEBUG        = 0x0001
+const int SO_DEBUG
 ```
 
 ---
@@ -38950,7 +38691,7 @@ const int SO_DEBUG        = 0x0001
 #### `SO_ACCEPTCONN`
 
 ```c3
-const int SO_ACCEPTCONN   = 0x0002
+const int SO_ACCEPTCONN
 ```
 
 ---
@@ -38958,7 +38699,7 @@ const int SO_ACCEPTCONN   = 0x0002
 #### `SO_REUSEADDR`
 
 ```c3
-const int SO_REUSEADDR    = 0x0004
+const int SO_REUSEADDR
 ```
 
 ---
@@ -38966,7 +38707,7 @@ const int SO_REUSEADDR    = 0x0004
 #### `SO_KEEPALIVE`
 
 ```c3
-const int SO_KEEPALIVE    = 0x0008
+const int SO_KEEPALIVE
 ```
 
 ---
@@ -38974,7 +38715,7 @@ const int SO_KEEPALIVE    = 0x0008
 #### `SO_DONTROUTE`
 
 ```c3
-const int SO_DONTROUTE    = 0x0010
+const int SO_DONTROUTE
 ```
 
 ---
@@ -38982,7 +38723,7 @@ const int SO_DONTROUTE    = 0x0010
 #### `SO_BROADCAST`
 
 ```c3
-const int SO_BROADCAST    = 0x0020
+const int SO_BROADCAST
 ```
 
 ---
@@ -38990,7 +38731,7 @@ const int SO_BROADCAST    = 0x0020
 #### `SO_USELOOPBACK`
 
 ```c3
-const int SO_USELOOPBACK  = 0x0040
+const int SO_USELOOPBACK
 ```
 
 ---
@@ -38998,7 +38739,7 @@ const int SO_USELOOPBACK  = 0x0040
 #### `SO_LINGER`
 
 ```c3
-const int SO_LINGER       = 0x0080
+const int SO_LINGER
 ```
 
 ---
@@ -39006,7 +38747,7 @@ const int SO_LINGER       = 0x0080
 #### `SO_OOBINLINE`
 
 ```c3
-const int SO_OOBINLINE    = 0x0100
+const int SO_OOBINLINE
 ```
 
 ---
@@ -39014,7 +38755,7 @@ const int SO_OOBINLINE    = 0x0100
 #### `SO_REUSEPORT`
 
 ```c3
-const int SO_REUSEPORT    = 0x0200
+const int SO_REUSEPORT
 ```
 
 ---
@@ -39022,7 +38763,7 @@ const int SO_REUSEPORT    = 0x0200
 #### `SO_TIMESTAMP`
 
 ```c3
-const int SO_TIMESTAMP    = 0x0800
+const int SO_TIMESTAMP
 ```
 
 ---
@@ -39030,7 +38771,7 @@ const int SO_TIMESTAMP    = 0x0800
 #### `SO_BINDANY`
 
 ```c3
-const int SO_BINDANY      = 0x1000
+const int SO_BINDANY
 ```
 
 ---
@@ -39038,7 +38779,7 @@ const int SO_BINDANY      = 0x1000
 #### `SO_ZEROIZE`
 
 ```c3
-const int SO_ZEROIZE      = 0x2000
+const int SO_ZEROIZE
 ```
 
 ---
@@ -39046,7 +38787,7 @@ const int SO_ZEROIZE      = 0x2000
 #### `SO_SNDBUF`
 
 ```c3
-const int SO_SNDBUF       = 0x1001
+const int SO_SNDBUF
 ```
 
 ---
@@ -39054,7 +38795,7 @@ const int SO_SNDBUF       = 0x1001
 #### `SO_RCVBUF`
 
 ```c3
-const int SO_RCVBUF       = 0x1002
+const int SO_RCVBUF
 ```
 
 ---
@@ -39062,7 +38803,7 @@ const int SO_RCVBUF       = 0x1002
 #### `SO_SNDLOWAT`
 
 ```c3
-const int SO_SNDLOWAT     = 0x1003
+const int SO_SNDLOWAT
 ```
 
 ---
@@ -39070,7 +38811,7 @@ const int SO_SNDLOWAT     = 0x1003
 #### `SO_RCVLOWAT`
 
 ```c3
-const int SO_RCVLOWAT     = 0x1004
+const int SO_RCVLOWAT
 ```
 
 ---
@@ -39078,7 +38819,7 @@ const int SO_RCVLOWAT     = 0x1004
 #### `SO_SNDTIMEO`
 
 ```c3
-const int SO_SNDTIMEO     = 0x1005
+const int SO_SNDTIMEO
 ```
 
 ---
@@ -39086,7 +38827,7 @@ const int SO_SNDTIMEO     = 0x1005
 #### `SO_RCVTIMEO`
 
 ```c3
-const int SO_RCVTIMEO     = 0x1006
+const int SO_RCVTIMEO
 ```
 
 ---
@@ -39094,7 +38835,7 @@ const int SO_RCVTIMEO     = 0x1006
 #### `SO_ERROR`
 
 ```c3
-const int SO_ERROR        = 0x1007
+const int SO_ERROR
 ```
 
 ---
@@ -39102,7 +38843,7 @@ const int SO_ERROR        = 0x1007
 #### `SO_TYPE`
 
 ```c3
-const int SO_TYPE         = 0x1008
+const int SO_TYPE
 ```
 
 ---
@@ -39110,7 +38851,7 @@ const int SO_TYPE         = 0x1008
 #### `SO_NETPROC`
 
 ```c3
-const int SO_NETPROC      = 0x1020
+const int SO_NETPROC
 ```
 
 ---
@@ -39118,7 +38859,7 @@ const int SO_NETPROC      = 0x1020
 #### `SO_RTABLE`
 
 ```c3
-const int SO_RTABLE       = 0x1021
+const int SO_RTABLE
 ```
 
 ---
@@ -39126,7 +38867,7 @@ const int SO_RTABLE       = 0x1021
 #### `SO_PEERCRED`
 
 ```c3
-const int SO_PEERCRED     = 0x1022
+const int SO_PEERCRED
 ```
 
 ---
@@ -39134,7 +38875,7 @@ const int SO_PEERCRED     = 0x1022
 #### `SO_SPLICE`
 
 ```c3
-const int SO_SPLICE       = 0x1023
+const int SO_SPLICE
 ```
 
 ---
@@ -39142,7 +38883,7 @@ const int SO_SPLICE       = 0x1023
 #### `SO_DOMAIN`
 
 ```c3
-const int SO_DOMAIN       = 0x1024
+const int SO_DOMAIN
 ```
 
 ---
@@ -39150,7 +38891,7 @@ const int SO_DOMAIN       = 0x1024
 #### `SO_PROTOCOL`
 
 ```c3
-const int SO_PROTOCOL     = 0x1025
+const int SO_PROTOCOL
 ```
 
 ---
@@ -39158,7 +38899,7 @@ const int SO_PROTOCOL     = 0x1025
 #### `POLLRDNORM`
 
 ```c3
-const CUShort POLLRDNORM            = 0x0040
+const CUShort POLLRDNORM
 ```
 
 ---
@@ -39166,7 +38907,7 @@ const CUShort POLLRDNORM            = 0x0040
 #### `POLLNORM`
 
 ```c3
-const CUShort POLLNORM              = POLLRDNORM
+const CUShort POLLNORM
 ```
 
 ---
@@ -39174,7 +38915,7 @@ const CUShort POLLNORM              = POLLRDNORM
 #### `POLLWRNORM`
 
 ```c3
-const CUShort POLLWRNORM            = POLLOUT
+const CUShort POLLWRNORM
 ```
 
 ---
@@ -39182,7 +38923,7 @@ const CUShort POLLWRNORM            = POLLOUT
 #### `POLLRDBAND`
 
 ```c3
-const CUShort POLLRDBAND            = 0x0080
+const CUShort POLLRDBAND
 ```
 
 ---
@@ -39190,7 +38931,7 @@ const CUShort POLLRDBAND            = 0x0080
 #### `POLLWRBAND`
 
 ```c3
-const CUShort POLLWRBAND            = 0x0100
+const CUShort POLLWRBAND
 ```
 
 ---
@@ -39198,7 +38939,7 @@ const CUShort POLLWRBAND            = 0x0100
 #### `MSG_OOB`
 
 ```c3
-const CInt MSG_OOB                 = 0x1
+const CInt MSG_OOB
 ```
 
 ---
@@ -39206,7 +38947,7 @@ const CInt MSG_OOB                 = 0x1
 #### `MSG_PEEK`
 
 ```c3
-const CInt MSG_PEEK                = 0x2
+const CInt MSG_PEEK
 ```
 
 ---
@@ -39214,7 +38955,7 @@ const CInt MSG_PEEK                = 0x2
 #### `MSG_DONTROUTE`
 
 ```c3
-const CInt MSG_DONTROUTE           = 0x4
+const CInt MSG_DONTROUTE
 ```
 
 ---
@@ -39222,7 +38963,7 @@ const CInt MSG_DONTROUTE           = 0x4
 #### `MSG_EOR`
 
 ```c3
-const CInt MSG_EOR                 = 0x8
+const CInt MSG_EOR
 ```
 
 ---
@@ -39230,7 +38971,7 @@ const CInt MSG_EOR                 = 0x8
 #### `MSG_TRUNC`
 
 ```c3
-const CInt MSG_TRUNC               = 0x10
+const CInt MSG_TRUNC
 ```
 
 ---
@@ -39238,7 +38979,7 @@ const CInt MSG_TRUNC               = 0x10
 #### `MSG_CTRUNC`
 
 ```c3
-const CInt MSG_CTRUNC              = 0x20
+const CInt MSG_CTRUNC
 ```
 
 ---
@@ -39246,7 +38987,7 @@ const CInt MSG_CTRUNC              = 0x20
 #### `MSG_WAITALL`
 
 ```c3
-const CInt MSG_WAITALL             = 0x40
+const CInt MSG_WAITALL
 ```
 
 ---
@@ -39254,7 +38995,7 @@ const CInt MSG_WAITALL             = 0x40
 #### `MSG_DONTWAIT`
 
 ```c3
-const CInt MSG_DONTWAIT            = 0x80
+const CInt MSG_DONTWAIT
 ```
 
 ---
@@ -39262,7 +39003,7 @@ const CInt MSG_DONTWAIT            = 0x80
 #### `MSG_BCAST`
 
 ```c3
-const CInt MSG_BCAST               = 0x100
+const CInt MSG_BCAST
 ```
 
 ---
@@ -39270,7 +39011,7 @@ const CInt MSG_BCAST               = 0x100
 #### `MSG_MCAST`
 
 ```c3
-const CInt MSG_MCAST               = 0x200
+const CInt MSG_MCAST
 ```
 
 ---
@@ -39278,7 +39019,7 @@ const CInt MSG_MCAST               = 0x200
 #### `MSG_NOSIGNAL`
 
 ```c3
-const CInt MSG_NOSIGNAL            = 0x400
+const CInt MSG_NOSIGNAL
 ```
 
 ---
@@ -39286,7 +39027,7 @@ const CInt MSG_NOSIGNAL            = 0x400
 #### `MSG_CMSG_CLOEXEC`
 
 ```c3
-const CInt MSG_CMSG_CLOEXEC        = 0x800
+const CInt MSG_CMSG_CLOEXEC
 ```
 
 ---
@@ -39294,7 +39035,7 @@ const CInt MSG_CMSG_CLOEXEC        = 0x800
 #### `MSG_WAITFORONE`
 
 ```c3
-const CInt MSG_WAITFORONE          = 0x1000
+const CInt MSG_WAITFORONE
 ```
 
 ---
@@ -39302,7 +39043,7 @@ const CInt MSG_WAITFORONE          = 0x1000
 #### `SOCK_CLOEXEC`
 
 ```c3
-const SOCK_CLOEXEC                  = 0x8000
+const SOCK_CLOEXEC
 ```
 
 ---
@@ -39310,7 +39051,7 @@ const SOCK_CLOEXEC                  = 0x8000
 #### `SOCK_NONBLOCK`
 
 ```c3
-const SOCK_NONBLOCK                 = 0x4000
+const SOCK_NONBLOCK
 ```
 
 ---
@@ -39318,7 +39059,7 @@ const SOCK_NONBLOCK                 = 0x4000
 #### `SOCK_NONBLOCK_INHERIT`
 
 ```c3
-const SOCK_NONBLOCK_INHERIT         = 0x2000
+const SOCK_NONBLOCK_INHERIT
 ```
 
 ---
@@ -39326,7 +39067,7 @@ const SOCK_NONBLOCK_INHERIT         = 0x2000
 #### `SOCK_DNS`
 
 ```c3
-const SOCK_DNS                      = 0x1000
+const SOCK_DNS
 ```
 
 ---
@@ -39334,7 +39075,7 @@ const SOCK_DNS                      = 0x1000
 #### `PLATFORM_O_NONBLOCK`
 
 ```c3
-const PLATFORM_O_NONBLOCK = SOCK_NONBLOCK
+const PLATFORM_O_NONBLOCK
 ```
 ### `std::net::os @if(env::POSIX && SUPPORTS_INET)`
 
@@ -39343,7 +39084,7 @@ const PLATFORM_O_NONBLOCK = SOCK_NONBLOCK
 #### `F_GETFL`
 
 ```c3
-const int F_GETFL = 3
+const int F_GETFL
 ```
 
 ---
@@ -39351,7 +39092,7 @@ const int F_GETFL = 3
 #### `F_SETFL`
 
 ```c3
-const int F_SETFL = 4
+const int F_SETFL
 ```
 
 ---
@@ -39432,7 +39173,7 @@ macro bool NativeSocket.is_non_blocking(self)
 #### `PLATFORM_AF_IPX`
 
 ```c3
-const AIFamily PLATFORM_AF_IPX          = 6
+const AIFamily PLATFORM_AF_IPX
 ```
 
 ---
@@ -39440,7 +39181,7 @@ const AIFamily PLATFORM_AF_IPX          = 6
 #### `PLATFORM_AF_APPLETALK`
 
 ```c3
-const AIFamily PLATFORM_AF_APPLETALK    = 16
+const AIFamily PLATFORM_AF_APPLETALK
 ```
 
 ---
@@ -39448,7 +39189,7 @@ const AIFamily PLATFORM_AF_APPLETALK    = 16
 #### `PLATFORM_AF_NETBIOS`
 
 ```c3
-const AIFamily PLATFORM_AF_NETBIOS      = 17
+const AIFamily PLATFORM_AF_NETBIOS
 ```
 
 ---
@@ -39456,7 +39197,7 @@ const AIFamily PLATFORM_AF_NETBIOS      = 17
 #### `PLATFORM_AF_INET6`
 
 ```c3
-const AIFamily PLATFORM_AF_INET6        = 23
+const AIFamily PLATFORM_AF_INET6
 ```
 
 ---
@@ -39464,7 +39205,7 @@ const AIFamily PLATFORM_AF_INET6        = 23
 #### `PLATFORM_AF_IRDA`
 
 ```c3
-const AIFamily PLATFORM_AF_IRDA         = 26
+const AIFamily PLATFORM_AF_IRDA
 ```
 
 ---
@@ -39472,7 +39213,7 @@ const AIFamily PLATFORM_AF_IRDA         = 26
 #### `PLATFORM_AF_BTH`
 
 ```c3
-const AIFamily PLATFORM_AF_BTH          = 32
+const AIFamily PLATFORM_AF_BTH
 ```
 
 ---
@@ -39480,7 +39221,7 @@ const AIFamily PLATFORM_AF_BTH          = 32
 #### `FIONREAD`
 
 ```c3
-const int FIONREAD = 1074030207
+const int FIONREAD
 ```
 
 ---
@@ -39488,7 +39229,7 @@ const int FIONREAD = 1074030207
 #### `FIONBIO`
 
 ```c3
-const int FIONBIO = -2147195266
+const int FIONBIO
 ```
 
 ---
@@ -39496,7 +39237,7 @@ const int FIONBIO = -2147195266
 #### `FIOASYNC`
 
 ```c3
-const int FIOASYNC = -2147195267
+const int FIOASYNC
 ```
 
 ---
@@ -39536,7 +39277,7 @@ macro void? NativeSocket.close(self)
 #### `SOL_SOCKET`
 
 ```c3
-const int SOL_SOCKET              = 0xffff
+const int SOL_SOCKET
 ```
 
 ---
@@ -39544,7 +39285,7 @@ const int SOL_SOCKET              = 0xffff
 #### `SO_DEBUG`
 
 ```c3
-const int SO_DEBUG                = 0x0001
+const int SO_DEBUG
 ```
 
 ---
@@ -39552,7 +39293,7 @@ const int SO_DEBUG                = 0x0001
 #### `SO_ACCEPTCONN`
 
 ```c3
-const int SO_ACCEPTCONN           = 0x0002
+const int SO_ACCEPTCONN
 ```
 
 ---
@@ -39560,7 +39301,7 @@ const int SO_ACCEPTCONN           = 0x0002
 #### `SO_REUSEADDR`
 
 ```c3
-const int SO_REUSEADDR            = 0x0004
+const int SO_REUSEADDR
 ```
 
 ---
@@ -39568,7 +39309,7 @@ const int SO_REUSEADDR            = 0x0004
 #### `SO_KEEPALIVE`
 
 ```c3
-const int SO_KEEPALIVE            = 0x0008
+const int SO_KEEPALIVE
 ```
 
 ---
@@ -39576,7 +39317,7 @@ const int SO_KEEPALIVE            = 0x0008
 #### `SO_DONTROUTE`
 
 ```c3
-const int SO_DONTROUTE            = 0x0010
+const int SO_DONTROUTE
 ```
 
 ---
@@ -39584,7 +39325,7 @@ const int SO_DONTROUTE            = 0x0010
 #### `SO_BROADCAST`
 
 ```c3
-const int SO_BROADCAST            = 0x0020
+const int SO_BROADCAST
 ```
 
 ---
@@ -39592,7 +39333,7 @@ const int SO_BROADCAST            = 0x0020
 #### `SO_USELOOPBACK`
 
 ```c3
-const int SO_USELOOPBACK          = 0x0040
+const int SO_USELOOPBACK
 ```
 
 ---
@@ -39600,7 +39341,7 @@ const int SO_USELOOPBACK          = 0x0040
 #### `SO_LINGER`
 
 ```c3
-const int SO_LINGER               = 0x0080
+const int SO_LINGER
 ```
 
 ---
@@ -39608,7 +39349,7 @@ const int SO_LINGER               = 0x0080
 #### `SO_OOBINLINE`
 
 ```c3
-const int SO_OOBINLINE            = 0x0100
+const int SO_OOBINLINE
 ```
 
 ---
@@ -39616,7 +39357,7 @@ const int SO_OOBINLINE            = 0x0100
 #### `SO_SNDBUF`
 
 ```c3
-const int SO_SNDBUF               = 0x1001
+const int SO_SNDBUF
 ```
 
 ---
@@ -39624,7 +39365,7 @@ const int SO_SNDBUF               = 0x1001
 #### `SO_RCVBUF`
 
 ```c3
-const int SO_RCVBUF               = 0x1002
+const int SO_RCVBUF
 ```
 
 ---
@@ -39632,7 +39373,7 @@ const int SO_RCVBUF               = 0x1002
 #### `SO_SNDLOWAT`
 
 ```c3
-const int SO_SNDLOWAT             = 0x1003
+const int SO_SNDLOWAT
 ```
 
 ---
@@ -39640,7 +39381,7 @@ const int SO_SNDLOWAT             = 0x1003
 #### `SO_RCVLOWAT`
 
 ```c3
-const int SO_RCVLOWAT             = 0x1004
+const int SO_RCVLOWAT
 ```
 
 ---
@@ -39648,7 +39389,7 @@ const int SO_RCVLOWAT             = 0x1004
 #### `SO_SNDTIMEO`
 
 ```c3
-const int SO_SNDTIMEO             = 0x1005
+const int SO_SNDTIMEO
 ```
 
 ---
@@ -39656,7 +39397,7 @@ const int SO_SNDTIMEO             = 0x1005
 #### `SO_RCVTIMEO`
 
 ```c3
-const int SO_RCVTIMEO             = 0x1006
+const int SO_RCVTIMEO
 ```
 
 ---
@@ -39664,7 +39405,7 @@ const int SO_RCVTIMEO             = 0x1006
 #### `SO_ERROR`
 
 ```c3
-const int SO_ERROR                = 0x1007
+const int SO_ERROR
 ```
 
 ---
@@ -39672,7 +39413,7 @@ const int SO_ERROR                = 0x1007
 #### `SO_TYPE`
 
 ```c3
-const int SO_TYPE                 = 0x1008
+const int SO_TYPE
 ```
 
 ---
@@ -39696,7 +39437,7 @@ fn fault socket_error()
 #### `POLLIN`
 
 ```c3
-const CUShort POLLIN      = win32::POLLIN
+const CUShort POLLIN
 ```
 
 ---
@@ -39704,7 +39445,7 @@ const CUShort POLLIN      = win32::POLLIN
 #### `POLLPRI`
 
 ```c3
-const CUShort POLLPRI     = win32::POLLPRI
+const CUShort POLLPRI
 ```
 
 ---
@@ -39712,7 +39453,7 @@ const CUShort POLLPRI     = win32::POLLPRI
 #### `POLLOUT`
 
 ```c3
-const CUShort POLLOUT     = win32::POLLOUT
+const CUShort POLLOUT
 ```
 
 ---
@@ -39720,7 +39461,7 @@ const CUShort POLLOUT     = win32::POLLOUT
 #### `POLLERR`
 
 ```c3
-const CUShort POLLERR     = win32::POLLERR
+const CUShort POLLERR
 ```
 
 ---
@@ -39728,7 +39469,7 @@ const CUShort POLLERR     = win32::POLLERR
 #### `POLLHUP`
 
 ```c3
-const CUShort POLLHUP     = win32::POLLHUP
+const CUShort POLLHUP
 ```
 
 ---
@@ -39736,7 +39477,7 @@ const CUShort POLLHUP     = win32::POLLHUP
 #### `POLLNVAL`
 
 ```c3
-const CUShort POLLNVAL    = win32::POLLNVAL
+const CUShort POLLNVAL
 ```
 
 ---
@@ -39744,7 +39485,7 @@ const CUShort POLLNVAL    = win32::POLLNVAL
 #### `POLLRDNORM`
 
 ```c3
-const CUShort POLLRDNORM  = win32::POLLRDNORM
+const CUShort POLLRDNORM
 ```
 
 ---
@@ -39752,7 +39493,7 @@ const CUShort POLLRDNORM  = win32::POLLRDNORM
 #### `POLLRDBAND`
 
 ```c3
-const CUShort POLLRDBAND  = win32::POLLRDBAND
+const CUShort POLLRDBAND
 ```
 
 ---
@@ -39760,7 +39501,7 @@ const CUShort POLLRDBAND  = win32::POLLRDBAND
 #### `POLLWRNORM`
 
 ```c3
-const CUShort POLLWRNORM  = win32::POLLWRNORM
+const CUShort POLLWRNORM
 ```
 
 ---
@@ -39768,7 +39509,7 @@ const CUShort POLLWRNORM  = win32::POLLWRNORM
 #### `POLLWRBAND`
 
 ```c3
-const CUShort POLLWRBAND  = win32::POLLWRBAND
+const CUShort POLLWRBAND
 ```
 
 ---
@@ -39776,7 +39517,7 @@ const CUShort POLLWRBAND  = win32::POLLWRBAND
 #### `MSG_PEEK`
 
 ```c3
-const int MSG_PEEK = 0x0002
+const int MSG_PEEK
 ```
 ### `std::net::tcp @if(os::SUPPORTS_INET)`
 
@@ -40306,7 +40047,7 @@ faultdef SEGMENT_NOT_FOUND, EXECUTABLE_PATH_NOT_FOUND, IMAGE_NOT_FOUND, NO_BACKT
 #### `BACKTRACE_UNKNOWN`
 
 ```c3
-const Backtrace BACKTRACE_UNKNOWN = { 0, "", "", "", 0, null, false }
+const Backtrace BACKTRACE_UNKNOWN
 ```
 
 ---
@@ -40399,7 +40140,7 @@ fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace) @i
 #### `CTL_UNSPEC`
 
 ```c3
-const CTL_UNSPEC	= 0
+const CTL_UNSPEC
 ```
 
 ---
@@ -40407,7 +40148,7 @@ const CTL_UNSPEC	= 0
 #### `CTL_KERN`
 
 ```c3
-const CTL_KERN		= 1
+const CTL_KERN
 ```
 
 ---
@@ -40415,7 +40156,7 @@ const CTL_KERN		= 1
 #### `CTL_VM`
 
 ```c3
-const CTL_VM		= 2
+const CTL_VM
 ```
 
 ---
@@ -40423,7 +40164,7 @@ const CTL_VM		= 2
 #### `CTL_VFS`
 
 ```c3
-const CTL_VFS		= 3
+const CTL_VFS
 ```
 
 ---
@@ -40431,7 +40172,7 @@ const CTL_VFS		= 3
 #### `CTL_NET`
 
 ```c3
-const CTL_NET		= 4
+const CTL_NET
 ```
 
 ---
@@ -40439,7 +40180,7 @@ const CTL_NET		= 4
 #### `CTL_DEBUG`
 
 ```c3
-const CTL_DEBUG		= 5
+const CTL_DEBUG
 ```
 
 ---
@@ -40447,7 +40188,7 @@ const CTL_DEBUG		= 5
 #### `CTL_HW`
 
 ```c3
-const CTL_HW		= 6
+const CTL_HW
 ```
 
 ---
@@ -40455,7 +40196,7 @@ const CTL_HW		= 6
 #### `CTL_MACHDEP`
 
 ```c3
-const CTL_MACHDEP	= 7
+const CTL_MACHDEP
 ```
 
 ---
@@ -40463,7 +40204,7 @@ const CTL_MACHDEP	= 7
 #### `CTL_USER`
 
 ```c3
-const CTL_USER		= 8
+const CTL_USER
 ```
 
 ---
@@ -40471,7 +40212,7 @@ const CTL_USER		= 8
 #### `CTL_MAXID`
 
 ```c3
-const CTL_MAXID		= 9
+const CTL_MAXID
 ```
 
 ---
@@ -40479,7 +40220,7 @@ const CTL_MAXID		= 9
 #### `HW_MACHINE`
 
 ```c3
-const HW_MACHINE		= 1
+const HW_MACHINE
 ```
 
 ---
@@ -40487,7 +40228,7 @@ const HW_MACHINE		= 1
 #### `HW_MODEL`
 
 ```c3
-const HW_MODEL			= 2
+const HW_MODEL
 ```
 
 ---
@@ -40495,7 +40236,7 @@ const HW_MODEL			= 2
 #### `HW_NCPU`
 
 ```c3
-const HW_NCPU			= 3
+const HW_NCPU
 ```
 
 ---
@@ -40503,7 +40244,7 @@ const HW_NCPU			= 3
 #### `HW_BYTEORDER`
 
 ```c3
-const HW_BYTEORDER		= 4
+const HW_BYTEORDER
 ```
 
 ---
@@ -40511,7 +40252,7 @@ const HW_BYTEORDER		= 4
 #### `HW_PHYSMEM`
 
 ```c3
-const HW_PHYSMEM		= 5
+const HW_PHYSMEM
 ```
 
 ---
@@ -40519,7 +40260,7 @@ const HW_PHYSMEM		= 5
 #### `HW_USERMEM`
 
 ```c3
-const HW_USERMEM		= 6
+const HW_USERMEM
 ```
 
 ---
@@ -40527,7 +40268,7 @@ const HW_USERMEM		= 6
 #### `HW_PAGESIZE`
 
 ```c3
-const HW_PAGESIZE		= 7
+const HW_PAGESIZE
 ```
 
 ---
@@ -40535,7 +40276,7 @@ const HW_PAGESIZE		= 7
 #### `HW_DISKNAMES`
 
 ```c3
-const HW_DISKNAMES		= 8
+const HW_DISKNAMES
 ```
 
 ---
@@ -40543,7 +40284,7 @@ const HW_DISKNAMES		= 8
 #### `HW_DISKSTATS`
 
 ```c3
-const HW_DISKSTATS		= 9
+const HW_DISKSTATS
 ```
 
 ---
@@ -40551,7 +40292,7 @@ const HW_DISKSTATS		= 9
 #### `HW_EPOCH`
 
 ```c3
-const HW_EPOCH			= 10
+const HW_EPOCH
 ```
 
 ---
@@ -40559,7 +40300,7 @@ const HW_EPOCH			= 10
 #### `HW_FLOATINGPT`
 
 ```c3
-const HW_FLOATINGPT		= 11
+const HW_FLOATINGPT
 ```
 
 ---
@@ -40567,7 +40308,7 @@ const HW_FLOATINGPT		= 11
 #### `HW_MACHINE_ARCH`
 
 ```c3
-const HW_MACHINE_ARCH	= 12
+const HW_MACHINE_ARCH
 ```
 
 ---
@@ -40575,7 +40316,7 @@ const HW_MACHINE_ARCH	= 12
 #### `HW_VECTORUNIT`
 
 ```c3
-const HW_VECTORUNIT		= 13
+const HW_VECTORUNIT
 ```
 
 ---
@@ -40583,7 +40324,7 @@ const HW_VECTORUNIT		= 13
 #### `HW_BUS_FREQ`
 
 ```c3
-const HW_BUS_FREQ		= 14
+const HW_BUS_FREQ
 ```
 
 ---
@@ -40591,7 +40332,7 @@ const HW_BUS_FREQ		= 14
 #### `HW_CPU_FREQ`
 
 ```c3
-const HW_CPU_FREQ		= 15
+const HW_CPU_FREQ
 ```
 
 ---
@@ -40599,7 +40340,7 @@ const HW_CPU_FREQ		= 15
 #### `HW_CACHELINE`
 
 ```c3
-const HW_CACHELINE		= 16
+const HW_CACHELINE
 ```
 
 ---
@@ -40607,7 +40348,7 @@ const HW_CACHELINE		= 16
 #### `HW_L1ICACHESIZE`
 
 ```c3
-const HW_L1ICACHESIZE	= 17
+const HW_L1ICACHESIZE
 ```
 
 ---
@@ -40615,7 +40356,7 @@ const HW_L1ICACHESIZE	= 17
 #### `HW_L1DCACHESIZE`
 
 ```c3
-const HW_L1DCACHESIZE	= 18
+const HW_L1DCACHESIZE
 ```
 
 ---
@@ -40623,7 +40364,7 @@ const HW_L1DCACHESIZE	= 18
 #### `HW_L2SETTINGS`
 
 ```c3
-const HW_L2SETTINGS		= 19
+const HW_L2SETTINGS
 ```
 
 ---
@@ -40631,7 +40372,7 @@ const HW_L2SETTINGS		= 19
 #### `HW_L2CACHESIZE`
 
 ```c3
-const HW_L2CACHESIZE	= 20
+const HW_L2CACHESIZE
 ```
 
 ---
@@ -40639,7 +40380,7 @@ const HW_L2CACHESIZE	= 20
 #### `HW_L3SETTINGS`
 
 ```c3
-const HW_L3SETTINGS		= 21
+const HW_L3SETTINGS
 ```
 
 ---
@@ -40647,7 +40388,7 @@ const HW_L3SETTINGS		= 21
 #### `HW_L3CACHESIZE`
 
 ```c3
-const HW_L3CACHESIZE	= 22
+const HW_L3CACHESIZE
 ```
 
 ---
@@ -40655,7 +40396,7 @@ const HW_L3CACHESIZE	= 22
 #### `HW_MAXID`
 
 ```c3
-const HW_MAXID			= 23
+const HW_MAXID
 ```
 
 ---
@@ -41421,7 +41162,7 @@ extern fn CInt posix_memalign(void **memptr, usz alignment, usz size)
 #### `PROT_NONE`
 
 ```c3
-const PROT_NONE     = 0x00
+const PROT_NONE
 ```
 
 ---
@@ -41429,7 +41170,7 @@ const PROT_NONE     = 0x00
 #### `PROT_READ`
 
 ```c3
-const PROT_READ     = 0x01
+const PROT_READ
 ```
 
 ---
@@ -41437,7 +41178,7 @@ const PROT_READ     = 0x01
 #### `PROT_WRITE`
 
 ```c3
-const PROT_WRITE    = 0x02
+const PROT_WRITE
 ```
 
 ---
@@ -41445,7 +41186,7 @@ const PROT_WRITE    = 0x02
 #### `PROT_EXEC`
 
 ```c3
-const PROT_EXEC     = 0x04
+const PROT_EXEC
 ```
 
 ---
@@ -41453,7 +41194,7 @@ const PROT_EXEC     = 0x04
 #### `MAP_SHARED`
 
 ```c3
-const MAP_SHARED    = 0x0001
+const MAP_SHARED
 ```
 
 ---
@@ -41461,7 +41202,7 @@ const MAP_SHARED    = 0x0001
 #### `MAP_PRIVATE`
 
 ```c3
-const MAP_PRIVATE   = 0x0002
+const MAP_PRIVATE
 ```
 
 ---
@@ -41469,7 +41210,7 @@ const MAP_PRIVATE   = 0x0002
 #### `MAP_FILE`
 
 ```c3
-const MAP_FILE       = 0x0000
+const MAP_FILE
 ```
 
 ---
@@ -41477,7 +41218,7 @@ const MAP_FILE       = 0x0000
 #### `MAP_ANONYMOUS`
 
 ```c3
-const MAP_ANONYMOUS  = 0x1000
+const MAP_ANONYMOUS
 ```
 
 ---
@@ -41485,7 +41226,7 @@ const MAP_ANONYMOUS  = 0x1000
 #### `MAP_FAILED`
 
 ```c3
-const void* MAP_FAILED = (void *)(uptr)-1
+const void* MAP_FAILED
 ```
 
 ---
@@ -41493,7 +41234,7 @@ const void* MAP_FAILED = (void *)(uptr)-1
 #### `MADV_NORMAL`
 
 ```c3
-const MADV_NORMAL     = 0
+const MADV_NORMAL
 ```
 
 ---
@@ -41501,7 +41242,7 @@ const MADV_NORMAL     = 0
 #### `MADV_RANDOM`
 
 ```c3
-const MADV_RANDOM     = 1
+const MADV_RANDOM
 ```
 
 ---
@@ -41509,7 +41250,7 @@ const MADV_RANDOM     = 1
 #### `MADV_SEQUENTIAL`
 
 ```c3
-const MADV_SEQUENTIAL = 2
+const MADV_SEQUENTIAL
 ```
 
 ---
@@ -41517,7 +41258,7 @@ const MADV_SEQUENTIAL = 2
 #### `MADV_WILLNEED`
 
 ```c3
-const MADV_WILLNEED   = 3
+const MADV_WILLNEED
 ```
 
 ---
@@ -41525,7 +41266,7 @@ const MADV_WILLNEED   = 3
 #### `MADV_DONTNEED`
 
 ```c3
-const MADV_DONTNEED   = 4
+const MADV_DONTNEED
 ```
 
 ---
@@ -41565,7 +41306,7 @@ extern fn CInt posix_spawn_file_actions_init(Posix_spawn_file_actions_t *file_ac
 #### `PTHREAD_MUTEX_NORMAL`
 
 ```c3
-const PTHREAD_MUTEX_NORMAL = 0
+const PTHREAD_MUTEX_NORMAL
 ```
 
 ---
@@ -41573,7 +41314,7 @@ const PTHREAD_MUTEX_NORMAL = 0
 #### `PTHREAD_MUTEX_ERRORCHECK`
 
 ```c3
-const PTHREAD_MUTEX_ERRORCHECK = env::LINUX ? 2 : 1
+const PTHREAD_MUTEX_ERRORCHECK
 ```
 
 ---
@@ -41581,7 +41322,7 @@ const PTHREAD_MUTEX_ERRORCHECK = env::LINUX ? 2 : 1
 #### `PTHREAD_MUTEX_RECURSIVE`
 
 ```c3
-const PTHREAD_MUTEX_RECURSIVE = env::LINUX ? 1 : 2
+const PTHREAD_MUTEX_RECURSIVE
 ```
 
 ---
@@ -41691,7 +41432,7 @@ fn ZString* copy_command_line(Allocator mem, String[] command_line) @local @inli
 #### `@if(env::POSIX)`
 
 ```c3
-const ZString[1] EMPTY_ENVIRONMENT @if(env::POSIX) = { null }
+const ZString[1] EMPTY_ENVIRONMENT @if(env::POSIX)
 ```
 
 ---
@@ -42488,7 +42229,7 @@ alias Win32_LPMODULEINFO = Win32_MODULEINFO*
 #### `INVALID_HANDLE_VALUE`
 
 ```c3
-const INVALID_HANDLE_VALUE = (Win32_HANDLE)(uptr)-1
+const INVALID_HANDLE_VALUE
 ```
 
 ---
@@ -42496,7 +42237,7 @@ const INVALID_HANDLE_VALUE = (Win32_HANDLE)(uptr)-1
 #### `ARM64_MAX_BREAKPOINTS`
 
 ```c3
-const ARM64_MAX_BREAKPOINTS = 8
+const ARM64_MAX_BREAKPOINTS
 ```
 
 ---
@@ -42504,7 +42245,7 @@ const ARM64_MAX_BREAKPOINTS = 8
 #### `ARM64_MAX_WATCHPOINTS`
 
 ```c3
-const ARM64_MAX_WATCHPOINTS = 2
+const ARM64_MAX_WATCHPOINTS
 ```
 
 ---
@@ -42512,7 +42253,7 @@ const ARM64_MAX_WATCHPOINTS = 2
 #### `CONTEXT_AMD64`
 
 ```c3
-const CONTEXT_AMD64 = 0x00100000
+const CONTEXT_AMD64
 ```
 
 ---
@@ -42520,7 +42261,7 @@ const CONTEXT_AMD64 = 0x00100000
 #### `CONTEXT_AMD64_CONTROL`
 
 ```c3
-const CONTEXT_AMD64_CONTROL = CONTEXT_AMD64 | 0x0001
+const CONTEXT_AMD64_CONTROL
 ```
 
 ---
@@ -42528,7 +42269,7 @@ const CONTEXT_AMD64_CONTROL = CONTEXT_AMD64 | 0x0001
 #### `CONTEXT_AMD64_INTEGER`
 
 ```c3
-const CONTEXT_AMD64_INTEGER = CONTEXT_AMD64 | 0x0002
+const CONTEXT_AMD64_INTEGER
 ```
 
 ---
@@ -42536,7 +42277,7 @@ const CONTEXT_AMD64_INTEGER = CONTEXT_AMD64 | 0x0002
 #### `CONTEXT_AMD64_SEGMENTS`
 
 ```c3
-const CONTEXT_AMD64_SEGMENTS = CONTEXT_AMD64 | 0x0004
+const CONTEXT_AMD64_SEGMENTS
 ```
 
 ---
@@ -42544,7 +42285,7 @@ const CONTEXT_AMD64_SEGMENTS = CONTEXT_AMD64 | 0x0004
 #### `CONTEXT_AMD64_FLOATING_POINT`
 
 ```c3
-const CONTEXT_AMD64_FLOATING_POINT = CONTEXT_AMD64 | 0x0008
+const CONTEXT_AMD64_FLOATING_POINT
 ```
 
 ---
@@ -42552,7 +42293,7 @@ const CONTEXT_AMD64_FLOATING_POINT = CONTEXT_AMD64 | 0x0008
 #### `CONTEXT_AMD64_DEBUG_REGISTERS`
 
 ```c3
-const CONTEXT_AMD64_DEBUG_REGISTERS = CONTEXT_AMD64 | 0x0010
+const CONTEXT_AMD64_DEBUG_REGISTERS
 ```
 
 ---
@@ -42560,7 +42301,7 @@ const CONTEXT_AMD64_DEBUG_REGISTERS = CONTEXT_AMD64 | 0x0010
 #### `CONTEXT_AMD64_FULL`
 
 ```c3
-const CONTEXT_AMD64_FULL = CONTEXT_AMD64_CONTROL | CONTEXT_AMD64_INTEGER | CONTEXT_AMD64_FLOATING_POINT
+const CONTEXT_AMD64_FULL
 ```
 
 ---
@@ -42568,7 +42309,7 @@ const CONTEXT_AMD64_FULL = CONTEXT_AMD64_CONTROL | CONTEXT_AMD64_INTEGER | CONTE
 #### `CONTEXT_AMD64_ALL`
 
 ```c3
-const CONTEXT_AMD64_ALL = CONTEXT_AMD64_CONTROL | CONTEXT_AMD64_INTEGER | CONTEXT_AMD64_SEGMENTS | CONTEXT_AMD64_FLOATING_POINT | CONTEXT_AMD64_DEBUG_REGISTERS
+const CONTEXT_AMD64_ALL
 ```
 
 ---
@@ -42877,7 +42618,7 @@ alias Win32_LPFn_ACCEPTEX = fn bool(
 #### `MAX_PATH`
 
 ```c3
-const MAX_PATH = 260
+const MAX_PATH
 ```
 
 ---
@@ -42925,7 +42666,7 @@ extern fn Win32_LPVOID virtualAlloc(Win32_LPVOID lpAddres, Win32_SIZE_T dwSize, 
 #### `STARTF_USESTDHANDLES`
 
 ```c3
-const Win32_DWORD STARTF_USESTDHANDLES = 0x00000100
+const Win32_DWORD STARTF_USESTDHANDLES
 ```
 
 ---
@@ -42933,7 +42674,7 @@ const Win32_DWORD STARTF_USESTDHANDLES = 0x00000100
 #### `CREATE_NO_WINDOW`
 
 ```c3
-const Win32_DWORD CREATE_NO_WINDOW = 0x08000000
+const Win32_DWORD CREATE_NO_WINDOW
 ```
 
 ---
@@ -42941,7 +42682,7 @@ const Win32_DWORD CREATE_NO_WINDOW = 0x08000000
 #### `CREATE_PROTECTED_PROCESS`
 
 ```c3
-const Win32_DWORD CREATE_PROTECTED_PROCESS = 0x00040000
+const Win32_DWORD CREATE_PROTECTED_PROCESS
 ```
 
 ---
@@ -42949,7 +42690,7 @@ const Win32_DWORD CREATE_PROTECTED_PROCESS = 0x00040000
 #### `CREATE_UNICODE_ENVIRONMENT`
 
 ```c3
-const Win32_DWORD CREATE_UNICODE_ENVIRONMENT = 0x00000400
+const Win32_DWORD CREATE_UNICODE_ENVIRONMENT
 ```
 
 ---
@@ -42957,7 +42698,7 @@ const Win32_DWORD CREATE_UNICODE_ENVIRONMENT = 0x00000400
 #### `WAIT_OBJECT_0`
 
 ```c3
-const uint WAIT_OBJECT_0 = 0
+const uint WAIT_OBJECT_0
 ```
 
 ---
@@ -42965,7 +42706,7 @@ const uint WAIT_OBJECT_0 = 0
 #### `WAIT_ABANDONED`
 
 ```c3
-const uint WAIT_ABANDONED = 128
+const uint WAIT_ABANDONED
 ```
 
 ---
@@ -42973,7 +42714,7 @@ const uint WAIT_ABANDONED = 128
 #### `WAIT_IO_COMPLETION`
 
 ```c3
-const uint WAIT_IO_COMPLETION = 192
+const uint WAIT_IO_COMPLETION
 ```
 
 ---
@@ -42981,7 +42722,7 @@ const uint WAIT_IO_COMPLETION = 192
 #### `WAIT_FAILED`
 
 ```c3
-const uint WAIT_FAILED = (uint)-1
+const uint WAIT_FAILED
 ```
 
 ---
@@ -42989,7 +42730,7 @@ const uint WAIT_FAILED = (uint)-1
 #### `HANDLE_FLAG_INHERIT`
 
 ```c3
-const Win32_DWORD HANDLE_FLAG_INHERIT = 1
+const Win32_DWORD HANDLE_FLAG_INHERIT
 ```
 
 ---
@@ -42997,7 +42738,7 @@ const Win32_DWORD HANDLE_FLAG_INHERIT = 1
 #### `HANDLE_FLAG_PROTECT_FROM_CLOSE`
 
 ```c3
-const Win32_DWORD HANDLE_FLAG_PROTECT_FROM_CLOSE = 2
+const Win32_DWORD HANDLE_FLAG_PROTECT_FROM_CLOSE
 ```
 
 ---
@@ -43005,7 +42746,7 @@ const Win32_DWORD HANDLE_FLAG_PROTECT_FROM_CLOSE = 2
 #### `INFINITE`
 
 ```c3
-const uint INFINITE = (uint)-1
+const uint INFINITE
 ```
 
 ---
@@ -43013,7 +42754,7 @@ const uint INFINITE = (uint)-1
 #### `PIPE_ACCESS_DUPLEX`
 
 ```c3
-const Win32_DWORD PIPE_ACCESS_DUPLEX = 0x00000003
+const Win32_DWORD PIPE_ACCESS_DUPLEX
 ```
 
 ---
@@ -43021,7 +42762,7 @@ const Win32_DWORD PIPE_ACCESS_DUPLEX = 0x00000003
 #### `PIPE_ACCESS_INBOUND`
 
 ```c3
-const Win32_DWORD PIPE_ACCESS_INBOUND = 0x00000001
+const Win32_DWORD PIPE_ACCESS_INBOUND
 ```
 
 ---
@@ -43029,7 +42770,7 @@ const Win32_DWORD PIPE_ACCESS_INBOUND = 0x00000001
 #### `PIPE_ACCESS_OUTBOUND`
 
 ```c3
-const Win32_DWORD PIPE_ACCESS_OUTBOUND = 0x00000002
+const Win32_DWORD PIPE_ACCESS_OUTBOUND
 ```
 
 ---
@@ -43037,7 +42778,7 @@ const Win32_DWORD PIPE_ACCESS_OUTBOUND = 0x00000002
 #### `FILE_FLAG_FIRST_PIPE_INSTANCE`
 
 ```c3
-const Win32_DWORD FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000
+const Win32_DWORD FILE_FLAG_FIRST_PIPE_INSTANCE
 ```
 
 ---
@@ -43045,7 +42786,7 @@ const Win32_DWORD FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000
 #### `FILE_FLAG_WRITE_THROUGH`
 
 ```c3
-const Win32_DWORD FILE_FLAG_WRITE_THROUGH = 0x80000000
+const Win32_DWORD FILE_FLAG_WRITE_THROUGH
 ```
 
 ---
@@ -43053,7 +42794,7 @@ const Win32_DWORD FILE_FLAG_WRITE_THROUGH = 0x80000000
 #### `FILE_FLAG_OVERLAPPED`
 
 ```c3
-const Win32_DWORD FILE_FLAG_OVERLAPPED = 0x40000000
+const Win32_DWORD FILE_FLAG_OVERLAPPED
 ```
 
 ---
@@ -43061,7 +42802,7 @@ const Win32_DWORD FILE_FLAG_OVERLAPPED = 0x40000000
 #### `WRITE_DAC`
 
 ```c3
-const Win32_DWORD WRITE_DAC = 0x00040000
+const Win32_DWORD WRITE_DAC
 ```
 
 ---
@@ -43069,7 +42810,7 @@ const Win32_DWORD WRITE_DAC = 0x00040000
 #### `WRITE_OWNER`
 
 ```c3
-const Win32_DWORD WRITE_OWNER = 0x00080000
+const Win32_DWORD WRITE_OWNER
 ```
 
 ---
@@ -43077,7 +42818,7 @@ const Win32_DWORD WRITE_OWNER = 0x00080000
 #### `ACCESS_SYSTEM_SECURITY`
 
 ```c3
-const Win32_DWORD ACCESS_SYSTEM_SECURITY = 0x01000000
+const Win32_DWORD ACCESS_SYSTEM_SECURITY
 ```
 
 ---
@@ -43085,7 +42826,7 @@ const Win32_DWORD ACCESS_SYSTEM_SECURITY = 0x01000000
 #### `PIPE_TYPE_BYTE`
 
 ```c3
-const Win32_DWORD PIPE_TYPE_BYTE = 0
+const Win32_DWORD PIPE_TYPE_BYTE
 ```
 
 ---
@@ -43093,7 +42834,7 @@ const Win32_DWORD PIPE_TYPE_BYTE = 0
 #### `PIPE_TYPE_MESSAGE`
 
 ```c3
-const Win32_DWORD PIPE_TYPE_MESSAGE = 4
+const Win32_DWORD PIPE_TYPE_MESSAGE
 ```
 
 ---
@@ -43101,7 +42842,7 @@ const Win32_DWORD PIPE_TYPE_MESSAGE = 4
 #### `PIPE_READMODE_BYTE`
 
 ```c3
-const Win32_DWORD PIPE_READMODE_BYTE = 0
+const Win32_DWORD PIPE_READMODE_BYTE
 ```
 
 ---
@@ -43109,7 +42850,7 @@ const Win32_DWORD PIPE_READMODE_BYTE = 0
 #### `PIPE_READMODE_MESSAGE`
 
 ```c3
-const Win32_DWORD PIPE_READMODE_MESSAGE = 2
+const Win32_DWORD PIPE_READMODE_MESSAGE
 ```
 
 ---
@@ -43117,7 +42858,7 @@ const Win32_DWORD PIPE_READMODE_MESSAGE = 2
 #### `PIPE_WAIT`
 
 ```c3
-const Win32_DWORD PIPE_WAIT = 0
+const Win32_DWORD PIPE_WAIT
 ```
 
 ---
@@ -43125,7 +42866,7 @@ const Win32_DWORD PIPE_WAIT = 0
 #### `PIPE_NOWAIT`
 
 ```c3
-const Win32_DWORD PIPE_NOWAIT = 1
+const Win32_DWORD PIPE_NOWAIT
 ```
 
 ---
@@ -43133,7 +42874,7 @@ const Win32_DWORD PIPE_NOWAIT = 1
 #### `PIPE_ACCEPT_REMOTE_CLIENTS`
 
 ```c3
-const Win32_DWORD PIPE_ACCEPT_REMOTE_CLIENTS = 0
+const Win32_DWORD PIPE_ACCEPT_REMOTE_CLIENTS
 ```
 
 ---
@@ -43141,7 +42882,7 @@ const Win32_DWORD PIPE_ACCEPT_REMOTE_CLIENTS = 0
 #### `PIPE_REJECT_REMOTE_CLIENTS`
 
 ```c3
-const Win32_DWORD PIPE_REJECT_REMOTE_CLIENTS = 8
+const Win32_DWORD PIPE_REJECT_REMOTE_CLIENTS
 ```
 
 ---
@@ -43149,7 +42890,7 @@ const Win32_DWORD PIPE_REJECT_REMOTE_CLIENTS = 8
 #### `SYMOPT_CASE_INSENSITIVE`
 
 ```c3
-const SYMOPT_CASE_INSENSITIVE = 0x01
+const SYMOPT_CASE_INSENSITIVE
 ```
 
 ---
@@ -43157,7 +42898,7 @@ const SYMOPT_CASE_INSENSITIVE = 0x01
 #### `SYMOPT_UNDNAME`
 
 ```c3
-const SYMOPT_UNDNAME = 0x02
+const SYMOPT_UNDNAME
 ```
 
 ---
@@ -43165,7 +42906,7 @@ const SYMOPT_UNDNAME = 0x02
 #### `SYMOPT_DEFERRED_LOADS`
 
 ```c3
-const SYMOPT_DEFERRED_LOADS = 0x04
+const SYMOPT_DEFERRED_LOADS
 ```
 
 ---
@@ -43173,7 +42914,7 @@ const SYMOPT_DEFERRED_LOADS = 0x04
 #### `SYMOPT_NO_CPP`
 
 ```c3
-const SYMOPT_NO_CPP = 0x08
+const SYMOPT_NO_CPP
 ```
 
 ---
@@ -43181,7 +42922,7 @@ const SYMOPT_NO_CPP = 0x08
 #### `SYMOPT_LOAD_LINES`
 
 ```c3
-const SYMOPT_LOAD_LINES = 0x10
+const SYMOPT_LOAD_LINES
 ```
 
 ---
@@ -43189,7 +42930,7 @@ const SYMOPT_LOAD_LINES = 0x10
 #### `SYMOPT_OMAP_FIND_NEAREST`
 
 ```c3
-const SYMOPT_OMAP_FIND_NEAREST = 0x20
+const SYMOPT_OMAP_FIND_NEAREST
 ```
 
 ---
@@ -43197,7 +42938,7 @@ const SYMOPT_OMAP_FIND_NEAREST = 0x20
 #### `SYMOPT_LOAD_ANYTHING`
 
 ```c3
-const SYMOPT_LOAD_ANYTHING = 0x40
+const SYMOPT_LOAD_ANYTHING
 ```
 
 ---
@@ -43205,7 +42946,7 @@ const SYMOPT_LOAD_ANYTHING = 0x40
 #### `SYMOPT_IGNORE_CVREC`
 
 ```c3
-const SYMOPT_IGNORE_CVREC = 0x80
+const SYMOPT_IGNORE_CVREC
 ```
 
 ---
@@ -43213,7 +42954,7 @@ const SYMOPT_IGNORE_CVREC = 0x80
 #### `IMAGE_FILE_MACHINE_UNKNOWN`
 
 ```c3
-const IMAGE_FILE_MACHINE_UNKNOWN = 0
+const IMAGE_FILE_MACHINE_UNKNOWN
 ```
 
 ---
@@ -43221,7 +42962,7 @@ const IMAGE_FILE_MACHINE_UNKNOWN = 0
 #### `IMAGE_FILE_MACHINE_TARGET_HOST`
 
 ```c3
-const IMAGE_FILE_MACHINE_TARGET_HOST = 1
+const IMAGE_FILE_MACHINE_TARGET_HOST
 ```
 
 ---
@@ -43229,7 +42970,7 @@ const IMAGE_FILE_MACHINE_TARGET_HOST = 1
 #### `IMAGE_FILE_MACHINE_I386`
 
 ```c3
-const IMAGE_FILE_MACHINE_I386 = 0x014c
+const IMAGE_FILE_MACHINE_I386
 ```
 
 ---
@@ -43237,7 +42978,7 @@ const IMAGE_FILE_MACHINE_I386 = 0x014c
 #### `IMAGE_FILE_MACHINE_IA64`
 
 ```c3
-const IMAGE_FILE_MACHINE_IA64 = 0x0200
+const IMAGE_FILE_MACHINE_IA64
 ```
 
 ---
@@ -43245,7 +42986,7 @@ const IMAGE_FILE_MACHINE_IA64 = 0x0200
 #### `IMAGE_FILE_MACHINE_ARM64`
 
 ```c3
-const IMAGE_FILE_MACHINE_ARM64 = 0xAA64
+const IMAGE_FILE_MACHINE_ARM64
 ```
 
 ---
@@ -43253,7 +42994,7 @@ const IMAGE_FILE_MACHINE_ARM64 = 0xAA64
 #### `IMAGE_FILE_MACHINE_AMD64`
 
 ```c3
-const IMAGE_FILE_MACHINE_AMD64 = 0x8664
+const IMAGE_FILE_MACHINE_AMD64
 ```
 
 ---
@@ -43261,7 +43002,7 @@ const IMAGE_FILE_MACHINE_AMD64 = 0x8664
 #### `UNDNAME_COMPLETE`
 
 ```c3
-const UNDNAME_COMPLETE = 0x0000
+const UNDNAME_COMPLETE
 ```
 
 ---
@@ -43301,7 +43042,7 @@ fn Backtrace? resolve_backtrace(Allocator allocator, void* addr, Win32_HANDLE pr
 #### `WS_BORDER`
 
 ```c3
-const Win32_DWORD WS_BORDER           = 0x00800000L
+const Win32_DWORD WS_BORDER
 ```
 
 ---
@@ -43309,7 +43050,7 @@ const Win32_DWORD WS_BORDER           = 0x00800000L
 #### `WS_CAPTION`
 
 ```c3
-const Win32_DWORD WS_CAPTION          = 0x00C00000L
+const Win32_DWORD WS_CAPTION
 ```
 
 ---
@@ -43317,7 +43058,7 @@ const Win32_DWORD WS_CAPTION          = 0x00C00000L
 #### `WS_CHILD`
 
 ```c3
-const Win32_DWORD WS_CHILD            = 0x40000000L
+const Win32_DWORD WS_CHILD
 ```
 
 ---
@@ -43325,7 +43066,7 @@ const Win32_DWORD WS_CHILD            = 0x40000000L
 #### `WS_CHILDWINDOW`
 
 ```c3
-const Win32_DWORD WS_CHILDWINDOW      = 0x40000000L
+const Win32_DWORD WS_CHILDWINDOW
 ```
 
 ---
@@ -43333,7 +43074,7 @@ const Win32_DWORD WS_CHILDWINDOW      = 0x40000000L
 #### `WS_CLIPCHILDREN`
 
 ```c3
-const Win32_DWORD WS_CLIPCHILDREN     = 0x02000000L
+const Win32_DWORD WS_CLIPCHILDREN
 ```
 
 ---
@@ -43341,7 +43082,7 @@ const Win32_DWORD WS_CLIPCHILDREN     = 0x02000000L
 #### `WS_CLIPSIBLINGS`
 
 ```c3
-const Win32_DWORD WS_CLIPSIBLINGS     = 0x04000000L
+const Win32_DWORD WS_CLIPSIBLINGS
 ```
 
 ---
@@ -43349,7 +43090,7 @@ const Win32_DWORD WS_CLIPSIBLINGS     = 0x04000000L
 #### `WS_DISABLED`
 
 ```c3
-const Win32_DWORD WS_DISABLED         = 0x08000000L
+const Win32_DWORD WS_DISABLED
 ```
 
 ---
@@ -43357,7 +43098,7 @@ const Win32_DWORD WS_DISABLED         = 0x08000000L
 #### `WS_DLGFRAME`
 
 ```c3
-const Win32_DWORD WS_DLGFRAME         = 0x00400000L
+const Win32_DWORD WS_DLGFRAME
 ```
 
 ---
@@ -43365,7 +43106,7 @@ const Win32_DWORD WS_DLGFRAME         = 0x00400000L
 #### `WS_GROUP`
 
 ```c3
-const Win32_DWORD WS_GROUP            = 0x00020000L
+const Win32_DWORD WS_GROUP
 ```
 
 ---
@@ -43373,7 +43114,7 @@ const Win32_DWORD WS_GROUP            = 0x00020000L
 #### `WS_HSCROLL`
 
 ```c3
-const Win32_DWORD WS_HSCROLL          = 0x00100000L
+const Win32_DWORD WS_HSCROLL
 ```
 
 ---
@@ -43381,7 +43122,7 @@ const Win32_DWORD WS_HSCROLL          = 0x00100000L
 #### `WS_ICONIC`
 
 ```c3
-const Win32_DWORD WS_ICONIC           = 0x20000000L
+const Win32_DWORD WS_ICONIC
 ```
 
 ---
@@ -43389,7 +43130,7 @@ const Win32_DWORD WS_ICONIC           = 0x20000000L
 #### `WS_MAXIMIZE`
 
 ```c3
-const Win32_DWORD WS_MAXIMIZE         = 0x01000000L
+const Win32_DWORD WS_MAXIMIZE
 ```
 
 ---
@@ -43397,7 +43138,7 @@ const Win32_DWORD WS_MAXIMIZE         = 0x01000000L
 #### `WS_MAXIMIZEBOX`
 
 ```c3
-const Win32_DWORD WS_MAXIMIZEBOX      = 0x00010000L
+const Win32_DWORD WS_MAXIMIZEBOX
 ```
 
 ---
@@ -43405,7 +43146,7 @@ const Win32_DWORD WS_MAXIMIZEBOX      = 0x00010000L
 #### `WS_MINIMIZE`
 
 ```c3
-const Win32_DWORD WS_MINIMIZE         = 0x20000000L
+const Win32_DWORD WS_MINIMIZE
 ```
 
 ---
@@ -43413,7 +43154,7 @@ const Win32_DWORD WS_MINIMIZE         = 0x20000000L
 #### `WS_MINIMIZEBOX`
 
 ```c3
-const Win32_DWORD WS_MINIMIZEBOX      = 0x00020000L
+const Win32_DWORD WS_MINIMIZEBOX
 ```
 
 ---
@@ -43421,7 +43162,7 @@ const Win32_DWORD WS_MINIMIZEBOX      = 0x00020000L
 #### `WS_OVERLAPPED`
 
 ```c3
-const Win32_DWORD WS_OVERLAPPED       = 0x00000000L
+const Win32_DWORD WS_OVERLAPPED
 ```
 
 ---
@@ -43429,7 +43170,7 @@ const Win32_DWORD WS_OVERLAPPED       = 0x00000000L
 #### `WS_OVERLAPPEDWINDOW`
 
 ```c3
-const Win32_DWORD WS_OVERLAPPEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+const Win32_DWORD WS_OVERLAPPEDWINDOW
 ```
 
 ---
@@ -43437,7 +43178,7 @@ const Win32_DWORD WS_OVERLAPPEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU 
 #### `WS_POPUP`
 
 ```c3
-const Win32_DWORD WS_POPUP            = 0x80000000L
+const Win32_DWORD WS_POPUP
 ```
 
 ---
@@ -43445,7 +43186,7 @@ const Win32_DWORD WS_POPUP            = 0x80000000L
 #### `WS_POPUPWINDOW`
 
 ```c3
-const Win32_DWORD WS_POPUPWINDOW      = WS_POPUP | WS_BORDER | WS_SYSMENU
+const Win32_DWORD WS_POPUPWINDOW
 ```
 
 ---
@@ -43453,7 +43194,7 @@ const Win32_DWORD WS_POPUPWINDOW      = WS_POPUP | WS_BORDER | WS_SYSMENU
 #### `WS_SIZEBOX`
 
 ```c3
-const Win32_DWORD WS_SIZEBOX          = 0x00040000L
+const Win32_DWORD WS_SIZEBOX
 ```
 
 ---
@@ -43461,7 +43202,7 @@ const Win32_DWORD WS_SIZEBOX          = 0x00040000L
 #### `WS_SYSMENU`
 
 ```c3
-const Win32_DWORD WS_SYSMENU          = 0x00080000L
+const Win32_DWORD WS_SYSMENU
 ```
 
 ---
@@ -43469,7 +43210,7 @@ const Win32_DWORD WS_SYSMENU          = 0x00080000L
 #### `WS_TABSTOP`
 
 ```c3
-const Win32_DWORD WS_TABSTOP          = 0x00010000L
+const Win32_DWORD WS_TABSTOP
 ```
 
 ---
@@ -43477,7 +43218,7 @@ const Win32_DWORD WS_TABSTOP          = 0x00010000L
 #### `WS_THICKFRAME`
 
 ```c3
-const Win32_DWORD WS_THICKFRAME       = 0x00040000L
+const Win32_DWORD WS_THICKFRAME
 ```
 
 ---
@@ -43485,7 +43226,7 @@ const Win32_DWORD WS_THICKFRAME       = 0x00040000L
 #### `WS_TILED`
 
 ```c3
-const Win32_DWORD WS_TILED            = 0x00000000L
+const Win32_DWORD WS_TILED
 ```
 
 ---
@@ -43493,7 +43234,7 @@ const Win32_DWORD WS_TILED            = 0x00000000L
 #### `WS_TILEDWINDOW`
 
 ```c3
-const Win32_DWORD WS_TILEDWINDOW      = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+const Win32_DWORD WS_TILEDWINDOW
 ```
 
 ---
@@ -43501,7 +43242,7 @@ const Win32_DWORD WS_TILEDWINDOW      = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU 
 #### `WS_VISIBLE`
 
 ```c3
-const Win32_DWORD WS_VISIBLE          = 0x10000000L
+const Win32_DWORD WS_VISIBLE
 ```
 
 ---
@@ -43509,7 +43250,7 @@ const Win32_DWORD WS_VISIBLE          = 0x10000000L
 #### `WS_VSCROLL`
 
 ```c3
-const Win32_DWORD WS_VSCROLL          = 0x00200000L
+const Win32_DWORD WS_VSCROLL
 ```
 
 ---
@@ -43517,7 +43258,7 @@ const Win32_DWORD WS_VSCROLL          = 0x00200000L
 #### `MB_OK`
 
 ```c3
-const Win32_UINT MB_OK = 0x00000000
+const Win32_UINT MB_OK
 ```
 
 ---
@@ -43525,7 +43266,7 @@ const Win32_UINT MB_OK = 0x00000000
 #### `MB_OKCANCEL`
 
 ```c3
-const Win32_UINT MB_OKCANCEL = 0x00000001
+const Win32_UINT MB_OKCANCEL
 ```
 
 ---
@@ -43533,7 +43274,7 @@ const Win32_UINT MB_OKCANCEL = 0x00000001
 #### `MB_ABORTRETRYIGNORE`
 
 ```c3
-const Win32_UINT MB_ABORTRETRYIGNORE = 0x00000002
+const Win32_UINT MB_ABORTRETRYIGNORE
 ```
 
 ---
@@ -43541,7 +43282,7 @@ const Win32_UINT MB_ABORTRETRYIGNORE = 0x00000002
 #### `MB_YESNOCANCEL`
 
 ```c3
-const Win32_UINT MB_YESNOCANCEL = 0x00000003
+const Win32_UINT MB_YESNOCANCEL
 ```
 
 ---
@@ -43549,7 +43290,7 @@ const Win32_UINT MB_YESNOCANCEL = 0x00000003
 #### `MB_YESNO`
 
 ```c3
-const Win32_UINT MB_YESNO = 0x00000004
+const Win32_UINT MB_YESNO
 ```
 
 ---
@@ -43557,7 +43298,7 @@ const Win32_UINT MB_YESNO = 0x00000004
 #### `MB_RETRYCANCEL`
 
 ```c3
-const Win32_UINT MB_RETRYCANCEL = 0x00000005
+const Win32_UINT MB_RETRYCANCEL
 ```
 
 ---
@@ -43565,7 +43306,7 @@ const Win32_UINT MB_RETRYCANCEL = 0x00000005
 #### `MB_CANCELTRYCONTINUE`
 
 ```c3
-const Win32_UINT MB_CANCELTRYCONTINUE = 0x00000006
+const Win32_UINT MB_CANCELTRYCONTINUE
 ```
 
 ---
@@ -43573,7 +43314,7 @@ const Win32_UINT MB_CANCELTRYCONTINUE = 0x00000006
 #### `MB_ICONHAND`
 
 ```c3
-const Win32_UINT MB_ICONHAND = 0x00000010
+const Win32_UINT MB_ICONHAND
 ```
 
 ---
@@ -43581,7 +43322,7 @@ const Win32_UINT MB_ICONHAND = 0x00000010
 #### `MB_ICONQUESTION`
 
 ```c3
-const Win32_UINT MB_ICONQUESTION = 0x00000020
+const Win32_UINT MB_ICONQUESTION
 ```
 
 ---
@@ -43589,7 +43330,7 @@ const Win32_UINT MB_ICONQUESTION = 0x00000020
 #### `MB_ICONEXCLAMATION`
 
 ```c3
-const Win32_UINT MB_ICONEXCLAMATION = 0x00000030
+const Win32_UINT MB_ICONEXCLAMATION
 ```
 
 ---
@@ -43597,7 +43338,7 @@ const Win32_UINT MB_ICONEXCLAMATION = 0x00000030
 #### `MB_ICONASTERISK`
 
 ```c3
-const Win32_UINT MB_ICONASTERISK = 0x00000040
+const Win32_UINT MB_ICONASTERISK
 ```
 
 ---
@@ -43605,7 +43346,7 @@ const Win32_UINT MB_ICONASTERISK = 0x00000040
 #### `MB_USERICON`
 
 ```c3
-const Win32_UINT MB_USERICON = 0x00000080
+const Win32_UINT MB_USERICON
 ```
 
 ---
@@ -43613,7 +43354,7 @@ const Win32_UINT MB_USERICON = 0x00000080
 #### `MB_ICONWARNING`
 
 ```c3
-const Win32_UINT MB_ICONWARNING = MB_ICONEXCLAMATION
+const Win32_UINT MB_ICONWARNING
 ```
 
 ---
@@ -43621,7 +43362,7 @@ const Win32_UINT MB_ICONWARNING = MB_ICONEXCLAMATION
 #### `MB_ICONERROR`
 
 ```c3
-const Win32_UINT MB_ICONERROR = MB_ICONHAND
+const Win32_UINT MB_ICONERROR
 ```
 
 ---
@@ -43629,7 +43370,7 @@ const Win32_UINT MB_ICONERROR = MB_ICONHAND
 #### `MB_ICONINFORMATION`
 
 ```c3
-const Win32_UINT MB_ICONINFORMATION = MB_ICONASTERISK
+const Win32_UINT MB_ICONINFORMATION
 ```
 
 ---
@@ -43637,7 +43378,7 @@ const Win32_UINT MB_ICONINFORMATION = MB_ICONASTERISK
 #### `MB_ICONSTOP`
 
 ```c3
-const Win32_UINT MB_ICONSTOP = MB_ICONHAND
+const Win32_UINT MB_ICONSTOP
 ```
 
 ---
@@ -43645,16 +43386,16 @@ const Win32_UINT MB_ICONSTOP = MB_ICONHAND
 #### `@if(env::ARCH_32_BIT)`
 
 ```c3
-const GWL_WNDPROC @if(env::ARCH_32_BIT) = -4
+const GWL_WNDPROC @if(env::ARCH_32_BIT)
 ```
 ```c3
-const GWL_HINSTANCE @if(env::ARCH_32_BIT) = -6
+const GWL_HINSTANCE @if(env::ARCH_32_BIT)
 ```
 ```c3
-const GWL_HWNDPARENT @if(env::ARCH_32_BIT) = -8
+const GWL_HWNDPARENT @if(env::ARCH_32_BIT)
 ```
 ```c3
-const GWL_USERDATA @if(env::ARCH_32_BIT) = -21
+const GWL_USERDATA @if(env::ARCH_32_BIT)
 ```
 
 ---
@@ -43662,7 +43403,7 @@ const GWL_USERDATA @if(env::ARCH_32_BIT) = -21
 #### `GWL_STYLE`
 
 ```c3
-const GWL_STYLE = -16
+const GWL_STYLE
 ```
 
 ---
@@ -43670,7 +43411,7 @@ const GWL_STYLE = -16
 #### `GWL_EXSTYLE`
 
 ```c3
-const GWL_EXSTYLE = -20
+const GWL_EXSTYLE
 ```
 
 ---
@@ -43678,7 +43419,7 @@ const GWL_EXSTYLE = -20
 #### `GWL_ID`
 
 ```c3
-const GWL_ID = -12
+const GWL_ID
 ```
 
 ---
@@ -43686,7 +43427,7 @@ const GWL_ID = -12
 #### `GWLP_WNDPROC`
 
 ```c3
-const GWLP_WNDPROC = -4
+const GWLP_WNDPROC
 ```
 
 ---
@@ -43694,7 +43435,7 @@ const GWLP_WNDPROC = -4
 #### `GWLP_HINSTANCE`
 
 ```c3
-const GWLP_HINSTANCE = -6
+const GWLP_HINSTANCE
 ```
 
 ---
@@ -43702,7 +43443,7 @@ const GWLP_HINSTANCE = -6
 #### `GWLP_HWNDPARENT`
 
 ```c3
-const GWLP_HWNDPARENT = -8
+const GWLP_HWNDPARENT
 ```
 
 ---
@@ -43710,7 +43451,7 @@ const GWLP_HWNDPARENT = -8
 #### `GWLP_USERDATA`
 
 ```c3
-const GWLP_USERDATA = -21
+const GWLP_USERDATA
 ```
 
 ---
@@ -43718,7 +43459,7 @@ const GWLP_USERDATA = -21
 #### `GWLP_ID`
 
 ```c3
-const GWLP_ID = -12
+const GWLP_ID
 ```
 
 ---
@@ -43750,7 +43491,7 @@ typedef WSAError = int
 #### `_SS_PAD1SIZE`
 
 ```c3
-const usz _SS_PAD1SIZE = 6
+const usz _SS_PAD1SIZE
 ```
 
 ---
@@ -43758,7 +43499,7 @@ const usz _SS_PAD1SIZE = 6
 #### `_SS_PAD2SIZE`
 
 ```c3
-const usz _SS_PAD2SIZE = 112
+const usz _SS_PAD2SIZE
 ```
 
 ---
@@ -43766,7 +43507,7 @@ const usz _SS_PAD2SIZE = 112
 #### `POLLERR`
 
 ```c3
-const Win32_SHORT POLLERR    = 0x0001
+const Win32_SHORT POLLERR
 ```
 
 ---
@@ -43774,7 +43515,7 @@ const Win32_SHORT POLLERR    = 0x0001
 #### `POLLHUP`
 
 ```c3
-const Win32_SHORT POLLHUP    = 0x0002
+const Win32_SHORT POLLHUP
 ```
 
 ---
@@ -43782,7 +43523,7 @@ const Win32_SHORT POLLHUP    = 0x0002
 #### `POLLNVAL`
 
 ```c3
-const Win32_SHORT POLLNVAL   = 0x0004
+const Win32_SHORT POLLNVAL
 ```
 
 ---
@@ -43790,7 +43531,7 @@ const Win32_SHORT POLLNVAL   = 0x0004
 #### `POLLWRNORM`
 
 ```c3
-const Win32_SHORT POLLWRNORM = 0x0010
+const Win32_SHORT POLLWRNORM
 ```
 
 ---
@@ -43798,7 +43539,7 @@ const Win32_SHORT POLLWRNORM = 0x0010
 #### `POLLWRBAND`
 
 ```c3
-const Win32_SHORT POLLWRBAND = 0x0020
+const Win32_SHORT POLLWRBAND
 ```
 
 ---
@@ -43806,7 +43547,7 @@ const Win32_SHORT POLLWRBAND = 0x0020
 #### `POLLRDNORM`
 
 ```c3
-const Win32_SHORT POLLRDNORM = 0x0100
+const Win32_SHORT POLLRDNORM
 ```
 
 ---
@@ -43814,7 +43555,7 @@ const Win32_SHORT POLLRDNORM = 0x0100
 #### `POLLRDBAND`
 
 ```c3
-const Win32_SHORT POLLRDBAND = 0x0200
+const Win32_SHORT POLLRDBAND
 ```
 
 ---
@@ -43822,7 +43563,7 @@ const Win32_SHORT POLLRDBAND = 0x0200
 #### `POLLPRI`
 
 ```c3
-const Win32_SHORT POLLPRI    = 0x0400
+const Win32_SHORT POLLPRI
 ```
 
 ---
@@ -43830,7 +43571,7 @@ const Win32_SHORT POLLPRI    = 0x0400
 #### `POLLIN`
 
 ```c3
-const Win32_SHORT POLLIN     = POLLRDNORM | POLLRDBAND
+const Win32_SHORT POLLIN
 ```
 
 ---
@@ -43838,7 +43579,7 @@ const Win32_SHORT POLLIN     = POLLRDNORM | POLLRDBAND
 #### `POLLOUT`
 
 ```c3
-const Win32_SHORT POLLOUT    = POLLWRNORM
+const Win32_SHORT POLLOUT
 ```
 
 ---
@@ -43846,7 +43587,7 @@ const Win32_SHORT POLLOUT    = POLLWRNORM
 #### `SD_RECEIVE`
 
 ```c3
-const SD_RECEIVE = 0x00
+const SD_RECEIVE
 ```
 
 ---
@@ -43854,7 +43595,7 @@ const SD_RECEIVE = 0x00
 #### `SD_SEND`
 
 ```c3
-const SD_SEND    = 0x01
+const SD_SEND
 ```
 
 ---
@@ -43862,7 +43603,7 @@ const SD_SEND    = 0x01
 #### `SD_BOTH`
 
 ```c3
-const SD_BOTH    = 0x02
+const SD_BOTH
 ```
 
 ---
@@ -44632,7 +44373,7 @@ fn void? BufferedChannel.close(self)
 #### `CTL_UNSPEC`
 
 ```c3
-const CTL_UNSPEC	= 0
+const CTL_UNSPEC
 ```
 
 ---
@@ -44640,7 +44381,7 @@ const CTL_UNSPEC	= 0
 #### `CTL_KERN`
 
 ```c3
-const CTL_KERN		= 1
+const CTL_KERN
 ```
 
 ---
@@ -44648,7 +44389,7 @@ const CTL_KERN		= 1
 #### `CTL_VM`
 
 ```c3
-const CTL_VM		= 2
+const CTL_VM
 ```
 
 ---
@@ -44656,7 +44397,7 @@ const CTL_VM		= 2
 #### `CTL_VFS`
 
 ```c3
-const CTL_VFS		= 3
+const CTL_VFS
 ```
 
 ---
@@ -44664,7 +44405,7 @@ const CTL_VFS		= 3
 #### `CTL_NET`
 
 ```c3
-const CTL_NET		= 4
+const CTL_NET
 ```
 
 ---
@@ -44672,7 +44413,7 @@ const CTL_NET		= 4
 #### `CTL_DEBUG`
 
 ```c3
-const CTL_DEBUG		= 5
+const CTL_DEBUG
 ```
 
 ---
@@ -44680,7 +44421,7 @@ const CTL_DEBUG		= 5
 #### `CTL_HW`
 
 ```c3
-const CTL_HW		= 6
+const CTL_HW
 ```
 
 ---
@@ -44688,7 +44429,7 @@ const CTL_HW		= 6
 #### `CTL_MACHDEP`
 
 ```c3
-const CTL_MACHDEP	= 7
+const CTL_MACHDEP
 ```
 
 ---
@@ -44696,7 +44437,7 @@ const CTL_MACHDEP	= 7
 #### `CTL_USER`
 
 ```c3
-const CTL_USER		= 8
+const CTL_USER
 ```
 
 ---
@@ -44704,7 +44445,7 @@ const CTL_USER		= 8
 #### `CTL_MAXID`
 
 ```c3
-const CTL_MAXID		= 9
+const CTL_MAXID
 ```
 
 ---
@@ -44712,7 +44453,7 @@ const CTL_MAXID		= 9
 #### `HW_MACHINE`
 
 ```c3
-const HW_MACHINE		= 1
+const HW_MACHINE
 ```
 
 ---
@@ -44720,7 +44461,7 @@ const HW_MACHINE		= 1
 #### `HW_MODEL`
 
 ```c3
-const HW_MODEL			= 2
+const HW_MODEL
 ```
 
 ---
@@ -44728,7 +44469,7 @@ const HW_MODEL			= 2
 #### `HW_NCPU`
 
 ```c3
-const HW_NCPU			= 3
+const HW_NCPU
 ```
 
 ---
@@ -44736,7 +44477,7 @@ const HW_NCPU			= 3
 #### `HW_BYTEORDER`
 
 ```c3
-const HW_BYTEORDER		= 4
+const HW_BYTEORDER
 ```
 
 ---
@@ -44744,7 +44485,7 @@ const HW_BYTEORDER		= 4
 #### `HW_PHYSMEM`
 
 ```c3
-const HW_PHYSMEM		= 5
+const HW_PHYSMEM
 ```
 
 ---
@@ -44752,7 +44493,7 @@ const HW_PHYSMEM		= 5
 #### `HW_USERMEM`
 
 ```c3
-const HW_USERMEM		= 6
+const HW_USERMEM
 ```
 
 ---
@@ -44760,7 +44501,7 @@ const HW_USERMEM		= 6
 #### `HW_PAGESIZE`
 
 ```c3
-const HW_PAGESIZE		= 7
+const HW_PAGESIZE
 ```
 
 ---
@@ -44768,7 +44509,7 @@ const HW_PAGESIZE		= 7
 #### `HW_DISKNAMES`
 
 ```c3
-const HW_DISKNAMES		= 8
+const HW_DISKNAMES
 ```
 
 ---
@@ -44776,7 +44517,7 @@ const HW_DISKNAMES		= 8
 #### `HW_DISKSTATS`
 
 ```c3
-const HW_DISKSTATS		= 9
+const HW_DISKSTATS
 ```
 
 ---
@@ -44784,7 +44525,7 @@ const HW_DISKSTATS		= 9
 #### `HW_EPOCH`
 
 ```c3
-const HW_EPOCH			= 10
+const HW_EPOCH
 ```
 
 ---
@@ -44792,7 +44533,7 @@ const HW_EPOCH			= 10
 #### `HW_FLOATINGPT`
 
 ```c3
-const HW_FLOATINGPT		= 11
+const HW_FLOATINGPT
 ```
 
 ---
@@ -44800,7 +44541,7 @@ const HW_FLOATINGPT		= 11
 #### `HW_MACHINE_ARCH`
 
 ```c3
-const HW_MACHINE_ARCH	= 12
+const HW_MACHINE_ARCH
 ```
 
 ---
@@ -44808,7 +44549,7 @@ const HW_MACHINE_ARCH	= 12
 #### `HW_VECTORUNIT`
 
 ```c3
-const HW_VECTORUNIT		= 13
+const HW_VECTORUNIT
 ```
 
 ---
@@ -44816,7 +44557,7 @@ const HW_VECTORUNIT		= 13
 #### `HW_BUS_FREQ`
 
 ```c3
-const HW_BUS_FREQ		= 14
+const HW_BUS_FREQ
 ```
 
 ---
@@ -44824,7 +44565,7 @@ const HW_BUS_FREQ		= 14
 #### `HW_CPU_FREQ`
 
 ```c3
-const HW_CPU_FREQ		= 15
+const HW_CPU_FREQ
 ```
 
 ---
@@ -44832,7 +44573,7 @@ const HW_CPU_FREQ		= 15
 #### `HW_CACHELINE`
 
 ```c3
-const HW_CACHELINE		= 16
+const HW_CACHELINE
 ```
 
 ---
@@ -44840,7 +44581,7 @@ const HW_CACHELINE		= 16
 #### `HW_L1ICACHESIZE`
 
 ```c3
-const HW_L1ICACHESIZE	= 17
+const HW_L1ICACHESIZE
 ```
 
 ---
@@ -44848,7 +44589,7 @@ const HW_L1ICACHESIZE	= 17
 #### `HW_L1DCACHESIZE`
 
 ```c3
-const HW_L1DCACHESIZE	= 18
+const HW_L1DCACHESIZE
 ```
 
 ---
@@ -44856,7 +44597,7 @@ const HW_L1DCACHESIZE	= 18
 #### `HW_L2SETTINGS`
 
 ```c3
-const HW_L2SETTINGS		= 19
+const HW_L2SETTINGS
 ```
 
 ---
@@ -44864,7 +44605,7 @@ const HW_L2SETTINGS		= 19
 #### `HW_L2CACHESIZE`
 
 ```c3
-const HW_L2CACHESIZE	= 20
+const HW_L2CACHESIZE
 ```
 
 ---
@@ -44872,7 +44613,7 @@ const HW_L2CACHESIZE	= 20
 #### `HW_L3SETTINGS`
 
 ```c3
-const HW_L3SETTINGS		= 21
+const HW_L3SETTINGS
 ```
 
 ---
@@ -44880,7 +44621,7 @@ const HW_L3SETTINGS		= 21
 #### `HW_L3CACHESIZE`
 
 ```c3
-const HW_L3CACHESIZE	= 22
+const HW_L3CACHESIZE
 ```
 
 ---
@@ -44888,7 +44629,7 @@ const HW_L3CACHESIZE	= 22
 #### `HW_MAXID`
 
 ```c3
-const HW_MAXID			= 23
+const HW_MAXID
 ```
 
 ---
@@ -45828,7 +45569,7 @@ typedef NanoDuration (Printable) @structlike = long
 #### `FAR_FUTURE`
 
 ```c3
-const Time FAR_FUTURE = long.max
+const Time FAR_FUTURE
 ```
 
 ---
@@ -45836,7 +45577,7 @@ const Time FAR_FUTURE = long.max
 #### `FAR_PAST`
 
 ```c3
-const Time FAR_PAST = long.min
+const Time FAR_PAST
 ```
 
 ---
@@ -45844,7 +45585,7 @@ const Time FAR_PAST = long.min
 #### `NANO_DURATION_ZERO`
 
 ```c3
-const NanoDuration NANO_DURATION_ZERO = 0
+const NanoDuration NANO_DURATION_ZERO
 ```
 
 ---
@@ -45852,7 +45593,7 @@ const NanoDuration NANO_DURATION_ZERO = 0
 #### `US`
 
 ```c3
-const Duration US = 1
+const Duration US
 ```
 
 ---
@@ -45860,7 +45601,7 @@ const Duration US = 1
 #### `MS`
 
 ```c3
-const Duration MS = 1_000
+const Duration MS
 ```
 
 ---
@@ -45868,7 +45609,7 @@ const Duration MS = 1_000
 #### `SEC`
 
 ```c3
-const Duration SEC = 1_000_000
+const Duration SEC
 ```
 
 ---
@@ -45876,7 +45617,7 @@ const Duration SEC = 1_000_000
 #### `MIN`
 
 ```c3
-const Duration MIN = 60 * SEC
+const Duration MIN
 ```
 
 ---
@@ -45884,7 +45625,7 @@ const Duration MIN = 60 * SEC
 #### `HOUR`
 
 ```c3
-const Duration HOUR = 60 * MIN
+const Duration HOUR
 ```
 
 ---
@@ -45892,7 +45633,7 @@ const Duration HOUR = 60 * MIN
 #### `DAY`
 
 ```c3
-const Duration DAY = 24 * HOUR
+const Duration DAY
 ```
 
 ---
@@ -45900,7 +45641,7 @@ const Duration DAY = 24 * HOUR
 #### `WEEK`
 
 ```c3
-const Duration WEEK = 7 * DAY
+const Duration WEEK
 ```
 
 ---
@@ -45908,7 +45649,7 @@ const Duration WEEK = 7 * DAY
 #### `MONTH`
 
 ```c3
-const Duration MONTH = 30 * DAY
+const Duration MONTH
 ```
 
 ---
@@ -45916,7 +45657,7 @@ const Duration MONTH = 30 * DAY
 #### `YEAR`
 
 ```c3
-const Duration YEAR = 36525 * DAY / 100
+const Duration YEAR
 ```
 
 ---
@@ -45924,7 +45665,7 @@ const Duration YEAR = 36525 * DAY / 100
 #### `FOREVER`
 
 ```c3
-const Duration FOREVER = long.max
+const Duration FOREVER
 ```
 
 ---
@@ -45932,7 +45673,7 @@ const Duration FOREVER = long.max
 #### `DURATION_ZERO`
 
 ```c3
-const Duration DURATION_ZERO = 0
+const Duration DURATION_ZERO
 ```
 
 ---
