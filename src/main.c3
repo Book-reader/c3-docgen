@@ -29,20 +29,14 @@ fn int main(String[] args)
 			{
 				if (c > b[i])
 				{
-					res = 1;
-					break;
+					return 1;
 				}
 				else if (c < b[i])
 				{
-					res = -1;
-					break;
+					return -1;
 				}
 			}
-			if (res == 0) res = a.len > b.len ? 1 : a.len < b.len ? -1 : 0;
-			// io::printfn("a: '%s', b: '%s'", a, b);
-			// io::printfn("result: %s", res);
-			// return a1.len == b1.len ? 0 : 1;
-			return res;
+			return compare_to(a.len, b.len);
 		});
 	foreach (mod : module_list)
 	{
@@ -58,7 +52,6 @@ fn int main(String[] args)
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
-						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
 					}
 					io::fprintf(&out_file, "\n")!!;
 				}
@@ -82,7 +75,6 @@ fn int main(String[] args)
 					foreach (str : decl.doc_comment.comment)
 					{
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
-						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
 					}
 				}*/
 			}
@@ -107,7 +99,7 @@ struct DocComment
 fn void? collect_decls(Allocator alloc, Modules* modules, String data, String filename)
 {
 	String module_name = filename;
-	List {Item} curr_mod;// = allocator::new(alloc, List {String});
+	List {Item} curr_mod;
 	DocComment comment;
 	curr_mod.init(alloc);
 	for (usz i = 0; i < data.len; i++) @pool()
@@ -120,7 +112,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 				skip_comment(&i, data);
 			case i + 3 < data.len && data[i] == '<' && data[i + 1] == '*' && data[i + 2] != '>':
 				comment = handle_doc_comment(alloc, &i, data);
-				// io::printfn("comment is: %s", comment.comment);
 			case data[i] == '`':
 				skip_string(&i, data, '`');
 			case data[i] == '\'':
@@ -137,32 +128,15 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 						modules.set(module_name, curr_mod);
 					}
 					String mod = data[i:data[i..].index_of(";") ?? 0];
-					// io::fprintf(out, "### `%s`\n", mod["module".len..].trim())!;
 					i += mod.len - 1;
 					module_name = mod["module".len..].trim();
-					// if (modules.has_key(module_name))
-					// {
-					// curr_mod = modules.get_ref(module_name) ?? (List {String}){}.init(alloc);
-					/*if (modules.has_key(module_name))
-					{
-						curr_mod = modules.get(module_name)!!;
-					}
-					else
-					{
-						curr_mod.init(alloc);
-						// modules.set()
-					}*/
-					// }
 					curr_mod = modules.@get_or_set(module_name, *(List {Item}){}.init(alloc));
 					comment = {};
-					// if ()
-					// modules.set(module_name)
 				}
 				else if (try idx = data[i..].index_of("struct") && idx == 0)
 				{
 					String struc = data[i:data[i..].index_of("{") ?? 0];
 					if (!struc.contains("@private") && !struc.contains("@local")) curr_mod.push({struc.trim().copy(alloc), comment});
-					// io::fprintf(out, "```c3\n%s\n```\n", struc.trim())!;
 					comment = {};
 					i += struc.len - 1;
 				}
@@ -171,28 +145,24 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String func = parse_function(&i, data, "fn");
 					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "extern fn");
 					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
 					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", func.trim())!;
 				}
 				else if (try idx = data[i..].index_of("typedef") && idx == 0)
 				{
 					String type = data[i:data[i..].index_of(";") ?? 0];
 					if (!type.contains("@private") && !type.contains("@local")) curr_mod.push({type.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", type.trim())!;
 					i += type.len - 1;
 				}
 				else if (try idx = data[i..].index_of("alias") && idx == 0)
@@ -200,7 +170,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String al = data[i:data[i..].index_of(";") ?? 0];
 					if (!al.contains("@private") && !al.contains("@local")) curr_mod.push({al.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", al.trim())!;
 					i += al.len - 1;
 				}
 				else if (try idx = data[i..].index_of("enum") && idx == 0)
@@ -208,7 +177,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String en = data[i:data[i..].index_of("{") ?? 0];
 					if (!en.contains("@private") && !en.contains("@local")) curr_mod.push({en.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", en.trim())!;
 					i += en.len - 1;
 				}
 				else if (try idx = data[i..].index_of("faultdef") && idx == 0)
@@ -216,7 +184,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String faults = data[i:data[i..].index_of(";") ?? 0];
 					if (!faults.contains("@private") && !faults.contains("@local")) curr_mod.push({faults.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", faults.trim())!;
 					i += faults.len - 1;
 				}
 				else if (try idx = data[i..].index_of("bitstruct") && idx == 0)
@@ -224,7 +191,6 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String bitstruc = data[i:data[i..].index_of("{") ?? 0];
 					if (!bitstruc.contains("@private") && !bitstruc.contains("@local")) curr_mod.push({bitstruc.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", bitstruc.trim())!;
 					i += bitstruc.len - 1;
 				}
 				else if (try idx = data[i..].index_of("const") && idx == 0)
@@ -232,14 +198,8 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					String cons = data[i:data[i..].index_of("=") ?? 0];
 					if (!cons.contains("@private") && !cons.contains("@local")) curr_mod.push({cons.trim().copy(alloc), comment});
 					comment = {};
-					// io::fprintf(out, "```c3\n%s\n```\n", cons.trim())!;
 					i += cons.len - 1;
 				}
-
-/*				else
-				{
-					io::printf("%c", data[i]);
-				}*/
 		}
 	};
 	if (curr_mod.len() != 0)
@@ -254,13 +214,11 @@ fn String parse_function(usz* i, String data, String function_str)
 	skip_block(i, data, '(', ')');
 	while (*i < data.len)
 	{
-		// io::printfn("a: %s", data[*i:30]);
 		if (*i < data.len && data[*i] == '@')
 		{
 			*i += 1;
 			while (*i < data.len && (data[*i].is_alpha() || data[*i] == '_')) *i += 1;
 			if (*i < data.len && data[*i] == '(') skip_block(i, data, '(', ')');
-			// io::printfn("a");
 		}
 		else if (*i < data.len && data[*i].is_space())
 		{
@@ -331,7 +289,6 @@ fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool(
 	doc.contracts.init(alloc);
 
 	String trimmed = data[start_idx..*i];
-	// io::printfn("%s", trimmed);
 	trimmed = trimmed[trimmed.index_of("<*") + 2 ?? 0..trimmed.rindex_of("*>") - 2 ?? trimmed.len - 1].trim();
 
 	bool comment = true;
@@ -339,11 +296,9 @@ fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool(
 	String starting_chars;
 	foreach (line : trimmed.tsplit("\n"))
 	{
-		// io::printfn("%s", line.trim());
 		if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
 		{
 			starting_chars = line[:line.len - line.trim_left().len];
-			// io::printfn("'%s'", starting_chars);
 		}
 		String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
 		if (line_trim.len > 0 && line_trim[0] == '@') comment = false;
