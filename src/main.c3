@@ -40,7 +40,7 @@ fn int main(String[] args)
 		});
 	foreach (mod : module_list)
 	{
-		if (!mod.contains("@private") && !mod.contains("@local") && !mod.contains("@test"))
+		if (!is_hidden(mod) && !mod.contains("@test"))
 		{
 			io::printfn("%s", mod);
 			io::fprintf(&out_file, "### `%s`\n", mod)!!;
@@ -133,72 +133,46 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 					curr_mod = modules.@get_or_set(module_name, *(List {Item}){}.init(alloc));
 					comment = {};
 				}
-				else if (try idx = data[i..].index_of("struct") && idx == 0)
-				{
-					String struc = data[i:data[i..].index_of("{") ?? 0];
-					if (!struc.contains("@private") && !struc.contains("@local")) curr_mod.push({struc.trim().copy(alloc), comment});
-					comment = {};
-					i += struc.len - 1;
-				}
 				else if (try idx = data[i..].index_of("fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "fn");
-					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
 				{
 					String func = parse_function(&i, data, "extern fn");
-					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
 				}
 				else if (try idx = data[i..].index_of("macro") && idx == 0)
 				{
 					String func = parse_function(&i, data, "macro");
-					if (!func.contains("@private") && !func.contains("@local")) curr_mod.push({func.trim().copy(alloc), comment});
+					if (!is_hidden(func)) curr_mod.push({func.trim().copy(alloc), comment});
 					comment = {};
 				}
-				else if (try idx = data[i..].index_of("typedef") && idx == 0)
+				else
 				{
-					String type = data[i:data[i..].index_of(";") ?? 0];
-					if (!type.contains("@private") && !type.contains("@local")) curr_mod.push({type.trim().copy(alloc), comment});
-					comment = {};
-					i += type.len - 1;
-				}
-				else if (try idx = data[i..].index_of("alias") && idx == 0)
-				{
-					String al = data[i:data[i..].index_of(";") ?? 0];
-					if (!al.contains("@private") && !al.contains("@local")) curr_mod.push({al.trim().copy(alloc), comment});
-					comment = {};
-					i += al.len - 1;
-				}
-				else if (try idx = data[i..].index_of("enum") && idx == 0)
-				{
-					String en = data[i:data[i..].index_of("{") ?? 0];
-					if (!en.contains("@private") && !en.contains("@local")) curr_mod.push({en.trim().copy(alloc), comment});
-					comment = {};
-					i += en.len - 1;
-				}
-				else if (try idx = data[i..].index_of("faultdef") && idx == 0)
-				{
-					String faults = data[i:data[i..].index_of(";") ?? 0];
-					if (!faults.contains("@private") && !faults.contains("@local")) curr_mod.push({faults.trim().copy(alloc), comment});
-					comment = {};
-					i += faults.len - 1;
-				}
-				else if (try idx = data[i..].index_of("bitstruct") && idx == 0)
-				{
-					String bitstruc = data[i:data[i..].index_of("{") ?? 0];
-					if (!bitstruc.contains("@private") && !bitstruc.contains("@local")) curr_mod.push({bitstruc.trim().copy(alloc), comment});
-					comment = {};
-					i += bitstruc.len - 1;
-				}
-				else if (try idx = data[i..].index_of("const") && idx == 0)
-				{
-					String cons = data[i:data[i..].index_of("=") ?? 0];
-					if (!cons.contains("@private") && !cons.contains("@local")) curr_mod.push({cons.trim().copy(alloc), comment});
-					comment = {};
-					i += cons.len - 1;
+					const String[2][*] MATCHES = {
+						{"typedef", ";"},
+						{"struct", "{"},
+						{"alias", ";"},
+						{"enum", "{"},
+						{"faultdef", ";"},
+						{"bitstruct", "{"},
+						{"const", "="},
+					};
+					foreach (check : MATCHES)
+					{
+						if (try idx = data[i..].index_of(check[0]) && idx == 0)
+						{
+							String val = data[i:data[i..].index_of(check[1]) ?? 0];
+							if (!is_hidden(val)) curr_mod.push({val.trim().copy(alloc), comment});
+							comment = {};
+							i += val.len - 1;
+							break;
+						}
+					}
 				}
 		}
 	};
@@ -353,3 +327,4 @@ fn void skip_block(usz* i, String data, char block_start, char block_end)
 		}
 	};
 }
+fn bool is_hidden(String s) => s.contains("@private") || s.contains("@local");
