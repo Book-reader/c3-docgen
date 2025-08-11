@@ -1,5 +1,5 @@
 # c3-docgen
-a really *really* bad doc generator for C3 I threw together in a couple of hours to fix the outdated stdlib reference
+a pretty bad doc generator for C3 I threw together in a couple of hours to fix the outdated stdlib reference
 
 usage:
 ```console
