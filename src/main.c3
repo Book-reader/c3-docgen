@@ -31,7 +31,6 @@ fn int main(String[] args)
 
 	return 0;
 }
-// TODO: make a btree map or some sort of sorted map
 
 struct Module (Printable)
 {
@@ -88,38 +87,78 @@ fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String da
 	defer ts::tree_delete(parse_tree);
 	TSNode root_node = ts::tree_root_node(parse_tree);
 
-	uint error_offset;
-	TSQuery* module_query = query::new(tsc3::language(), "(module_declaration . path: (path_ident . (module_resolution (ident) @module.parent)* . (ident) @module.name)) @module", &error_offset)!!;
-	defer query::delete(module_query);
+	io::printfn("aa: '%s'", root_node.type());
 
-	TSQueryCursor* cursor = query_cursor::new();
-	defer query_cursor::delete(cursor);
-	query_cursor::@exec(cursor, module_query, root_node; TSQueryMatch* match)
+	TSTreeCursor cursor = cursor::new(root_node);
+	defer cursor::delete(&cursor);
+
+	assert (cursor::current_node(&cursor).type() == "source_file");
+	assert(ts::tree_cursor_goto_first_child(&cursor));
+
+	do
 	{
-		Module* current_mod = mod;
-		io::printfn("matched on %s", match.capture_count);
-		foreach (i, capture : match.captures[:match.capture_count])
+		TSNode node = cursor::current_node(&cursor);
+		// io::printfn("a: %s", node.type());
+		if (node.type() == "module_declaration")
 		{
-			uint len;
-			String text = capture.get_text(data);
+			Module* current_mod = mod;
 
-			io::printfn("%s: matched '%s'", i, text);
-			switch (String match_name = ts::query_capture_name_for_id(module_query, capture.index, &len).str_view())
+			TSTreeCursor pos = cursor::copy(&cursor); // so I can restore position later
+			defer cursor::delete(&pos);
+			// node.get_text(data);
+			cursor::goto_first_child(&cursor)!!;
+			assert(cursor::current_node(&cursor).type() == "module");
+			cursor::goto_next_sibling(&cursor)!!;
+			assert(cursor::current_field_name(&cursor)!! == "path");
+			cursor::goto_first_child(&cursor)!!;
+			assert(cursor::current_node(&cursor).type() == "ident" || cursor::current_node(&cursor).type() == "module_resolution");
+
+			while (cursor::current_node(&cursor).type() == "module_resolution")
 			{
-				case "module":
-					// TODO: handle module attributes
-					break;
-				case "module.parent":
-					if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
-					current_mod = current_mod.children.@get_or_set(text, allocator::new(alloc, Module, {current_mod, text.copy(alloc), {}}));
-				case "module.name":
-					if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
-					current_mod = current_mod.children.@get_or_set(text, allocator::new(alloc, Module, {current_mod, text.copy(alloc), {}}));
-				default:
-					unreachable("unexpexted '%s'", match_name);
+				cursor::goto_first_child(&cursor)!!;
+				TSNode mod_path = cursor::current_node(&cursor);
+
+				if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
+				current_mod = current_mod.children.@get_or_set(mod_path.get_text(data), allocator::new(alloc, Module, {current_mod, mod_path.get_text(data).copy(alloc), {}}));
+
+				cursor::goto_parent(&cursor)!!;
+				cursor::goto_next_sibling(&cursor)!!;
+				mod_path = cursor::current_node(&cursor);
 			}
+
+			if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
+			current_mod = current_mod.children.@get_or_set(cursor::current_node(&cursor).get_text(data), allocator::new(alloc, Module, {current_mod, cursor::current_node(&cursor).get_text(data).copy(alloc), {}}));
+
+			cursor::reset_to(&cursor, &pos);
 		}
-	};
+		// I can't believe this is an actual bug lol
+		if (@catch(cursor::goto_next_sibling(&cursor))) break;
+	} while (true);
 	return mod;
 }
 
+
+module ts::cursor;
+
+faultdef NONE_REMAINING, NO_NAME;
+
+fn TSTreeCursor new(TSNode node) => ts::tree_cursor_new(node); 
+fn void delete(TSTreeCursor* self) => ts::tree_cursor_delete(self);
+fn void reset(TSTreeCursor* self, TSNode node) => ts::tree_cursor_reset(self, node);
+fn void reset_to(TSTreeCursor* dst, TSTreeCursor* src) => ts::tree_cursor_reset_to(dst, src);
+fn TSNode current_node(TSTreeCursor* self) => ts::tree_cursor_current_node(self);
+fn String? current_field_name(TSTreeCursor* self) => (ts::tree_cursor_current_field_name(self) ?: NO_NAME?).str_view();
+fn TSFieldId current_field_id(TSTreeCursor* self) => ts::tree_cursor_current_field_id(self);
+fn void? goto_parent(TSTreeCursor* self) => ts::tree_cursor_goto_parent(self) ? ret_void() : NONE_REMAINING?;
+fn void? goto_next_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_next_sibling(self) ? ret_void() : NONE_REMAINING?;
+fn void? goto_previous_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_previous_sibling(self) ? ret_void() : NONE_REMAINING?;
+fn void? goto_first_child(TSTreeCursor* self) => ts::tree_cursor_goto_first_child(self) ? ret_void() : NONE_REMAINING?;
+fn void? goto_last_child(TSTreeCursor* self) => ts::tree_cursor_goto_last_child(self) ? ret_void() : NONE_REMAINING?;
+fn void goto_descendant(TSTreeCursor* self, uint goal_descendant_index) => ts::tree_cursor_goto_descendant(self, goal_descendant_index);
+fn uint current_descendant_index(TSTreeCursor* self) => ts::tree_cursor_current_descendant_index(self);
+fn uint current_depth(TSTreeCursor* self) => ts::tree_cursor_current_depth(self);
+fn long goto_first_child_for_byte(TSTreeCursor* self, uint goal_byte) => ts::tree_cursor_goto_first_child_for_byte(self, goal_byte);
+fn long goto_first_child_for_point(TSTreeCursor* self, TSPoint goal_point) => ts::tree_cursor_goto_first_child_for_point(self, goal_point);
+fn TSTreeCursor copy(TSTreeCursor* cursor) => ts::tree_cursor_copy(cursor);
+
+macro void ret_void() @private {}
