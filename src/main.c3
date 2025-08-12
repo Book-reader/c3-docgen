@@ -6,405 +6,120 @@ import std::collections::pair;
 import std::sort;
 import std::math;
 
-alias Modules = HashMap {String, List {Item}};
+import ts;
+import tree_sitter_c3;
+alias tsc3 = module tree_sitter_c3;
+
 fn int main(String[] args)
 {
-	File out_file = file::open(args[1], "wb")!!;
-	defer (void)out_file.close();
-
-	Modules modules;
-	modules.init(tmem);
 	Allocator alloc = tmem;
-	foreach (str : args[2..]) @pool()
+
+	TSParser* parser = parser::new_with_language(tsc3::language())!!;
+	defer parser::delete(parser);
+
+	Module* modules = allocator::new(alloc, Module);
+	foreach (str : args[1..]) @pool()
 	{
 		String file_data = (String)file::load(tmem, str)!!;
-		Path str_path = path::new(alloc, str)!!;
-		collect_decls(alloc, &modules, file_data, str_path.basename()[:^str_path.extension().len + 1])!!;
-	};
 
-	String[] module_list = modules.tkeys();
-	sort::insertionsort(module_list, fn int (String a, String b)
-		{
-			int res;
-			foreach (i, c : a[:math::min(a.len, b.len)])
-			{
-				if (c > b[i])
-				{
-					return 1;
-				}
-				else if (c < b[i])
-				{
-					return -1;
-				}
-			}
-			return compare_to(a.len, b.len);
-		});
-	foreach (mod : module_list)
-	{
-		if (!is_hidden(mod) && !mod.contains("@test"))
+		get_modules(alloc, modules, parser, file_data, str);
+		foreach (mod : modules.children.value_iter())
 		{
 			io::printfn("%s", mod);
-			io::fprintf(&out_file, "### `%s`\n", mod)!!;
-			foreach (decl : modules.get(mod)!!)
-			{
-				io::fprintf(&out_file, "\n---\n\n")!!;
-				io::fprintf(&out_file, "#### `%s`\n\n", decl.name)!!;
-				/*if (decl.doc_comment.comment.len() > 0)
-				{
-					foreach (str : decl.doc_comment.comment)
-					{
-						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
-					}
-					io::fprintf(&out_file, "\n")!!;
-				}*/
-				foreach (i, comment : decl.doc_comments)
-				{
-					if (comment.contracts.len() > 0)
-					{
-						io::fprintf(&out_file, "```c3\n<*\n")!!;
-						foreach (str : comment.contracts)
-						{
-							io::fprintf(&out_file, " %s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
-						}
-						io::fprintf(&out_file, "*>\n")!!;
-						io::fprintf(&out_file, "%s\n```\n", decl.contents[i])!!;
-					}
-					else
-					{
-						io::fprintf(&out_file, "```c3\n%s\n```\n", decl.contents[i])!!;
-					}
-					if (comment.comment.len() > 0)
-					{
-						io::fprintf(&out_file, "\n")!!;
-						foreach (str : comment.comment)
-						{
-							io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
-						}
-						io::fprintf(&out_file, "\n")!!;
-					}
-				}
-			}
 		}
-	}
+	};
 
 	return 0;
 }
+// TODO: make a btree map or some sort of sorted map
 
-struct Item
+struct Module (Printable)
 {
-	String name;
-	List {String} contents;
-	List {DocComment} doc_comments;
+	Module* parent; // eg pointer to "std"
+	String path; // eg "collections"
+	HashMap {String, Module*} children; // eg: {"list", "map", "pair"}
+
+	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
+		// it also has these:
+			//	List {Type} types;
+			//	List {Function} funcs;
+			//	List {Global} globals;
 }
 
-struct DocComment
+fn String Module.get_path_string(&self, Allocator alloc) => @pool()
 {
-	List {String} comment;
-	List {String} contracts;
-}
-
-fn void? collect_decls(Allocator alloc, Modules* modules, String data, String filename)
-{
-	String module_name = filename;
-	List {Item} curr_mod;
-	DocComment comment;
-	curr_mod.init(alloc);
-	for (usz i = 0; i < data.len; i++) @pool()
+	DString res;
+	res.init(tmem);
+	res.append(self.path);
+	Module* parent = self.parent;
+	while (parent != null && parent.path.ptr != null)
 	{
-		switch
+		res.insert_at(0, string::tformat("%s::", parent.path));
+		parent = parent.parent;
+	}
+	return res.copy_str(alloc);
+}
+
+
+usz depth = 0;
+fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
+{
+	usz? n;
+	n += fmt.printf("%s", /*self.get_path_string(tmem)*/self.path);
+	if (self.children.len() != 0) foreach (i, child : self.children.value_iter())
+	{
+		n += fmt.printf("\n");
+		depth ++;
+		for (usz j = 0; j < depth - 1; j++) n += fmt.printf("┃");
+		n += fmt.printf("%s%s", i == self.children.len() - 1 ? "┗" : "┣", /*self.children*/child);
+		depth --;
+	}
+	return n;
+}
+
+/*struct Type
+{
+
+}*/
+
+fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String data, String file_name)
+{
+	TSTree* parse_tree = parser::parse_string(parser, null, data);
+	defer ts::tree_delete(parse_tree);
+	TSNode root_node = ts::tree_root_node(parse_tree);
+
+	uint error_offset;
+	TSQuery* module_query = query::new(tsc3::language(), "(module_declaration . path: (path_ident . (module_resolution (ident) @module.parent)* . (ident) @module.name)) @module", &error_offset)!!;
+	defer query::delete(module_query);
+
+	TSQueryCursor* cursor = query_cursor::new();
+	defer query_cursor::delete(cursor);
+	query_cursor::@exec(cursor, module_query, root_node; TSQueryMatch* match)
+	{
+		Module* current_mod = mod;
+		io::printfn("matched on %s", match.capture_count);
+		foreach (i, capture : match.captures[:match.capture_count])
 		{
-			case i + 2 < data.len && data[i] == '/' && data[i + 1] == '/':
-				skip_line_comment(&i, data);
-			case i + 2 < data.len && data[i] == '/' && data[i + 1] == '*':
-				skip_comment(&i, data);
-			case i + 3 < data.len && data[i] == '<' && data[i + 1] == '*' && data[i + 2] != '>':
-				comment = handle_doc_comment(alloc, &i, data);
-			case data[i] == '`':
-				skip_string(&i, data, '`');
-			case data[i] == '\'':
-				skip_string(&i, data, '\'');
-			case data[i] == '"':
-				skip_string(&i, data, '"');
-			case data[i] == '{':
-				skip_block(&i, data, '{', '}');
-			default:
-				if (try idx = data[i..].index_of("module") && idx == 0)
-				{
-					if (curr_mod.len() != 0)
-					{
-						modules.set(module_name, curr_mod);
-					}
-					String mod = data[i:data[i..].index_of(";") ?? 0];
-					i += mod.len - 1;
-					module_name = mod["module".len..].trim();
-					curr_mod = modules.@get_or_set(module_name, *(List {Item}){}.init(alloc));
-					comment = {};
-				}
-				else if (try idx = data[i..].index_of("fn") && idx == 0)
-				{
-					String[2] func = parse_function(&i, data, "fn");
-					bool dupe = false;
-					foreach (&item : curr_mod) if (item.name == func[0])
-					{
-						item.contents.push(func[1].trim().copy(alloc));
-						item.doc_comments.push(comment);
-						dupe = true;
-						break;
-					}
-					if (!dupe)
-					{
-						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
-					}
-					comment = {};
-				}
-				else if (try idx = data[i..].index_of("extern fn") && idx == 0)
-				{
-					String[2] func = parse_function(&i, data, "extern fn");
-					bool dupe = false;
-					foreach (&item : curr_mod) if (item.name == func[0])
-					{
-						item.contents.push(func[1].trim().copy(alloc));
-						item.doc_comments.push(comment);
-						dupe = true;
-						break;
-					}
-					if (!dupe)
-					{
-						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
-					}
-					comment = {};
-				}
-				else if (try idx = data[i..].index_of("macro") && idx == 0)
-				{
-					String[2] func = parse_function(&i, data, "macro");
-					bool dupe = false;
-					foreach (&item : curr_mod) if (item.name == func[0])
-					{
-						item.contents.push(func[1].trim().copy(alloc));
-						item.doc_comments.push(comment);
-						dupe = true;
-						break;
-					}
-					if (!dupe)
-					{
-						curr_mod.push({func[0].copy(alloc), list_of_with(String, alloc, func[1].trim().copy(alloc)), list_of_with(DocComment, alloc, comment)});
-					}
-					comment = {};
-				}
-				else
-				{
-					const Pair {String[2], GetNameFn}[*] MATCHES = {
-						{{"typedef", ";"}, default_getname_fn("typedef")},
-						{{"struct", "{"}, default_getname_fn("struct")},
-						{{"alias", ";"}, default_getname_fn("alias")},
-						{{"enum", "{"}, default_getname_fn("enum")},
-						{{"faultdef", ";"}, fn String(String val) => val["faultdef".len..].trim()},
-						{{"bitstruct", "{"}, default_getname_fn("bitstruct")},
-						{{"const", ";"}, fn String(String val) { String s = val[..val.index_of("=") - 1 ?? 0].trim(); return s[s.rindex_of(" ") ?? s.rindex_of("\t") ?? s.rindex_of("\n") ?? 0..].trim();}},
-					};
-					const MAX_LEN = 128;
-					foreach (check : MATCHES) @pool()
-					{
-						if (try idx = data[i..].index_of(check.first[0]) && idx == 0)
-						{
-							String val = data[i:data[i..].index_of(check.first[1]) ?? 0].trim().treplace("\n", " ").treplace("\t", " ");
-							{
-								String val1;
-								while ((val1 = val.treplace("  ", " ")).len != val.len) val = val1;
-							}
-							String name = check.second(val);
-							// io::printfn("name was '%s'", name);
-							if (val.len > MAX_LEN) val = val[:MAX_LEN - "...".len].tconcat("...");
-							// io::printfn("val was: %s", val);
-							if (!is_hidden(val))
-							{
-								bool dupe = false;
-								foreach (&item : curr_mod) if (item.name == name)
-								{
-									item.contents.push(val.copy(alloc));
-									item.doc_comments.push(comment);
-									dupe = true;
-									break;
-								}
-								if (!dupe)
-								{
-									curr_mod.push({name.copy(alloc), list_of_with(String, alloc, val.copy(alloc)), list_of_with(DocComment, alloc, comment)});
-								}
-							}
-							comment = {};
-							i += val.len - 1;
-							break;
-						}
-					};
-				}
+			uint len;
+			String text = capture.get_text(data);
+
+			io::printfn("%s: matched '%s'", i, text);
+			switch (String match_name = ts::query_capture_name_for_id(module_query, capture.index, &len).str_view())
+			{
+				case "module":
+					// TODO: handle module attributes
+					break;
+				case "module.parent":
+					if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
+					current_mod = current_mod.children.@get_or_set(text, allocator::new(alloc, Module, {current_mod, text.copy(alloc), {}}));
+				case "module.name":
+					if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
+					current_mod = current_mod.children.@get_or_set(text, allocator::new(alloc, Module, {current_mod, text.copy(alloc), {}}));
+				default:
+					unreachable("unexpexted '%s'", match_name);
+			}
 		}
 	};
-	if (curr_mod.len() != 0)
-	{
-		modules.set(module_name, curr_mod);
-	}
-}
-fn String[2] parse_function(usz* i, String data, String function_str)
-{
-	String[2] ret;
-	usz start_idx = *i;
-	while (*i < data.len && data[*i] != '(') *i += 1;
-	ret[0] = data[start_idx..*i - 1];
-	ret[0] = ret[0][ret[0].rindex_of(" ") ?? ret[0].rindex_of("\t") ?? ret[0].rindex_of("\n") ?? 0..^1].trim();
-	skip_block(i, data, '(', ')');
-	while (*i < data.len)
-	{
-		if (*i < data.len && data[*i] == '@')
-		{
-			*i += 1;
-			while (*i < data.len && (data[*i].is_alpha() || data[*i] == '_')) *i += 1;
-			if (*i < data.len && data[*i] == '(') skip_block(i, data, '(', ')');
-		}
-		else if (*i < data.len && data[*i].is_space())
-		{
-			*i += 1;
-		}
-		else
-		{
-			break;
-		}
-	}
-	*i -= 1;
-	defer
-	{
-		if (try idx = data[*i..].trim().index_of("=>") && idx == 0)
-		{
-			skip_line_comment(i, data); // this is not what skip_line_comment is meant to be used for
-		}
-		else
-		{
-			while (*i < data.len && data[*i] != '{') *i += 1;
-			skip_block(i, data, '{', '}');
-		}
-	}
-	ret[1] = data[start_idx..*i];
-	return ret;
+	return mod;
 }
 
-fn void skip_line_comment(usz* i, String data)
-{
-	*i += 1;
-	while (*i < data.len && data[*i] != '\n') *i += 1;
-}
-fn void skip_comment(usz* i, String data)
-{
-	*i += 1;
-	for (usz count = 1; count != 0 && *i < data.len; *i += 1)
-	{
-		if (data[*i] == '/' && *i + 2 < data.len && data[*i + 1] == '*')
-		{
-			count ++;
-			*i += 1;
-		}
-		if (data[*i] == '*' && *i + 2 < data.len && data[*i + 1] == '/')
-		{
-			count --;
-			*i += 1;
-		}
-	}
-}
-fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool()
-{
-	usz start_idx = *i;
-	*i += 1;
-	for (usz count = 1; count != 0 && *i < data.len; *i += 1)
-	{
-		if (data[*i] == '<' && *i + 2 < data.len && data[*i + 1] == '*')
-		{
-			count ++;
-			*i += 1;
-		}
-		else if (data[*i] == '*' && *i + 2 < data.len && data[*i + 1] == '>')
-		{
-			count --;
-			*i += 1;
-		}
-	}
-	DocComment doc;
-	doc.comment.init(alloc);
-	doc.contracts.init(alloc);
-
-	String trimmed = data[start_idx..*i];
-	trimmed = trimmed[trimmed.index_of("<*") + 2 ?? 0..trimmed.rindex_of("*>") - 2 ?? trimmed.len - 1].trim();
-
-	bool comment = true;
-
-	String starting_chars;
-	foreach (line : trimmed.tsplit("\n"))
-	{
-		if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
-		{
-			starting_chars = line[:line.len - line.trim_left().len];
-		}
-		String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
-		if (line_trim.len > 0 && line_trim[0] == '@') comment = false;
-		if (comment)
-		{
-			doc.comment.push(line_trim.copy(alloc));
-		}
-		else if (line_trim.trim().len > 0) // skip empty lines between contracts
-		{
-			doc.contracts.push(line_trim.copy(alloc));
-		}
-	}
-	// Remove trailing newline caused by space between comment and contracts
-	if (doc.comment.len() > 0 && doc.comment[^1].len == 0) doc.comment.remove_last();
-	
-	return doc;
-}
-fn void skip_string(usz* i, String data, char string_char)
-{
-	for (*i += 1; *i < data.len && data[*i] != string_char; *i += 1)
-	{
-		if (data[*i] == '\\')
-		{
-			*i += 1;
-			continue;
-		}
-	}
-}
-fn void skip_block(usz* i, String data, char block_start, char block_end)
-{
-	*i += 1;
-	for (usz count = 1; count != 0 && *i < data.len; *i += 1) @pool()
-	{
-		switch
-		{
-			case *i + 2 < data.len && data[*i] == '/' && data[*i + 1] == '/':
-				skip_line_comment(i, data);
-			case *i + 2 < data.len && data[*i] == '/' && data[*i + 1] == '*':
-				skip_comment(i, data);
-			case *i + 3 < data.len && data[*i] == '<' && data[*i + 1] == '*' && data[*i + 2] != '>':
-				handle_doc_comment(tmem, i, data);
-			case data[*i] == '`':
-				skip_string(i, data, '`');
-			case data[*i] == '\'':
-				skip_string(i, data, '\'');
-			case data[*i] == '"':
-				skip_string(i, data, '"');
-			case data[*i] == block_start:
-				count ++;
-			case data[*i] == block_end:
-				count --;
-		}
-	};
-}
-fn bool is_hidden(String s) => s.contains("@private") || s.contains("@local");
-
-macro slice_while(array, func)
-{
-	foreach (i, c : array)
-	{
-		if (!func(c)) return array[..i - 1];
-	}
-	return array[..];
-}
-macro list_of_with($Type, Allocator alloc, val) => *(List {$Type}){}.init_with_array(alloc, {val});
-
-alias GetNameFn = fn String(String);
-macro GetNameFn default_getname_fn(String $name) => fn String(String val) => slice_while(val[$name.len..].trim(), fn bool(char c) => c.is_alpha() || c == '_');
