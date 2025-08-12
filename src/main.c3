@@ -27,7 +27,7 @@ fn int main(String[] args)
 		get_modules(alloc, modules, parser, file_data, str);
 		foreach (mod : modules.children.value_iter())
 		{
-			io::printfn("%s", mod);
+			// io::printfn("%s", mod);
 		}
 	};
 
@@ -54,13 +54,17 @@ struct GenericParam
 	String val;
 	GenericParamType type;
 }
-
-alias UnresolvedType = String;
-
+enum ValType
+{
+	LITERAL,
+	CONST,
+	TYPE,
+}
 struct Global
 {
 	String name;
-	UnresolvedType type;
+	// I store the whole type including generic params etc in here, and then parse it again later
+	String type;
 	String val;
 }
 
@@ -130,10 +134,13 @@ fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String da
 	defer ts::tree_delete(parse_tree);
 	TSNode root_node = ts::tree_root_node(parse_tree);
 
-	io::printfn("aa: '%s'", root_node.type());
+	io::printfn("Parsing file '%s'", file_name);
 
 	TSTreeCursor cursor = cursor::new(root_node);
 	defer cursor::delete(&cursor);
+
+	TSQueryCursor* query_cursor = query_cursor::new();
+	defer query_cursor::delete(query_cursor);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
@@ -221,7 +228,49 @@ fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String da
 					if (cursor.node().type() == "extern" && @ok(cursor::goto_next_sibling(&cursor)) && cursor.node().type() == "func_declaration") nextcase "func_definition";
 					cursor::goto_parent(&cursor)!!;
 				}
-				current_mod.sections[^1].globals.push({cursor.node().get_text(data).copy(alloc), "", ""});
+
+				Global glob;
+				glob.val = cursor.node().get_text(data).copy(alloc);
+				cursor::goto_first_child(&cursor)!!;
+
+				if (cursor.node().type() == "extern") cursor::goto_next_sibling(&cursor)!!;
+				assert(cursor.node().type() == "declaration" || cursor.node().type() == "const_declaration");
+				cursor::goto_first_child(&cursor)!!;
+				if (cursor.node().type() == "const" || cursor.node().type() == "tlocal") cursor::goto_next_sibling(&cursor)!!;
+
+				if (cursor::current_field_name(&cursor)!! == "type")
+				{
+					glob.type = cursor.node().get_text(data).copy(alloc);
+					cursor::goto_next_sibling(&cursor)!!;
+/*					cursor::goto_first_child(&cursor)!!;
+					switch (String type = cursor.node().type())
+					{
+						case "path_type_ident":
+						case "base_type_name":
+							glob.type.name = cursor.node().get_text(data).copy(alloc);
+						case "generic_type_ident":
+							cursor::goto_first_child(&cursor)!!;
+							glob.type.name = cursor.node().get_text(data).copy(alloc);
+							cursor::goto_next_sibling(&cursor)!!;
+							assert(cursor.node().type() == "generic_arg_list");
+							glob.type.generic_params.init(alloc);
+							cursor::goto_first_child(&cursor)!!;
+							do
+							{
+								glob.
+								if (!@ok(cursor::goto_next_sibling(&cursor))) break;
+							} while (true);
+							
+						default:
+							unreachable("unexpected type '%s'", type);
+					}
+					// glob.type = 
+					io::printfn("%s", cursor.node().get_text(data));*/
+				}
+				//assert(cursor::current_field_name(&cursor)!! == "name");
+				// if (cursor::current_field_name(&cursor)!! == "name")
+
+				current_mod.sections[^1].globals.push(glob);
 			case "func_definition":
 				// io::printfn("func declaration not implemented");
 				// abort("uno");
