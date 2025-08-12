@@ -39,7 +39,7 @@ struct Module (Printable)
 	Module* parent; // eg pointer to "std"
 	String path; // eg "collections"
 	HashMap {String, Module*} children; // eg: {"list", "map", "pair"}
-	Maybe {/*GenericParams*/String} generic_params;
+	List {GenericParam} generic_params;
 	List {ModuleSection} sections;
 	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
 		// it also has these:
@@ -48,7 +48,12 @@ struct Module (Printable)
 			// List {Global} globals;
 }
 
-// alias GenericParams = List {Option {Constant, Type}};
+enum GenericParamType : char {CONST, TYPE}
+struct GenericParam
+{
+	String val;
+	GenericParamType type;
+}
 
 alias UnresolvedType = String;
 
@@ -91,6 +96,15 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 {
 	usz? n;
 	n += fmt.printf("%s", /*self.get_path_string(tmem)*/self.path);
+	if (self.generic_params.len() > 0)
+	{
+		n += fmt.printf("{");
+		foreach (i, param : self.generic_params)
+		{
+			n += fmt.printf("%s%s", param.val, i + 1 == self.generic_params.len() ? "" : ", ");
+		}
+		n += fmt.printf("}");
+	}
 	foreach (j, section : self.sections) foreach (i, global : section.globals)
 	{
 		n += fmt.printf("\n");
@@ -109,11 +123,6 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 	}
 	return n;
 }
-
-/*struct Type
-{
-
-}*/
 
 fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String data, String file_name)
 {
@@ -163,16 +172,36 @@ fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String da
 
 				cursor::goto_parent(&cursor)!!;
 				// TODO: handle generics and attributes
-				if (try cursor::goto_next_sibling(&cursor))
+				while OUTER: (try cursor::goto_next_sibling(&cursor))
 				{
 					// TODO: have some function that goes to first child/next sibling/parent and skips all comments so I don't have to deal with them manually
 					switch (String type = cursor.node().type())
 					{
 						case "generic_param_list":
-							io::printfn("got generic param list: '%s'", cursor.node().get_text(data));
+							// io::printfn("got generic param list: '%s'", cursor.node().get_text(data));
+							cursor::goto_first_child(&cursor)!!;
+							while (try cursor::goto_next_sibling(&cursor))
+							{
+								switch (String param = cursor.node().type())
+								{
+									case "{":
+									case "}":
+									case ",":
+										break;
+									case "type_ident":
+										current_mod.generic_params.push({cursor.node().get_text(data).copy(alloc), TYPE});
+									case "const_ident":
+										current_mod.generic_params.push({cursor.node().get_text(data).copy(alloc), CONST});
+									default:
+										unreachable("unexpected module parameter '%s'", param);
+								}
+							}
 						case "attributes":
 							io::printfn("got attributes: '%s'", cursor.node().get_text(data));
 						case ";":
+							break OUTER;
+						case "block_comment":
+						case "line_comment":
 							break;
 						default:
 							unreachable("unexpected type '%s'", type);
@@ -215,6 +244,7 @@ macro Module* module_create(Allocator alloc, Module* parent, String path)
 	new.path = path;
 	new.sections.init(alloc);
 	new.children.init(alloc);
+	new.generic_params.init(alloc, 0);
 	return new;
 }
 
