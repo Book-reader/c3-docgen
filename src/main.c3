@@ -3,6 +3,7 @@ import std::io;
 import std::collections::map;
 import std::collections::list;
 import std::collections::pair;
+import std::collections::maybe;
 import std::sort;
 import std::math;
 
@@ -17,7 +18,8 @@ fn int main(String[] args)
 	TSParser* parser = parser::new_with_language(tsc3::language())!!;
 	defer parser::delete(parser);
 
-	Module* modules = allocator::new(alloc, Module);
+	Module* modules = module_create(alloc, null, {});
+
 	foreach (str : args[1..]) @pool()
 	{
 		String file_data = (String)file::load(tmem, str)!!;
@@ -37,12 +39,36 @@ struct Module (Printable)
 	Module* parent; // eg pointer to "std"
 	String path; // eg "collections"
 	HashMap {String, Module*} children; // eg: {"list", "map", "pair"}
-
+	Maybe {/*GenericParams*/String} generic_params;
+	List {ModuleSection} sections;
 	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
 		// it also has these:
-			//	List {Type} types;
-			//	List {Function} funcs;
-			//	List {Global} globals;
+			// List {Type} types;
+			// List {Function} funcs;
+			// List {Global} globals;
+}
+
+// alias GenericParams = List {Option {Constant, Type}};
+
+alias UnresolvedType = String;
+
+struct Global
+{
+	String name;
+	UnresolvedType type;
+	String val;
+}
+
+struct ModuleSection
+{
+	List {String} attributes;
+	List {Global} globals;
+}
+
+fn void ModuleSection.init(&self, Allocator alloc)
+{
+	self.globals.init(alloc);
+	self.attributes.init(alloc);
 }
 
 fn String Module.get_path_string(&self, Allocator alloc) => @pool()
@@ -65,6 +91,14 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 {
 	usz? n;
 	n += fmt.printf("%s", /*self.get_path_string(tmem)*/self.path);
+	foreach (j, section : self.sections) foreach (i, global : section.globals)
+	{
+		n += fmt.printf("\n");
+		depth ++;
+		for (usz k = 0; k < depth - 1; k++) n += fmt.printf("┃");
+		n += fmt.printf("%s%s", i == section.globals.len() - 1 ? "┗" : "┣", global.name.len > 128 ? global.name[:128 - 3].tconcat("...").treplace("\n", " ") : global.name);
+		depth --;
+	}
 	if (self.children.len() != 0) foreach (i, child : self.children.value_iter())
 	{
 		n += fmt.printf("\n");
@@ -95,48 +129,102 @@ fn Module* get_modules(Allocator alloc, Module* mod, TSParser* parser, String da
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
+	Module* current_mod = mod;
 	do
 	{
 		TSNode node = cursor::current_node(&cursor);
 		// io::printfn("a: %s", node.type());
-		if (node.type() == "module_declaration")
+		TSTreeCursor pos = cursor::copy(&cursor);
+		defer cursor::delete(&pos);
+		switch (node.type())
 		{
-			Module* current_mod = mod;
+			case "module_declaration":
+				current_mod = mod;
 
-			TSTreeCursor pos = cursor::copy(&cursor); // so I can restore position later
-			defer cursor::delete(&pos);
-			// node.get_text(data);
-			cursor::goto_first_child(&cursor)!!;
-			assert(cursor::current_node(&cursor).type() == "module");
-			cursor::goto_next_sibling(&cursor)!!;
-			assert(cursor::current_field_name(&cursor)!! == "path");
-			cursor::goto_first_child(&cursor)!!;
-			assert(cursor::current_node(&cursor).type() == "ident" || cursor::current_node(&cursor).type() == "module_resolution");
-
-			while (cursor::current_node(&cursor).type() == "module_resolution")
-			{
+				// node.get_text(data);
 				cursor::goto_first_child(&cursor)!!;
-				TSNode mod_path = cursor::current_node(&cursor);
+				assert(cursor.node().type() == "module");
+				cursor::goto_next_sibling(&cursor)!!;
+				assert(cursor::current_field_name(&cursor)!! == "path");
+				cursor::goto_first_child(&cursor)!!;
+				assert(cursor.node().type() == "ident" || cursor.node().type() == "module_resolution");
 
-				if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
-				current_mod = current_mod.children.@get_or_set(mod_path.get_text(data), allocator::new(alloc, Module, {current_mod, mod_path.get_text(data).copy(alloc), {}}));
+				while (cursor.node().type() == "module_resolution")
+				{
+					cursor::goto_first_child(&cursor)!!;
+
+					current_mod = current_mod.children.@get_or_set(cursor.node().get_text(data), module_create(alloc, current_mod, cursor.node().get_text(data).copy(alloc)));
+
+					cursor::goto_parent(&cursor)!!;
+					cursor::goto_next_sibling(&cursor)!!;
+				}
+
+				current_mod = current_mod.children.@get_or_set(cursor.node().get_text(data), module_create(alloc, current_mod, cursor.node().get_text(data).copy(alloc)));
 
 				cursor::goto_parent(&cursor)!!;
-				cursor::goto_next_sibling(&cursor)!!;
-				mod_path = cursor::current_node(&cursor);
-			}
+				// TODO: handle generics and attributes
+				if (try cursor::goto_next_sibling(&cursor))
+				{
+					// TODO: have some function that goes to first child/next sibling/parent and skips all comments so I don't have to deal with them manually
+					switch (String type = cursor.node().type())
+					{
+						case "generic_param_list":
+							io::printfn("got generic param list: '%s'", cursor.node().get_text(data));
+						case "attributes":
+							io::printfn("got attributes: '%s'", cursor.node().get_text(data));
+						case ";":
+							break;
+						default:
+							unreachable("unexpected type '%s'", type);
+					}
+				}
+				current_mod.sections.push(module_section_create(alloc));
 
-			if (!current_mod.children.is_initialized()) current_mod.children.init(alloc);
-			current_mod = current_mod.children.@get_or_set(cursor::current_node(&cursor).get_text(data), allocator::new(alloc, Module, {current_mod, cursor::current_node(&cursor).get_text(data).copy(alloc), {}}));
-
-			cursor::reset_to(&cursor, &pos);
+			case "global_declaration":
+				if (current_mod == mod)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					current_mod.sections.push(module_section_create(alloc));
+				}
+				if (try cursor::goto_first_child(&cursor))
+				{
+					// TODO: it may be safer to treat these seperately in the context of parsing here instead of merging with general functions
+					if (cursor.node().type() == "extern" && @ok(cursor::goto_next_sibling(&cursor)) && cursor.node().type() == "func_declaration") nextcase "func_definition";
+					cursor::goto_parent(&cursor)!!;
+				}
+				current_mod.sections[^1].globals.push({cursor.node().get_text(data).copy(alloc), "", ""});
+			case "func_definition":
+				// io::printfn("func declaration not implemented");
+				// abort("uno");
 		}
+		cursor::reset_to(&cursor, &pos);
 		// I can't believe this is an actual bug lol
 		if (@catch(cursor::goto_next_sibling(&cursor))) break;
 	} while (true);
 	return mod;
 }
 
+// What this would do is take in the token, iterate over all its children, and build a string of the content with comments and extra spacing removed
+// Not needed yet though
+// fn String re_stringify(Allocator alloc, TSNode node)
+
+macro Module* module_create(Allocator alloc, Module* parent, String path)
+{
+	Module* new = allocator::new(alloc, Module);
+	new.parent = parent;
+	new.path = path;
+	new.sections.init(alloc);
+	new.children.init(alloc);
+	return new;
+}
+
+macro ModuleSection module_section_create(Allocator alloc, String... attributes)
+{
+	ModuleSection new;
+	new.init(alloc);
+	new.attributes.add_array(attributes);
+	return new;
+}
 
 module ts::cursor;
 
@@ -161,4 +249,7 @@ fn long goto_first_child_for_byte(TSTreeCursor* self, uint goal_byte) => ts::tre
 fn long goto_first_child_for_point(TSTreeCursor* self, TSPoint goal_point) => ts::tree_cursor_goto_first_child_for_point(self, goal_point);
 fn TSTreeCursor copy(TSTreeCursor* cursor) => ts::tree_cursor_copy(cursor);
 
+fn TSNode TSTreeCursor.node(&self) => current_node(self);
+
 macro void ret_void() @private {}
+
