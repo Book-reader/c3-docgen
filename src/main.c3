@@ -66,6 +66,7 @@ struct Module (Printable)
 	String path; // eg "collections"
 	HashMap {String, Module*} children; // eg: {"list", "map", "pair"}
 	List {GenericParam} generic_params;
+	bool generics_done;
 	List {ModuleSection} sections;
 	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
 		// it also has these:
@@ -75,11 +76,14 @@ struct Module (Printable)
 }
 
 enum GenericParamType : char {CONST, TYPE}
-struct GenericParam
+struct GenericParam (Printable)
 {
 	String val;
 	GenericParamType type;
 }
+
+fn String GenericParam.to_constant_string(&self) @dynamic => self.val;
+
 enum ValType
 {
 	LITERAL,
@@ -338,7 +342,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQueryCursor* query_cursor = query_cursor::new();
 	defer query_cursor::delete(query_cursor);
 
-	TSQuery* module_query = query::new(tsc3::language(), "(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type ])? (attributes (attribute) @attr)?)")!!;
+	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type ","]*)? (attributes (attribute) @attr)?)`)!!;
 	defer query::delete(module_query);
 
 	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
@@ -374,9 +378,11 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 							case "path":
 								current_mod = current_mod.children.@get_or_set(text, module_create(alloc, current_mod, text.copy(alloc)));
 							case "param.const":
-								current_mod.generic_params.push({.type = CONST, .val = text.copy(alloc)});
+								io::printfn("found generic const '%s'", text);
+								if (!current_mod.generics_done) current_mod.generic_params.push({.type = CONST, .val = text.copy(alloc)});
 							case "param.type":
-								current_mod.generic_params.push({.type = TYPE, .val = text.copy(alloc)});
+								io::printfn("found generic type '%s'", text);
+								if (!current_mod.generics_done) current_mod.generic_params.push({.type = TYPE, .val = text.copy(alloc)});
 							case "attr":
 								io::printfn("found module attrs '%s'", text);
 								sec.attributes.push(text.copy(alloc));
@@ -384,6 +390,9 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					io::printfn("generic params: %s", current_mod.generic_params);
+					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
+					current_mod.generics_done = true;
 					// if (sec.attributes.len() != 0) abort("%s", sec.attributes);
 					current_mod.sections.push(sec);
 				};
