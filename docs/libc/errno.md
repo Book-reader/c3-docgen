@@ -1,0 +1,2 @@
+[libc](./../libc.md)::
+### `errno[]`

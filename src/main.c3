@@ -31,19 +31,29 @@ fn int main(String[] args)
 		get_modules(alloc, modules, parser, file_data, str_path.basename()[:^str_path.extension().len + 1]!!);
 	};
 
+
+	String root_folder = "./docs";
 	io::printfn("%s", modules);
 	modules.@iter_all_children(; Module* mod)
 	{
 		@pool()
 		{
-			String path_string = mod.get_path_string(tmem);
-			io::printfn("%s", path_string);
-			File out = file::open("./docs/".tconcat(path_string).tconcat(".md"), "wb")!!;
+			String mod_folder = mod.get_folder_path(tmem, root_folder);
+			String mod_file = mod.get_file_name(tmem);
+			io::printfn("%s :: %s :: %s", mod_folder, mod_file, mod.get_depth());
+			// abort();
+			Path mod_folder_path = path::new(tmem, mod_folder)!!;
+			if (!path::exists(mod_folder_path))
+			{
+				path::mkdir(mod_folder_path, true)!!;
+			}
+			File out = file::open(mod_folder.tconcat(mod_file), "wb")!!;
 			defer (void)out.close();
-			foreach (section : mod.sections)
+			io::fprintf(&out, "%s", mod)!!;
+/*			foreach (section : mod.sections)
 			{
 				io::fprintf(&out, "### `module %s%s %s`\n", path_string, mod.generic_params, section.attributes)!!;
-			}
+			}*/
 		};
 	};
 
@@ -126,6 +136,81 @@ fn String Module.get_path_string(&self, Allocator alloc) => @pool()
 	return res.copy_str(alloc);
 }
 
+fn String Module.get_folder_path(&self, Allocator alloc, String prefix) => @pool()
+{
+	DString res;
+	res.init(tmem);
+	Module* parent = self.parent;
+	while (parent != null && parent.path.ptr != null)
+	{
+		res.insert_at(0, string::tformat("%s/", parent.path));
+		parent = parent.parent;
+	}
+	res.insert_at(0, string::tformat("%s/", prefix[^1] == '/' ? prefix[..^2] : prefix));
+	return res.copy_str(alloc);
+}
+
+fn usz Module.get_depth(&self)
+{
+	usz depth = 0;
+	Module* parent = self;
+	while (parent != null && parent.path.ptr != null)
+	{
+		depth ++;
+		parent = parent.parent;
+	}
+	return depth;
+}
+
+<*
+ This assumes that both modules share the same root module
+*>
+fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* other) => @pool()
+{
+	DString result;
+	result.tinit();
+	result.append("./");
+
+	List {String} to_climb;
+	to_climb.tinit();
+
+	Module* self_cursor = self;
+	while (self_cursor.get_depth() > other.get_depth())
+	{
+		result.append("../");
+		self_cursor = self_cursor.parent;
+	}
+
+	Module* other_cursor = other;
+	while (other_cursor.get_depth() > self.get_depth())
+	{
+		other_cursor = other_cursor.parent;
+		to_climb.push(other_cursor.path);
+	}
+
+	while (self_cursor != other_cursor)
+	{
+		self_cursor = self_cursor.parent;
+		other_cursor = other_cursor.parent;
+		if (other_cursor.path.ptr) to_climb.push(other_cursor.path);
+	}
+
+	io::printfn("climbing: %s", to_climb);
+	foreach (i, mod : to_climb)
+	{
+		result.appendf("%s/", mod);
+	}
+
+	return result.copy_str(alloc);
+}
+
+fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other) => @pool()
+{
+	return self.get_folder_path_relative_to(tmem, other).tconcat(other.get_file_name(tmem)).copy(alloc);
+}
+
+fn String Module.get_file_name(&self, Allocator alloc) => self.path.concat(alloc, ".md");
+
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 {
 	List {Module*} stack;
@@ -134,7 +219,7 @@ macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 	while (stack.len() != 0) @pool()
 	{
 		Module* n = stack.pop()!!;
-		if (n != null) @body(n);
+		if (n.path.ptr != null) @body(n);
 		if (n.children.len() != 0)
 		{
 
@@ -153,7 +238,56 @@ macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 	};
 }
 
-usz depth = 0;
+macro Module.@iter_children(&self; @body(Module* mod))
+{
+	if (self.children.len() == 0) return;
+	Entry {String, Module*}*[] children = mem::temp_array(Entry {String, Module*}*, self.children.len());
+	usz i;
+	foreach (Entry {String, Module*}* e : self.children.table) while (e != null)
+	{
+		children[i++] = e;
+		e = e.next;
+	}
+
+	sort::insertionsort(children, fn int(Entry {String, Module*}* a, Entry {String, Module*}* b) => stringcmp(a.key, b.key));
+	foreach_r (c : children) @body(c.value);
+
+}
+
+fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
+{
+	// assert(self.path.ptr);
+	// assert(self.parent);
+	usz? n;
+	if (self.parent != null && self.parent.path.ptr != null) @pool()
+	{
+		Module* parent = self.parent;
+		DString buf;
+		buf.tinit();
+
+	 	while (parent != null && parent.path.ptr != null) @pool()
+		{
+			buf.insert_at(0, string::tformat("[%s](%s)%s", parent.path, self.get_relative_path_to(tmem, parent), parent.parent == null ? "" : "::"));
+			parent = parent.parent;
+		};
+		n += fmt.printf("%s\n", buf.str_view());
+	};
+
+	n += fmt.printf("### `%s%s`\n", self.path, self.generic_params);
+
+	if (self.children.len() != 0) self.@iter_children(; Module* child)
+	{
+		@pool()
+		{
+			n += fmt.printf("[%s](%s)\n", child.path, self.get_relative_path_to(tmem, child));
+		};
+	};
+
+	// foreach (c)
+	return n;
+}
+
+/*usz depth = 0;
 fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 {
 	usz? n;
@@ -188,7 +322,7 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 		depth --;
 	}
 	return n;
-}
+}*/
 
 fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name)
 {
@@ -204,6 +338,13 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQueryCursor* query_cursor = query_cursor::new();
 	defer query_cursor::delete(query_cursor);
 
+	TSQuery* module_query = query::new(tsc3::language(), "(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type ])? (attributes (attribute) @attr)?)")!!;
+	defer query::delete(module_query);
+
+	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
+	defer query::delete(global_query);
+
+
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
@@ -217,10 +358,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 		switch (node.type())
 		{
 			case "module_declaration":
-				TSQuery* query = query::new(tsc3::language(), "(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type ])? (attributes (attribute) @attr)?)")!!;
-				defer query::delete(query);
-
-				query_cursor::@exec(query_cursor, query, node; TSQueryMatch* match)
+				query_cursor::@exec(query_cursor, module_query, node; TSQueryMatch* match)
 				{
 					current_mod = root;
 					// io::printfn("matched on %s", match.capture_count);
@@ -231,7 +369,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						uint len;
 						String text = capture.get_text(data);
 
-						switch (String match_name = ts::query_capture_name_for_id(query, capture.index, &len).str_view())
+						switch (String match_name = ts::query_capture_name_for_id(module_query, capture.index, &len).str_view())
 						{
 							case "path":
 								current_mod = current_mod.children.@get_or_set(text, module_create(alloc, current_mod, text.copy(alloc)));
@@ -260,10 +398,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				}
 				assert(current_mod.sections.len() != 0);
 
-				TSQuery* query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
-				defer query::delete(query);
-
-				query_cursor::@exec(query_cursor, query, node; TSQueryMatch* match)
+				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
 					Global glob = global(alloc);
 					foreach (i, capture : match.captures[:match.capture_count])
@@ -271,11 +406,11 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						uint len;
 						String text = capture.get_text(data);
 
-						switch (String match_name = ts::query_capture_name_for_id(query, capture.index, &len).str_view())
+						switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
 						{
 							case "decl_type":
 								// TODO: handle consts & extern functions
-								io::printfn("got decl of type '%s'", capture.node.type());
+								io::printfn("TODO: got decl of type '%s'", capture.node.type());
 							case "name":
 								glob.name = text.copy(alloc);
 							case "value":

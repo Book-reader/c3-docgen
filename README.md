@@ -6,7 +6,7 @@ usage:
 $ c3c run -- <output file> <list of input files (eg: ~/git/c3c/lib/std/**.c3)>
 ```
 
-`
+```
 So, for organization I'm thinking we need a lot of views:
 1. A view for a given module. Collect different @if variants and merge names. Contains types + constants + functions (no methods). Contains links to sub modules and a backref to the parent module. Includes private ones, placed separately further down.
 2. A view for a given type. Collect different @if variants. Contains fields + methods. Private methods are collected separately further down.
@@ -18,16 +18,16 @@ So if I click on "std::collections" then I could directly navigate to a sub modu
 IF I click on a type then I have (3) to jump to some other type.
 We need 2 index views for this I suppose
 But not necessarily
-`
+```
 
-`
+```
 also list type methods defined in other modules, but maybe show they came from a different module in some way
 
 to get type navigation working, I would need to resolve the generic params & imports recursively and look for the correct type.
 if there is a conflict then either use a local alias or prefer any manually imported type over something in std::core
 and I would have to do this for every single occurence of a type (but only per module section, because I can cache it there)
-`
+```
 
-`
-I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html
-`
+```
+I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html and https://docs.oracle.com/javase/8/docs/api/java/awt/Checkbox.html
+```
