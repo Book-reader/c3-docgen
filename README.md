@@ -27,3 +27,7 @@ to get type navigation working, I would need to resolve the generic params & imp
 if there is a conflict then either use a local alias or prefer any manually imported type over something in std::core
 and I would have to do this for every single occurence of a type (but only per module section, because I can cache it there)
 `
+
+`
+I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html
+`
