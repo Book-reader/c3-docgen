@@ -5,9 +5,9 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[index_of](#todo)|TODO|
-|[tconcat](#todo)|TODO|
-|[concat](#todo)|TODO|
-|[rindex_of](#todo)|TODO|
-|[contains](#todo)|TODO|
-|[slice2d](#todo)|TODO|
+|[array::index_of](#todo)|TODO|
+|[array::tconcat](#todo)|TODO|
+|[array::concat](#todo)|TODO|
+|[array::rindex_of](#todo)|TODO|
+|[array::contains](#todo)|TODO|
+|[array::slice2d](#todo)|TODO|

@@ -14,9 +14,9 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[read](#todo)|TODO|
-|[@extract](#todo)|TODO|
-|[decode](#todo)|TODO|
-|[write](#todo)|TODO|
-|[encode](#todo)|TODO|
-|[@enumcast](#todo)|TODO|
+|[qoi::read](#todo)|TODO|
+|[qoi::@extract](#todo)|TODO|
+|[qoi::decode](#todo)|TODO|
+|[qoi::write](#todo)|TODO|
+|[qoi::encode](#todo)|TODO|
+|[qoi::@enumcast](#todo)|TODO|

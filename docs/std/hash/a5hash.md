@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[a5hash::hash](#todo)|TODO|

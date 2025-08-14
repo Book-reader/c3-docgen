@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[metro128::hash](#todo)|TODO|

@@ -10,10 +10,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[exit](#todo)|TODO|
-|[sleep_ms](#todo)|TODO|
-|[fence](#todo)|TODO|
-|[sleep](#todo)|TODO|
-|[yield](#todo)|TODO|
-|[sleep_ns](#todo)|TODO|
-|[current](#todo)|TODO|
+|[thread::exit](#todo)|TODO|
+|[thread::sleep_ms](#todo)|TODO|
+|[thread::fence](#todo)|TODO|
+|[thread::sleep](#todo)|TODO|
+|[thread::yield](#todo)|TODO|
+|[thread::sleep_ns](#todo)|TODO|
+|[thread::current](#todo)|TODO|

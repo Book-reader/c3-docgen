@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[now](#todo)|TODO|
+|[clock::now](#todo)|TODO|

@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[symbolize_backtrace](#todo)|TODO|
+|[openbsd::symbolize_backtrace](#todo)|TODO|

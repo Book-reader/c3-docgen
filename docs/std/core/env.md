@@ -55,5 +55,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[os_is_posix](#todo)|TODO|
-|[os_is_darwin](#todo)|TODO|
+|[env::os_is_posix](#todo)|TODO|
+|[env::os_is_darwin](#todo)|TODO|

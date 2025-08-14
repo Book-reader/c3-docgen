@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[reverse](#todo)|TODO|
+|[bits::reverse](#todo)|TODO|
 |[bswap](#todo)|TODO|

@@ -3,23 +3,23 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[ortho_normalize](#todo)|TODO|
-|[ortho_normalized](#todo)|TODO|
+|[vector::ortho_normalize](#todo)|TODO|
+|[vector::ortho_normalized](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[transform3](#todo)|TODO|
-|[clamp_magnitude](#todo)|TODO|
-|[refract3](#todo)|TODO|
-|[towards](#todo)|TODO|
-|[unproject3](#todo)|TODO|
-|[ortho_normalize3](#todo)|TODO|
-|[transform2](#todo)|TODO|
-|[cross3](#todo)|TODO|
-|[angle3](#todo)|TODO|
-|[perpendicular3](#todo)|TODO|
-|[rotate_by_quat3](#todo)|TODO|
-|[rotate](#todo)|TODO|
-|[barycenter3](#todo)|TODO|
-|[rotate_axis_angle](#todo)|TODO|
+|[vector::transform3](#todo)|TODO|
+|[vector::clamp_magnitude](#todo)|TODO|
+|[vector::refract3](#todo)|TODO|
+|[vector::towards](#todo)|TODO|
+|[vector::unproject3](#todo)|TODO|
+|[vector::ortho_normalize3](#todo)|TODO|
+|[vector::transform2](#todo)|TODO|
+|[vector::cross3](#todo)|TODO|
+|[vector::angle3](#todo)|TODO|
+|[vector::perpendicular3](#todo)|TODO|
+|[vector::rotate_by_quat3](#todo)|TODO|
+|[vector::rotate](#todo)|TODO|
+|[vector::barycenter3](#todo)|TODO|
+|[vector::rotate_axis_angle](#todo)|TODO|

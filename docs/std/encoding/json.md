@@ -7,8 +7,8 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[lex_string](#todo)|TODO|
-|[tparse](#todo)|TODO|
-|[tparse_string](#todo)|TODO|
-|[parse_string](#todo)|TODO|
-|[parse](#todo)|TODO|
+|[json::lex_string](#todo)|TODO|
+|[json::tparse](#todo)|TODO|
+|[json::tparse_string](#todo)|TODO|
+|[json::parse_string](#todo)|TODO|
+|[json::parse](#todo)|TODO|

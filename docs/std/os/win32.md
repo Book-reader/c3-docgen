@@ -383,9 +383,9 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[setWindowLongPtr](#todo)|TODO|
-|[getWindowLongPtr](#todo)|TODO|
-|[symbolize_backtrace](#todo)|TODO|
-|[allocation_granularity](#todo)|TODO|
-|[resolve_backtrace](#todo)|TODO|
-|[load_modules](#todo)|TODO|
+|[win32::setWindowLongPtr](#todo)|TODO|
+|[win32::getWindowLongPtr](#todo)|TODO|
+|[win32::symbolize_backtrace](#todo)|TODO|
+|[win32::allocation_granularity](#todo)|TODO|
+|[win32::resolve_backtrace](#todo)|TODO|
+|[win32::load_modules](#todo)|TODO|

@@ -27,22 +27,22 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[poll_ms](#todo)|TODO|
-|[ipv6_from_str](#todo)|TODO|
-|[int_to_ipv4](#todo)|TODO|
-|[ipv4toint](#todo)|TODO|
-|[@loop_over_ai](#todo)|TODO|
-|[last_error_is_delayed_connect](#todo)|TODO|
-|[ipv4_from_str](#todo)|TODO|
-|[addrinfo](#todo)|TODO|
-|[new_socket](#todo)|TODO|
-|[poll](#todo)|TODO|
+|[net::poll_ms](#todo)|TODO|
+|[net::ipv6_from_str](#todo)|TODO|
+|[net::int_to_ipv4](#todo)|TODO|
+|[net::ipv4toint](#todo)|TODO|
+|[net::@loop_over_ai](#todo)|TODO|
+|[net::last_error_is_delayed_connect](#todo)|TODO|
+|[net::ipv4_from_str](#todo)|TODO|
+|[net::addrinfo](#todo)|TODO|
+|[net::new_socket](#todo)|TODO|
+|[net::poll](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[connect_async_from_addrinfo](#todo)|TODO|
-|[connect_with_timeout_from_addrinfo](#todo)|TODO|
-|[connect_from_addrinfo](#todo)|TODO|
-|[@network_loop_over_ai](#todo)|TODO|
-|[apply_sockoptions](#todo)|TODO|
+|[net::connect_async_from_addrinfo](#todo)|TODO|
+|[net::connect_with_timeout_from_addrinfo](#todo)|TODO|
+|[net::connect_from_addrinfo](#todo)|TODO|
+|[net::@network_loop_over_ai](#todo)|TODO|
+|[net::apply_sockoptions](#todo)|TODO|

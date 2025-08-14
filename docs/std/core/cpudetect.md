@@ -7,6 +7,6 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[add_feature_if_bit](#todo)|TODO|
-|[x86_initialize_cpu_features](#todo)|TODO|
-|[x86_cpuid](#todo)|TODO|
+|[cpudetect::add_feature_if_bit](#todo)|TODO|
+|[cpudetect::x86_initialize_cpu_features](#todo)|TODO|
+|[cpudetect::x86_cpuid](#todo)|TODO|

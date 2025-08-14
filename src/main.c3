@@ -390,11 +390,11 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 		n += fmt.printf("## Functions\n");
 		n += fmt.printf("|Name|Description|\n");
 		n += fmt.printf("|----|-----------|\n");
-		foreach (func_ : funcs.iter())
+		foreach (func_ : funcs.iter()) @pool()
 		{
 			Func* func = func_.value[0].first;
-			n += fmt.printf("|[%s](#todo)|%s|\n", func.name, "TODO");
-		}
+			n += fmt.printf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
+		};
 	}
 
 	// now print all the private things
@@ -419,11 +419,11 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 			n += fmt.printf("### Functions\n");
 			n += fmt.printf("|Name|Description|\n");
 			n += fmt.printf("|----|-----------|\n");
-			foreach (func_ : private_funcs.iter())
+			foreach (func_ : private_funcs.iter()) @pool()
 			{
 				Func* func = func_.value[0].first;
-				n += fmt.printf("|[%s](#todo)|%s|\n", func.name, "TODO");
-			}
+				n += fmt.printf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
+			};
 		}
 	}
 	return n;

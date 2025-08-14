@@ -3,7 +3,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[csort](#todo)|TODO|
+|[cs::csort](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

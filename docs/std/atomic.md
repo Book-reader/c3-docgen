@@ -5,25 +5,25 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[fetch_shift_left](#todo)|TODO|
-|[fetch_min](#todo)|TODO|
-|[@__atomic_compare_exchange_ordering_success](#todo)|TODO|
-|[@__atomic_compare_exchange_ordering_failure](#todo)|TODO|
-|[fetch_xor](#todo)|TODO|
-|[flag_set](#todo)|TODO|
-|[fetch_sub](#todo)|TODO|
-|[fetch_div](#todo)|TODO|
-|[flag_clear](#todo)|TODO|
-|[fetch_mul](#todo)|TODO|
-|[fetch_shift_right](#todo)|TODO|
-|[fetch_max](#todo)|TODO|
-|[__atomic_compare_exchange](#todo)|TODO|
-|[fetch_and](#todo)|TODO|
-|[is_native_atomic_type](#todo)|TODO|
-|[fetch_add](#todo)|TODO|
-|[fetch_or](#todo)|TODO|
+|[atomic::fetch_shift_left](#todo)|TODO|
+|[atomic::fetch_min](#todo)|TODO|
+|[atomic::@__atomic_compare_exchange_ordering_success](#todo)|TODO|
+|[atomic::@__atomic_compare_exchange_ordering_failure](#todo)|TODO|
+|[atomic::fetch_xor](#todo)|TODO|
+|[atomic::flag_set](#todo)|TODO|
+|[atomic::fetch_sub](#todo)|TODO|
+|[atomic::fetch_div](#todo)|TODO|
+|[atomic::flag_clear](#todo)|TODO|
+|[atomic::fetch_mul](#todo)|TODO|
+|[atomic::fetch_shift_right](#todo)|TODO|
+|[atomic::fetch_max](#todo)|TODO|
+|[atomic::__atomic_compare_exchange](#todo)|TODO|
+|[atomic::fetch_and](#todo)|TODO|
+|[atomic::is_native_atomic_type](#todo)|TODO|
+|[atomic::fetch_add](#todo)|TODO|
+|[atomic::fetch_or](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[@is_native_atomic_value](#todo)|TODO|
+|[atomic::@is_native_atomic_value](#todo)|TODO|

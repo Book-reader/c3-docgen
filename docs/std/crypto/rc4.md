@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[crypt](#todo)|TODO|
+|[rc4::crypt](#todo)|TODO|

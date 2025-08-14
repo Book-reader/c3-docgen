@@ -9,14 +9,14 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[perspective](#todo)|TODO|
-|[ortho](#todo)|TODO|
-|[look_at](#todo)|TODO|
+|[matrix::perspective](#todo)|TODO|
+|[matrix::ortho](#todo)|TODO|
+|[matrix::look_at](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[matrix_sub](#todo)|TODO|
-|[matrix_component_mul](#todo)|TODO|
-|[matrix_add](#todo)|TODO|
-|[matrix_look_at](#todo)|TODO|
+|[matrix::matrix_sub](#todo)|TODO|
+|[matrix::matrix_component_mul](#todo)|TODO|
+|[matrix::matrix_add](#todo)|TODO|
+|[matrix::matrix_look_at](#todo)|TODO|

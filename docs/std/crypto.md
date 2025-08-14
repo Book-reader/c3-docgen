@@ -7,4 +7,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[safe_compare](#todo)|TODO|
+|[crypto::safe_compare](#todo)|TODO|

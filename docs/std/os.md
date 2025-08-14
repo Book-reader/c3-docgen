@@ -16,6 +16,6 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[exit](#todo)|TODO|
-|[num_cpu](#todo)|TODO|
-|[fastexit](#todo)|TODO|
+|[os::exit](#todo)|TODO|
+|[os::num_cpu](#todo)|TODO|
+|[os::fastexit](#todo)|TODO|

@@ -8,4 +8,4 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[into_matrix](#todo)|TODO|
+|[quaternion::into_matrix](#todo)|TODO|

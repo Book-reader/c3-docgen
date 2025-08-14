@@ -3,13 +3,13 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[le](#todo)|TODO|
-|[@check](#todo)|TODO|
-|[@setup](#todo)|TODO|
-|[@error](#todo)|TODO|
-|[ge](#todo)|TODO|
-|[lt](#todo)|TODO|
-|[eq](#todo)|TODO|
-|[eq_approx](#todo)|TODO|
-|[ne](#todo)|TODO|
-|[gt](#todo)|TODO|
+|[test::le](#todo)|TODO|
+|[test::@check](#todo)|TODO|
+|[test::@setup](#todo)|TODO|
+|[test::@error](#todo)|TODO|
+|[test::ge](#todo)|TODO|
+|[test::lt](#todo)|TODO|
+|[test::eq](#todo)|TODO|
+|[test::eq_approx](#todo)|TODO|
+|[test::ne](#todo)|TODO|
+|[test::gt](#todo)|TODO|

@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[generate_from_random](#todo)|TODO|
-|[generate](#todo)|TODO|
+|[uuid::generate_from_random](#todo)|TODO|
+|[uuid::generate](#todo)|TODO|

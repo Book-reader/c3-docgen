@@ -3,6 +3,6 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[@partition](#todo)|TODO|
-|[qsort](#todo)|TODO|
-|[qselect](#todo)|TODO|
+|[qs::@partition](#todo)|TODO|
+|[qs::qsort](#todo)|TODO|
+|[qs::qselect](#todo)|TODO|

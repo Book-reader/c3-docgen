@@ -3,16 +3,16 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[tformat](#todo)|TODO|
-|[from_date_tz](#todo)|TODO|
-|[format](#todo)|TODO|
-|[from_time](#todo)|TODO|
-|[from_date](#todo)|TODO|
-|[now](#todo)|TODO|
-|[from_time_tz](#todo)|TODO|
+|[datetime::tformat](#todo)|TODO|
+|[datetime::from_date_tz](#todo)|TODO|
+|[datetime::format](#todo)|TODO|
+|[datetime::from_time](#todo)|TODO|
+|[datetime::from_date](#todo)|TODO|
+|[datetime::now](#todo)|TODO|
+|[datetime::from_time_tz](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[temp_numeric_tzsuffix_colon](#todo)|TODO|
-|[temp_numeric_tzsuffix](#todo)|TODO|
+|[datetime::temp_numeric_tzsuffix_colon](#todo)|TODO|
+|[datetime::temp_numeric_tzsuffix](#todo)|TODO|

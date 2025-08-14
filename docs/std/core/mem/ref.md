@@ -3,8 +3,8 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[new](#todo)|TODO|
-|[wrap](#todo)|TODO|
+|[ref::new](#todo)|TODO|
+|[ref::wrap](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

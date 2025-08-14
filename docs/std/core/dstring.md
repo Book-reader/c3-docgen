@@ -3,11 +3,11 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[temp_with_capacity](#todo)|TODO|
-|[new_with_capacity](#todo)|TODO|
-|[new](#todo)|TODO|
-|[temp](#todo)|TODO|
-|[join](#todo)|TODO|
+|[dstring::temp_with_capacity](#todo)|TODO|
+|[dstring::new_with_capacity](#todo)|TODO|
+|[dstring::new](#todo)|TODO|
+|[dstring::temp](#todo)|TODO|
+|[dstring::join](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
@@ -16,4 +16,4 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[out_string_append_fn](#todo)|TODO|
+|[dstring::out_string_append_fn](#todo)|TODO|

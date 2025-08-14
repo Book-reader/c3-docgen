@@ -10,19 +10,19 @@
 |----|-----------|
 |[set_benchmark_max_iterations](#todo)|TODO|
 |[set_benchmark_warmup_iterations](#todo)|TODO|
-|[test_collection_create](#todo)|TODO|
-|[cmp_test_unit](#todo)|TODO|
-|[wasm_initialize](#todo)|TODO|
-|[@enum_lookup_new](#todo)|TODO|
-|[default_test_runner](#todo)|TODO|
-|[default_benchmark_runner](#todo)|TODO|
-|[benchmark_collection_create](#todo)|TODO|
-|[@end_benchmark](#todo)|TODO|
-|[run_benchmarks](#todo)|TODO|
-|[@log_benchmark](#todo)|TODO|
-|[@start_benchmark](#todo)|TODO|
+|[runtime::test_collection_create](#todo)|TODO|
+|[runtime::cmp_test_unit](#todo)|TODO|
+|[runtime::wasm_initialize](#todo)|TODO|
+|[runtime::@enum_lookup_new](#todo)|TODO|
+|[runtime::default_test_runner](#todo)|TODO|
+|[runtime::default_benchmark_runner](#todo)|TODO|
+|[runtime::benchmark_collection_create](#todo)|TODO|
+|[runtime::@end_benchmark](#todo)|TODO|
+|[runtime::run_benchmarks](#todo)|TODO|
+|[runtime::@log_benchmark](#todo)|TODO|
+|[runtime::@start_benchmark](#todo)|TODO|
 |[set_benchmark_func_iterations](#todo)|TODO|
-|[@enum_lookup](#todo)|TODO|
+|[runtime::@enum_lookup](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
@@ -33,4 +33,4 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[run_tests](#todo)|TODO|
+|[runtime::run_tests](#todo)|TODO|

@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[komi::hash](#todo)|TODO|

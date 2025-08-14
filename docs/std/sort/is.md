@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[isort](#todo)|TODO|
+|[is::isort](#todo)|TODO|

@@ -8,4 +8,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[type_is_overaligned](#todo)|TODO|
+|[elastic_array::type_is_overaligned](#todo)|TODO|

@@ -17,13 +17,13 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[mutex_post_unlock](#todo)|TODO|
-|[mutex_post_divert](#todo)|TODO|
-|[mutex_pre_signal](#todo)|TODO|
-|[mutex_post_signal](#todo)|TODO|
-|[mutex_post_lock](#todo)|TODO|
-|[mutex_pre_unlock](#todo)|TODO|
-|[mutex_create](#todo)|TODO|
-|[mutex_destroy](#todo)|TODO|
-|[mutex_pre_divert](#todo)|TODO|
-|[mutex_pre_lock](#todo)|TODO|
+|[tsan::mutex_post_unlock](#todo)|TODO|
+|[tsan::mutex_post_divert](#todo)|TODO|
+|[tsan::mutex_pre_signal](#todo)|TODO|
+|[tsan::mutex_post_signal](#todo)|TODO|
+|[tsan::mutex_post_lock](#todo)|TODO|
+|[tsan::mutex_pre_unlock](#todo)|TODO|
+|[tsan::mutex_create](#todo)|TODO|
+|[tsan::mutex_destroy](#todo)|TODO|
+|[tsan::mutex_pre_divert](#todo)|TODO|
+|[tsan::mutex_pre_lock](#todo)|TODO|

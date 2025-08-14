@@ -3,10 +3,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[read](#todo)|TODO|
-|[@is_arrayptr_or_slice_of_char](#todo)|TODO|
-|[is_array_or_slice_of_char](#todo)|TODO|
-|[@is_array_or_slice_of_char](#todo)|TODO|
-|[is_bitorder](#todo)|TODO|
-|[write](#todo)|TODO|
-|[is_arrayptr_or_slice_of_char](#todo)|TODO|
+|[bitorder::read](#todo)|TODO|
+|[bitorder::@is_arrayptr_or_slice_of_char](#todo)|TODO|
+|[bitorder::is_array_or_slice_of_char](#todo)|TODO|
+|[bitorder::@is_array_or_slice_of_char](#todo)|TODO|
+|[bitorder::is_bitorder](#todo)|TODO|
+|[bitorder::write](#todo)|TODO|
+|[bitorder::is_arrayptr_or_slice_of_char](#todo)|TODO|

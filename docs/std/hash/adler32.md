@@ -3,7 +3,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[adler32::hash](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

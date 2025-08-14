@@ -3,8 +3,8 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[set_error_report_callback](#todo)|TODO|
-|[address_is_poisoned](#todo)|TODO|
-|[poison_memory_region](#todo)|TODO|
-|[region_is_poisoned](#todo)|TODO|
-|[unpoison_memory_region](#todo)|TODO|
+|[asan::set_error_report_callback](#todo)|TODO|
+|[asan::address_is_poisoned](#todo)|TODO|
+|[asan::poison_memory_region](#todo)|TODO|
+|[asan::region_is_poisoned](#todo)|TODO|
+|[asan::unpoison_memory_region](#todo)|TODO|

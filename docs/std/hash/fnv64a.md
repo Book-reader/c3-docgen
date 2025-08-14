@@ -3,7 +3,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[fnv64a::hash](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
@@ -13,4 +13,4 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[update](#todo)|TODO|
+|[fnv64a::update](#todo)|TODO|

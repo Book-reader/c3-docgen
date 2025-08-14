@@ -7,5 +7,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[execute_stdout_to_buffer](#todo)|TODO|
-|[create](#todo)|TODO|
+|[process::execute_stdout_to_buffer](#todo)|TODO|
+|[process::create](#todo)|TODO|

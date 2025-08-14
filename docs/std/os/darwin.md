@@ -41,5 +41,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[symbolize_backtrace](#todo)|TODO|
-|[executable_path](#todo)|TODO|
+|[darwin::symbolize_backtrace](#todo)|TODO|
+|[darwin::executable_path](#todo)|TODO|

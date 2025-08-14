@@ -4,5 +4,5 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[free_qitem](#todo)|TODO|
-|[process_work](#todo)|TODO|
+|[threadpool::free_qitem](#todo)|TODO|
+|[threadpool::process_work](#todo)|TODO|

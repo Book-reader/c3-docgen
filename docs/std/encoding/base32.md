@@ -14,14 +14,14 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[tencode](#todo)|TODO|
-|[decode_buffer](#todo)|TODO|
-|[decode_len](#todo)|TODO|
-|[encode_buffer](#todo)|TODO|
-|[encode_len](#todo)|TODO|
-|[decode](#todo)|TODO|
-|[encode](#todo)|TODO|
-|[tdecode](#todo)|TODO|
+|[base32::tencode](#todo)|TODO|
+|[base32::decode_buffer](#todo)|TODO|
+|[base32::decode_len](#todo)|TODO|
+|[base32::encode_buffer](#todo)|TODO|
+|[base32::encode_len](#todo)|TODO|
+|[base32::decode](#todo)|TODO|
+|[base32::encode](#todo)|TODO|
+|[base32::tdecode](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

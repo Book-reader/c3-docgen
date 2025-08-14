@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[default_allocator](#todo)|TODO|
+|[cf::default_allocator](#todo)|TODO|

@@ -63,14 +63,14 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[wSTOPSIG](#todo)|TODO|
-|[w_EXITCODE](#todo)|TODO|
-|[wEXITSTATUS](#todo)|TODO|
-|[w_STOPCODE](#todo)|TODO|
-|[backtrace](#todo)|TODO|
-|[wIFCONTINUED](#todo)|TODO|
-|[wTERMSIG](#todo)|TODO|
-|[wIFSTOPPED](#todo)|TODO|
-|[wIFSIGNALED](#todo)|TODO|
-|[wWCOREDUMP](#todo)|TODO|
-|[wIFEXITED](#todo)|TODO|
+|[posix::wSTOPSIG](#todo)|TODO|
+|[posix::w_EXITCODE](#todo)|TODO|
+|[posix::wEXITSTATUS](#todo)|TODO|
+|[posix::w_STOPCODE](#todo)|TODO|
+|[posix::backtrace](#todo)|TODO|
+|[posix::wIFCONTINUED](#todo)|TODO|
+|[posix::wTERMSIG](#todo)|TODO|
+|[posix::wIFSTOPPED](#todo)|TODO|
+|[posix::wIFSIGNALED](#todo)|TODO|
+|[posix::wWCOREDUMP](#todo)|TODO|
+|[posix::wIFEXITED](#todo)|TODO|

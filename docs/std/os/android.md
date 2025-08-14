@@ -3,4 +3,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[log_id_is_valid](#todo)|TODO|
+|[android::log_id_is_valid](#todo)|TODO|

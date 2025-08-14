@@ -39,4 +39,4 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[native_cpu](#todo)|TODO|
+|[cpu::native_cpu](#todo)|TODO|

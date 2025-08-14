@@ -10,11 +10,11 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[runtime_startup](#todo)|TODO|
-|[append_xxlizer](#todo)|TODO|
-|[runtime_finalize](#todo)|TODO|
-|[find_segment_section_body](#todo)|TODO|
-|[find_segment](#todo)|TODO|
-|[find_section](#todo)|TODO|
-|[name_cmp](#todo)|TODO|
-|[dl_reg_callback](#todo)|TODO|
+|[machoruntime::runtime_startup](#todo)|TODO|
+|[machoruntime::append_xxlizer](#todo)|TODO|
+|[machoruntime::runtime_finalize](#todo)|TODO|
+|[machoruntime::find_segment_section_body](#todo)|TODO|
+|[machoruntime::find_segment](#todo)|TODO|
+|[machoruntime::find_section](#todo)|TODO|
+|[machoruntime::name_cmp](#todo)|TODO|
+|[machoruntime::dl_reg_callback](#todo)|TODO|

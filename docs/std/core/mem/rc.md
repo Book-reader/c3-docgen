@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[release](#todo)|TODO|
-|[retain](#todo)|TODO|
+|[rc::release](#todo)|TODO|
+|[rc::retain](#todo)|TODO|

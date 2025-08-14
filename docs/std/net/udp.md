@@ -3,7 +3,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[connect_to](#todo)|TODO|
-|[connect](#todo)|TODO|
-|[connect_async](#todo)|TODO|
-|[connect_async_to](#todo)|TODO|
+|[udp::connect_to](#todo)|TODO|
+|[udp::connect](#todo)|TODO|
+|[udp::connect_async](#todo)|TODO|
+|[udp::connect_async_to](#todo)|TODO|

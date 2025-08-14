@@ -3,9 +3,9 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[class_by_name](#todo)|TODO|
-|[release](#todo)|TODO|
-|[alloc](#todo)|TODO|
-|[event_type_from](#todo)|TODO|
-|[class_get_list](#todo)|TODO|
-|[msg_send](#todo)|TODO|
+|[objc::class_by_name](#todo)|TODO|
+|[objc::release](#todo)|TODO|
+|[objc::alloc](#todo)|TODO|
+|[objc::event_type_from](#todo)|TODO|
+|[objc::class_get_list](#todo)|TODO|
+|[objc::msg_send](#todo)|TODO|

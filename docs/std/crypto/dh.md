@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[generate_secret](#todo)|TODO|
-|[public_key](#todo)|TODO|
+|[dh::generate_secret](#todo)|TODO|
+|[dh::public_key](#todo)|TODO|

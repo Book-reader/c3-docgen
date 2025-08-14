@@ -3,7 +3,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[crc64::hash](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

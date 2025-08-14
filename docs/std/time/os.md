@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[native_clock](#todo)|TODO|
-|[native_timestamp](#todo)|TODO|
+|[os::native_clock](#todo)|TODO|
+|[os::native_timestamp](#todo)|TODO|

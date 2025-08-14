@@ -24,10 +24,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[sec](#todo)|TODO|
-|[from_float](#todo)|TODO|
-|[ms](#todo)|TODO|
-|[hour](#todo)|TODO|
-|[now](#todo)|TODO|
-|[min](#todo)|TODO|
-|[us](#todo)|TODO|
+|[time::sec](#todo)|TODO|
+|[time::from_float](#todo)|TODO|
+|[time::ms](#todo)|TODO|
+|[time::hour](#todo)|TODO|
+|[time::now](#todo)|TODO|
+|[time::min](#todo)|TODO|
+|[time::us](#todo)|TODO|

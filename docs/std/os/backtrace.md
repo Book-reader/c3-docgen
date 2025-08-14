@@ -7,5 +7,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[capture_current](#todo)|TODO|
-|[symbolize_backtrace](#todo)|TODO|
+|[backtrace::capture_current](#todo)|TODO|
+|[backtrace::symbolize_backtrace](#todo)|TODO|

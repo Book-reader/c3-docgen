@@ -15,5 +15,5 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[rehash](#todo)|TODO|
-|[index_for](#todo)|TODO|
+|[map::rehash](#todo)|TODO|
+|[map::index_for](#todo)|TODO|

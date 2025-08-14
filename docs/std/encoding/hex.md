@@ -3,16 +3,16 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[tencode](#todo)|TODO|
-|[decode_buffer](#todo)|TODO|
-|[decode_bytes](#todo)|TODO|
-|[decode_len](#todo)|TODO|
-|[encode_buffer](#todo)|TODO|
-|[encode_bytes](#todo)|TODO|
-|[encode_len](#todo)|TODO|
-|[decode](#todo)|TODO|
-|[encode](#todo)|TODO|
-|[tdecode](#todo)|TODO|
+|[hex::tencode](#todo)|TODO|
+|[hex::decode_buffer](#todo)|TODO|
+|[hex::decode_bytes](#todo)|TODO|
+|[hex::decode_len](#todo)|TODO|
+|[hex::encode_buffer](#todo)|TODO|
+|[hex::encode_bytes](#todo)|TODO|
+|[hex::encode_len](#todo)|TODO|
+|[hex::decode](#todo)|TODO|
+|[hex::encode](#todo)|TODO|
+|[hex::tdecode](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

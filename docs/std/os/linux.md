@@ -8,5 +8,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[backtrace_line_parse](#todo)|TODO|
-|[symbolize_backtrace](#todo)|TODO|
+|[linux::backtrace_line_parse](#todo)|TODO|
+|[linux::symbolize_backtrace](#todo)|TODO|

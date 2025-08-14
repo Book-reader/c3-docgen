@@ -11,7 +11,7 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
+|[whirlpool::hash](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
@@ -20,4 +20,4 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[@w_op](#todo)|TODO|
+|[whirlpool::@w_op](#todo)|TODO|

@@ -3,10 +3,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[native_thread_current](#todo)|TODO|
-|[native_thread_yield](#todo)|TODO|
-|[native_sleep_nano](#todo)|TODO|
-|[native_thread_exit](#todo)|TODO|
+|[os::native_thread_current](#todo)|TODO|
+|[os::native_thread_yield](#todo)|TODO|
+|[os::native_sleep_nano](#todo)|TODO|
+|[os::native_thread_exit](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
@@ -15,5 +15,5 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[timedwait](#todo)|TODO|
-|[callback](#todo)|TODO|
+|[os::timedwait](#todo)|TODO|
+|[os::callback](#todo)|TODO|

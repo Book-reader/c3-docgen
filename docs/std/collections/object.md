@@ -9,11 +9,11 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[new_bool](#todo)|TODO|
-|[new_enum](#todo)|TODO|
-|[new_obj](#todo)|TODO|
-|[new_float](#todo)|TODO|
-|[new_null](#todo)|TODO|
-|[get_integer_value](#todo)|TODO|
-|[new_string](#todo)|TODO|
-|[new_int](#todo)|TODO|
+|[object::new_bool](#todo)|TODO|
+|[object::new_enum](#todo)|TODO|
+|[object::new_obj](#todo)|TODO|
+|[object::new_float](#todo)|TODO|
+|[object::new_null](#todo)|TODO|
+|[object::get_integer_value](#todo)|TODO|
+|[object::new_string](#todo)|TODO|
+|[object::new_int](#todo)|TODO|

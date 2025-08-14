@@ -11,5 +11,5 @@
 ### Functions
 |Name|Description|
 |----|-----------|
-|[unsigned_int_from_bitsize](#todo)|TODO|
-|[signed_int_from_bitsize](#todo)|TODO|
+|[cinterop::unsigned_int_from_bitsize](#todo)|TODO|
+|[cinterop::signed_int_from_bitsize](#todo)|TODO|

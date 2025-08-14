@@ -3,5 +3,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
-|[wyr3](#todo)|TODO|
+|[wyhash2::hash](#todo)|TODO|
+|[wyhash2::wyr3](#todo)|TODO|

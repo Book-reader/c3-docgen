@@ -313,5 +313,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[socket_error](#todo)|TODO|
-|[convert_error](#todo)|TODO|
+|[os::socket_error](#todo)|TODO|
+|[os::convert_error](#todo)|TODO|

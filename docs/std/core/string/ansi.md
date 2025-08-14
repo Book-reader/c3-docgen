@@ -3,10 +3,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[make_tcolor_rgb](#todo)|TODO|
-|[make_color_rgb](#todo)|TODO|
-|[make_tcolor](#todo)|TODO|
-|[color](#todo)|TODO|
-|[color_8bit](#todo)|TODO|
-|[make_color](#todo)|TODO|
-|[color_rgb](#todo)|TODO|
+|[ansi::make_tcolor_rgb](#todo)|TODO|
+|[ansi::make_color_rgb](#todo)|TODO|
+|[ansi::make_tcolor](#todo)|TODO|
+|[ansi::color](#todo)|TODO|
+|[ansi::color_8bit](#todo)|TODO|
+|[ansi::make_color](#todo)|TODO|
+|[ansi::color_rgb](#todo)|TODO|

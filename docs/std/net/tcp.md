@@ -3,10 +3,10 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[connect_to](#todo)|TODO|
-|[listen](#todo)|TODO|
-|[listen_to](#todo)|TODO|
-|[connect](#todo)|TODO|
-|[connect_async](#todo)|TODO|
-|[accept](#todo)|TODO|
-|[connect_async_to](#todo)|TODO|
+|[tcp::connect_to](#todo)|TODO|
+|[tcp::listen](#todo)|TODO|
+|[tcp::listen_to](#todo)|TODO|
+|[tcp::connect](#todo)|TODO|
+|[tcp::connect_async](#todo)|TODO|
+|[tcp::accept](#todo)|TODO|
+|[tcp::connect_async_to](#todo)|TODO|

@@ -3,11 +3,11 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[mmap_file](#todo)|TODO|
-|[protect](#todo)|TODO|
-|[aligned_alloc_size](#todo)|TODO|
-|[release](#todo)|TODO|
-|[alloc](#todo)|TODO|
-|[commit](#todo)|TODO|
-|[virtual_alloc](#todo)|TODO|
-|[decommit](#todo)|TODO|
+|[vm::mmap_file](#todo)|TODO|
+|[vm::protect](#todo)|TODO|
+|[vm::aligned_alloc_size](#todo)|TODO|
+|[vm::release](#todo)|TODO|
+|[vm::alloc](#todo)|TODO|
+|[vm::commit](#todo)|TODO|
+|[vm::virtual_alloc](#todo)|TODO|
+|[vm::decommit](#todo)|TODO|

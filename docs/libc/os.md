@@ -7,5 +7,5 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[errno_set](#todo)|TODO|
-|[errno](#todo)|TODO|
+|[os::errno_set](#todo)|TODO|
+|[os::errno](#todo)|TODO|

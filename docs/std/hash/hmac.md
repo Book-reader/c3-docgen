@@ -3,9 +3,9 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[hash](#todo)|TODO|
-|[pbkdf2](#todo)|TODO|
-|[@derive](#todo)|TODO|
+|[hmac::hash](#todo)|TODO|
+|[hmac::pbkdf2](#todo)|TODO|
+|[hmac::@derive](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|

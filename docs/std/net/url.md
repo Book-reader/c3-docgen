@@ -3,18 +3,18 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[tencode](#todo)|TODO|
-|[parse_query](#todo)|TODO|
-|[parse_query_to_temp](#todo)|TODO|
-|[tparse](#todo)|TODO|
-|[parse](#todo)|TODO|
-|[decode_len](#todo)|TODO|
-|[encode_len](#todo)|TODO|
-|[decode](#todo)|TODO|
-|[encode](#todo)|TODO|
-|[tdecode](#todo)|TODO|
+|[url::tencode](#todo)|TODO|
+|[url::parse_query](#todo)|TODO|
+|[url::parse_query_to_temp](#todo)|TODO|
+|[url::tparse](#todo)|TODO|
+|[url::parse](#todo)|TODO|
+|[url::decode_len](#todo)|TODO|
+|[url::encode_len](#todo)|TODO|
+|[url::decode](#todo)|TODO|
+|[url::encode](#todo)|TODO|
+|[url::tdecode](#todo)|TODO|
 ## Private
 ### Functions
 |Name|Description|
 |----|-----------|
-|[should_encode](#todo)|TODO|
+|[url::should_encode](#todo)|TODO|

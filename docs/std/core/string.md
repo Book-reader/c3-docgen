@@ -14,28 +14,28 @@
 ## Functions
 |Name|Description|
 |----|-----------|
-|[tfrom_wstring](#todo)|TODO|
-|[tfrom_struct](#todo)|TODO|
-|[from_utf16](#todo)|TODO|
-|[from_utf32](#todo)|TODO|
-|[from_struct](#todo)|TODO|
-|[tfrom_utf16](#todo)|TODO|
-|[tformat](#todo)|TODO|
-|[tformat_zstr](#todo)|TODO|
-|[char_in_set](#todo)|TODO|
-|[decfloat](#todo)|TODO|
-|[escape_len](#todo)|TODO|
+|[string::tfrom_wstring](#todo)|TODO|
+|[string::tfrom_struct](#todo)|TODO|
+|[string::from_utf16](#todo)|TODO|
+|[string::from_utf32](#todo)|TODO|
+|[string::from_struct](#todo)|TODO|
+|[string::tfrom_utf16](#todo)|TODO|
+|[string::tformat](#todo)|TODO|
+|[string::tformat_zstr](#todo)|TODO|
+|[string::char_in_set](#todo)|TODO|
+|[string::decfloat](#todo)|TODO|
+|[string::escape_len](#todo)|TODO|
 |[@char32](#todo)|TODO|
-|[from_wstring](#todo)|TODO|
+|[string::from_wstring](#todo)|TODO|
 |[@wstring](#todo)|TODO|
 |[@wstring32](#todo)|TODO|
 |[@sprintf](#todo)|TODO|
-|[format](#todo)|TODO|
-|[hexfloat](#todo)|TODO|
-|[needs_escape](#todo)|TODO|
+|[string::format](#todo)|TODO|
+|[string::hexfloat](#todo)|TODO|
+|[string::needs_escape](#todo)|TODO|
 |[@char16](#todo)|TODO|
-|[bformat](#todo)|TODO|
-|[join](#todo)|TODO|
+|[string::bformat](#todo)|TODO|
+|[string::join](#todo)|TODO|
 ## Private
 ### Globals
 |Name|Description|
