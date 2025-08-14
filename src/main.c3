@@ -51,10 +51,6 @@ fn int main(String[] args)
 			File out = file::open(mod_folder.tconcat("/index.html"), "wb")!!;
 			defer (void)out.close();
 			io::fprintf(&out, "%s", view.func(mod, alloc))!!;
-/*			foreach (section : mod.sections)
-			{
-				io::fprintf(&out, "### `module %s%s %s`\n", path_string, mod.generic_params, section.attributes)!!;
-			}*/
 		};
 	};
 
@@ -113,6 +109,7 @@ struct Global
 		bool extern_;
 	}
 	List {String} attributes;
+	String doc_comment;
 }
 
 struct Func
@@ -124,6 +121,9 @@ struct Func
 	bool macro_;
 	List {String} attributes;
 	List {Param} params;
+	String doc_comment;
+	// TODO:
+	// List {String} contracts
 }
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
@@ -400,18 +400,18 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 			b.h(2, "Globals");
 			b.@table({"Name", "Description"})
 			{
-				foreach (glob_ : globals.iter())
+				foreach (glob_ : globals.iter()) @pool()
 				{
 					b.@tr()
 					{
 						Global* glob = glob_.value[0].first;
 						b.@td()
 						{
-							b.url(glob.name, "#todo");
+							b.url(glob.name, string::tformat("%s#%s", self.get_folder_path(tmem, "", GLOBALS), glob_.key));
 						};
 						b.td("TODO");
 					};
-				}
+				};
 			};
 		}
 
@@ -450,7 +450,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						Func* func = func_.value[0].first;
 						b.@td()
 						{
-							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), "#todo");
+							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_folder_path(tmem, "", FUNCTIONS), func_.key));
 						};
 						b.td("TODO");
 					};
@@ -512,6 +512,51 @@ fn String Module.get_globals(&self, Allocator alloc)
 	{
 		self.gen_header(b, GLOBALS);
 		self.gen_module_title(b);
+
+		HashMap {String, GlobalAbomination} globals;
+		globals.init(tmem);
+		HashMap {String, GlobalAbomination} private_globals;
+		private_globals.init(tmem);
+		foreach (&sec : self.sections)
+		{
+			foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
+			{
+				if (!glob.attributes.contains("@private"))
+				{
+					GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					a.push({glob, sec});
+					globals[glob.name] = a;
+				}
+				else
+				{
+					GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					a.push({glob, sec});
+					private_globals[glob.name] = a;
+				}
+			}
+		}
+		if (globals.len() > 0)
+		{
+			b.h(1, "Public");
+			foreach (glob_ : globals.iter()) @pool()
+			{
+				b.h(2, glob_.key, string::tformat(`id="%s"`, glob_.key));
+				foreach (glob : glob_.value)
+				{
+					b.@pre()
+					{
+						b.@code()
+						{
+							if (glob.first.const_) b.@span(`style="color: red"`) { b.text("const "); };
+							if (glob.first.tlocal_) b.@span(`style="color: red"`) { b.text("tlocal "); };
+							if (glob.first.extern_) b.@span(`style="color: red"`) { b.text("extern "); };
+							if (glob.first.type.ptr) b.text("%s ", glob.first.type);
+							b.text("%s ", glob_.key);
+						};
+					};
+				}
+			};
+		}
 	};
 }
 fn String Module.get_types(&self, Allocator alloc)
@@ -528,6 +573,67 @@ fn String Module.get_functions(&self, Allocator alloc)
 	{
 		self.gen_header(b, FUNCTIONS);
 		self.gen_module_title(b);
+
+		HashMap {String, FuncAbomination} funcs;
+		funcs.init(tmem);
+		HashMap {String, FuncAbomination} private_funcs;
+		private_funcs.init(tmem);
+		foreach (&sec : self.sections)
+		{
+			foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
+			{
+				if (!func.attributes.contains("@private"))
+				{
+					FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					a.push({func, sec});
+					funcs[func.name] = a;
+				}
+				else
+				{
+					FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					a.push({func, sec});
+					private_funcs[func.name] = a;
+				}
+			}
+		}
+/*		if (funcs.len() > 0)
+		{
+			b.h(1, "Functions");
+			b.@table({"Name", "Description"})
+			{
+				foreach (func_ : funcs.iter()) @pool()
+				{
+					b.@tr()
+					{
+						Func* func = func_.value[0].first;
+						b.@td()
+						{
+							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_folder_path(tmem, "", GLOBALS), func_.key));
+						};
+						b.td("TODO");
+					};
+				};
+			};
+		}*/
+		if (funcs.len() > 0)
+		{
+			b.h(1, "Public");
+			foreach (func_ : funcs.iter()) @pool()
+			{
+				b.h(2, func_.key, string::tformat(`id="%s"`, func_.key));
+				foreach (func : func_.value)
+				{
+					b.@pre()
+					{
+						b.@code()
+						{
+							b.text("%s ", func_.key);
+						};
+					};
+				}
+			};
+		}
+
 	};
 }
 
@@ -578,7 +684,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 		// io::printfn("a: %s", node.type());
 		TSTreeCursor pos = cursor::copy(&cursor);
 		defer cursor::delete(&pos);
-		switch (node.type())
+		switch MAIN: (node.type())
 		{
 			case "module_declaration":
 				query_cursor::@exec(query_cursor, module_query, node; TSQueryMatch* match)
@@ -667,8 +773,8 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					}
 					current_mod.sections[^1].globals.push(glob);
 				};
-			case "func_definition":
 			case "macro_declaration":
+			case "func_definition":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
 				{

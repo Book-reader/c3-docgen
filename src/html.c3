@@ -104,6 +104,11 @@ macro HtmlBuilder.@td(&self, String...; @body()) => self.@elem("td", $vasplat)
 	@body();
 }
 
+macro HtmlBuilder.@pre(&self, String...; @body()) => self.@elem("pre", $vasplat)
+{
+	@body();
+}
+
 macro HtmlBuilder.text(&self, String s, ...) => (void)self.appendf(s, $vasplat);
 
 macro HtmlBuilder.spc(&self) => self.text("&nbsp");
