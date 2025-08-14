@@ -33,4 +33,5 @@ Should also have a global overview page that shows all root modules like std, li
 
 ```
 I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html and https://docs.oracle.com/javase/8/docs/api/java/awt/Checkbox.html
+but also stealing some ideas from https://docs.rs/tokio/latest/tokio/io/index.html
 ```

@@ -38,18 +38,18 @@ fn int main(String[] args)
 	{
 		@pool()
 		{
-			String mod_folder = mod.get_folder_path(tmem, root_folder);
-			String mod_file = mod.get_file_name(tmem);
-			io::printfn("%s :: %s :: %s", mod_folder, mod_file, mod.get_depth());
+			String mod_folder = mod.get_folder_path(tmem, root_folder, OVERVIEW);
+			// String mod_file = mod.get_file_path(tmem, root_folder, TYPES);
+			io::printfn("%s :: %s :: %s", mod_folder, ""/*mod_file*/, mod.get_depth());
 			// abort();
 			Path mod_folder_path = path::new(tmem, mod_folder)!!;
 			if (!path::exists(mod_folder_path))
 			{
 				path::mkdir(mod_folder_path, true)!!;
 			}
-			File out = file::open(mod_folder.tconcat(mod_file), "wb")!!;
+			File out = file::open(mod_folder.tconcat("/index.html"), "wb")!!;
 			defer (void)out.close();
-			io::fprintf(&out, "%s", mod)!!;
+			io::fprintf(&out, "%s", mod.get_overview(alloc))!!;
 /*			foreach (section : mod.sections)
 			{
 				io::fprintf(&out, "### `module %s%s %s`\n", path_string, mod.generic_params, section.attributes)!!;
@@ -60,7 +60,7 @@ fn int main(String[] args)
 	return 0;
 }
 
-struct Module (Printable)
+struct Module // (Printable)
 {
 	Module* parent; // eg pointer to "std"
 	String path; // eg "collections"
@@ -162,17 +162,18 @@ fn String Module.get_path_string(&self, Allocator alloc) => @pool()
 	return res.copy_str(alloc);
 }
 
-fn String Module.get_folder_path(&self, Allocator alloc, String prefix) => @pool()
+fn String Module.get_folder_path(&self, Allocator alloc, String prefix, ModuleView view) => @pool()
 {
 	DString res;
 	res.init(tmem);
-	Module* parent = self.parent;
+	Module* parent = self;
 	while (parent != null && parent.path.ptr != null)
 	{
 		res.insert_at(0, string::tformat("%s/", parent.path));
 		parent = parent.parent;
 	}
 	res.insert_at(0, string::tformat("%s/", prefix[^1] == '/' ? prefix[..^2] : prefix));
+	res.appendf(view.path);
 	return res.copy_str(alloc);
 }
 
@@ -210,15 +211,15 @@ fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* oth
 	Module* other_cursor = other;
 	while (other_cursor.get_depth() > self.get_depth())
 	{
-		other_cursor = other_cursor.parent;
 		to_climb.push(other_cursor.path);
+		other_cursor = other_cursor.parent;
 	}
 
 	while (self_cursor != other_cursor)
 	{
+		if (other_cursor.path.ptr) to_climb.push(other_cursor.path);
 		self_cursor = self_cursor.parent;
 		other_cursor = other_cursor.parent;
-		if (other_cursor.path.ptr) to_climb.push(other_cursor.path);
 	}
 
 	io::printfn("climbing: %s", to_climb);
@@ -230,12 +231,18 @@ fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* oth
 	return result.copy_str(alloc);
 }
 
-fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other) => @pool()
+enum ModuleView : (String path)
 {
-	return self.get_folder_path_relative_to(tmem, other).tconcat(other.get_file_name(tmem)).copy(alloc);
+	OVERVIEW = "",
+	GLOBALS = "globals",
+	TYPES = "types",
+	FUNCTIONS = "functions",
 }
 
-fn String Module.get_file_name(&self, Allocator alloc) => self.path.concat(alloc, ".md");
+fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
+{
+	return self.get_folder_path_relative_to(tmem, other).tconcat(view.path).copy(alloc);
+}
 
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 {
@@ -280,15 +287,18 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 }
 
-fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
+macro String link(Allocator alloc, String name, String path) => string::format(alloc, "<a href='%s'>%s</a>", path, name);
+
+fn String Module.get_overview(&self, Allocator alloc) => @pool()
 {
-	usz? n;
+	DString d;
+	d.tinit();
 
 	// the titlebar (TODO)
-	n += fmt.printf("## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)\n");
+	d.appendf("## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)\n");
 
 	// the module name heading
-	n += fmt.printf("# ");
+	d.appendf("<h1>");
 	if (self.parent != null && self.parent.path.ptr != null) @pool()
 	{
 		Module* parent = self.parent;
@@ -297,32 +307,32 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 
 	 	while (parent != null && parent.path.ptr != null) @pool()
 		{
-			buf.insert_at(0, string::tformat("[%s](%s)%s", parent.path, self.get_relative_path_to(tmem, parent), parent.parent == null ? "" : "::"));
+			buf.insert_at(0, string::tformat("%s%s", link(tmem, parent.path, self.get_relative_path_to(tmem, parent, OVERVIEW)), parent.parent == null ? "" : "::"));
 			parent = parent.parent;
 		};
-		n += fmt.printf("%s", buf.str_view());
+		d.appendf("%s", buf.str_view());
 	};
-	n += fmt.printf("`%s", self.path);
+	d.appendf("<code>%s", self.path);
 	if (self.generic_params.len() > 0)
 	{
-		n += fmt.printf(" {");
+		d.appendf(" {");
 		foreach (i, param : self.generic_params)
 		{
-			n += fmt.printf("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
+			d.appendf("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
 		}
-		n += fmt.printf("}");
+		d.appendf("}");
 	}
-	n += fmt.printf("`\n");
+	d.appendf("</code></h1><br/>");
 
 	// the submodules
 	if (self.children.len() != 0)
 	{
-		n += fmt.printf("## Submodules\n");
+		d.appendf("<h2>Submodules</h2><br/>");
 		self.@iter_children(; Module* child)
 		{
 			@pool()
 			{
-				n += fmt.printf("[%s](%s)\n", child.path, self.get_relative_path_to(tmem, child));
+				d.appendf("%s&nbsp", link(tmem, child.path, self.get_relative_path_to(tmem, child, OVERVIEW)));
 			};
 		};
 	}
@@ -352,13 +362,13 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 	}
 	if (globals.len() > 0)
 	{
-		n += fmt.printf("## Globals\n");
-		n += fmt.printf("|Name|Description|\n");
-		n += fmt.printf("|----|-----------|\n");
+		d.appendf("## Globals\n");
+		d.appendf("|Name|Description|\n");
+		d.appendf("|----|-----------|\n");
 		foreach (glob_ : globals.iter())
 		{
 			Global* glob = glob_.value[0].first;
-			n += fmt.printf("|[%s](#todo)|%s|\n", glob.name, "TODO");
+			d.appendf("|[%s](#todo)|%s|\n", glob.name, "TODO");
 		}
 	}
 
@@ -387,46 +397,46 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 	}
 	if (funcs.len() > 0)
 	{
-		n += fmt.printf("## Functions\n");
-		n += fmt.printf("|Name|Description|\n");
-		n += fmt.printf("|----|-----------|\n");
+		d.appendf("## Functions\n");
+		d.appendf("|Name|Description|\n");
+		d.appendf("|----|-----------|\n");
 		foreach (func_ : funcs.iter()) @pool()
 		{
 			Func* func = func_.value[0].first;
-			n += fmt.printf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
+			d.appendf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
 		};
 	}
 
 	// now print all the private things
 	if (private_funcs.len() > 0 || private_globals.len() > 0)
 	{
-		n += fmt.printf("## Private\n");
+		d.appendf("## Private\n");
 
 		if (private_globals.len() > 0)
 		{
-			n += fmt.printf("### Globals\n");
-			n += fmt.printf("|Name|Description|\n");
-			n += fmt.printf("|----|-----------|\n");
+			d.appendf("### Globals\n");
+			d.appendf("|Name|Description|\n");
+			d.appendf("|----|-----------|\n");
 			foreach (glob_ : private_globals.iter())
 			{
 				Global* glob = glob_.value[0].first;
-				n += fmt.printf("|[%s](#todo)|%s|\n", glob.name, "TODO");
+				d.appendf("|[%s](#todo)|%s|\n", glob.name, "TODO");
 			}
 		}
 
 		if (private_funcs.len() > 0)
 		{
-			n += fmt.printf("### Functions\n");
-			n += fmt.printf("|Name|Description|\n");
-			n += fmt.printf("|----|-----------|\n");
+			d.appendf("### Functions\n");
+			d.appendf("|Name|Description|\n");
+			d.appendf("|----|-----------|\n");
 			foreach (func_ : private_funcs.iter()) @pool()
 			{
 				Func* func = func_.value[0].first;
-				n += fmt.printf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
+				d.appendf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
 			};
 		}
 	}
-	return n;
+	return d.copy_str(alloc);
 }
 
 macro list_with(Allocator alloc, ...)
