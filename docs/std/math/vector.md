@@ -1,2 +1,1 @@
-[std](./../../std.md)::[math](./../math.md)::
-### `vector[]`
+# [std](./../../std.md)::[math](./../math.md)::`vector`

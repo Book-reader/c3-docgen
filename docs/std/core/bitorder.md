@@ -1,2 +1,1 @@
-[std](./../../std.md)::[core](./../core.md)::
-### `bitorder[]`
+# [std](./../../std.md)::[core](./../core.md)::`bitorder`

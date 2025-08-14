@@ -1,2 +1,1 @@
-[std](./../../std.md)::[thread](./../thread.md)::
-### `threadpool[]`
+# [std](./../../std.md)::[thread](./../thread.md)::`threadpool`

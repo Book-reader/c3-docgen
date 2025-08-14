@@ -1,2 +1,1 @@
-[std](./../../std.md)::[os](./../os.md)::
-### `netbsd[]`
+# [std](./../../std.md)::[os](./../os.md)::`netbsd`

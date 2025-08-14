@@ -1,3 +1,3 @@
-[std](./../std.md)::
-### `compression[]`
+# [std](./../std.md)::`compression`
+## Submodules
 [qoi](./compression/qoi.md)

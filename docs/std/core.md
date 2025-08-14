@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `core[]`
+# [std](./../std.md)::`core`
+## Submodules
 [values](./core/values.md)
 [types](./core/types.md)
 [test](./core/test.md)

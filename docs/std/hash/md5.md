@@ -1,2 +1,6 @@
-[std](./../../std.md)::[hash](./../hash.md)::
-### `md5[]`
+# [std](./../../std.md)::[hash](./../hash.md)::`md5`
+## Globals
+|Name|Description|
+|----|-----------|
+|[HASH_BYTES](#todo)|TODO|
+|[BLOCK_BYTES](#todo)|TODO|

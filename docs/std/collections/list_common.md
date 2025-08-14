@@ -1,2 +1,1 @@
-[std](./../../std.md)::[collections](./../collections.md)::
-### `list_common[]`
+# [std](./../../std.md)::[collections](./../collections.md)::`list_common`

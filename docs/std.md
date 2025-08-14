@@ -1,4 +1,5 @@
-### `std[]`
+# `std`
+## Submodules
 [time](./std/time.md)
 [thread](./std/thread.md)
 [sort](./std/sort.md)

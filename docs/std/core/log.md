@@ -1,2 +1,31 @@
-[std](./../../std.md)::[core](./../core.md)::
-### `log[]`
+# [std](./../../std.md)::[core](./../core.md)::`log`
+## Globals
+|Name|Description|
+|----|-----------|
+|[CATEGORY_VIDEO](#todo)|TODO|
+|[CATEGORY_AUDIO](#todo)|TODO|
+|[CATEGORY_INPUT](#todo)|TODO|
+|[CATEGORY_SYSTEM](#todo)|TODO|
+|[log_init](#todo)|TODO|
+|[CATEGORY_NETWORK](#todo)|TODO|
+|[config_priorities](#todo)|TODO|
+|[CATEGORY_CRASH](#todo)|TODO|
+|[category_names](#todo)|TODO|
+|[CATEGORY_SOCKET](#todo)|TODO|
+|[CATEGORY_KERNEL](#todo)|TODO|
+|[CATEGORY_APPLICATION](#todo)|TODO|
+|[current_logger](#todo)|TODO|
+|[current_tag](#todo)|TODO|
+|[CATEGORY_STATS](#todo)|TODO|
+|[current_logfn](#todo)|TODO|
+|[stderr_logger](#todo)|TODO|
+|[logger_mutex](#todo)|TODO|
+|[null_logger](#todo)|TODO|
+|[CATEGORY_CUSTOM_START](#todo)|TODO|
+|[default_category](#todo)|TODO|
+|[CATEGORY_ASSERT](#todo)|TODO|
+|[CATEGORY_RENDER](#todo)|TODO|
+|[CATEGORY_TEST](#todo)|TODO|
+|[FULL_LOG](#todo)|TODO|
+|[CATEGORY_ERROR](#todo)|TODO|
+|[CATEGORY_SECURITY](#todo)|TODO|

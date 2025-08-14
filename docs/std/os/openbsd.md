@@ -1,2 +1,1 @@
-[std](./../../std.md)::[os](./../os.md)::
-### `openbsd[]`
+# [std](./../../std.md)::[os](./../os.md)::`openbsd`

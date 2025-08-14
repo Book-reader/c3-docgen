@@ -1,2 +1,1 @@
-[std](./../../std.md)::[net](./../net.md)::
-### `tcp[]`
+# [std](./../../std.md)::[net](./../net.md)::`tcp`

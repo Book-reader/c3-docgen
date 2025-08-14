@@ -1,2 +1,1 @@
-[std](./../../std.md)::[os](./../os.md)::
-### `freebsd[]`
+# [std](./../../std.md)::[os](./../os.md)::`freebsd`

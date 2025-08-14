@@ -1,2 +1,1 @@
-[std](./../../../std.md)::[os](./../../os.md)::[macos](./../macos.md)::
-### `cf[]`
+# [std](./../../../std.md)::[os](./../../os.md)::[macos](./../macos.md)::`cf`

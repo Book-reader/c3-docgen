@@ -1,2 +1,1 @@
-[std](./../../std.md)::[core](./../core.md)::
-### `test[]`
+# [std](./../../std.md)::[core](./../core.md)::`test`

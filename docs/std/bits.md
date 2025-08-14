@@ -1,2 +1,1 @@
-[std](./../std.md)::
-### `bits[]`
+# [std](./../std.md)::`bits`

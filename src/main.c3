@@ -263,6 +263,7 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 	// assert(self.path.ptr);
 	// assert(self.parent);
 	usz? n;
+	n += fmt.printf("# ");
 	if (self.parent != null && self.parent.path.ptr != null) @pool()
 	{
 		Module* parent = self.parent;
@@ -274,22 +275,90 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 			buf.insert_at(0, string::tformat("[%s](%s)%s", parent.path, self.get_relative_path_to(tmem, parent), parent.parent == null ? "" : "::"));
 			parent = parent.parent;
 		};
-		n += fmt.printf("%s\n", buf.str_view());
+		n += fmt.printf("%s", buf.str_view());
 	};
 
-	n += fmt.printf("### `%s%s`\n", self.path, self.generic_params);
-
-	if (self.children.len() != 0) self.@iter_children(; Module* child)
+	n += fmt.printf("`%s", self.path);
+	if (self.generic_params.len() > 0)
 	{
-		@pool()
+		n += fmt.printf(" {");
+		foreach (i, param : self.generic_params)
 		{
-			n += fmt.printf("[%s](%s)\n", child.path, self.get_relative_path_to(tmem, child));
-		};
-	};
+			n += fmt.printf("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
+		}
+		n += fmt.printf("}");
+	}
+	n += fmt.printf("`\n");
 
-	// foreach (c)
+	if (self.children.len() != 0)
+	{
+		n += fmt.printf("## Submodules\n");
+		self.@iter_children(; Module* child)
+		{
+			@pool()
+			{
+				n += fmt.printf("[%s](%s)\n", child.path, self.get_relative_path_to(tmem, child));
+			};
+		};
+	}
+
+	HashMap {String, GlobalAbomination} globals;
+	globals.init(tmem);
+	foreach (&sec : self.sections)
+	{
+		foreach (&glob : sec.globals)
+		{
+			if (!glob.attributes.contains("@private") || !glob.attributes.contains("@local"))
+			{
+				GlobalAbomination a = globals.@get_or_set(glob.name, /*list_with(alloc, {glob, (List {ModuleSection*}){}.init(tmem)})*/*(GlobalAbomination){}.init(tmem));
+				a.push({glob, sec});
+				globals[glob.name] = a;
+/*				if (!globals.has_key(glob.name))
+				{
+					globals[glob.name] = {glob, list_with(tmem, sec)};
+				}
+				else
+				{
+					globals[glob.name]!!.second.push(sec);
+				}*/
+			}
+		}
+	}
+
+	// n += fmt.printf("|[a](##Globals)|b|c|");
+
+	if (globals.len() > 0)
+	{
+		n += fmt.printf("## Globals\n");
+		/*n += fmt.printf("|Type|Name|Attributes|Comment|\n");
+		n += fmt.printf("|----|----|----------|-------|\n");
+		foreach (glob_ : globals.iter())
+		{
+			Global* glob = glob_.value[0].first;
+			n += fmt.printf("|%s%s%s%s|%s|%s|%s|\n", glob.extern_ ? "extern " : "", glob.tlocal_ ? "tlocal " : "", glob.const_ ? "const " : "", glob.type, glob.name, "TODO", "TODO");
+		}*/
+		n += fmt.printf("|Name|Description|\n");
+		n += fmt.printf("|----|-----------|\n");
+		foreach (glob_ : globals.iter())
+		{
+			Global* glob = glob_.value[0].first;
+			n += fmt.printf("|[%s](#todo)|%s|\n", glob.name, "TODO");
+		}
+	}
 	return n;
 }
+
+macro list_with(Allocator alloc, ...)
+{
+	List {$typeof($vaarg[0])} l;
+	l.init(alloc);
+	$for var $i = 0; $i < $vacount; $i++:
+		l.push($vaarg[$i]);
+	$endfor
+	return l;
+}
+
+alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
 
 /*usz depth = 0;
 fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
@@ -342,7 +411,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQueryCursor* query_cursor = query_cursor::new();
 	defer query_cursor::delete(query_cursor);
 
-	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type ","]*)? (attributes (attribute) @attr)?)`)!!;
+	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
 	defer query::delete(module_query);
 
 	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
@@ -419,7 +488,17 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						{
 							case "decl_type":
 								// TODO: handle consts & extern functions
-								io::printfn("TODO: got decl of type '%s'", capture.node.type());
+								// io::printfn("TODO: got decl of type '%s'", capture.node.type());
+								switch (String type = capture.node.type())
+								{
+									case "declaration":
+										break;
+									case "const_declaration":
+									case "function_declaration": // TODO: handle as regular function
+										glob.const_ = true;
+									default:
+										unreachable("unexpected global type '%s'", type);
+								}
 							case "name":
 								glob.name = text.copy(alloc);
 							case "value":

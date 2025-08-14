@@ -1,2 +1,1 @@
-[std](./../../std.md)::[atomic](./../atomic.md)::
-### `types[Type]`
+# [std](./../../std.md)::[atomic](./../atomic.md)::`types {Type}`

@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `collections[]`
+# [std](./../std.md)::`collections`
+## Submodules
 [tuple](./collections/tuple.md)
 [triple](./collections/triple.md)
 [set](./collections/set.md)

@@ -1,3 +1,39 @@
-[std](./../../std.md)::[os](./../os.md)::
-### `darwin[]`
+# [std](./../../std.md)::[os](./../os.md)::`darwin`
+## Submodules
 [cocoa](./darwin/cocoa.md)
+## Globals
+|Name|Description|
+|----|-----------|
+|[CTL_VFS](#todo)|TODO|
+|[HW_MACHINE](#todo)|TODO|
+|[HW_DISKNAMES](#todo)|TODO|
+|[HW_PHYSMEM](#todo)|TODO|
+|[HW_MACHINE_ARCH](#todo)|TODO|
+|[HW_L1ICACHESIZE](#todo)|TODO|
+|[HW_PAGESIZE](#todo)|TODO|
+|[CTL_MACHDEP](#todo)|TODO|
+|[HW_USERMEM](#todo)|TODO|
+|[CTL_NET](#todo)|TODO|
+|[HW_BYTEORDER](#todo)|TODO|
+|[HW_NCPU](#todo)|TODO|
+|[HW_MODEL](#todo)|TODO|
+|[CTL_HW](#todo)|TODO|
+|[CTL_KERN](#todo)|TODO|
+|[HW_DISKSTATS](#todo)|TODO|
+|[HW_L3CACHESIZE](#todo)|TODO|
+|[HW_CPU_FREQ](#todo)|TODO|
+|[HW_L1DCACHESIZE](#todo)|TODO|
+|[HW_CACHELINE](#todo)|TODO|
+|[HW_L2SETTINGS](#todo)|TODO|
+|[HW_FLOATINGPT](#todo)|TODO|
+|[CTL_VM](#todo)|TODO|
+|[CTL_MAXID](#todo)|TODO|
+|[CTL_USER](#todo)|TODO|
+|[HW_L2CACHESIZE](#todo)|TODO|
+|[HW_L3SETTINGS](#todo)|TODO|
+|[CTL_UNSPEC](#todo)|TODO|
+|[HW_MAXID](#todo)|TODO|
+|[CTL_DEBUG](#todo)|TODO|
+|[HW_EPOCH](#todo)|TODO|
+|[HW_BUS_FREQ](#todo)|TODO|
+|[HW_VECTORUNIT](#todo)|TODO|

@@ -1,2 +1,1 @@
-[std](./../../std.md)::[net](./../net.md)::
-### `url[]`
+# [std](./../../std.md)::[net](./../net.md)::`url`

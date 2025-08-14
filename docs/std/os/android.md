@@ -1,2 +1,1 @@
-[std](./../../std.md)::[os](./../os.md)::
-### `android[]`
+# [std](./../../std.md)::[os](./../os.md)::`android`

@@ -1,2 +1,1 @@
-[std](./../../std.md)::[time](./../time.md)::
-### `clock[]`
+# [std](./../../std.md)::[time](./../time.md)::`clock`

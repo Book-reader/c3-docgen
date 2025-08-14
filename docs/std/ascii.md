@@ -1,2 +1,1 @@
-[std](./../std.md)::
-### `ascii[]`
+# [std](./../std.md)::`ascii`

@@ -1,2 +1,1 @@
-[std](./../../std.md)::[net](./../net.md)::
-### `udp[]`
+# [std](./../../std.md)::[net](./../net.md)::`udp`

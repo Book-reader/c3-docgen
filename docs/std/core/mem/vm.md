@@ -1,2 +1,1 @@
-[std](./../../../std.md)::[core](./../../core.md)::[mem](./../mem.md)::
-### `vm[]`
+# [std](./../../../std.md)::[core](./../../core.md)::[mem](./../mem.md)::`vm`

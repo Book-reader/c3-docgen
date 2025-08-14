@@ -1,2 +1,1 @@
-[std](./../../std.md)::[thread](./../thread.md)::
-### `channel[Type]`
+# [std](./../../std.md)::[thread](./../thread.md)::`channel {Type}`

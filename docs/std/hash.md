@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `hash[]`
+# [std](./../std.md)::`hash`
+## Submodules
 [wyhash2](./hash/wyhash2.md)
 [whirlpool](./hash/whirlpool.md)
 [siphash48_128](./hash/siphash48_128.md)

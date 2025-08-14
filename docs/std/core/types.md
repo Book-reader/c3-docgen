@@ -1,2 +1,1 @@
-[std](./../../std.md)::[core](./../core.md)::
-### `types[]`
+# [std](./../../std.md)::[core](./../core.md)::`types`

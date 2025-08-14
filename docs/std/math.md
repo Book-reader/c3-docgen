@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `math[]`
+# [std](./../std.md)::`math`
+## Submodules
 [vector](./math/vector.md)
 [uuid](./math/uuid.md)
 [random](./math/random.md)
@@ -10,3 +10,52 @@
 [easing](./math/easing.md)
 [complex](./math/complex.md)
 [bigint](./math/bigint.md)
+## Globals
+|Name|Description|
+|----|-----------|
+|[DIV_2_SQRTPI](#todo)|TODO|
+|[DOUBLE_MIN](#todo)|TODO|
+|[DIV_2_PI](#todo)|TODO|
+|[HALF_MANT_DIG](#todo)|TODO|
+|[HALF_MAX](#todo)|TODO|
+|[DOUBLE_EPSILON](#todo)|TODO|
+|[FLOAT_DIG](#todo)|TODO|
+|[DOUBLE_MIN_EXP](#todo)|TODO|
+|[DOUBLE_MAX_EXP](#todo)|TODO|
+|[FLOAT_MAX](#todo)|TODO|
+|[SQRT2](#todo)|TODO|
+|[DOUBLE_DENORM_MIN](#todo)|TODO|
+|[FLOAT_MIN_10_EXP](#todo)|TODO|
+|[HALF_MIN_10_EXP](#todo)|TODO|
+|[DIV_PI](#todo)|TODO|
+|[LOG10E](#todo)|TODO|
+|[HALF_MAX_EXP](#todo)|TODO|
+|[DOUBLE_DEC_DIGITS](#todo)|TODO|
+|[FLOAT_MIN](#todo)|TODO|
+|[HALF_MIN](#todo)|TODO|
+|[HALF_MAX_10_EXP](#todo)|TODO|
+|[FLOAT_DENORM_MIN](#todo)|TODO|
+|[PI](#todo)|TODO|
+|[E](#todo)|TODO|
+|[DIV_1_SQRT2](#todo)|TODO|
+|[LN10](#todo)|TODO|
+|[PI_4](#todo)|TODO|
+|[HALF_DIG](#todo)|TODO|
+|[DOUBLE_DIG](#todo)|TODO|
+|[FLOAT_EPSILON](#todo)|TODO|
+|[FLOAT_MAX_10_EXP](#todo)|TODO|
+|[FLOAT_MIN_EXP](#todo)|TODO|
+|[HALF_DENORM_MIN](#todo)|TODO|
+|[DOUBLE_MAX_10_EXP](#todo)|TODO|
+|[FLOAT_DEC_DIGITS](#todo)|TODO|
+|[DOUBLE_MANT_DIG](#todo)|TODO|
+|[FLOAT_MAX_EXP](#todo)|TODO|
+|[LOG2E](#todo)|TODO|
+|[HALF_DEC_DIGITS](#todo)|TODO|
+|[HALF_EPSILON](#todo)|TODO|
+|[FLOAT_MANT_DIG](#todo)|TODO|
+|[DOUBLE_MIN_10_EXP](#todo)|TODO|
+|[PI_2](#todo)|TODO|
+|[LN2](#todo)|TODO|
+|[HALF_MIN_EXP](#todo)|TODO|
+|[DOUBLE_MAX](#todo)|TODO|

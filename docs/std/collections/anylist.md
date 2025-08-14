@@ -1,2 +1,1 @@
-[std](./../../std.md)::[collections](./../collections.md)::
-### `anylist[]`
+# [std](./../../std.md)::[collections](./../collections.md)::`anylist`

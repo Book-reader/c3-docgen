@@ -1,2 +1,1 @@
-[std](./../../std.md)::[math](./../math.md)::
-### `uuid[]`
+# [std](./../../std.md)::[math](./../math.md)::`uuid`

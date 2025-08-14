@@ -1,2 +1,1 @@
-[std](./../../std.md)::[collections](./../collections.md)::
-### `ringbuffer[Type]`
+# [std](./../../std.md)::[collections](./../collections.md)::`ringbuffer {Type}`

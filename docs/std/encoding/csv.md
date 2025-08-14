@@ -1,2 +1,1 @@
-[std](./../../std.md)::[encoding](./../encoding.md)::
-### `csv[]`
+# [std](./../../std.md)::[encoding](./../encoding.md)::`csv`

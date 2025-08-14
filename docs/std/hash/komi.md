@@ -1,2 +1,1 @@
-[std](./../../std.md)::[hash](./../hash.md)::
-### `komi[]`
+# [std](./../../std.md)::[hash](./../hash.md)::`komi`

@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `encoding[]`
+# [std](./../std.md)::`encoding`
+## Submodules
 [json](./encoding/json.md)
 [hex](./encoding/hex.md)
 [csv](./encoding/csv.md)

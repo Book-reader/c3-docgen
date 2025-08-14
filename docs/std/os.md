@@ -1,5 +1,5 @@
-[std](./../std.md)::
-### `os[]`
+# [std](./../std.md)::`os`
+## Submodules
 [win32](./os/win32.md)
 [process](./os/process.md)
 [posix](./os/posix.md)

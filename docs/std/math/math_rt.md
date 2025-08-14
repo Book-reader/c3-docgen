@@ -1,2 +1,1 @@
-[std](./../../std.md)::[math](./../math.md)::
-### `math_rt[]`
+# [std](./../../std.md)::[math](./../math.md)::`math_rt`

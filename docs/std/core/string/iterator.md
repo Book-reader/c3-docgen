@@ -1,2 +1,1 @@
-[std](./../../../std.md)::[core](./../../core.md)::[string](./../string.md)::
-### `iterator[]`
+# [std](./../../../std.md)::[core](./../../core.md)::[string](./../string.md)::`iterator`

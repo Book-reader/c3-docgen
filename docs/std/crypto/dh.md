@@ -1,2 +1,1 @@
-[std](./../../std.md)::[crypto](./../crypto.md)::
-### `dh[]`
+# [std](./../../std.md)::[crypto](./../crypto.md)::`dh`

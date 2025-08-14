@@ -1,2 +1,1 @@
-[std](./../../std.md)::[time](./../time.md)::
-### `datetime[]`
+# [std](./../../std.md)::[time](./../time.md)::`datetime`

@@ -1,2 +1,1 @@
-[std](./../../std.md)::[hash](./../hash.md)::
-### `a5hash[]`
+# [std](./../../std.md)::[hash](./../hash.md)::`a5hash`

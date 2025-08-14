@@ -1,3 +1,3 @@
-[std](./../std.md)::
-### `atomic[]`
+# [std](./../std.md)::`atomic`
+## Submodules
 [types](./atomic/types.md)
