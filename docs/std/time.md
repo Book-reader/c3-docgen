@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../std.md)::`time`
 ## Submodules
 [os](./time/os.md)
@@ -20,3 +21,13 @@
 |[FOREVER](#todo)|TODO|
 |[DAY](#todo)|TODO|
 |[DURATION_ZERO](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[sec](#todo)|TODO|
+|[from_float](#todo)|TODO|
+|[ms](#todo)|TODO|
+|[hour](#todo)|TODO|
+|[now](#todo)|TODO|
+|[min](#todo)|TODO|
+|[us](#todo)|TODO|

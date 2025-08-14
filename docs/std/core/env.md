@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[core](./../core.md)::`env`
 ## Globals
 |Name|Description|
@@ -51,3 +52,8 @@
 |[REGISTER_SIZE](#todo)|TODO|
 |[LANGUAGE_DEV_VERSION](#todo)|TODO|
 |[BIG_ENDIAN](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[os_is_posix](#todo)|TODO|
+|[os_is_darwin](#todo)|TODO|

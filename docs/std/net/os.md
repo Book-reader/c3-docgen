@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[net](./../net.md)::`os`
 ## Globals
 |Name|Description|
@@ -309,3 +310,8 @@
 |[AI_V4MAPPED](#todo)|TODO|
 |[POLLREMOVE](#todo)|TODO|
 |[SO_BINDANY](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[socket_error](#todo)|TODO|
+|[convert_error](#todo)|TODO|

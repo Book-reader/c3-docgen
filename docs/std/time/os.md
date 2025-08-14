@@ -1,6 +1,7 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[time](./../time.md)::`os`
-## Globals
+## Functions
 |Name|Description|
 |----|-----------|
-|[WINDOWS_TICK_US](#todo)|TODO|
-|[WIN_TO_UNIX_EPOCH_US](#todo)|TODO|
+|[native_clock](#todo)|TODO|
+|[native_timestamp](#todo)|TODO|

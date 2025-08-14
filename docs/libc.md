@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # `libc`
 ## Submodules
 [termios](./libc/termios.md)
@@ -13,7 +14,6 @@
 |[SIGTSTP](#todo)|TODO|
 |[__stdin](#todo)|TODO|
 |[RTLD_NODELETE](#todo)|TODO|
-|[BSD_FLAVOR_SIG](#todo)|TODO|
 |[S_IFCHR](#todo)|TODO|
 |[SIGALRM](#todo)|TODO|
 |[__stdoutp](#todo)|TODO|
@@ -80,3 +80,40 @@
 |[FOPEN_MAX](#todo)|TODO|
 |[FILENAME_MAX](#todo)|TODO|
 |[BUFSIZ](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[read](#todo)|TODO|
+|[puts](#todo)|TODO|
+|[realloc](#todo)|TODO|
+|[libc_S_ISTYPE](#todo)|TODO|
+|[stdout](#todo)|TODO|
+|[stderr](#todo)|TODO|
+|[fgets](#todo)|TODO|
+|[feof](#todo)|TODO|
+|[memmove](#todo)|TODO|
+|[fseek](#todo)|TODO|
+|[fputc](#todo)|TODO|
+|[errno_set](#todo)|TODO|
+|[calloc](#todo)|TODO|
+|[fflush](#todo)|TODO|
+|[write](#todo)|TODO|
+|[fopen](#todo)|TODO|
+|[stdin](#todo)|TODO|
+|[putc](#todo)|TODO|
+|[memcpy](#todo)|TODO|
+|[setjmp](#todo)|TODO|
+|[localtime_r](#todo)|TODO|
+|[malloc_size](#todo)|TODO|
+|[fclose](#todo)|TODO|
+|[putchar](#todo)|TODO|
+|[longjmp](#todo)|TODO|
+|[free](#todo)|TODO|
+|[errno](#todo)|TODO|
+|[fread](#todo)|TODO|
+|[malloc](#todo)|TODO|
+|[freopen](#todo)|TODO|
+|[gmtime_r](#todo)|TODO|
+|[memset](#todo)|TODO|
+|[fgetc](#todo)|TODO|
+|[fwrite](#todo)|TODO|

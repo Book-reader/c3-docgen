@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [libc](./../libc.md)::`termios`
 ## Globals
 |Name|Description|
@@ -108,3 +109,20 @@
 |[PARMRK](#todo)|TODO|
 |[VERASE](#todo)|TODO|
 |[B38400](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[tcsetattr](#todo)|TODO|
+|[tcdrain](#todo)|TODO|
+|[cfgetispeed](#todo)|TODO|
+|[drain](#todo)|TODO|
+|[tcflow](#todo)|TODO|
+|[cfsetispeed](#todo)|TODO|
+|[flow](#todo)|TODO|
+|[tcgetattr](#todo)|TODO|
+|[tcflush](#todo)|TODO|
+|[cfsetospeed](#todo)|TODO|
+|[flush](#todo)|TODO|
+|[sendBreak](#todo)|TODO|
+|[tcsendbreak](#todo)|TODO|
+|[cfgetospeed](#todo)|TODO|

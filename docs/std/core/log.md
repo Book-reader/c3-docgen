@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[core](./../core.md)::`log`
 ## Globals
 |Name|Description|
@@ -29,3 +30,24 @@
 |[FULL_LOG](#todo)|TODO|
 |[CATEGORY_ERROR](#todo)|TODO|
 |[CATEGORY_SECURITY](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[warn](#todo)|TODO|
+|[push_tag](#todo)|TODO|
+|[@category_scope](#todo)|TODO|
+|[get_category_name](#todo)|TODO|
+|[set_category_name](#todo)|TODO|
+|[set_logger](#todo)|TODO|
+|[debug](#todo)|TODO|
+|[init](#todo)|TODO|
+|[@tag_scope](#todo)|TODO|
+|[critical](#todo)|TODO|
+|[set_priority_for_category](#todo)|TODO|
+|[set_priority_all](#todo)|TODO|
+|[create_tag](#todo)|TODO|
+|[get_priority_for_category](#todo)|TODO|
+|[info](#todo)|TODO|
+|[error](#todo)|TODO|
+|[call_log](#todo)|TODO|
+|[verbose](#todo)|TODO|

@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../../std.md)::[core](./../../core.md)::[sanitizer](./../sanitizer.md)::`tsan`
 ## Globals
 |Name|Description|
@@ -13,3 +14,16 @@
 |[MUTEX_RECURSIVE_UNLOCK](#todo)|TODO|
 |[MUTEX_TRY_LOCK_FAILED](#todo)|TODO|
 |[MUTEX_NOT_STATIC](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[mutex_post_unlock](#todo)|TODO|
+|[mutex_post_divert](#todo)|TODO|
+|[mutex_pre_signal](#todo)|TODO|
+|[mutex_post_signal](#todo)|TODO|
+|[mutex_post_lock](#todo)|TODO|
+|[mutex_pre_unlock](#todo)|TODO|
+|[mutex_create](#todo)|TODO|
+|[mutex_destroy](#todo)|TODO|
+|[mutex_pre_divert](#todo)|TODO|
+|[mutex_pre_lock](#todo)|TODO|

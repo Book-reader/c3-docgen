@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[os](./../os.md)::`posix`
 ## Globals
 |Name|Description|
@@ -26,7 +27,6 @@
 |[CLOCK_MONOTONIC_FAST](#todo)|TODO|
 |[MAP_FILE](#todo)|TODO|
 |[MADV_NORMAL](#todo)|TODO|
-|[backtrace_jmpbuf](#todo)|TODO|
 |[DT_DIR](#todo)|TODO|
 |[_SC_PAGESIZE](#todo)|TODO|
 |[DT_FIFO](#todo)|TODO|
@@ -60,3 +60,17 @@
 |[__W_CONTINUED](#todo)|TODO|
 |[CLOCK_REALTIME_COARSE](#todo)|TODO|
 |[PROT_WRITE](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[wSTOPSIG](#todo)|TODO|
+|[w_EXITCODE](#todo)|TODO|
+|[wEXITSTATUS](#todo)|TODO|
+|[w_STOPCODE](#todo)|TODO|
+|[backtrace](#todo)|TODO|
+|[wIFCONTINUED](#todo)|TODO|
+|[wTERMSIG](#todo)|TODO|
+|[wIFSTOPPED](#todo)|TODO|
+|[wIFSIGNALED](#todo)|TODO|
+|[wWCOREDUMP](#todo)|TODO|
+|[wIFEXITED](#todo)|TODO|

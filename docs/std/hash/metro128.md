@@ -1,5 +1,6 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[hash](./../hash.md)::`metro128`
-## Globals
+## Functions
 |Name|Description|
 |----|-----------|
-|[K](#todo)|TODO|
+|[hash](#todo)|TODO|

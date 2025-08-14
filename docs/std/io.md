@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../std.md)::`io`
 ## Submodules
 [path](./io/path.md)
@@ -11,6 +12,84 @@
 |[XDIGITS_L](#todo)|TODO|
 |[stdout_file](#todo)|TODO|
 |[XDIGITS_H](#todo)|TODO|
-|[MAX_VARS](#todo)|TODO|
 |[PRINTF_NTOA_BUFFER_SIZE](#todo)|TODO|
 |[WRITER_BITS](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[tee_reader](#todo)|TODO|
+|[is_struct_with_default_print](#todo)|TODO|
+|[eprintfn](#todo)|TODO|
+|[read_byte_using_read](#todo)|TODO|
+|[read_varint](#todo)|TODO|
+|[fprint](#todo)|TODO|
+|[write_short_bytearray](#todo)|TODO|
+|[write_using_write_byte](#todo)|TODO|
+|[stdout](#todo)|TODO|
+|[stderr](#todo)|TODO|
+|[@is_outstream](#todo)|TODO|
+|[read_be_int128](#todo)|TODO|
+|[copy_to](#todo)|TODO|
+|[@is_instream](#todo)|TODO|
+|[treadline](#todo)|TODO|
+|[read_be_long](#todo)|TODO|
+|[read_be_ushort](#todo)|TODO|
+|[bprintf](#todo)|TODO|
+|[wrap_bytes](#todo)|TODO|
+|[fprintn](#todo)|TODO|
+|[printn](#todo)|TODO|
+|[print_hex_chars](#todo)|TODO|
+|[eprintn](#todo)|TODO|
+|[read_be_uint128](#todo)|TODO|
+|[read_fully](#todo)|TODO|
+|[eprintf](#todo)|TODO|
+|[write_any](#todo)|TODO|
+|[printfn](#todo)|TODO|
+|[@report_fault](#todo)|TODO|
+|[eprint](#todo)|TODO|
+|[fprintfn](#todo)|TODO|
+|[pushback_using_seek](#todo)|TODO|
+|[write_be_short](#todo)|TODO|
+|[struct_to_format](#todo)|TODO|
+|[fmt_u](#todo)|TODO|
+|[write_all](#todo)|TODO|
+|[read_be_int](#todo)|TODO|
+|[fprintf](#todo)|TODO|
+|[read_any](#todo)|TODO|
+|[read_be_short](#todo)|TODO|
+|[@wrap_bad](#todo)|TODO|
+|[write_varint](#todo)|TODO|
+|[write_be_int](#todo)|TODO|
+|[readline](#todo)|TODO|
+|[printf](#todo)|TODO|
+|[write_be_long](#todo)|TODO|
+|[print](#todo)|TODO|
+|[read_short_bytearray](#todo)|TODO|
+|[available](#todo)|TODO|
+|[readline_to_stream](#todo)|TODO|
+|[read_be_uint](#todo)|TODO|
+|[write_tiny_bytearray](#todo)|TODO|
+|[stdin](#todo)|TODO|
+|[read_all](#todo)|TODO|
+|[putchar](#todo)|TODO|
+|[read_be_ulong](#todo)|TODO|
+|[write_be_int128](#todo)|TODO|
+|[read_using_read_byte](#todo)|TODO|
+|[write_byte_using_write](#todo)|TODO|
+|[read_tiny_bytearray](#todo)|TODO|
+## Private
+### Globals
+|Name|Description|
+|----|-----------|
+|[MAX_VARS](#todo)|TODO|
+### Functions
+|Name|Description|
+|----|-----------|
+|[simple_atoi](#todo)|TODO|
+|[int_from_any](#todo)|TODO|
+|[out_null_fn](#todo)|TODO|
+|[out_buffer_fn](#todo)|TODO|
+|[printf_parse_format_field](#todo)|TODO|
+|[out_putchar_fn](#todo)|TODO|
+|[out_putstream_fn](#todo)|TODO|
+|[float_from_any](#todo)|TODO|

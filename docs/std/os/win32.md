@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[os](./../os.md)::`win32`
 ## Submodules
 [wsa](./win32/wsa.md)
@@ -379,3 +380,12 @@
 |[ERROR_INVALID_OPLOCK_PROTOCOL](#todo)|TODO|
 |[ERROR_INVALID_ORDINAL](#todo)|TODO|
 |[ERROR_INVALID_PARAMETER](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[setWindowLongPtr](#todo)|TODO|
+|[getWindowLongPtr](#todo)|TODO|
+|[symbolize_backtrace](#todo)|TODO|
+|[allocation_granularity](#todo)|TODO|
+|[resolve_backtrace](#todo)|TODO|
+|[load_modules](#todo)|TODO|

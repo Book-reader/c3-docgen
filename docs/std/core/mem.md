@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[core](./../core.md)::`mem`
 ## Submodules
 [volatile](./mem/volatile.md)
@@ -10,7 +11,6 @@
 ## Globals
 |Name|Description|
 |----|-----------|
-|[wasm_allocator](#todo)|TODO|
 |[__heap_base](#todo)|TODO|
 |[KB](#todo)|TODO|
 |[MB](#todo)|TODO|
@@ -18,3 +18,91 @@
 |[DEFAULT_MEM_ALIGNMENT](#todo)|TODO|
 |[TB](#todo)|TODO|
 |[MAX_MEMORY_ALIGNMENT](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[new_array](#todo)|TODO|
+|[aligned_pointer](#todo)|TODO|
+|[@stack_pool](#todo)|TODO|
+|[clear_inline](#todo)|TODO|
+|[realloc](#todo)|TODO|
+|[@masked_load_aligned](#todo)|TODO|
+|[masked_store](#todo)|TODO|
+|[malloc_aligned](#todo)|TODO|
+|[@pool_init](#todo)|TODO|
+|[tnew](#todo)|TODO|
+|[copy_inline](#todo)|TODO|
+|[equals](#todo)|TODO|
+|[free_aligned](#todo)|TODO|
+|[set_inline](#todo)|TODO|
+|[tmalloc](#todo)|TODO|
+|[calloc_aligned](#todo)|TODO|
+|[@unaligned_store](#todo)|TODO|
+|[type_alloc_must_be_aligned](#todo)|TODO|
+|[__memcpy](#todo)|TODO|
+|[@report_heap_allocs_in_scope](#todo)|TODO|
+|[move](#todo)|TODO|
+|[trealloc](#todo)|TODO|
+|[@clone_aligned](#todo)|TODO|
+|[new_aligned](#todo)|TODO|
+|[aligned_offset](#todo)|TODO|
+|[get_tracking_env](#todo)|TODO|
+|[free](#todo)|TODO|
+|[talloc_array](#todo)|TODO|
+|[new](#todo)|TODO|
+|[new_array_aligned](#todo)|TODO|
+|[@atomic_load](#todo)|TODO|
+|[set](#todo)|TODO|
+|[@scoped](#todo)|TODO|
+|[@volatile_load](#todo)|TODO|
+|[@assert_leak](#todo)|TODO|
+|[ptr_is_aligned](#todo)|TODO|
+|[compare_exchange_volatile](#todo)|TODO|
+|[temp_array](#todo)|TODO|
+|[alloc_with_padding](#todo)|TODO|
+|[@clone](#todo)|TODO|
+|[alloc_array](#todo)|TODO|
+|[alloc_array_aligned](#todo)|TODO|
+|[new_with_padding](#todo)|TODO|
+|[@masked_store_aligned](#todo)|TODO|
+|[os_pagesize](#todo)|TODO|
+|[@scatter_aligned](#todo)|TODO|
+|[realloc_aligned](#todo)|TODO|
+|[temp_pop](#todo)|TODO|
+|[talloc_with_padding](#todo)|TODO|
+|[@volatile_store](#todo)|TODO|
+|[calloc](#todo)|TODO|
+|[zero_volatile](#todo)|TODO|
+|[clear](#todo)|TODO|
+|[copy](#todo)|TODO|
+|[masked_load](#todo)|TODO|
+|[@pool](#todo)|TODO|
+|[@atomic_store](#todo)|TODO|
+|[temp_with_padding](#todo)|TODO|
+|[gather](#todo)|TODO|
+|[@unaligned_load](#todo)|TODO|
+|[@stack_mem](#todo)|TODO|
+|[ptr_is_page_aligned](#todo)|TODO|
+|[talloc](#todo)|TODO|
+|[@tclone](#todo)|TODO|
+|[__memset](#todo)|TODO|
+|[@gather_aligned](#todo)|TODO|
+|[__memcmp](#todo)|TODO|
+|[compare_exchange](#todo)|TODO|
+|[scatter](#todo)|TODO|
+|[@unaligned_addr](#todo)|TODO|
+|[tcalloc](#todo)|TODO|
+|[malloc](#todo)|TODO|
+|[alloc](#todo)|TODO|
+|[alloc_aligned](#todo)|TODO|
+|[temp_push](#todo)|TODO|
+## Private
+### Globals
+|Name|Description|
+|----|-----------|
+|[wasm_allocator](#todo)|TODO|
+### Functions
+|Name|Description|
+|----|-----------|
+|[initialize_wasm_mem](#todo)|TODO|
+|[@constant_is_power_of_2](#todo)|TODO|

@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[os](./../os.md)::`darwin`
 ## Submodules
 [cocoa](./darwin/cocoa.md)
@@ -37,3 +38,8 @@
 |[HW_EPOCH](#todo)|TODO|
 |[HW_BUS_FREQ](#todo)|TODO|
 |[HW_VECTORUNIT](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[symbolize_backtrace](#todo)|TODO|
+|[executable_path](#todo)|TODO|

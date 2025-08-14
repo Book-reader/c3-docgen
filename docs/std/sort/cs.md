@@ -1,5 +1,11 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[sort](./../sort.md)::`cs {Type, KeyFn}`
-## Globals
+## Functions
+|Name|Description|
+|----|-----------|
+|[csort](#todo)|TODO|
+## Private
+### Globals
 |Name|Description|
 |----|-----------|
 |[LIST_HAS_REF](#todo)|TODO|

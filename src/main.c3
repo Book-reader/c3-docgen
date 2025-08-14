@@ -102,7 +102,7 @@ enum ValType
 struct Global
 {
 	String name;
-	// I store the whole type including generic params etc in here, and then parse it again later
+	// I store the whole type including generic params etc in here, and then can parse it again later
 	String type;
 	String val;
 	bitstruct : char
@@ -114,15 +114,37 @@ struct Global
 	List {String} attributes;
 }
 
+struct Func
+{
+	String name;
+	Maybe {String} return_type;
+	Maybe {String} method_of;
+	Maybe {String} trailing;
+	bool macro_;
+	List {String} attributes;
+	List {Param} params;
+}
+
+enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
+struct Param
+{
+	ParamType kind;
+	bool typed;
+	String name;
+	String type;
+}
+
 struct ModuleSection
 {
 	List {String} attributes;
 	List {Global} globals;
+	List {Func} functions;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
 {
 	self.globals.init(alloc);
+	self.functions.init(alloc);
 	self.attributes.init(alloc);
 }
 
@@ -260,9 +282,12 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 {
-	// assert(self.path.ptr);
-	// assert(self.parent);
 	usz? n;
+
+	// the titlebar (TODO)
+	n += fmt.printf("## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)\n");
+
+	// the module name heading
 	n += fmt.printf("# ");
 	if (self.parent != null && self.parent.path.ptr != null) @pool()
 	{
@@ -277,7 +302,6 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 		};
 		n += fmt.printf("%s", buf.str_view());
 	};
-
 	n += fmt.printf("`%s", self.path);
 	if (self.generic_params.len() > 0)
 	{
@@ -290,6 +314,7 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 	}
 	n += fmt.printf("`\n");
 
+	// the submodules
 	if (self.children.len() != 0)
 	{
 		n += fmt.printf("## Submodules\n");
@@ -302,47 +327,103 @@ fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
 		};
 	}
 
+	// collect & print all the globals in all module sections (except @local)
 	HashMap {String, GlobalAbomination} globals;
 	globals.init(tmem);
+	HashMap {String, GlobalAbomination} private_globals;
+	private_globals.init(tmem);
 	foreach (&sec : self.sections)
 	{
-		foreach (&glob : sec.globals)
+		foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
 		{
-			if (!glob.attributes.contains("@private") || !glob.attributes.contains("@local"))
+			if (!glob.attributes.contains("@private"))
 			{
-				GlobalAbomination a = globals.@get_or_set(glob.name, /*list_with(alloc, {glob, (List {ModuleSection*}){}.init(tmem)})*/*(GlobalAbomination){}.init(tmem));
+				GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
 				a.push({glob, sec});
 				globals[glob.name] = a;
-/*				if (!globals.has_key(glob.name))
-				{
-					globals[glob.name] = {glob, list_with(tmem, sec)};
-				}
-				else
-				{
-					globals[glob.name]!!.second.push(sec);
-				}*/
+			}
+			else
+			{
+				GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+				a.push({glob, sec});
+				private_globals[glob.name] = a;
 			}
 		}
 	}
-
-	// n += fmt.printf("|[a](##Globals)|b|c|");
-
 	if (globals.len() > 0)
 	{
 		n += fmt.printf("## Globals\n");
-		/*n += fmt.printf("|Type|Name|Attributes|Comment|\n");
-		n += fmt.printf("|----|----|----------|-------|\n");
-		foreach (glob_ : globals.iter())
-		{
-			Global* glob = glob_.value[0].first;
-			n += fmt.printf("|%s%s%s%s|%s|%s|%s|\n", glob.extern_ ? "extern " : "", glob.tlocal_ ? "tlocal " : "", glob.const_ ? "const " : "", glob.type, glob.name, "TODO", "TODO");
-		}*/
 		n += fmt.printf("|Name|Description|\n");
 		n += fmt.printf("|----|-----------|\n");
 		foreach (glob_ : globals.iter())
 		{
 			Global* glob = glob_.value[0].first;
 			n += fmt.printf("|[%s](#todo)|%s|\n", glob.name, "TODO");
+		}
+	}
+
+	// same for functions (excluding methods). I could maybe make a macro to do this, maybe once I start doing types as well
+	HashMap {String, FuncAbomination} funcs;
+	funcs.init(tmem);
+	HashMap {String, FuncAbomination} private_funcs;
+	private_funcs.init(tmem);
+	foreach (&sec : self.sections)
+	{
+		foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
+		{
+			if (!func.attributes.contains("@private"))
+			{
+				FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+				a.push({func, sec});
+				funcs[func.name] = a;
+			}
+			else
+			{
+				FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+				a.push({func, sec});
+				private_funcs[func.name] = a;
+			}
+		}
+	}
+	if (funcs.len() > 0)
+	{
+		n += fmt.printf("## Functions\n");
+		n += fmt.printf("|Name|Description|\n");
+		n += fmt.printf("|----|-----------|\n");
+		foreach (func_ : funcs.iter())
+		{
+			Func* func = func_.value[0].first;
+			n += fmt.printf("|[%s](#todo)|%s|\n", func.name, "TODO");
+		}
+	}
+
+	// now print all the private things
+	if (private_funcs.len() > 0 || private_globals.len() > 0)
+	{
+		n += fmt.printf("## Private\n");
+
+		if (private_globals.len() > 0)
+		{
+			n += fmt.printf("### Globals\n");
+			n += fmt.printf("|Name|Description|\n");
+			n += fmt.printf("|----|-----------|\n");
+			foreach (glob_ : private_globals.iter())
+			{
+				Global* glob = glob_.value[0].first;
+				n += fmt.printf("|[%s](#todo)|%s|\n", glob.name, "TODO");
+			}
+		}
+
+		if (private_funcs.len() > 0)
+		{
+			n += fmt.printf("### Functions\n");
+			n += fmt.printf("|Name|Description|\n");
+			n += fmt.printf("|----|-----------|\n");
+			foreach (func_ : private_funcs.iter())
+			{
+				Func* func = func_.value[0].first;
+				n += fmt.printf("|[%s](#todo)|%s|\n", func.name, "TODO");
+			}
 		}
 	}
 	return n;
@@ -359,43 +440,7 @@ macro list_with(Allocator alloc, ...)
 }
 
 alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
-
-/*usz depth = 0;
-fn usz? Module.to_format(&self, Formatter* fmt) @dynamic => @pool()
-{
-	usz? n;
-	n += fmt.printf("%s", /*self.get_path_string(tmem)*/self.path);
-	if (self.generic_params.len() > 0)
-	{
-		n += fmt.printf("{");
-		foreach (i, param : self.generic_params)
-		{
-			n += fmt.printf("%s%s", param.val, i + 1 == self.generic_params.len() ? "" : ", ");
-		}
-		n += fmt.printf("}");
-	}
-	foreach (j, section : self.sections)
-	{
-		// n += fmt.printf("%s", section.attributes);
-		foreach (i, global : section.globals)
-		{
-			n += fmt.printf("\n");
-			depth ++;
-			for (usz k = 0; k < depth - 1; k++) n += fmt.printf("┃");
-			n += fmt.printf("%s%s", i == section.globals.len() - 1 ? "┗" : "┣", global.name.len > 128 ? global.name[:128 - 3].tconcat("...").treplace("\n", " ") : global.name);
-			depth --;
-		}
-	}
-	if (self.children.len() != 0) foreach (i, child : self.children.value_iter())
-	{
-		n += fmt.printf("\n");
-		depth ++;
-		for (usz j = 0; j < depth - 1; j++) n += fmt.printf("┃");
-		n += fmt.printf("%s%s", i == self.children.len() - 1 ? "┗" : "┣", /*self.children*/child);
-		depth --;
-	}
-	return n;
-}*/
+alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
 fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name)
 {
@@ -411,12 +456,15 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQueryCursor* query_cursor = query_cursor::new();
 	defer query_cursor::delete(query_cursor);
 
+	// TODO: make these global/static so I don't keep recreating & destroying them for every file I parse
 	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
 	defer query::delete(module_query);
 
 	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
 	defer query::delete(global_query);
 
+	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
+	defer query::delete(func_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
@@ -518,8 +566,65 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					current_mod.sections[^1].globals.push(glob);
 				};
 			case "func_definition":
-				// io::printfn("func declaration not implemented");
-				// abort("uno");
+			case "macro_declaration":
+				// Handle files without module declarations/with code before a module declaration
+				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
+				{
+					Func func = function(alloc);
+					Param p;
+					foreach (i, capture : match.captures[:match.capture_count])
+					{
+						uint len;
+						String text = capture.get_text(data);
+
+						switch (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
+						{
+							case "return":
+								func.return_type.set(text.copy(alloc));
+							case "name":
+								func.name = text.copy(alloc);
+							case "macro":
+								func.macro_ = true;
+							// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
+							case "param.name":
+								p.name = text.copy(alloc);
+								switch (String name = capture.node.type())
+								{
+									case "ident":
+										p.kind = REGULAR;
+									case "ct_ident":
+										p.kind = CT;
+									case "hash_ident":
+										p.kind = EXPR;
+									default:
+										unreachable("unexpected param '%s'", name);
+								}
+								func.params.push(p);
+								p = {};
+							case "param.type":
+								p.type = text.copy(alloc);
+								p.typed = true;
+							case "type":
+								func.method_of.set(text.copy(alloc));
+							case "attr":
+								func.attributes.push(text.copy(alloc));
+							case "trailing":
+								func.trailing.set(text.copy(alloc));
+							default:
+								unreachable("unexpexted '%s'", match_name);
+						}
+					}
+					current_mod.sections[^1].functions.push(func);
+				};
 		}
 		cursor::reset_to(&cursor, &pos);
 		// I can't believe this is an actual bug lol
@@ -548,6 +653,14 @@ macro Global global(Allocator alloc)
 	Global g;
 	g.attributes.init(alloc);
 	return g;
+}
+
+macro Func function(Allocator alloc)
+{
+	Func f;
+	f.attributes.init(alloc);
+	f.params.init(alloc);
+	return f;
 }
 
 /*macro ModuleSection module_section_create(Allocator alloc, String... attributes)

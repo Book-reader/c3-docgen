@@ -1,3 +1,4 @@
+## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)
 # [std](./../../std.md)::[thread](./../thread.md)::`cpu`
 ## Globals
 |Name|Description|
@@ -35,3 +36,7 @@
 |[HW_EPOCH](#todo)|TODO|
 |[HW_BUS_FREQ](#todo)|TODO|
 |[HW_VECTORUNIT](#todo)|TODO|
+## Functions
+|Name|Description|
+|----|-----------|
+|[native_cpu](#todo)|TODO|
