@@ -26,6 +26,9 @@ also list type methods defined in other modules, but maybe show they came from a
 to get type navigation working, I would need to resolve the generic params & imports recursively and look for the correct type.
 if there is a conflict then either use a local alias or prefer any manually imported type over something in std::core
 and I would have to do this for every single occurence of a type (but only per module section, because I can cache it there)
+
+I'll have to have a page that contains all builtins, including all methods on the builtin types. probably should be called @builtin.md so it can't conflict with anything else
+Should also have a global overview page that shows all root modules like std, libc, @builtin, and any user-created modules
 ```
 
 ```
