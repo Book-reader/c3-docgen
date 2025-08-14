@@ -11,6 +11,8 @@ import ts;
 import tree_sitter_c3;
 alias tsc3 = module tree_sitter_c3;
 
+import html;
+
 fn int main(String[] args)
 {
 	/*TrackingAllocator alloc1;
@@ -36,11 +38,10 @@ fn int main(String[] args)
 	io::printfn("%s", modules);
 	modules.@iter_all_children(; Module* mod)
 	{
-		@pool()
+		foreach (view : ModuleView.values) @pool()
 		{
-			String mod_folder = mod.get_folder_path(tmem, root_folder, OVERVIEW);
+			String mod_folder = mod.get_folder_path(tmem, root_folder, view);
 			// String mod_file = mod.get_file_path(tmem, root_folder, TYPES);
-			io::printfn("%s :: %s :: %s", mod_folder, ""/*mod_file*/, mod.get_depth());
 			// abort();
 			Path mod_folder_path = path::new(tmem, mod_folder)!!;
 			if (!path::exists(mod_folder_path))
@@ -49,7 +50,7 @@ fn int main(String[] args)
 			}
 			File out = file::open(mod_folder.tconcat("/index.html"), "wb")!!;
 			defer (void)out.close();
-			io::fprintf(&out, "%s", mod.get_overview(alloc))!!;
+			io::fprintf(&out, "%s", view.func(mod, alloc))!!;
 /*			foreach (section : mod.sections)
 			{
 				io::fprintf(&out, "### `module %s%s %s`\n", path_string, mod.generic_params, section.attributes)!!;
@@ -172,7 +173,7 @@ fn String Module.get_folder_path(&self, Allocator alloc, String prefix, ModuleVi
 		res.insert_at(0, string::tformat("%s/", parent.path));
 		parent = parent.parent;
 	}
-	res.insert_at(0, string::tformat("%s/", prefix[^1] == '/' ? prefix[..^2] : prefix));
+	res.insert_at(0, string::tformat("%s/", prefix.len > 0 && prefix[^1] == '/' ? prefix[..^2] : prefix));
 	res.appendf(view.path);
 	return res.copy_str(alloc);
 }
@@ -222,7 +223,7 @@ fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* oth
 		other_cursor = other_cursor.parent;
 	}
 
-	io::printfn("climbing: %s", to_climb);
+	// io::printfn("climbing: %s", to_climb);
 	foreach (i, mod : to_climb)
 	{
 		result.appendf("%s/", mod);
@@ -231,12 +232,13 @@ fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* oth
 	return result.copy_str(alloc);
 }
 
-enum ModuleView : (String path)
+alias ModuleViewFunc = fn String(Module*, Allocator);
+enum ModuleView : (String path, String name, ModuleViewFunc func)
 {
-	OVERVIEW = "",
-	GLOBALS = "globals",
-	TYPES = "types",
-	FUNCTIONS = "functions",
+	OVERVIEW = { "", "Overview", &Module.get_overview },
+	GLOBALS = { "globals", "Globals", &Module.get_globals },
+	TYPES = { "types", "Types", &Module.get_types },
+	FUNCTIONS = { "functions", "Functions", &Module.get_functions },
 }
 
 fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
@@ -287,156 +289,246 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 }
 
-macro String link(Allocator alloc, String name, String path) => string::format(alloc, "<a href='%s'>%s</a>", path, name);
+fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
+{
+	b.@h(2, `class="header"`)
+	{
+		$foreach $member : ModuleView.values:
+			if ($member == view)
+			{
+				b.@span(`class = "selected"`)
+				{
+					b.text($member.name);
+				};
+			}
+			else
+			{
+				b.url($member.name, self.get_folder_path(tmem, "", $member));
+			}
+			b.spc();
+		$endforeach
+	};
+}
+
+// this is too close to Game.run for my liking, should probably change to `fn void gen_module_title(Module* mod, HtmlBuilder* b)`
+fn void Module.gen_module_title(&self, HtmlBuilder* b) => @pool()
+{
+	b.@div(`class="module_path"`)
+	{
+		b.@h(1)
+		{
+			if (self.parent != null && self.parent.path.ptr != null) @pool()
+			{
+				List {Module*} parents;
+				parents.tinit();
+
+				Module* parent = self.parent;
+			 	while (parent != null && parent.path.ptr != null) @pool()
+				{
+					parents.push(parent);
+					parent = parent.parent;
+				};
+
+				foreach_r (parent1 : parents)
+				{
+					b.url(parent1.path, self.get_relative_path_to(tmem, parent1, OVERVIEW));
+					b.text("::");
+				}
+			};
+			b.@span(`style = "font-family: 'monospace'"`)
+			{
+				b.text(self.path);
+				if (self.generic_params.len() > 0)
+				{
+					b.text(" {");
+					foreach (i, param : self.generic_params)
+					{
+						b.text("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
+					}
+					b.text("}");
+				}
+			};
+		};
+	};
+}
+
+const String GLOBAL_HTML_STYLES = `style = "font-family:'0xProto Nerd Font'"`;
 
 fn String Module.get_overview(&self, Allocator alloc) => @pool()
 {
-	DString d;
-	d.tinit();
-
-	// the titlebar (TODO)
-	d.appendf("## `Overview` [Globals](./globals.md) [Types](./types.md) [Functions](./functions.md)\n");
-
-	// the module name heading
-	d.appendf("<h1>");
-	if (self.parent != null && self.parent.path.ptr != null) @pool()
+	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
-		Module* parent = self.parent;
-		DString buf;
-		buf.tinit();
-
-	 	while (parent != null && parent.path.ptr != null) @pool()
+		self.gen_header(b, OVERVIEW);
+		self.gen_module_title(b);
+		if (self.children.len() != 0)
 		{
-			buf.insert_at(0, string::tformat("%s%s", link(tmem, parent.path, self.get_relative_path_to(tmem, parent, OVERVIEW)), parent.parent == null ? "" : "::"));
-			parent = parent.parent;
-		};
-		d.appendf("%s", buf.str_view());
+			b.h(2, "Submodules");
+			self.@iter_children(; Module* child)
+			{
+				io::printfn("%s", child.path);
+				b.url(child.path, self.get_relative_path_to(tmem, child, OVERVIEW));
+				b.spc();
+			};
+		}
+
+
+		// collect & print all the globals in all module sections (except @local)
+		HashMap {String, GlobalAbomination} globals;
+		globals.init(tmem);
+		HashMap {String, GlobalAbomination} private_globals;
+		private_globals.init(tmem);
+		foreach (&sec : self.sections)
+		{
+			foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
+			{
+				if (!glob.attributes.contains("@private"))
+				{
+					GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					a.push({glob, sec});
+					globals[glob.name] = a;
+				}
+				else
+				{
+					GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					a.push({glob, sec});
+					private_globals[glob.name] = a;
+				}
+			}
+		}
+		if (globals.len() > 0)
+		{
+			b.h(2, "Globals");
+			b.@table({"Name", "Description"})
+			{
+				foreach (glob_ : globals.iter())
+				{
+					b.@tr()
+					{
+						Global* glob = glob_.value[0].first;
+						b.@td()
+						{
+							b.url(glob.name, "#todo");
+						};
+						b.td("TODO");
+					};
+				}
+			};
+		}
+
+		// same for functions (excluding methods). I could maybe make a macro to do this, maybe once I start doing types as well
+		HashMap {String, FuncAbomination} funcs;
+		funcs.init(tmem);
+		HashMap {String, FuncAbomination} private_funcs;
+		private_funcs.init(tmem);
+		foreach (&sec : self.sections)
+		{
+			foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
+			{
+				if (!func.attributes.contains("@private"))
+				{
+					FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					a.push({func, sec});
+					funcs[func.name] = a;
+				}
+				else
+				{
+					FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					a.push({func, sec});
+					private_funcs[func.name] = a;
+				}
+			}
+		}
+		if (funcs.len() > 0)
+		{
+			b.h(2, "Functions");
+			b.@table({"Name", "Description"})
+			{
+				foreach (func_ : funcs.iter()) @pool()
+				{
+					b.@tr()
+					{
+						Func* func = func_.value[0].first;
+						b.@td()
+						{
+							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), "#todo");
+						};
+						b.td("TODO");
+					};
+				};
+			};
+		}
+
+		// now print all the private things
+		if (private_funcs.len() > 0 || private_globals.len() > 0)
+		{
+			b.h(2, "Private");
+
+			if (private_globals.len() > 0)
+			{
+				b.h(3, "Globals");
+				b.@table({"Name", "Description"})
+				{
+					foreach (glob_ : private_globals.iter())
+					{
+						b.@tr()
+						{
+							Global* glob = glob_.value[0].first;
+							b.@td()
+							{
+								b.url(glob.name, "#todo");
+							};
+							b.td("TODO");
+						};
+					}
+				};
+			}
+
+			if (private_funcs.len() > 0)
+			{
+				b.h(3, "Functions");
+				b.@table({"Name", "Description"})
+				{
+					foreach (func_ : private_funcs.iter()) @pool()
+					{
+						b.@tr()
+						{
+							Func* func = func_.value[0].first;
+							b.@td()
+							{
+								b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), "#todo");
+							};
+							b.td("TODO");
+						};
+					};
+				};
+			}
+		}
 	};
-	d.appendf("<code>%s", self.path);
-	if (self.generic_params.len() > 0)
-	{
-		d.appendf(" {");
-		foreach (i, param : self.generic_params)
-		{
-			d.appendf("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
-		}
-		d.appendf("}");
-	}
-	d.appendf("</code></h1><br/>");
+}
 
-	// the submodules
-	if (self.children.len() != 0)
+fn String Module.get_globals(&self, Allocator alloc)
+{
+	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
-		d.appendf("<h2>Submodules</h2><br/>");
-		self.@iter_children(; Module* child)
-		{
-			@pool()
-			{
-				d.appendf("%s&nbsp", link(tmem, child.path, self.get_relative_path_to(tmem, child, OVERVIEW)));
-			};
-		};
-	}
-
-	// collect & print all the globals in all module sections (except @local)
-	HashMap {String, GlobalAbomination} globals;
-	globals.init(tmem);
-	HashMap {String, GlobalAbomination} private_globals;
-	private_globals.init(tmem);
-	foreach (&sec : self.sections)
+		self.gen_header(b, GLOBALS);
+		self.gen_module_title(b);
+	};
+}
+fn String Module.get_types(&self, Allocator alloc)
+{
+	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
-		foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
-		{
-			if (!glob.attributes.contains("@private"))
-			{
-				GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
-				a.push({glob, sec});
-				globals[glob.name] = a;
-			}
-			else
-			{
-				GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
-				a.push({glob, sec});
-				private_globals[glob.name] = a;
-			}
-		}
-	}
-	if (globals.len() > 0)
+		self.gen_header(b, TYPES);
+		self.gen_module_title(b);
+	};
+}
+fn String Module.get_functions(&self, Allocator alloc)
+{
+	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
-		d.appendf("## Globals\n");
-		d.appendf("|Name|Description|\n");
-		d.appendf("|----|-----------|\n");
-		foreach (glob_ : globals.iter())
-		{
-			Global* glob = glob_.value[0].first;
-			d.appendf("|[%s](#todo)|%s|\n", glob.name, "TODO");
-		}
-	}
-
-	// same for functions (excluding methods). I could maybe make a macro to do this, maybe once I start doing types as well
-	HashMap {String, FuncAbomination} funcs;
-	funcs.init(tmem);
-	HashMap {String, FuncAbomination} private_funcs;
-	private_funcs.init(tmem);
-	foreach (&sec : self.sections)
-	{
-		foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
-		{
-			if (!func.attributes.contains("@private"))
-			{
-				FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
-				a.push({func, sec});
-				funcs[func.name] = a;
-			}
-			else
-			{
-				FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
-				a.push({func, sec});
-				private_funcs[func.name] = a;
-			}
-		}
-	}
-	if (funcs.len() > 0)
-	{
-		d.appendf("## Functions\n");
-		d.appendf("|Name|Description|\n");
-		d.appendf("|----|-----------|\n");
-		foreach (func_ : funcs.iter()) @pool()
-		{
-			Func* func = func_.value[0].first;
-			d.appendf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
-		};
-	}
-
-	// now print all the private things
-	if (private_funcs.len() > 0 || private_globals.len() > 0)
-	{
-		d.appendf("## Private\n");
-
-		if (private_globals.len() > 0)
-		{
-			d.appendf("### Globals\n");
-			d.appendf("|Name|Description|\n");
-			d.appendf("|----|-----------|\n");
-			foreach (glob_ : private_globals.iter())
-			{
-				Global* glob = glob_.value[0].first;
-				d.appendf("|[%s](#todo)|%s|\n", glob.name, "TODO");
-			}
-		}
-
-		if (private_funcs.len() > 0)
-		{
-			d.appendf("### Functions\n");
-			d.appendf("|Name|Description|\n");
-			d.appendf("|----|-----------|\n");
-			foreach (func_ : private_funcs.iter()) @pool()
-			{
-				Func* func = func_.value[0].first;
-				d.appendf("|[%s%s](#todo)|%s|\n", func.attributes.contains("@builtin") ? "" : self.path.tconcat("::"), func.name, "TODO");
-			};
-		}
-	}
-	return d.copy_str(alloc);
+		self.gen_header(b, FUNCTIONS);
+		self.gen_module_title(b);
+	};
 }
 
 macro list_with(Allocator alloc, ...)
