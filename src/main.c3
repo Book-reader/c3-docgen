@@ -190,48 +190,6 @@ fn usz Module.get_depth(&self)
 	return depth;
 }
 
-<*
- This assumes that both modules share the same root module
-*>
-fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* other) => @pool()
-{
-	DString result;
-	result.tinit();
-	result.append("./");
-
-	List {String} to_climb;
-	to_climb.tinit();
-
-	Module* self_cursor = self;
-	while (self_cursor.get_depth() > other.get_depth())
-	{
-		result.append("../");
-		self_cursor = self_cursor.parent;
-	}
-
-	Module* other_cursor = other;
-	while (other_cursor.get_depth() > self.get_depth())
-	{
-		to_climb.push(other_cursor.path);
-		other_cursor = other_cursor.parent;
-	}
-
-	while (self_cursor != other_cursor)
-	{
-		if (other_cursor.path.ptr) to_climb.push(other_cursor.path);
-		self_cursor = self_cursor.parent;
-		other_cursor = other_cursor.parent;
-	}
-
-	// io::printfn("climbing: %s", to_climb);
-	foreach (i, mod : to_climb)
-	{
-		result.appendf("%s/", mod);
-	}
-
-	return result.copy_str(alloc);
-}
-
 alias ModuleViewFunc = fn String(Module*, Allocator);
 enum ModuleView : (String path, String name, ModuleViewFunc func)
 {
@@ -239,11 +197,6 @@ enum ModuleView : (String path, String name, ModuleViewFunc func)
 	GLOBALS = { "globals", "Globals", &Module.get_globals },
 	TYPES = { "types", "Types", &Module.get_types },
 	FUNCTIONS = { "functions", "Functions", &Module.get_functions },
-}
-
-fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
-{
-	return self.get_folder_path_relative_to(tmem, other).tconcat(view.path).copy(alloc);
 }
 
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
@@ -331,7 +284,7 @@ fn void Module.gen_module_title(&self, HtmlBuilder* b) => @pool()
 
 				foreach_r (parent1 : parents)
 				{
-					b.url(parent1.path, self.get_relative_path_to(tmem, parent1, OVERVIEW));
+					b.url(parent1.path, parent1.get_folder_path(tmem, "", OVERVIEW));
 					b.text("::");
 				}
 			};
@@ -366,7 +319,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 			self.@iter_children(; Module* child)
 			{
 				io::printfn("%s", child.path);
-				b.url(child.path, self.get_relative_path_to(tmem, child, OVERVIEW));
+				b.url(child.path, child.get_folder_path(tmem, "", OVERVIEW));
 				b.spc();
 			};
 		}
