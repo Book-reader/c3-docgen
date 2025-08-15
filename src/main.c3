@@ -223,7 +223,7 @@ fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, Mod
 	DString result;
 	result.tinit();
 
-	Module* self_cursor = self;
+	Module* self_cursor = self.parent;
 	while (self_cursor != null)
 	{
 		result.append("../");
