@@ -149,6 +149,22 @@ fn void ModuleSection.init(&self, Allocator alloc)
 	self.attributes.init(alloc);
 }
 
+struct DocComment
+{
+	List {String} description;
+	List {Contract} contracts;
+}
+
+enum ContractType {CUSTOM, ENSURE, REQUIRE, RETURN, RETURN_FAULT, PARAM, PURE}
+struct Contract
+{
+	ContractType type;
+	String name;
+	Maybe {String} mutability;
+	Maybe {String} expr;
+	List {String} desc;
+}
+
 fn String Module.get_path_string(&self, Allocator alloc) => @pool()
 {
 	DString res;
@@ -190,48 +206,6 @@ fn usz Module.get_depth(&self)
 	return depth;
 }
 
-<*
- This assumes that both modules share the same root module
-*>
-fn String Module.get_folder_path_relative_to(&self, Allocator alloc, Module* other) => @pool()
-{
-	DString result;
-	result.tinit();
-	result.append("./");
-
-	List {String} to_climb;
-	to_climb.tinit();
-
-	Module* self_cursor = self;
-	while (self_cursor.get_depth() > other.get_depth())
-	{
-		result.append("../");
-		self_cursor = self_cursor.parent;
-	}
-
-	Module* other_cursor = other;
-	while (other_cursor.get_depth() > self.get_depth())
-	{
-		to_climb.push(other_cursor.path);
-		other_cursor = other_cursor.parent;
-	}
-
-	while (self_cursor != other_cursor)
-	{
-		if (other_cursor.path.ptr) to_climb.push(other_cursor.path);
-		self_cursor = self_cursor.parent;
-		other_cursor = other_cursor.parent;
-	}
-
-	// io::printfn("climbing: %s", to_climb);
-	foreach (i, mod : to_climb)
-	{
-		result.appendf("%s/", mod);
-	}
-
-	return result.copy_str(alloc);
-}
-
 alias ModuleViewFunc = fn String(Module*, Allocator);
 enum ModuleView : (String path, String name, ModuleViewFunc func)
 {
@@ -243,7 +217,19 @@ enum ModuleView : (String path, String name, ModuleViewFunc func)
 
 fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
 {
-	return self.get_folder_path_relative_to(tmem, other).tconcat(view.path).copy(alloc);
+	DString result;
+	result.tinit();
+
+	Module* self_cursor = self;
+	while (self_cursor != null)
+	{
+		result.append("../");
+		self_cursor = self_cursor.parent;
+	}
+
+	result.appendf(other.get_folder_path(tmem, "", view)[1..]);
+
+	return result.copy_str(alloc);
 }
 
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
@@ -303,7 +289,7 @@ fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
 			}
 			else
 			{
-				b.url($member.name, self.get_folder_path(tmem, "", $member));
+				b.url($member.name, self.get_relative_path_to(tmem, self, $member));
 			}
 			b.spc();
 		$endforeach
@@ -407,7 +393,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						Global* glob = glob_.value[0].first;
 						b.@td()
 						{
-							b.url(glob.name, string::tformat("%s#%s", self.get_folder_path(tmem, "", GLOBALS), glob_.key));
+							b.url(glob.name, string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), glob_.key));
 						};
 						b.td("TODO");
 					};
@@ -450,7 +436,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						Func* func = func_.value[0].first;
 						b.@td()
 						{
-							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_folder_path(tmem, "", FUNCTIONS), func_.key));
+							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, FUNCTIONS), func_.key));
 						};
 						b.td("TODO");
 					};
@@ -608,7 +594,7 @@ fn String Module.get_functions(&self, Allocator alloc)
 						Func* func = func_.value[0].first;
 						b.@td()
 						{
-							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_folder_path(tmem, "", GLOBALS), func_.key));
+							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), func_.key));
 						};
 						b.td("TODO");
 					};
@@ -674,9 +660,30 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
 	defer query::delete(func_query);
 
+	TSQuery* contract_query = query::new(tsc3::language(),
+/*`
+(doc_comment
+	(doc_comment_text)? @description
+	(doc_comment_contract .
+		name: (at_ident) @contract.name
+		mutability_contract: (_)? @mutability
+		"?"? @return_err
+		contract_expr: (_)? @data
+		description: (
+			string_expr (_ [
+				(string_content)
+				(raw_string_content)
+			] @desc)+
+		)?
+	)*
+)
+`*/``)!!;
+	defer query::delete(contract_query);
+
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
+	DocComment comment;
 	Module* current_mod = root;
 	do
 	{
@@ -720,6 +727,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					current_mod.generics_done = true;
 					// if (sec.attributes.len() != 0) abort("%s", sec.attributes);
 					current_mod.sections.push(sec);
+					comment = {};
 				};
 			case "global_declaration":
 				// Handle files without module declarations/with code before a module declaration
@@ -772,6 +780,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						}
 					}
 					current_mod.sections[^1].globals.push(glob);
+					comment = {};
 				};
 			case "macro_declaration":
 			case "func_definition":
@@ -832,7 +841,70 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						}
 					}
 					current_mod.sections[^1].functions.push(func);
+					comment = {};
 				};
+			case "doc_comment":
+				query_cursor::@exec(query_cursor, contract_query, node; TSQueryMatch* match)
+				{
+					comment = {};
+					comment.contracts.init(alloc);
+					comment.description.init(alloc);
+					Contract contract;
+					foreach (i, capture : match.captures[:match.capture_count])
+					{
+						uint len;
+						String text = capture.get_text(data);
+
+						switch (String match_name = ts::query_capture_name_for_id(contract_query, capture.index, &len).str_view())
+						{
+							case "description":
+								String starting_chars;
+								foreach (line : text.tsplit("\n"))
+								{
+									if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
+									{
+										starting_chars = line[:line.len - line.trim_left().len];
+									}
+									String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
+									comment.description.push(line_trim.copy(alloc));
+								}
+							case "contract.name":
+								if (contract.name.ptr)
+								{
+									comment.contracts.push(contract);
+									contract = {};
+								}
+								contract.name = text.copy(alloc);
+								switch (text)
+								{
+									case "@ensure": contract.type = ENSURE;
+									case "@require": contract.type = REQUIRE;
+									case "@return": contract.type = RETURN;
+									case "@param": contract.type = PARAM;
+									case "@pure": contract.type = PURE;
+									default: contract.type = CUSTOM;
+								}
+							case "return_err":
+								contract.type = RETURN_FAULT;
+							case "desc":
+								if (!contract.desc.is_initialized()) contract.desc.init(alloc);
+								contract.desc.push(text.copy(alloc));
+							case "data":
+								contract.expr.set(text.copy(alloc));
+							case "mutability":
+								contract.mutability.set(text.copy(alloc));
+							default:
+								unreachable("unexpexted '%s'", match_name);
+						}
+					}
+					if (contract.name.ptr)
+					{
+						comment.contracts.push(contract);
+						contract = {};
+					}
+				};
+			default:
+				comment = {};
 		}
 		cursor::reset_to(&cursor, &pos);
 		// I can't believe this is an actual bug lol
