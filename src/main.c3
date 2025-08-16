@@ -113,7 +113,7 @@ struct Global
 		bool extern_;
 	}
 	List {String} attributes;
-	String doc_comment;
+	DocComment doc_comment;
 }
 
 struct Func
@@ -125,7 +125,7 @@ struct Func
 	bool macro_;
 	List {String} attributes;
 	List {Param} params;
-	String doc_comment;
+	DocComment doc_comment;
 	// TODO:
 	// List {String} contracts
 }
@@ -144,6 +144,7 @@ struct ModuleSection
 	List {String} attributes;
 	List {Global} globals;
 	List {Func} functions;
+	DocComment doc_comment;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -286,7 +287,7 @@ fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
 		$foreach $member : ModuleView.values:
 			if ($member == view)
 			{
-				b.@span(`class = "selected"`)
+				b.@span(`class="selected"`)
 				{
 					b.text($member.name);
 				};
@@ -325,7 +326,7 @@ fn void Module.gen_module_title(&self, HtmlBuilder* b) => @pool()
 					b.text("::");
 				}
 			};
-			b.@span(`style = "font-family: 'monospace'"`)
+			b.@span(`style="font-family: 'monospace'"`)
 			{
 				b.text(self.path);
 				if (self.generic_params.len() > 0)
@@ -399,7 +400,10 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						{
 							b.url(glob.name, string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), glob_.key));
 						};
-						b.td("TODO");
+						b.@td()
+						{
+							foreach (desc : glob.doc_comment.description) b.text(desc);
+						};
 					};
 				};
 			};
@@ -442,7 +446,10 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						{
 							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, FUNCTIONS), func_.key));
 						};
-						b.td("TODO");
+						b.@td()
+						{
+							foreach (desc : func.doc_comment.description) b.text(desc);
+						};
 					};
 				};
 			};
@@ -664,25 +671,27 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
 	defer query::delete(func_query);
 
-	TSQuery* contract_query = query::new(tsc3::language(),
-/*`
+/*	TSQuery* contract_query = query::new(tsc3::language(),
+`
 (doc_comment
 	(doc_comment_text)? @description
-	(doc_comment_contract .
-		name: (at_ident) @contract.name
-		mutability_contract: (_)? @mutability
+	.
+	(doc_comment_contract
+		name: (at_ident) @contract
 		"?"? @return_err
+		mutability_contract: (_)? @mutability
 		contract_expr: (_)? @data
 		description: (
-			string_expr (_ [
+			string_expr (_
+			[
 				(string_content)
 				(raw_string_content)
 			] @desc)+
 		)?
 	)*
 )
-`*/``)!!;
-	defer query::delete(contract_query);
+`)!!;
+	defer query::delete(contract_query);*/
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
@@ -726,6 +735,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					sec.doc_comment = comment;
 					io::printfn("generic params: %s", current_mod.generic_params);
 					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
 					current_mod.generics_done = true;
@@ -783,6 +793,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					glob.doc_comment = comment;
 					current_mod.sections[^1].globals.push(glob);
 					comment = {};
 				};
@@ -844,16 +855,71 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					func.doc_comment = comment;
 					current_mod.sections[^1].functions.push(func);
 					comment = {};
 				};
 			case "doc_comment":
-				query_cursor::@exec(query_cursor, contract_query, node; TSQueryMatch* match)
+				TSTreeCursor cc = cursor::copy(&cursor);
+				defer cursor::delete(&cc);
+
+				comment = {};
+				comment.contracts.init(alloc);
+				comment.description.init(alloc);
+				Contract contract;
+
+				cursor::goto_first_child(&cc)!!;
+				if (catch cursor::goto_next_sibling(&cc)) break;
+				assert(cc.node().type() == "doc_comment_text" || cc.node().type() == "doc_comment_contract");
+
+				if (cc.node().type() == "doc_comment_text")
 				{
-					comment = {};
-					comment.contracts.init(alloc);
-					comment.description.init(alloc);
-					Contract contract;
+					String starting_chars;
+					foreach (line : cc.node().get_text(data).tsplit("\n"))
+					{
+						if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
+						{
+							starting_chars = line[:line.len - line.trim_left().len];
+						}
+						String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
+						comment.description.push(line_trim.copy(alloc));
+					}
+					if (catch cursor::goto_next_sibling(&cc)) break;
+				}
+
+				while (try cursor::goto_next_sibling(&cc) && cc.node().type() != "*>")
+				{
+					if (contract.name.ptr)
+					{
+						comment.contracts.push(contract);
+						contract = {};
+					}
+
+					assert(cc.node().type() == "doc_comment_contract");
+					cursor::goto_first_child(&cc)!!;
+					defer cursor::goto_parent(&cc)!!;
+
+					assert(cursor::current_field_name(&cc)!! == "name");
+					contract.name = cc.node().get_text(data).copy(alloc);
+					switch (contract.name)
+					{
+						case "@ensure": contract.type = ENSURE;
+						case "@require": contract.type = REQUIRE;
+						case "@return": contract.type = RETURN;
+						case "@param": contract.type = PARAM;
+						case "@pure": contract.type = PURE;
+						default: contract.type = CUSTOM;
+					}
+				}
+
+				if (contract.name.ptr)
+				{
+					comment.contracts.push(contract);
+					contract = {};
+				}
+/*				query_cursor::@exec(query_cursor, contract_query, node; TSQueryMatch* match)
+				{
+
 					foreach (i, capture : match.captures[:match.capture_count])
 					{
 						uint len;
@@ -906,7 +972,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						comment.contracts.push(contract);
 						contract = {};
 					}
-				};
+				};*/
 			default:
 				comment = {};
 		}
