@@ -36,6 +36,14 @@ fn int main(String[] args)
 
 	String root_folder = "./docs";
 	io::printfn("%s", modules);
+
+	@pool()
+	{
+		File css = file::open(root_folder.tconcat("/style.css"), "wb")!!;
+		defer (void)css.close();
+		io::fprintf(&css, "%s", GLOBAL_CSS)!!;
+	};
+
 	modules.@iter_all_children(; Module* mod)
 	{
 		@pool()
@@ -100,11 +108,24 @@ enum ValType
 		struct struct_ {}
 	}
 }*/
-struct Global
+
+interface DocGenData
+{
+	fn String get_name(Allocator alloc);
+	fn String get_preview(Allocator alloc);
+	fn HighlightedText get_highlighted();
+	fn bool is_private();
+	fn bool is_hidden();
+
+	fn List {Contract} get_doc_contracts();
+	fn String get_doc_comment(Allocator alloc);
+}
+
+struct Global // (DocGenData)
 {
 	String name;
 	// I store the whole type including generic params etc in here, and then can parse it again later
-	String type;
+	Maybe {String} type;
 	String val;
 	bitstruct : char
 	{
@@ -114,9 +135,51 @@ struct Global
 	}
 	List {String} attributes;
 	DocComment doc_comment;
+	HighlightedText text;
 }
 
-struct Func
+enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH}
+struct HighlightData
+{
+	DataType type;
+	usz start;
+	usz len;
+}
+
+struct HighlightedText (Printable)
+{
+	String data;
+	HighlightData[] highlights;
+}
+
+fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
+{
+	usz? n;
+
+	foreach (i, highlight : self.highlights)
+	{
+		// never write code at 1:30 am
+		n += fmt.printf(i == 0 ? self.data[:highlight.start] : self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
+		n += fmt.printf(`<span class="DataType_%s">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
+	}
+	n += fmt.printf(self.highlights.len > 0 ? self.data[self.highlights[^1].start + self.highlights[^1].len..] : self.data);
+	return n;
+}
+
+
+fn String Global.get_name(&self, Allocator alloc) @dynamic => self.name;
+fn String Global.get_preview(&self, Allocator alloc) @dynamic => @pool()
+{
+	DString d;
+	d.tinit();
+	if (self.const_) d.append("const ");
+	if (self.tlocal_) d.append("tlocal ");
+	if (self.extern_) d.appendf("extern ");
+	if (self.type.has_value) d.appendf("%s ", self.type.get()!!);
+	return d.copy_str(alloc);
+}
+
+struct Func // (DocGenData)
 {
 	String name;
 	Maybe {String} return_type;
@@ -126,8 +189,7 @@ struct Func
 	List {String} attributes;
 	List {Param} params;
 	DocComment doc_comment;
-	// TODO:
-	// List {String} contracts
+	HighlightedText text;
 }
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
@@ -145,6 +207,7 @@ struct ModuleSection
 	List {Global} globals;
 	List {Func} functions;
 	DocComment doc_comment;
+	HighlightedText text;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -219,7 +282,7 @@ enum ModuleView : (String path, String name, ModuleViewFunc func)
 	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions },
 }
 
-fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
+fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
 {
 	DString result;
 	result.tinit();
@@ -230,11 +293,12 @@ fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, Mod
 		result.append("../");
 		self_cursor = self_cursor.parent;
 	}
-
-	result.appendf(other.get_folder_path(tmem, "")[1..]);
-	result.appendf(view.path);
-
 	return result.copy_str(alloc);
+}
+
+fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
+{
+	return self.get_path_to_root(tmem).tconcat(other.get_folder_path(tmem, "")[1..]).tconcat(view.path).copy(alloc);
 }
 
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
@@ -347,7 +411,7 @@ const String GLOBAL_HTML_STYLES = `style = "font-family:'0xProto Nerd Font'"`;
 
 fn String Module.get_overview(&self, Allocator alloc) => @pool()
 {
-	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, OVERVIEW);
 		self.gen_module_title(b);
@@ -505,7 +569,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 
 fn String Module.get_globals(&self, Allocator alloc)
 {
-	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, GLOBALS);
 		self.gen_module_title(b);
@@ -544,11 +608,8 @@ fn String Module.get_globals(&self, Allocator alloc)
 					{
 						b.@code()
 						{
-							if (glob.first.const_) b.@span(`style="color: red"`) { b.text("const "); };
-							if (glob.first.tlocal_) b.@span(`style="color: red"`) { b.text("tlocal "); };
-							if (glob.first.extern_) b.@span(`style="color: red"`) { b.text("extern "); };
-							if (glob.first.type.ptr) b.text("%s ", glob.first.type);
-							b.text("%s ", glob_.key);
+								b.text("%s", glob.first.text);
+							// b.text("%s", glob.first.data);
 						};
 					};
 				}
@@ -558,7 +619,7 @@ fn String Module.get_globals(&self, Allocator alloc)
 }
 fn String Module.get_types(&self, Allocator alloc)
 {
-	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, TYPES);
 		self.gen_module_title(b);
@@ -566,7 +627,7 @@ fn String Module.get_types(&self, Allocator alloc)
 }
 fn String Module.get_functions(&self, Allocator alloc)
 {
-	return html::@html(alloc, "Module Overview", GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, FUNCTIONS);
 		self.gen_module_title(b);
@@ -650,6 +711,46 @@ fn int stringcmp(String a, String b)
 	}
 	return compare_to(a.len, b.len);
 }
+
+
+const GLOBAL_CSS =
+`
+.DataType_KEYWORD {
+	color: red;
+}
+
+.DataType_TYPE {
+	color: purple;
+}
+
+.DataType_CONST {
+	color: purple;
+}
+
+.DataType_COMMENT {
+	color: grey;
+}
+
+.DataType_BUILTIN_TYPE {
+	color: #848400;
+}
+
+.DataType_NUMBER {
+	color: purple;
+}
+
+.DataType_STRING {
+	color: lightgreen;
+}
+
+.DataType_PATH {
+	color: green;
+}
+
+pre code {
+	background-color: #efefef;
+}
+`;
 
 module ts::cursor;
 

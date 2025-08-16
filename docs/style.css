@@ -1,0 +1,36 @@
+
+.DataType_KEYWORD {
+	color: red;
+}
+
+.DataType_TYPE {
+	color: purple;
+}
+
+.DataType_CONST {
+	color: purple;
+}
+
+.DataType_COMMENT {
+	color: grey;
+}
+
+.DataType_BUILTIN_TYPE {
+	color: #848400;
+}
+
+.DataType_NUMBER {
+	color: purple;
+}
+
+.DataType_STRING {
+	color: lightgreen;
+}
+
+.DataType_PATH {
+	color: green;
+}
+
+pre code {
+	background-color: #efefef;
+}

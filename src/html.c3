@@ -1,6 +1,6 @@
 module html;
 
-macro String @html(Allocator alloc, String title, String...; @body(HtmlBuilder* b)) => @pool()
+macro String @html(Allocator alloc, String title, String css_file, String...; @body(HtmlBuilder* b)) => @pool()
 {
 	HtmlBuilder b;
 	b.init(tmem);
@@ -8,7 +8,8 @@ macro String @html(Allocator alloc, String title, String...; @body(HtmlBuilder* 
 	{
 		b.@head()
 		{
-			b.elem("title", title);
+			b.text(string::tformat(`<link rel="stylesheet" href="%s">`, css_file));
+			b.elem("style", css_file);
 		};
 		b.@body()
 		{

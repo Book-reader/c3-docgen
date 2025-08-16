@@ -86,6 +86,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					sec.text = collect_data(alloc, node, data);
 					sec.doc_comment = comment;
 					io::printfn("generic params: %s", current_mod.generic_params);
 					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
@@ -105,9 +106,9 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				}
 				assert(current_mod.sections.len() != 0);
 
+				Global glob = global(alloc);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
-					Global glob = global(alloc);
 					foreach (i, capture : match.captures[:match.capture_count])
 					{
 						uint len;
@@ -135,7 +136,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 							case "attr":
 								glob.attributes.push(text.copy(alloc));
 							case "type":
-								glob.type = text.copy(alloc);
+								glob.type.set(text.copy(alloc));
 							case "tlocal":
 								glob.tlocal_ = true;
 							case "extern":
@@ -144,10 +145,12 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					glob.text = collect_data(alloc, node, data);
 					glob.doc_comment = comment;
 					current_mod.sections[^1].globals.push(glob);
 					comment = {};
 				};
+
 			case "macro_declaration":
 			case "func_definition":
 				// Handle files without module declarations/with code before a module declaration
@@ -206,6 +209,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
+					func.text = collect_data(alloc, node, data);
 					func.doc_comment = comment;
 					current_mod.sections[^1].functions.push(func);
 					comment = {};
@@ -308,6 +312,80 @@ macro Func function(Allocator alloc)
 	return f;
 }
 
+macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) => @pool()
+{
+	List {HighlightData} collected_data;
+	// collected_data.init(alloc);
+	collected_data.tinit(); // TODO: I think this would use less memory because reallocations would not be stored in alloc until the end of the program
+	// io::printfn("-------------------------");
+
+	TSTreeCursor cursor = cursor::new(node);
+	defer cursor::delete(&cursor);
+	collect_data_rec(alloc, &collected_data, &cursor, data, node.start_byte());
+
+	// io::printfn("collected %s", collected_data);
+	// abort();
+	return {node.get_text(data).copy(alloc), collected_data.to_array(alloc)};
+}
+
+fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, TSTreeCursor* cursor, String data, usz start_idx)
+{
+	do
+	{
+		TSTreeCursor bak = cursor::copy(cursor);
+		defer cursor::delete(&bak);
+
+		if (cursor::current_node(cursor).type() != "module_resolution" && @ok(cursor::goto_first_child(&bak)))
+		{
+			collect_data_rec(alloc, collected_data, &bak, data, start_idx);
+		}
+		else
+		{
+			// io::printfn("%s", cursor::current_node(cursor).get_text(data));
+			TSNode n = cursor::current_node(cursor);
+			String text = n.get_text(data);
+			DataType type;
+			switch (String node_type = n.type())
+			{
+				case "ct_ident":
+				case "at_ident":
+				case "hash_ident":
+				case "ident": type = IDENT;
+				case "const_ident": type = CONST;
+				case "type_ident": type = TYPE;
+				// TODO: this doesn't catch the `uint` in `const BITS = uint.sizeof * 8;`
+				case "base_type_name": type = BUILTIN_TYPE;
+				case "line_comment":
+				case "block_comment":
+				case "doc_comment": type = COMMENT;
+				case "module_resolution": type = PATH;
+				case "string_literal":
+				case "raw_string_literal": type = STRING;
+				case "integer_literal": type = NUMBER;
+				default:
+					// io::printfn("a: %s", node_type);
+					if (array::contains(KEYWORDS, node_type)) { type = KEYWORD; }
+					else if (array::contains(BUILTIN_TYPES, node_type)) { type = BUILTIN_TYPE; }
+					// type = DEFAULT;
+			}
+			HighlightData dat = {type, n.start_byte() - start_idx, n.end_byte() - n.start_byte()};
+			collected_data.push(dat);
+		}
+		if (!@ok(cursor::goto_next_sibling(cursor)))
+		{
+			// if (collected_data.len() > 0) (*collected_data)[^1].has_space = false;
+			break;
+		}
+	} while (true);
+
+}
+
+const String[*] KEYWORDS = {"alias", "assert", "asm", "attrdef", "bitstruct", "break", "case", "catch", "const", "continue", "default", "defer", "do", "else", "enum", "extern", "false", "faultdef", "for", "foreach", "foreach_r", "fn", "tlocal", "if", "inline", "import", "macro", "module", "nextcase", "null", "interface", "return", "static", "struct", "switch", "true", "try", "typedef", "union", "var", "while", "$alignof", "$assert", "$assignable", "$case", "$default", "$defined", "$echo", "$else", "$embed", "$endfor", "$endforeach", "$endif", "$endswitch", "$eval", "$evaltype", "$error", "$exec", "$extnameof", "$feature", "$for", "$foreach", "$if", "$include", "$is_const", "$nameof", "$offsetof", "$qnameof", "$sizeof", "$stringify", "$switch", "$typefrom", "$typeof", "$vacount", "$vatype", "$vaconst", "$vaarg", "$vaexpr", "$vasplat"};
+// I shouldn't need this, but do for some reason
+const String[*] BUILTIN_TYPES = { "void", "bool", "char", "double", "float", "float16", "bfloat", "int128", "ichar", "int", "iptr", "isz", "long", "short", "uint128", "uint", "ulong", "uptr", "ushort", "usz", "float128", "any", "fault", "typeid"};
+
+
+
 /*macro ModuleSection module_section_create(Allocator alloc, String... attributes)
 {
 	ModuleSection new;
@@ -316,4 +394,12 @@ macro Func function(Allocator alloc)
 	return new;
 }*/
 
+module ts::query_cursor;
+
+macro void @exec_captures(TSQueryCursor* cursor, TSQuery* query, TSNode node; @body(TSQueryCapture capture)) {
+	ts::query_cursor_exec(cursor, query, node);
+	for (TSQueryMatch match, uint idx; ts::query_cursor_next_capture(cursor, &match, &idx);) {
+		@body(match.captures[idx]);
+	}
+}
 
