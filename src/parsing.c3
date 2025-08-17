@@ -40,11 +40,15 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
 	defer query::delete(module_query);
 
-	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration "extern"? @extern (_ "tlocal"? @tlocal type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
+	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration (_ type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
 	defer query::delete(global_query);
 
+	// TODO: this may break if there are comments inside certain parts of the function definition (eg `fn void something() @Attr1 /*comment*/ @Attr2)`)
 	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
 	defer query::delete(func_query);
+
+	// TSQuery* struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name (attributes (attribute)* @attr)? body: (struct_body [(struct_member_declaration) @member (_)]*))`)!!;
+	// defer query::delete(struct_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
@@ -109,9 +113,10 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				assert(current_mod.sections.len() != 0);
 
 				Global glob = global(alloc);
+				glob.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
-					foreach (i, capture : match.captures[:match.capture_count])
+					foreach (capture : match.captures[:match.capture_count])
 					{
 						uint len;
 						String text = capture.get_text(data);
@@ -119,35 +124,38 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
 						{
 							case "decl_type":
-								// TODO: handle consts & extern functions
-								// io::printfn("TODO: got decl of type '%s'", capture.node.type());
+								// TODO: handle extern functions
 								switch (String type = capture.node.type())
 								{
 									case "declaration":
 										break;
 									case "const_declaration":
 									case "function_declaration": // TODO: handle as regular function
-										glob.const_ = true;
+										break;
 									default:
 										unreachable("unexpected global type '%s'", type);
 								}
 							case "name":
-								glob.name = text.copy(alloc);
+								// glob.name = text.copy(alloc);
+								foreach (i, n : glob.text.highlights)
+								{
+									if (n.get_text(glob.text.data) == text)
+									{
+										glob.name = glob.text.slice(i, i);
+									}
+								}
+								if (glob.text.data.ptr == null) unreachable("could not find node name");
 							case "value":
-								glob.val = text.copy(alloc);
+								// glob.val = text.copy(alloc);
+								break;
 							case "attr":
 								glob.attributes.push(text.copy(alloc));
 							case "type":
 								glob.type.set(text.copy(alloc));
-							case "tlocal":
-								glob.tlocal_ = true;
-							case "extern":
-								glob.extern_ = true;
 							default:
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
-					glob.text = collect_data(alloc, node, data);
 					glob.doc_comment = comment;
 					current_mod.sections[^1].globals.push(glob);
 					comment = {};
@@ -232,7 +240,8 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				if (cc.node().type() == "doc_comment_text")
 				{
 					String starting_chars;
-					foreach (line : cc.node().get_text(data).tsplit("\n"))
+					Splitter splitter  = substitiute_with_table(tmem, cc.node().get_text(data)).tokenize_all("\n");
+					while (try line = splitter.next())
 					{
 						if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
 						{
@@ -330,24 +339,7 @@ macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) =>
 	// io::printfn("collected %s", collected_data);
 	// abort();
 	String text = node.get_text(data)/*.copy(tmem)*/;
-	List {String} replaced;
-	replaced.tinit();
-	usz start_i = 0;
-	foreach (i, c : text)
-	{
-		if (try val = REPLACE_TABLE.get(c))
-		{
-			replaced.push(text[start_i:i - start_i]);
-			replaced.push(val);
-			start_i = i + 1;
-		}
-	}
-	replaced.push(text[start_i..]);
-	DString d;
-	d.tinit();
-	foreach (str : replaced) d.append(str);
-
-	return {d.copy_str(alloc), collected_data.to_array(alloc)};
+	return {substitiute_with_table(alloc, text), collected_data.to_array(alloc)};
 }
 
 fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, TSTreeCursor* cursor, String data, usz start_idx, usz* offset)
@@ -427,7 +419,30 @@ const REPLACE_TABLE = const_map::@new_equal{char, String}(
 	{'&', "&amp;"},
 	{'"', "&quot;"},
 	{'\'', "&apos;"},
+	{'%', "%%"},
 );
+
+macro substitiute_with_table(Allocator alloc, String text) => @pool()
+{
+	List {String} replaced;
+	replaced.tinit();
+	usz start_i = 0;
+	foreach (i, c : text)
+	{
+		if (try val = REPLACE_TABLE.get(c))
+		{
+			replaced.push(text[start_i:i - start_i]);
+			replaced.push(val);
+			start_i = i + 1;
+		}
+	}
+	replaced.push(text[start_i..]);
+	DString d;
+	d.tinit();
+	foreach (str : replaced) d.append(str);
+
+	return d.copy_str(alloc);
+}
 
 
 /*macro ModuleSection module_section_create(Allocator alloc, String... attributes)

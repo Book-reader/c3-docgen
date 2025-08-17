@@ -112,30 +112,51 @@ enum ValType
 interface DocGenData
 {
 	fn String get_name(Allocator alloc);
-	fn String get_preview(Allocator alloc);
 	fn HighlightedText get_highlighted();
 	fn bool is_private();
-	fn bool is_hidden();
+	fn bool is_hidden_from(ModuleView view);
+	// fn bool has_attribute(String attr);
+	fn String get_description_preview(Allocator alloc);
+	fn String get_description(Allocator alloc);
+	// fn String[] get_attributes() @optional;
 
-	fn List {Contract} get_doc_contracts();
-	fn String get_doc_comment(Allocator alloc);
+	// fn List {Contract} get_doc_contracts();
+	// fn String get_doc_comment(Allocator alloc);
 }
 
-struct Global // (DocGenData)
+// TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
+struct Global (DocGenData)
 {
-	String name;
+	HighlightedTextSlice name;
 	// I store the whole type including generic params etc in here, and then can parse it again later
 	Maybe {String} type;
-	String val;
-	bitstruct : char
-	{
-		bool tlocal_;
-		bool const_;
-		bool extern_;
-	}
 	List {String} attributes;
 	DocComment doc_comment;
 	HighlightedText text;
+}
+
+fn String Global.get_name(&self, Allocator alloc) @dynamic => self.name.get_string();
+fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
+fn bool Global.is_hidden_from(&self, ModuleView view) @dynamic => (view != OVERVIEW && view != GLOBALS) || self.attributes.contains("@local");
+fn bool Global.is_private(&self) @dynamic => self.attributes.contains("@private");
+
+fn String Global.get_description_preview(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+
+fn String Global.get_description(&self, Allocator alloc) @dynamic => @pool()
+{
+	DString d;
+	d.tinit();
+	foreach (desc : self.doc_comment.description) d.appendf(desc);
+	return d.copy_str(alloc);
 }
 
 enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH, FUNCTION, END /*nice hack to tell when to stop printing text*/}
@@ -146,6 +167,8 @@ struct HighlightData
 	usz len;
 }
 
+fn String HighlightData.get_text(&self, String data) => data[self.start:self.len];
+
 struct HighlightedText (Printable)
 {
 	String data;
@@ -154,6 +177,11 @@ struct HighlightedText (Printable)
 
 fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 {
+	return self.to_format_internal(fmt, true);
+}
+
+macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print_before_and_after)
+{
 	usz? n;
 
 	foreach (i, highlight : self.highlights)
@@ -161,31 +189,40 @@ fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 		if (highlight.type == END) break;
 		// if (i > 0) io::printfn("curr: \"%s\"; start: %s; len: %s; prev.start: %s; prev.len: %s", self.data[highlight.start:highlight.len], highlight.start, highlight.len, self.highlights[i - 1].start, self.highlights[i - 1].len);
 		// never write code at 1:30 am
-		n += fmt.printf(i == 0 ? self.data[:highlight.start] : self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
+		if ($print_before_and_after && i == 0)
+		{
+			n += fmt.printf(self.data[:highlight.start]);
+		}
+		else if (i != 0)
+		{
+			n += fmt.printf(self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
+		}
 		n += fmt.printf(`<span class="DataType_%s DataType">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
 	}
 	if (self.highlights.len == 0)
 	{
 		n += fmt.printf(self.data);
 	}
-	else if (self.highlights[^1].type != END)
+	else if ($print_before_and_after && self.highlights[^1].type != END)
 	{
 		n += fmt.printf(self.data[self.highlights[^1].start + self.highlights[^1].len..]);
 	}
 	return n;
 }
 
-
-fn String Global.get_name(&self, Allocator alloc) @dynamic => self.name;
-fn String Global.get_preview(&self, Allocator alloc) @dynamic => @pool()
+fn HighlightedTextSlice HighlightedText.slice(&self, usz start, usz end)
 {
-	DString d;
-	d.tinit();
-	if (self.const_) d.append("const ");
-	if (self.tlocal_) d.append("tlocal ");
-	if (self.extern_) d.appendf("extern ");
-	if (self.type.has_value) d.appendf("%s ", self.type.get()!!);
-	return d.copy_str(alloc);
+	return {self.data, self.highlights[start..end]};
+}
+
+typedef HighlightedTextSlice = inline HighlightedText;
+fn usz? HighlightedTextSlice.to_format(&self, Formatter* fmt) @dynamic
+{
+	return self.to_format_internal(fmt, false);
+}
+fn String HighlightedTextSlice.get_string(&self)
+{
+	return self.data[self.highlights[0].start..self.highlights[^1].start + self.highlights[^1].len - 1];
 }
 
 struct Func // (DocGenData)
@@ -447,15 +484,15 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 			{
 				if (!glob.attributes.contains("@private"))
 				{
-					GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					GlobalAbomination a = globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
 					a.push({glob, sec});
-					globals[glob.name] = a;
+					globals[glob.name.get_string()] = a;
 				}
 				else
 				{
-					GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					GlobalAbomination a = private_globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
 					a.push({glob, sec});
-					private_globals[glob.name] = a;
+					private_globals[glob.name.get_string()] = a;
 				}
 			}
 		}
@@ -471,11 +508,11 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						Global* glob = glob_.value[0].first;
 						b.@td()
 						{
-							b.url(glob.name, string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), glob_.key));
+							b.url(glob.name.get_string(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), glob_.key));
 						};
 						b.@td()
 						{
-							foreach (desc : glob.doc_comment.description) b.text(desc);
+							b.text(glob.doc_comment.description.len() > 0 ? glob.doc_comment.description[0] : "");
 						};
 					};
 				};
@@ -521,7 +558,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 						};
 						b.@td()
 						{
-							foreach (desc : func.doc_comment.description) b.text(desc);
+							b.text(func.doc_comment.description.len() > 0 ? func.doc_comment.description[0] : "");
 						};
 					};
 				};
@@ -538,18 +575,18 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 				b.h(3, "Globals");
 				b.@table({"Name", "Description"})
 				{
-					foreach (glob_ : private_globals.iter())
+					foreach (glob_ : private_globals.iter()) @pool()
 					{
 						b.@tr()
 						{
 							Global* glob = glob_.value[0].first;
 							b.@td()
 							{
-								b.url(glob.name, "#todo");
+								b.url(string::tformat("%s", glob.name), "#todo");
 							};
 							b.td("TODO");
 						};
-					}
+					};
 				};
 			}
 
@@ -593,15 +630,15 @@ fn String Module.get_globals(&self, Allocator alloc)
 			{
 				if (!glob.attributes.contains("@private"))
 				{
-					GlobalAbomination a = globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					GlobalAbomination a = globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
 					a.push({glob, sec});
-					globals[glob.name] = a;
+					globals[glob.name.get_string()] = a;
 				}
 				else
 				{
-					GlobalAbomination a = private_globals.@get_or_set(glob.name, *(GlobalAbomination){}.init(tmem));
+					GlobalAbomination a = private_globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
 					a.push({glob, sec});
-					private_globals[glob.name] = a;
+					private_globals[glob.name.get_string()] = a;
 				}
 			}
 		}
