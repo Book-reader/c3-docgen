@@ -35,6 +35,10 @@
 	color: green;
 }
 
+.DataType {
+	display: inline-block;
+}
+
 pre {
 	background-color: #efefef;
 }

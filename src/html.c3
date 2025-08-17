@@ -9,7 +9,6 @@ macro String @html(Allocator alloc, String title, String css_file, String...; @b
 		b.@head()
 		{
 			b.text(string::tformat(`<link rel="stylesheet" href="%s">`, css_file));
-			b.elem("style", css_file);
 		};
 		b.@body()
 		{

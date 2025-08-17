@@ -7,6 +7,8 @@ import ts;
 import tree_sitter_c3;
 alias tsc3 = module tree_sitter_c3;
 
+import const_map;
+
 macro list_with(Allocator alloc, ...)
 {
 	List {$typeof($vaarg[0])} l;
@@ -321,14 +323,34 @@ macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) =>
 
 	TSTreeCursor cursor = cursor::new(node);
 	defer cursor::delete(&cursor);
-	collect_data_rec(alloc, &collected_data, &cursor, data, node.start_byte());
+
+	usz offset = 0; // so I can properly handle replacing `<` and `>` with `&lt` and `&gt`
+	collect_data_rec(alloc, &collected_data, &cursor, data, node.start_byte(), &offset);
 
 	// io::printfn("collected %s", collected_data);
 	// abort();
-	return {node.get_text(data).copy(alloc), collected_data.to_array(alloc)};
+	String text = node.get_text(data)/*.copy(tmem)*/;
+	List {String} replaced;
+	replaced.tinit();
+	usz start_i = 0;
+	foreach (i, c : text)
+	{
+		if (try val = REPLACE_TABLE.get(c))
+		{
+			replaced.push(text[start_i:i - start_i]);
+			replaced.push(val);
+			start_i = i + 1;
+		}
+	}
+	replaced.push(text[start_i..]);
+	DString d;
+	d.tinit();
+	foreach (str : replaced) d.append(str);
+
+	return {d.copy_str(alloc), collected_data.to_array(alloc)};
 }
 
-fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, TSTreeCursor* cursor, String data, usz start_idx)
+fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, TSTreeCursor* cursor, String data, usz start_idx, usz* offset)
 {
 	do
 	{
@@ -342,7 +364,7 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 				collected_data.push({END, 0, 0});
 				return;
 			}
-			collect_data_rec(alloc, collected_data, &bak, data, start_idx);
+			collect_data_rec(alloc, collected_data, &bak, data, start_idx, offset);
 		}
 		else
 		{
@@ -374,7 +396,16 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 					else if (array::contains(BUILTIN_TYPES, node_type)) { type = BUILTIN_TYPE; }
 					// type = DEFAULT;
 			}
-			HighlightData dat = {type, n.start_byte() - start_idx, n.end_byte() - n.start_byte()};
+			HighlightData dat = {type, n.start_byte() - start_idx + *offset, n.end_byte() - n.start_byte()};
+			foreach (c : text)
+			{
+				if (try entry = REPLACE_TABLE.get(c))
+				{
+					// io::printfn("before: %s:%s:%s, after: %s:%s:%s", n.type(), dat.start, dat.len, entry, dat.start, entry.len);
+					*offset += entry.len - 1;
+					dat.len += entry.len - 1;
+				}
+			}
 			collected_data.push(dat);
 		}
 		if (!@ok(cursor::goto_next_sibling(cursor)))
@@ -389,7 +420,14 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 const String[*] KEYWORDS = {"alias", "assert", "asm", "attrdef", "bitstruct", "break", "case", "catch", "const", "continue", "default", "defer", "do", "else", "enum", "extern", "false", "faultdef", "for", "foreach", "foreach_r", "fn", "tlocal", "if", "inline", "import", "macro", "module", "nextcase", "null", "interface", "return", "static", "struct", "switch", "true", "try", "typedef", "union", "var", "while", "$alignof", "$assert", "$assignable", "$case", "$default", "$defined", "$echo", "$else", "$embed", "$endfor", "$endforeach", "$endif", "$endswitch", "$eval", "$evaltype", "$error", "$exec", "$extnameof", "$feature", "$for", "$foreach", "$if", "$include", "$is_const", "$nameof", "$offsetof", "$qnameof", "$sizeof", "$stringify", "$switch", "$typefrom", "$typeof", "$vacount", "$vatype", "$vaconst", "$vaarg", "$vaexpr", "$vasplat"};
 // I shouldn't need this, but do for some reason
 const String[*] BUILTIN_TYPES = { "void", "bool", "char", "double", "float", "float16", "bfloat", "int128", "ichar", "int", "iptr", "isz", "long", "short", "uint128", "uint", "ulong", "uptr", "ushort", "usz", "float128", "any", "fault", "typeid"};
-
+// is this overkill? maybe, but I wanted an excuse to use it
+const REPLACE_TABLE = const_map::@new_equal{char, String}(
+	{'<', "&lt;"},
+	{'>', "&gt;"},
+	{'&', "&amp;"},
+	{'"', "&quot;"},
+	{'\'', "&apos;"},
+);
 
 
 /*macro ModuleSection module_section_create(Allocator alloc, String... attributes)

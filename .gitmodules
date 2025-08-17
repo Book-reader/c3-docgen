@@ -1,0 +1,3 @@
+[submodule "lib/const_map.c3l"]
+	path = lib/const_map.c3l
+	url = https://github.com/Book-reader/const_map.c3l.git

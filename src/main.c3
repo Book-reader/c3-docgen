@@ -159,9 +159,10 @@ fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 	foreach (i, highlight : self.highlights)
 	{
 		if (highlight.type == END) break;
+		// if (i > 0) io::printfn("curr: \"%s\"; start: %s; len: %s; prev.start: %s; prev.len: %s", self.data[highlight.start:highlight.len], highlight.start, highlight.len, self.highlights[i - 1].start, self.highlights[i - 1].len);
 		// never write code at 1:30 am
 		n += fmt.printf(i == 0 ? self.data[:highlight.start] : self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
-		n += fmt.printf(`<span class="DataType_%s">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
+		n += fmt.printf(`<span class="DataType_%s DataType">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
 	}
 	if (self.highlights.len == 0)
 	{
@@ -757,6 +758,10 @@ const GLOBAL_CSS =
 
 .DataType_FUNCTION {
 	color: green;
+}
+
+.DataType {
+	display: inline-block;
 }
 
 pre {
