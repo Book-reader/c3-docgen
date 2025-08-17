@@ -138,7 +138,7 @@ struct Global // (DocGenData)
 	HighlightedText text;
 }
 
-enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH}
+enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH, FUNCTION, END /*nice hack to tell when to stop printing text*/}
 struct HighlightData
 {
 	DataType type;
@@ -158,11 +158,19 @@ fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 
 	foreach (i, highlight : self.highlights)
 	{
+		if (highlight.type == END) break;
 		// never write code at 1:30 am
 		n += fmt.printf(i == 0 ? self.data[:highlight.start] : self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
 		n += fmt.printf(`<span class="DataType_%s">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
 	}
-	n += fmt.printf(self.highlights.len > 0 ? self.data[self.highlights[^1].start + self.highlights[^1].len..] : self.data);
+	if (self.highlights.len == 0)
+	{
+		n += fmt.printf(self.data);
+	}
+	else if (self.highlights[^1].type != END)
+	{
+		n += fmt.printf(self.data[self.highlights[^1].start + self.highlights[^1].len..]);
+	}
 	return n;
 }
 
@@ -685,7 +693,7 @@ fn String Module.get_functions(&self, Allocator alloc)
 					{
 						b.@code()
 						{
-							b.text("%s ", func_.key);
+							b.text("%s", func.first.text);
 						};
 					};
 				}
@@ -744,10 +752,14 @@ const GLOBAL_CSS =
 }
 
 .DataType_PATH {
+	color: #004400;
+}
+
+.DataType_FUNCTION {
 	color: green;
 }
 
-pre code {
+pre {
 	background-color: #efefef;
 }
 `;
@@ -779,3 +791,10 @@ fn TSNode TSTreeCursor.node(&self) => current_node(self);
 
 macro void ret_void() @private {}
 
+module std::collections::list {Type};
+
+fn Type? List.get_try(&self, usz idx)
+{
+	if (idx < self.size) return self.entries[idx];
+	return NOT_FOUND?;
+}

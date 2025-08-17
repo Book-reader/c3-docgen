@@ -28,9 +28,13 @@
 }
 
 .DataType_PATH {
+	color: #004400;
+}
+
+.DataType_FUNCTION {
 	color: green;
 }
 
-pre code {
+pre {
 	background-color: #efefef;
 }

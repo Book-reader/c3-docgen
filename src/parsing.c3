@@ -316,7 +316,7 @@ macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) =>
 {
 	List {HighlightData} collected_data;
 	// collected_data.init(alloc);
-	collected_data.tinit(); // TODO: I think this would use less memory because reallocations would not be stored in alloc until the end of the program
+	collected_data.tinit();
 	// io::printfn("-------------------------");
 
 	TSTreeCursor cursor = cursor::new(node);
@@ -335,8 +335,13 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 		TSTreeCursor bak = cursor::copy(cursor);
 		defer cursor::delete(&bak);
 
-		if (cursor::current_node(cursor).type() != "module_resolution" && @ok(cursor::goto_first_child(&bak)))
+		if (cursor::current_node(cursor).type() != "module_resolution"/* && cursor::current_field_name(cursor) ?? "" != "function"*/ && @ok(cursor::goto_first_child(&bak)))
 		{
+			if (cursor::current_node(cursor).type() == "macro_func_body")
+			{
+				collected_data.push({END, 0, 0});
+				return;
+			}
 			collect_data_rec(alloc, collected_data, &bak, data, start_idx);
 		}
 		else
@@ -346,7 +351,7 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 			String text = n.get_text(data);
 			DataType type;
 			switch (String node_type = n.type())
-			{
+				{
 				case "ct_ident":
 				case "at_ident":
 				case "hash_ident":
@@ -363,6 +368,7 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 				case "raw_string_literal": type = STRING;
 				case "integer_literal": type = NUMBER;
 				default:
+					if (node_type == "(" && collected_data.len() > 0 && (*collected_data)[^1].type == IDENT) (*collected_data)[^1].type = FUNCTION;
 					// io::printfn("a: %s", node_type);
 					if (array::contains(KEYWORDS, node_type)) { type = KEYWORD; }
 					else if (array::contains(BUILTIN_TYPES, node_type)) { type = BUILTIN_TYPE; }
