@@ -244,7 +244,7 @@ fn String Func.get_name(&self) @dynamic => self.name.get_string();
 fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
 fn HighlightedText Func.get_highlighted(&self) @dynamic => self.text;
 fn bool Func.is_private(&self) @dynamic => self.attributes.contains("@private");
-fn bool Func.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || ((view == OVERVIEW || view == FUNCTIONS) && self.method_of.has_value);
+fn bool Func.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != OVERVIEW && view != FUNCTIONS && view != TYPE) || (view != TYPE && self.method_of.has_value);
 
 fn String Func.get_short_description(&self, Allocator alloc) @dynamic
 {
@@ -263,7 +263,7 @@ fn String Func.get_description(&self, Allocator alloc) @dynamic => @pool()
 	foreach (desc : self.doc_comment.description) d.appendf(desc);
 	return d.copy_str(alloc);
 }
-fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPES : FUNCTIONS;
+fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPE : FUNCTIONS;
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
 struct Param
@@ -360,6 +360,7 @@ enum ModuleView : (String path, String name, ModuleViewFunc func)
 	GLOBALS = { "globals.html", "Globals", &Module.get_globals },
 	TYPES = { "types.html", "Types", &Module.get_types },
 	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions },
+	TYPE = { "type.%s.html", "Type", fn (a, b) {return {};} },
 }
 
 fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
@@ -508,15 +509,15 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 
 
 		Abomination a = filter_and_collect_data(tmem, self, OVERVIEW);
-		foreach (section : a.iter())
+		if (a[0].len() > 0)
 		{
-			// First public values
-			if (section.value[0].len() > 0)
+			foreach (section : a[0].iter())
 			{
+				// First public values
 				b.h(2, section.key);
 				b.@table({"Name", "Description"})
 				{
-					foreach (val : section.value[0].iter()) @pool()
+					foreach (val : section.value.iter()) @pool()
 					{
 						b.@tr()
 						{
@@ -531,17 +532,16 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 				};
 			}
 		}
-		bool has_private;
-		foreach (section : a.iter())
+		if (a[1].len() > 0)
 		{
-			// Then private values
-			if (section.value[1].len() > 0)
+			b.h(2, "Private");
+			foreach (section : a[1].iter())
 			{
-				if (!has_private) { has_private = true; b.h(2, "Private"); }
+				// Then private values
 				b.h(3, section.key);
 				b.@table({"Name", "Description"})
 				{
-					foreach (val : section.value[1].iter()) @pool()
+					foreach (val : section.value.iter()) @pool()
 					{
 						b.@tr()
 						{
@@ -559,12 +559,13 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 	};
 }
 
-alias Abomination = HashMap {String, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}[2]};
+alias Abomination = HashMap {String, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}}[2];
 
 fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView view)
 {
 	Abomination a;
-	a.init(alloc);
+	a[0].init(alloc);
+	a[1].init(alloc);
 	foreach (&sec : mod.sections)
 	{
 		// TODO: $foreach $member : ModuleSectionData.membersof:
@@ -575,38 +576,41 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 			{
 				String section_name = member.get_own_view().name;
 				String member_name = member.get_name();
-				if (!a.has_key(section_name))
-				{
-					a[section_name] = {};
-					a[section_name]!![0].init(alloc);
-					a[section_name]!![1].init(alloc);
-				}
-
 				if (!member.is_hidden_from(view))
 				{
 					if (!member.is_private())
 					{
-						if (!a[section_name]!![0].has_key(member_name))
+						if (!a[0].has_key(section_name))
 						{
-							(*a.get_ref(section_name)!!)[0].set(member_name, {});
-							(*a.get_ref(section_name)!!)[0].get_ref(member_name)!!.init(alloc);
+							a[0][section_name] = {};
+							a[0][section_name]!!.init(alloc);
+						}
+						if (!a[0][section_name]!!.has_key(member_name))
+						{
+							a[0].get_ref(section_name)!!.set(member_name, {});
+							a[0].get_ref(section_name)!!.get_ref(member_name)!!.init(alloc);
 							// a[section_name]!![0][member_name] = {};
 							// a[section_name]!![0][member_name]!!.init(alloc);
 						}
 						// a[section_name]!![0][member_name]!!.push({member, sec});
-						(*a.get_ref(section_name)!!)[0].get_ref(member_name)!!.push({member, sec});
+						a[0].get_ref(section_name)!!.get_ref(member_name)!!.push({member, sec});
 					}
 					else
 					{
-						if (!a[section_name]!![1].has_key(member_name))
+						if (!a[1].has_key(section_name))
+						{
+							a[1][section_name] = {};
+							a[1][section_name]!!.init(alloc);
+						}
+						if (!a[1][section_name]!!.has_key(member_name))
 						{
 							// a[section_name]!![1][member_name] = {};
 							// a[section_name]!![1][member_name]!!.init(alloc);
-							(*a.get_ref(section_name)!!)[1].set(member_name, {});
-							(*a.get_ref(section_name)!!)[1].get_ref(member_name)!!.init(alloc);
+							a[1].get_ref(section_name)!!.set(member_name, {});
+							a[1].get_ref(section_name)!!.get_ref(member_name)!!.init(alloc);
 						}
 						// a[section_name]!![1][member_name]!!.push({member, sec});
-						(*a.get_ref(section_name)!!)[1].get_ref(member_name)!!.push({member, sec});
+						a[1].get_ref(section_name)!!.get_ref(member_name)!!.push({member, sec});
 					}
 				}
 			}
@@ -616,131 +620,88 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 	return a;
 }
 
-fn String Module.get_globals(&self, Allocator alloc)
+fn String Module.get_globals(&self, Allocator alloc) => @pool()
 {
-	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Globals", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, GLOBALS);
 		self.gen_module_title(b);
 
-		HashMap {String, GlobalAbomination} globals;
-		globals.init(tmem);
-		HashMap {String, GlobalAbomination} private_globals;
-		private_globals.init(tmem);
-		foreach (&sec : self.sections)
+		Abomination a = filter_and_collect_data(tmem, self, GLOBALS);
+		String[2] visibility = {"Public", "Private"};
+		foreach (i, c : a)
 		{
-			foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
+			if (c.len() == 0) continue;
+			b.h(1, visibility[i]);
+			foreach (section : c.iter()) foreach (name : section.value.iter())
 			{
-				if (!glob.attributes.contains("@private"))
+				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
+				foreach (val : name.value) @pool()
 				{
-					GlobalAbomination a = globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
-					a.push({glob, sec});
-					globals[glob.name.get_string()] = a;
-				}
-				else
-				{
-					GlobalAbomination a = private_globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
-					a.push({glob, sec});
-					private_globals[glob.name.get_string()] = a;
-				}
-			}
-		}
-		if (globals.len() > 0)
-		{
-			b.h(1, "Public");
-			foreach (glob_ : globals.iter()) @pool()
-			{
-				b.h(2, glob_.key, string::tformat(`id="%s"`, glob_.key));
-				foreach (glob : glob_.value)
-				{
-					b.@pre()
+					b.text("%s", val.first.get_description(tmem));
+					b.@precode()
 					{
-						b.@code()
-						{
-								b.text("%s", glob.first.text);
-							// b.text("%s", glob.first.data);
-						};
+						b.text("%s", val.first.get_highlighted());
 					};
-				}
-			};
+				};
+			}
 		}
 	};
 }
 fn String Module.get_types(&self, Allocator alloc)
 {
-	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Types", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, TYPES);
 		self.gen_module_title(b);
+
+		Abomination a = filter_and_collect_data(tmem, self, TYPES);
+		String[2] visibility = {"Public", "Private"};
+		foreach (i, c : a)
+		{
+			if (c.len() == 0) continue;
+			b.h(1, visibility[i]);
+			foreach (section : c.iter()) foreach (name : section.value.iter())
+			{
+				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
+				foreach (val : name.value) @pool()
+				{
+					b.text("%s", val.first.get_description(tmem));
+					b.@precode()
+					{
+						b.text("%s", val.first.get_highlighted());
+					};
+				};
+			}
+		}
 	};
 }
 fn String Module.get_functions(&self, Allocator alloc)
 {
-	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, "Module Functions", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
 		self.gen_header(b, FUNCTIONS);
 		self.gen_module_title(b);
 
-		HashMap {String, FuncAbomination} funcs;
-		funcs.init(tmem);
-		HashMap {String, FuncAbomination} private_funcs;
-		private_funcs.init(tmem);
-		foreach (&sec : self.sections)
+		Abomination a = filter_and_collect_data(tmem, self, FUNCTIONS);
+		String[2] visibility = {"Public", "Private"};
+		foreach (i, c : a)
 		{
-			foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
+			if (c.len() == 0) continue;
+			b.h(1, visibility[i]);
+			foreach (section : c.iter()) foreach (name : section.value.iter())
 			{
-				if (!func.attributes.contains("@private"))
+				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
+				foreach (val : name.value) @pool()
 				{
-					FuncAbomination a = funcs.@get_or_set(func.name.get_string(), *(FuncAbomination){}.init(tmem));
-					a.push({func, sec});
-					funcs[func.name.get_string()] = a;
-				}
-				else
-				{
-					FuncAbomination a = private_funcs.@get_or_set(func.name.get_string(), *(FuncAbomination){}.init(tmem));
-					a.push({func, sec});
-					private_funcs[func.name.get_string()] = a;
-				}
-			}
-		}
-/*		if (funcs.len() > 0)
-		{
-			b.h(1, "Functions");
-			b.@table({"Name", "Description"})
-			{
-				foreach (func_ : funcs.iter()) @pool()
-				{
-					b.@tr()
+					b.text("%s", val.first.get_description(tmem));
+					b.@precode()
 					{
-						Func* func = func_.value[0].first;
-						b.@td()
-						{
-							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), func_.key));
-						};
-						b.td("TODO");
+						b.text("%s", val.first.get_highlighted());
 					};
 				};
-			};
-		}*/
-		if (funcs.len() > 0)
-		{
-			b.h(1, "Public");
-			foreach (func_ : funcs.iter()) @pool()
-			{
-				b.h(2, func_.key, string::tformat(`id="%s"`, func_.key));
-				foreach (func : func_.value)
-				{
-					b.@pre()
-					{
-						b.@code()
-						{
-							b.text("%s", func.first.text);
-						};
-					};
-				}
-			};
+			}
 		}
-
 	};
 }
 
