@@ -296,9 +296,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				comment = {};
 		}
 		cursor::reset_to(&cursor, &pos);
-		// I can't believe this is an actual bug lol
-		if (@catch(cursor::goto_next_sibling(&cursor))) break;
-	} while (true);
+	} while (@ok(cursor::goto_next_sibling(&cursor)));
 	return root;
 }
 
@@ -409,12 +407,7 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 			}
 			collected_data.push(dat);
 		}
-		if (!@ok(cursor::goto_next_sibling(cursor)))
-		{
-			// if (collected_data.len() > 0) (*collected_data)[^1].has_space = false;
-			break;
-		}
-	} while (true);
+	} while (@ok(cursor::goto_next_sibling(cursor)));
 
 }
 

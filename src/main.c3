@@ -276,9 +276,7 @@ struct Param
 
 struct ModuleSection
 {
-	// inline ModuleSectionData data;
-	List {Global} globals;
-	List {Func} functions;
+	inline ModuleSectionData data;
 	DocComment doc_comment;
 	HighlightedText text;
 	List {String} attributes;
@@ -568,10 +566,9 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 	a[1].init(alloc);
 	foreach (&sec : mod.sections)
 	{
-		// TODO: $foreach $member : ModuleSectionData.membersof:
-		$foreach $member : {ModuleSection.globals, ModuleSection.functions}:
+		$foreach $member : ModuleSectionData.membersof:
 		{
-			$typefrom($member.typeid) m = $member.get(*sec);
+			$typefrom($member.typeid) m = $member.get(sec.data);
 			foreach (&member : m)
 			{
 				String section_name = member.get_own_view().name;
