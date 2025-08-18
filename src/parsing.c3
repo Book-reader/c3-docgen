@@ -173,11 +173,12 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				}
 				assert(current_mod.sections.len() != 0);
 
+				Func func = function(alloc);
+				func.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
 				{
-					Func func = function(alloc);
 					Param p;
-					foreach (i, capture : match.captures[:match.capture_count])
+					foreach (capture : match.captures[:match.capture_count])
 					{
 						uint len;
 						String text = capture.get_text(data);
@@ -187,7 +188,15 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 							case "return":
 								func.return_type.set(text.copy(alloc));
 							case "name":
-								func.name = text.copy(alloc);
+								// func.name = text.copy(alloc);
+								foreach (i, n : func.text.highlights)
+								{
+									if (n.get_text(func.text.data) == text)
+									{
+										func.name = func.text.slice(i, i);
+									}
+								}
+								if (func.text.data.ptr == null) unreachable("could not find node name");
 							case "macro":
 								func.macro_ = true;
 							// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
@@ -219,7 +228,6 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
-					func.text = collect_data(alloc, node, data);
 					func.doc_comment = comment;
 					current_mod.sections[^1].functions.push(func);
 					comment = {};
@@ -250,6 +258,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
 						comment.description.push(line_trim.copy(alloc));
 					}
+					if (comment.description.len() > 0 && comment.description[^1] == "") comment.description.pop()!!;
 					if (catch cursor::goto_next_sibling(&cc)) break;
 				}
 

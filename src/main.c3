@@ -109,58 +109,6 @@ enum ValType
 	}
 }*/
 
-interface DocGenData
-{
-	fn String get_name(Allocator alloc);
-	fn HighlightedText get_highlighted();
-	fn bool is_private();
-	fn bool is_hidden_from(ModuleView view);
-	// fn bool has_attribute(String attr);
-	fn String get_description_preview(Allocator alloc);
-	fn String get_description(Allocator alloc);
-	fn ModuleView get_own_view();
-	// fn String[] get_attributes() @optional;
-
-	// fn List {Contract} get_doc_contracts();
-	// fn String get_doc_comment(Allocator alloc);
-}
-
-// TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
-struct Global (DocGenData)
-{
-	HighlightedTextSlice name;
-	// I store the whole type including generic params etc in here, and then can parse it again later
-	Maybe {String} type;
-	List {String} attributes;
-	DocComment doc_comment;
-	HighlightedText text;
-}
-
-fn String Global.get_name(&self, Allocator alloc) @dynamic => self.name.get_string();
-fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
-fn bool Global.is_hidden_from(&self, ModuleView view) @dynamic => (view != OVERVIEW && view != GLOBALS) || self.attributes.contains("@local");
-fn bool Global.is_private(&self) @dynamic => self.attributes.contains("@private");
-fn ModuleView Global.get_own_view(&self) @dynamic => GLOBALS;
-
-fn String Global.get_description_preview(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-
-fn String Global.get_description(&self, Allocator alloc) @dynamic => @pool()
-{
-	DString d;
-	d.tinit();
-	foreach (desc : self.doc_comment.description) d.appendf(desc);
-	return d.copy_str(alloc);
-}
-
 enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH, FUNCTION, END /*nice hack to tell when to stop printing text*/}
 struct HighlightData
 {
@@ -227,9 +175,62 @@ fn String HighlightedTextSlice.get_string(&self)
 	return self.data[self.highlights[0].start..self.highlights[^1].start + self.highlights[^1].len - 1];
 }
 
-struct Func // (DocGenData)
+interface DocGenData
 {
-	String name;
+	fn String get_name();
+	fn String get_overview_name(Module* mod, Allocator alloc) @optional;
+	fn HighlightedText get_highlighted();
+	fn bool is_private();
+	fn bool is_hidden_from(ModuleView view);
+	// fn bool has_attribute(String attr);
+	fn String get_short_description(Allocator alloc);
+	fn String get_description(Allocator alloc);
+	fn ModuleView get_own_view();
+	// fn String[] get_attributes() @optional;
+
+	// fn List {Contract} get_doc_contracts();
+	// fn String get_doc_comment(Allocator alloc);
+}
+
+// TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
+struct Global (DocGenData)
+{
+	HighlightedTextSlice name;
+	// I store the whole type including generic params etc in here, and then can parse it again later
+	Maybe {String} type;
+	List {String} attributes;
+	DocComment doc_comment;
+	HighlightedText text;
+}
+
+fn String Global.get_name(&self) @dynamic => self.name.get_string();
+fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
+fn bool Global.is_hidden_from(&self, ModuleView view) @dynamic => (view != OVERVIEW && view != GLOBALS) || self.attributes.contains("@local");
+fn bool Global.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn ModuleView Global.get_own_view(&self) @dynamic => GLOBALS;
+// I could probably make this into a method of DocGenData instead if I added a `fn DocComment get_doc_comment()` to it
+fn String Global.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+// Same here
+fn String Global.get_description(&self, Allocator alloc) @dynamic => @pool()
+{
+	DString d;
+	d.tinit();
+	foreach (desc : self.doc_comment.description) d.appendf(desc);
+	return d.copy_str(alloc);
+}
+
+struct Func (DocGenData)
+{
+	HighlightedTextSlice name;
 	Maybe {String} return_type;
 	Maybe {String} method_of;
 	Maybe {String} trailing;
@@ -239,6 +240,30 @@ struct Func // (DocGenData)
 	DocComment doc_comment;
 	HighlightedText text;
 }
+fn String Func.get_name(&self) @dynamic => self.name.get_string();
+fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
+fn HighlightedText Func.get_highlighted(&self) @dynamic => self.text;
+fn bool Func.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn bool Func.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || ((view == OVERVIEW || view == FUNCTIONS) && self.method_of.has_value);
+
+fn String Func.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+fn String Func.get_description(&self, Allocator alloc) @dynamic => @pool()
+{
+	DString d;
+	d.tinit();
+	foreach (desc : self.doc_comment.description) d.appendf(desc);
+	return d.copy_str(alloc);
+}
+fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPES : FUNCTIONS;
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
 struct Param
@@ -498,8 +523,9 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 							DocGenData dat = val.value[0].first;
 							b.@td()
 							{
-								b.url(dat.get_name(tmem), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
+								b.url(&dat.get_overview_name ? dat.get_overview_name(self, tmem) : dat.get_name(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
 							};
+							b.td(dat.get_short_description(tmem));
 						};
 					};
 				};
@@ -522,8 +548,9 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 							DocGenData dat = val.value[0].first;
 							b.@td()
 							{
-								b.url(dat.get_name(tmem), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
+								b.url(&dat.get_overview_name ? dat.get_overview_name(self, tmem) : dat.get_name(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
 							};
+							b.td(dat.get_short_description(tmem));
 						};
 					};
 				};
@@ -540,13 +567,14 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 	a.init(alloc);
 	foreach (&sec : mod.sections)
 	{
-		$foreach $member : {ModuleSection.globals, /*ModuleSection.functions*/}:
+		// TODO: $foreach $member : ModuleSectionData.membersof:
+		$foreach $member : {ModuleSection.globals, ModuleSection.functions}:
 		{
 			$typefrom($member.typeid) m = $member.get(*sec);
 			foreach (&member : m)
 			{
 				String section_name = member.get_own_view().name;
-				String member_name = member.get_name(alloc);
+				String member_name = member.get_name();
 				if (!a.has_key(section_name))
 				{
 					a[section_name] = {};
@@ -663,15 +691,15 @@ fn String Module.get_functions(&self, Allocator alloc)
 			{
 				if (!func.attributes.contains("@private"))
 				{
-					FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					FuncAbomination a = funcs.@get_or_set(func.name.get_string(), *(FuncAbomination){}.init(tmem));
 					a.push({func, sec});
-					funcs[func.name] = a;
+					funcs[func.name.get_string()] = a;
 				}
 				else
 				{
-					FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
+					FuncAbomination a = private_funcs.@get_or_set(func.name.get_string(), *(FuncAbomination){}.init(tmem));
 					a.push({func, sec});
-					private_funcs[func.name] = a;
+					private_funcs[func.name.get_string()] = a;
 				}
 			}
 		}
