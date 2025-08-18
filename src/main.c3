@@ -54,7 +54,7 @@ fn int main(String[] args)
 			{
 				path::mkdir(mod_folder_path, true)!!;
 			}
-			foreach (view : ModuleView.values)
+			foreach (view : ModuleView.values) if (view.in_title)
 			{
 				
 				// String mod_file = mod.get_file_path(tmem, root_folder, TYPES);
@@ -352,13 +352,13 @@ fn usz Module.get_depth(&self)
 }
 
 alias ModuleViewFunc = fn String(Module*, Allocator);
-enum ModuleView : (String path, String name, ModuleViewFunc func)
+enum ModuleView : (String path, String name, ModuleViewFunc func, bool in_title)
 {
-	OVERVIEW = { "index.html", "Overview", &Module.get_overview },
-	GLOBALS = { "globals.html", "Globals", &Module.get_globals },
-	TYPES = { "types.html", "Types", &Module.get_types },
-	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions },
-	TYPE = { "type.%s.html", "Type", fn (a, b) {return {};} },
+	OVERVIEW = { "index.html", "Overview", &Module.get_overview, true },
+	GLOBALS = { "globals.html", "Globals", &Module.get_globals, true },
+	TYPES = { "types.html", "Types", &Module.get_types, true },
+	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions, true },
+	TYPE = { "type.%s.html", "Type", fn (a, b) {return {};}, false },
 }
 
 fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
@@ -428,18 +428,20 @@ fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
 	b.@h(2, `class="header"`)
 	{
 		$foreach $member : ModuleView.values:
-			if ($member == view)
-			{
-				b.@span(`class="selected"`)
+			$if $member.in_title:
+				if ($member == view)
 				{
-					b.text($member.name);
-				};
-			}
-			else
-			{
-				b.url($member.name, self.get_relative_path_to(tmem, self, $member));
-			}
-			b.spc();
+					b.@span(`class="selected"`)
+					{
+						b.text($member.name);
+					};
+				}
+				else
+				{
+					b.url($member.name, self.get_relative_path_to(tmem, self, $member));
+				}
+				b.spc();
+			$endif
 		$endforeach
 	};
 }
