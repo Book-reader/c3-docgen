@@ -118,6 +118,7 @@ interface DocGenData
 	// fn bool has_attribute(String attr);
 	fn String get_description_preview(Allocator alloc);
 	fn String get_description(Allocator alloc);
+	fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
 
 	// fn List {Contract} get_doc_contracts();
@@ -139,6 +140,7 @@ fn String Global.get_name(&self, Allocator alloc) @dynamic => self.name.get_stri
 fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
 fn bool Global.is_hidden_from(&self, ModuleView view) @dynamic => (view != OVERVIEW && view != GLOBALS) || self.attributes.contains("@local");
 fn bool Global.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn ModuleView Global.get_own_view(&self) @dynamic => GLOBALS;
 
 fn String Global.get_description_preview(&self, Allocator alloc) @dynamic
 {
@@ -249,11 +251,18 @@ struct Param
 
 struct ModuleSection
 {
-	List {String} attributes;
+	// inline ModuleSectionData data;
 	List {Global} globals;
 	List {Func} functions;
 	DocComment doc_comment;
 	HighlightedText text;
+	List {String} attributes;
+}
+
+struct ModuleSectionData
+{
+	List {Global} globals;
+	List {Func} functions;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -473,144 +482,110 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 		}
 
 
-		// collect & print all the globals in all module sections (except @local)
-		HashMap {String, GlobalAbomination} globals;
-		globals.init(tmem);
-		HashMap {String, GlobalAbomination} private_globals;
-		private_globals.init(tmem);
-		foreach (&sec : self.sections)
+		Abomination a = filter_and_collect_data(tmem, self, OVERVIEW);
+		foreach (section : a.iter())
 		{
-			foreach (&glob : sec.globals) if (!glob.attributes.contains("@local"))
+			// First public values
+			if (section.value[0].len() > 0)
 			{
-				if (!glob.attributes.contains("@private"))
-				{
-					GlobalAbomination a = globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
-					a.push({glob, sec});
-					globals[glob.name.get_string()] = a;
-				}
-				else
-				{
-					GlobalAbomination a = private_globals.@get_or_set(glob.name.get_string(), *(GlobalAbomination){}.init(tmem));
-					a.push({glob, sec});
-					private_globals[glob.name.get_string()] = a;
-				}
-			}
-		}
-		if (globals.len() > 0)
-		{
-			b.h(2, "Globals");
-			b.@table({"Name", "Description"})
-			{
-				foreach (glob_ : globals.iter()) @pool()
-				{
-					b.@tr()
-					{
-						Global* glob = glob_.value[0].first;
-						b.@td()
-						{
-							b.url(glob.name.get_string(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, GLOBALS), glob_.key));
-						};
-						b.@td()
-						{
-							b.text(glob.doc_comment.description.len() > 0 ? glob.doc_comment.description[0] : "");
-						};
-					};
-				};
-			};
-		}
-
-		// same for functions (excluding methods). I could maybe make a macro to do this, maybe once I start doing types as well
-		HashMap {String, FuncAbomination} funcs;
-		funcs.init(tmem);
-		HashMap {String, FuncAbomination} private_funcs;
-		private_funcs.init(tmem);
-		foreach (&sec : self.sections)
-		{
-			foreach (&func : sec.functions) if (!func.attributes.contains("@local") && !func.method_of.has_value)
-			{
-				if (!func.attributes.contains("@private"))
-				{
-					FuncAbomination a = funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
-					a.push({func, sec});
-					funcs[func.name] = a;
-				}
-				else
-				{
-					FuncAbomination a = private_funcs.@get_or_set(func.name, *(FuncAbomination){}.init(tmem));
-					a.push({func, sec});
-					private_funcs[func.name] = a;
-				}
-			}
-		}
-		if (funcs.len() > 0)
-		{
-			b.h(2, "Functions");
-			b.@table({"Name", "Description"})
-			{
-				foreach (func_ : funcs.iter()) @pool()
-				{
-					b.@tr()
-					{
-						Func* func = func_.value[0].first;
-						b.@td()
-						{
-							b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, FUNCTIONS), func_.key));
-						};
-						b.@td()
-						{
-							b.text(func.doc_comment.description.len() > 0 ? func.doc_comment.description[0] : "");
-						};
-					};
-				};
-			};
-		}
-
-		// now print all the private things
-		if (private_funcs.len() > 0 || private_globals.len() > 0)
-		{
-			b.h(2, "Private");
-
-			if (private_globals.len() > 0)
-			{
-				b.h(3, "Globals");
+				b.h(2, section.key);
 				b.@table({"Name", "Description"})
 				{
-					foreach (glob_ : private_globals.iter()) @pool()
+					foreach (val : section.value[0].iter()) @pool()
 					{
 						b.@tr()
 						{
-							Global* glob = glob_.value[0].first;
+							DocGenData dat = val.value[0].first;
 							b.@td()
 							{
-								b.url(string::tformat("%s", glob.name), "#todo");
+								b.url(dat.get_name(tmem), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
 							};
-							b.td("TODO");
 						};
 					};
 				};
 			}
-
-			if (private_funcs.len() > 0)
+		}
+		bool has_private;
+		foreach (section : a.iter())
+		{
+			// Then private values
+			if (section.value[1].len() > 0)
 			{
-				b.h(3, "Functions");
+				if (!has_private) { has_private = true; b.h(2, "Private"); }
+				b.h(3, section.key);
 				b.@table({"Name", "Description"})
 				{
-					foreach (func_ : private_funcs.iter()) @pool()
+					foreach (val : section.value[1].iter()) @pool()
 					{
 						b.@tr()
 						{
-							Func* func = func_.value[0].first;
+							DocGenData dat = val.value[0].first;
 							b.@td()
 							{
-								b.url(func.attributes.contains("@builtin") ? func.name : self.path.tconcat("::").tconcat(func.name), "#todo");
+								b.url(dat.get_name(tmem), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
 							};
-							b.td("TODO");
 						};
 					};
 				};
 			}
 		}
 	};
+}
+
+alias Abomination = HashMap {String, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}[2]};
+
+fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView view)
+{
+	Abomination a;
+	a.init(alloc);
+	foreach (&sec : mod.sections)
+	{
+		$foreach $member : {ModuleSection.globals, /*ModuleSection.functions*/}:
+		{
+			$typefrom($member.typeid) m = $member.get(*sec);
+			foreach (&member : m)
+			{
+				String section_name = member.get_own_view().name;
+				String member_name = member.get_name(alloc);
+				if (!a.has_key(section_name))
+				{
+					a[section_name] = {};
+					a[section_name]!![0].init(alloc);
+					a[section_name]!![1].init(alloc);
+				}
+
+				if (!member.is_hidden_from(view))
+				{
+					if (!member.is_private())
+					{
+						if (!a[section_name]!![0].has_key(member_name))
+						{
+							(*a.get_ref(section_name)!!)[0].set(member_name, {});
+							(*a.get_ref(section_name)!!)[0].get_ref(member_name)!!.init(alloc);
+							// a[section_name]!![0][member_name] = {};
+							// a[section_name]!![0][member_name]!!.init(alloc);
+						}
+						// a[section_name]!![0][member_name]!!.push({member, sec});
+						(*a.get_ref(section_name)!!)[0].get_ref(member_name)!!.push({member, sec});
+					}
+					else
+					{
+						if (!a[section_name]!![1].has_key(member_name))
+						{
+							// a[section_name]!![1][member_name] = {};
+							// a[section_name]!![1][member_name]!!.init(alloc);
+							(*a.get_ref(section_name)!!)[1].set(member_name, {});
+							(*a.get_ref(section_name)!!)[1].get_ref(member_name)!!.init(alloc);
+						}
+						// a[section_name]!![1][member_name]!!.push({member, sec});
+						(*a.get_ref(section_name)!!)[1].get_ref(member_name)!!.push({member, sec});
+					}
+				}
+			}
+		}
+		$endforeach
+	}
+	return a;
 }
 
 fn String Module.get_globals(&self, Allocator alloc)
