@@ -1,1 +1,581 @@
-<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/os/win32/index.html">Overview</a>&nbsp<a href="../../../std/os/win32/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/os/win32/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/os/index.html">os</a>::<span style="font-family: 'monospace'">win32</span></h1></div></body></html>
+<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/os/win32/index.html">Overview</a>&nbsp<a href="../../../std/os/win32/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/os/win32/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/os/index.html">os</a>::<span style="font-family: 'monospace'">win32</span></h1></div><h1>Public</h1><h2 id="Win32_InAddr">Win32_InAddr</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_InAddr</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_KEYWORD DataType">union</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_IDENT DataType">s_un_b</span>
+		<span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_UCHAR</span> <span class="DataType_IDENT DataType">s_b1</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_UCHAR</span> <span class="DataType_IDENT DataType">s_b2</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_UCHAR</span> <span class="DataType_IDENT DataType">s_b3</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_UCHAR</span> <span class="DataType_IDENT DataType">s_b4</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+		<span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_IDENT DataType">s_un_w</span>
+		<span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">s_w1</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">s_w2</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+		<span class="DataType_TYPE DataType">Win32_ULONG</span> <span class="DataType_IDENT DataType">s_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_M128A">Win32_M128A</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_M128A</span> <span class="DataType_FUNCTION DataType">@align</span><span class="DataType_DEFAULT DataType">(</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">)</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span> <span class="DataType_IDENT DataType">low</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONGLONG</span>  <span class="DataType_IDENT DataType">high</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_WSABUF">Win32_WSABUF</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_WSABUF</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span> <span class="DataType_IDENT DataType">len</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">buf</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_FILETIME">Win32_FILETIME</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_FILETIME</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwLowDateTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwHighDateTime</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_KEY_EVENT_RECORD">Win32_KEY_EVENT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_KEY_EVENT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>  <span class="DataType_IDENT DataType">bKeyDown</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>  <span class="DataType_IDENT DataType">wRepeatCount</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>  <span class="DataType_IDENT DataType">wVirtualKeyCode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>  <span class="DataType_IDENT DataType">wVirtualScanCode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_KEYWORD DataType">union</span> <span class="DataType_IDENT DataType">uChar</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_TYPE DataType">Win32_WCHAR</span> <span class="DataType_IDENT DataType">unicodeChar</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_TYPE DataType">Win32_CHAR</span>  <span class="DataType_IDENT DataType">asciiChar</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwControlKeyState</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_KDHELP64">Win32_KDHELP64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_KDHELP64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">thread</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">thCallbackStack</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">thCallbackBStore</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">nextCallback</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">framePointer</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">kiCallUserMode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">keUserCallbackDispatcher</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">systemRangeStart</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">kiUserExceptionDispatcher</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">stackBase</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">stackLimit</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">buildVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">retpolineStubFunctionTableSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">retpolineStubFunctionTable</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">retpolineStubOffset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">retpolineStubSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">2</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">reserved0</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGE_FILE_HEADER">Win32_IMAGE_FILE_HEADER</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGE_FILE_HEADER</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>      <span class="DataType_IDENT DataType">machine</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>      <span class="DataType_IDENT DataType">numberOfSections</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">timeDateStamp</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">pointerToSymbolTable</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">numberOfSymbols</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>      <span class="DataType_IDENT DataType">sizeOfOptionalHeader</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>      <span class="DataType_IDENT DataType">characteristics</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Symbol">Symbol</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Symbol</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_KEYWORD DataType">inline</span> <span class="DataType_TYPE DataType">Win32_SYMBOL_INFO</span> <span class="DataType_IDENT DataType">sym</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">256</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">buffer</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_OVERLAPPED">Win32_OVERLAPPED</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_OVERLAPPED</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG_PTR</span> <span class="DataType_IDENT DataType">internal</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG_PTR</span> <span class="DataType_IDENT DataType">internalHigh</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_KEYWORD DataType">union</span> <span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">offset</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">offsetHigh</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+		<span class="DataType_TYPE DataType">Win32_PVOID</span> <span class="DataType_IDENT DataType">pointer</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hEvent</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MEM_EXTENDED_PARAMETER">Win32_MEM_EXTENDED_PARAMETER</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MEM_EXTENDED_PARAMETER</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_MEM_EXTENDED_PARAMETER_TYPE</span> <span class="DataType_IDENT DataType">type</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_KEYWORD DataType">union</span>
+    <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_TYPE DataType">Win32_MEM_EXTENDED_PARAMETER_ATTRIBUTE</span> <span class="DataType_IDENT DataType">attribute</span><span class="DataType_DEFAULT DataType">;</span>  <span class="DataType_COMMENT DataType">// If type is ATTRIBUTE_FLAGS</span>
+        <span class="DataType_TYPE DataType">Win32_DWORD64</span>                          <span class="DataType_IDENT DataType">nodeNumber</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// If type is NUMA_NODE</span>
+        <span class="DataType_TYPE DataType">Win32_PVOID</span>                            <span class="DataType_IDENT DataType">pointer</span><span class="DataType_DEFAULT DataType">;</span>    <span class="DataType_COMMENT DataType">// If type is ADDRESS_REQUIREMENTS</span>
+        <span class="DataType_TYPE DataType">Win32_SIZE_T</span>                           <span class="DataType_IDENT DataType">size</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_HANDLE</span>                           <span class="DataType_IDENT DataType">handle</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_DWORD</span>                            <span class="DataType_IDENT DataType">uLong</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_DEFAULT DataType">}</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MODULEINFO">Win32_MODULEINFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MODULEINFO</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">lpBaseOfDll</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">sizeOfImage</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">entryPoint</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_pollfd">Win32_pollfd</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_pollfd</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_SOCKET</span> <span class="DataType_IDENT DataType">fd</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">events</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">revents</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_PAINTSTRUCT">Win32_PAINTSTRUCT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_PAINTSTRUCT</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_HDC</span>  <span class="DataType_IDENT DataType">hdc</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span> <span class="DataType_IDENT DataType">fErase</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_RECT</span> <span class="DataType_IDENT DataType">rcPaint</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span> <span class="DataType_IDENT DataType">fRestore</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span> <span class="DataType_IDENT DataType">fIncUpdate</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BYTE</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">32</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">rgbReserved</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_ADDRESS64">Win32_ADDRESS64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_ADDRESS64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>       <span class="DataType_IDENT DataType">offset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">segment</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS_MODE</span>  <span class="DataType_IDENT DataType">mode</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_XMM_SAVE_AREA32">Win32_XMM_SAVE_AREA32</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_XMM_SAVE_AREA32</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">controlWord</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">statusWord</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_UCHAR</span>     <span class="DataType_IDENT DataType">tagWord</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_UCHAR</span>     <span class="DataType_IDENT DataType">reserved1</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">errorOpcode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>     <span class="DataType_IDENT DataType">errrorOffset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">errorSelector</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">reserved2</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>     <span class="DataType_IDENT DataType">dataOffset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">dataSelector</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>    <span class="DataType_IDENT DataType">reserved3</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>     <span class="DataType_IDENT DataType">mxCsr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>     <span class="DataType_IDENT DataType">mxCsr_Mask</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span>  <span class="DataType_IDENT DataType">floatRegisters</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">xmmRegisters</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_UCHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">96</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">reserved4</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_LARGE_INTEGER">Win32_LARGE_INTEGER</h2><pre><code><span class="DataType_KEYWORD DataType">union</span> <span class="DataType_TYPE DataType">Win32_LARGE_INTEGER</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_KEYWORD DataType">struct</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">lowPart</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_TYPE DataType">Win32_LONG</span>  <span class="DataType_IDENT DataType">highPart</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span> <span class="DataType_IDENT DataType">quadPart</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_STARTUPINFOEXW">Win32_STARTUPINFOEXW</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_STARTUPINFOEXW</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_KEYWORD DataType">inline</span> <span class="DataType_TYPE DataType">Win32_STARTUPINFOW</span> <span class="DataType_IDENT DataType">win32_StartupInfo</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPPROC_THREAD_ATTRIBUTE_LIST</span> <span class="DataType_IDENT DataType">lpAttributeList</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGE_DATA_DIRECTORY">Win32_IMAGE_DATA_DIRECTORY</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGE_DATA_DIRECTORY</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>   <span class="DataType_IDENT DataType">virtualAddress</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>   <span class="DataType_IDENT DataType">size</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SIZE">Win32_SIZE</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SIZE</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">cx</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">cy</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MSG">Win32_MSG</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MSG</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_HWND</span> <span class="DataType_IDENT DataType">hwnd</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_UINT</span> <span class="DataType_IDENT DataType">message</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WPARAM</span> <span class="DataType_IDENT DataType">wParam</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPARAM</span> <span class="DataType_IDENT DataType">lParam</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">time</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_POINT</span> <span class="DataType_IDENT DataType">pt</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">lPrivate</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SYMBOL_INFO">Win32_SYMBOL_INFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SYMBOL_INFO</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">sizeOfStruct</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">typeIndex</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">2</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">reserved</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">index</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">size</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG64</span>       <span class="DataType_IDENT DataType">modBase</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG64</span>       <span class="DataType_IDENT DataType">value</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG64</span>       <span class="DataType_IDENT DataType">address</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">register</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">scope</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">tag</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">nameLen</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONG</span>         <span class="DataType_IDENT DataType">maxNameLen</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">1</span><span class="DataType_DEFAULT DataType">]</span>       <span class="DataType_IDENT DataType">name</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_PROCESS_INFORMATION">Win32_PROCESS_INFORMATION</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_PROCESS_INFORMATION</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hProcess</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hThread</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwProcessId</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwThreadId</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_FOCUS_EVENT_RECORD">Win32_FOCUS_EVENT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_FOCUS_EVENT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span> <span class="DataType_IDENT DataType">bSetFocus</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_ARM64_NT_CONTEXT">Win32_ARM64_NT_CONTEXT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_ARM64_NT_CONTEXT</span> <span class="DataType_FUNCTION DataType">@align</span><span class="DataType_DEFAULT DataType">(</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">)</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">contextFlags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">cpsr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_KEYWORD DataType">union</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_KEYWORD DataType">struct</span>
+		<span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x0</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x1</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x2</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x3</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x4</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x5</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x6</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x7</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x8</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x9</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x10</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x11</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x12</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x13</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x14</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x15</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x16</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x17</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x18</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x19</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x20</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x21</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x22</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x23</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x24</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x25</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x26</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x27</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">x28</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">fp</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">lr</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+		<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">31</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">x</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>                           <span class="DataType_IDENT DataType">sp</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>                           <span class="DataType_IDENT DataType">pc</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ARM64_NT_NEON128</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">32</span><span class="DataType_DEFAULT DataType">]</span>              <span class="DataType_IDENT DataType">v</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                             <span class="DataType_IDENT DataType">fpcr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                             <span class="DataType_IDENT DataType">fpsr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">ARM64_MAX_BREAKPOINTS</span><span class="DataType_DEFAULT DataType">]</span>      <span class="DataType_IDENT DataType">bcr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">ARM64_MAX_BREAKPOINTS</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">bvr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">ARM64_MAX_WATCHPOINTS</span><span class="DataType_DEFAULT DataType">]</span>      <span class="DataType_IDENT DataType">wcr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">ARM64_MAX_WATCHPOINTS</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">wvr</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGEHLP_LINE64">Win32_IMAGEHLP_LINE64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGEHLP_LINE64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">sizeOfStruct</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PVOID</span>   <span class="DataType_IDENT DataType">key</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">lineNumber</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PCHAR</span>   <span class="DataType_IDENT DataType">fileName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">address</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_GUID">Win32_GUID</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_GUID</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">CULong</span> <span class="DataType_IDENT DataType">data1</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">CUShort</span> <span class="DataType_IDENT DataType">data2</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">CUShort</span> <span class="DataType_IDENT DataType">data3</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">data4</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_INPUT_RECORD">Win32_INPUT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_INPUT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+    <span class="DataType_TYPE DataType">Win32_WORD</span> <span class="DataType_IDENT DataType">eventType</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_KEYWORD DataType">union</span> <span class="DataType_IDENT DataType">event</span>
+    <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_TYPE DataType">Win32_KEY_EVENT_RECORD</span> <span class="DataType_IDENT DataType">keyEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_MOUSE_EVENT_RECORD</span> <span class="DataType_IDENT DataType">mouseEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_WINDOW_BUFFER_SIZE_RECORD</span> <span class="DataType_IDENT DataType">windowBufferSizeEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_MENU_EVENT_RECORD</span> <span class="DataType_IDENT DataType">menuEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_FOCUS_EVENT_RECORD</span> <span class="DataType_IDENT DataType">focusEvent</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_DEFAULT DataType">}</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SOCKADDR_IN">Win32_SOCKADDR_IN</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SOCKADDR_IN</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">sin_family</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">sin_port</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_InAddr</span> <span class="DataType_IDENT DataType">sin_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">sin_zero</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_POINT">Win32_POINT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_POINT</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">x</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">y</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MENU_EVENT_RECORD">Win32_MENU_EVENT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MENU_EVENT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_UINT</span> <span class="DataType_IDENT DataType">dwCommandId</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MODLOAD_DATA">Win32_MODLOAD_DATA</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MODLOAD_DATA</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">ssize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">ssig</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PVOID</span> <span class="DataType_IDENT DataType">data</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">size</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">flags</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGE_OPTIONAL_HEADER64">Win32_IMAGE_OPTIONAL_HEADER64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGE_OPTIONAL_HEADER64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">magic</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BYTE</span>                 <span class="DataType_IDENT DataType">majorLinkerVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BYTE</span>                 <span class="DataType_IDENT DataType">minorLinkerVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sizeOfCode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sizeOfInitializedData</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sizeOfUninitializedData</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">addressOfEntryPoint</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">baseOfCode</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span>            <span class="DataType_IDENT DataType">imageBase</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sectionAlignment</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">fileAlignment</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">majorOperatingSystemVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">minorOperatingSystemVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">majorImageVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">minorImageVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">majorSubsystemVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">minorSubsystemVersion</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">win32VersionValue</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sizeOfImage</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">sizeOfHeaders</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">checkSum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">subsystem</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>                 <span class="DataType_IDENT DataType">dllCharacteristics</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span>            <span class="DataType_IDENT DataType">sizeOfStackReserve</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span>            <span class="DataType_IDENT DataType">sizeOfStackCommit</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span>            <span class="DataType_IDENT DataType">sizeOfHeapReserve</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span>            <span class="DataType_IDENT DataType">sizeOfHeapCommit</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">loaderFlags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>                <span class="DataType_IDENT DataType">numberOfRvaAndSizes</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_IMAGE_DATA_DIRECTORY</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">dataDirectory</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_UNICODE_STRING">Win32_UNICODE_STRING</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_UNICODE_STRING</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">length</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">maximum_length</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PWSTR</span> <span class="DataType_IDENT DataType">buffer</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_STARTUPINFOW">Win32_STARTUPINFOW</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_STARTUPINFOW</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">cb</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPWSTR</span> <span class="DataType_IDENT DataType">lpReserved</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPWSTR</span> <span class="DataType_IDENT DataType">lpDesktop</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPWSTR</span> <span class="DataType_IDENT DataType">lpTitle</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwX</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwY</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwXSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwYSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwXCountChars</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwYCountChars</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwFillAttribute</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwFlags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>   <span class="DataType_IDENT DataType">wShowWindow</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>   <span class="DataType_IDENT DataType">cbReserved2</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPBYTE</span> <span class="DataType_IDENT DataType">lpReserved2</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hStdInput</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hStdOutput</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hStdError</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_WINDOW_BUFFER_SIZE_RECORD">Win32_WINDOW_BUFFER_SIZE_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_WINDOW_BUFFER_SIZE_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_COORD</span> <span class="DataType_IDENT DataType">dwSize</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SYSTEM_INFO">Win32_SYSTEM_INFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SYSTEM_INFO</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_KEYWORD DataType">union</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwOemId</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_KEYWORD DataType">struct</span>
+		<span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_WORD</span> <span class="DataType_IDENT DataType">wProcessorArchitecture</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_WORD</span> <span class="DataType_IDENT DataType">wReserved</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwPageSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span>        <span class="DataType_IDENT DataType">lpMinimumApplicationAddress</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span>        <span class="DataType_IDENT DataType">lpMaximumApplicationAddress</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD_PTR</span>     <span class="DataType_IDENT DataType">dwActiveProcessorMask</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwNumberOfProcessors</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwProcessorType</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwAllocationGranularity</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wProcessorLevel</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wProcessorRevision</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SOCKADDR">Win32_SOCKADDR</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SOCKADDR</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+   <span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">sa_family</span><span class="DataType_DEFAULT DataType">;</span>
+   <span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">14</span><span class="DataType_DEFAULT DataType">]</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">sa_data</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_WNDCLASSEXW">Win32_WNDCLASSEXW</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_WNDCLASSEXW</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_UINT</span>      <span class="DataType_IDENT DataType">cbSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_UINT</span>      <span class="DataType_IDENT DataType">style</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WNDPROC</span>   <span class="DataType_IDENT DataType">lpfnWndProc</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">CInt</span>            <span class="DataType_IDENT DataType">cbClsExtra</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">CInt</span>            <span class="DataType_IDENT DataType">cbWndExtra</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HINSTANCE</span> <span class="DataType_IDENT DataType">hInstance</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HICON</span>     <span class="DataType_IDENT DataType">hIcon</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HCURSOR</span>   <span class="DataType_IDENT DataType">hCursor</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HBRUSH</span>    <span class="DataType_IDENT DataType">hbrBackground</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPCWSTR</span>   <span class="DataType_IDENT DataType">lpszMenuName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPCWSTR</span>   <span class="DataType_IDENT DataType">lpszClassName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_HICON</span>     <span class="DataType_IDENT DataType">hIconSm</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_addrinfoW">Win32_addrinfoW</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_addrinfoW</span> <span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_family</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_socktype</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_protocol</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SIZE_T</span> <span class="DataType_IDENT DataType">ai_addrlen</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PWSTR</span> <span class="DataType_IDENT DataType">ai_canonname</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SOCKADDR</span> <span class="DataType_DEFAULT DataType">*</span><span class="DataType_IDENT DataType">ai_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_addrinfo</span> <span class="DataType_DEFAULT DataType">*</span><span class="DataType_IDENT DataType">ai_next</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_STACKFRAME64">Win32_STACKFRAME64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_STACKFRAME64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS64</span>     <span class="DataType_IDENT DataType">addrPC</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS64</span>     <span class="DataType_IDENT DataType">addrReturn</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS64</span>     <span class="DataType_IDENT DataType">addrFrame</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS64</span>     <span class="DataType_IDENT DataType">addrStack</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRESS64</span>     <span class="DataType_IDENT DataType">addrBStore</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_PVOID</span>         <span class="DataType_IDENT DataType">funcTableEntry</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">4</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">params</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>          <span class="DataType_IDENT DataType">far</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>          <span class="DataType_IDENT DataType">virtual</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">3</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">reserved</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_KDHELP64</span>      <span class="DataType_IDENT DataType">kdHelp</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MOUSE_EVENT_RECORD">Win32_MOUSE_EVENT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MOUSE_EVENT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_COORD</span> <span class="DataType_IDENT DataType">dwMousePosition</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwButtonState</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwControlKeyState</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">dwEventFlags</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SECURITY_ATTRIBUTES">Win32_SECURITY_ATTRIBUTES</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SECURITY_ATTRIBUTES</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">nLength</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">lpSecurityDescriptor</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>   <span class="DataType_IDENT DataType">bInheritHandle</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_FILE_ATTRIBUTE_DATA">Win32_FILE_ATTRIBUTE_DATA</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_FILE_ATTRIBUTE_DATA</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>    <span class="DataType_IDENT DataType">dwFileAttributes</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span> <span class="DataType_IDENT DataType">ftCreationTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span> <span class="DataType_IDENT DataType">ftLastAccessTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span> <span class="DataType_IDENT DataType">ftLastWriteTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>    <span class="DataType_IDENT DataType">nFileSizeHigh</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>    <span class="DataType_IDENT DataType">nFileSizeLow</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SOCKADDR_STORAGE">Win32_SOCKADDR_STORAGE</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SOCKADDR_STORAGE</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_USHORT</span>              <span class="DataType_IDENT DataType">ss_family</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">_SS_PAD1SIZE</span><span class="DataType_DEFAULT DataType">]</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">__ss_pad1</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT64</span>               <span class="DataType_IDENT DataType">__ss_align</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">_SS_PAD2SIZE</span><span class="DataType_DEFAULT DataType">]</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">__ss_pad2</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGE_NT_HEADERS">Win32_IMAGE_NT_HEADERS</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGE_NT_HEADERS</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">signature</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_IMAGE_FILE_HEADER</span> <span class="DataType_IDENT DataType">fileHeader</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_IMAGE_OPTIONAL_HEADER64</span> <span class="DataType_IDENT DataType">optionalHeader</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_COORD">Win32_COORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_COORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">x</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">y</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_addrinfo">Win32_addrinfo</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_addrinfo</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_family</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_socktype</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_protocol</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SIZE_T</span> <span class="DataType_IDENT DataType">ai_addrlen</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_canonname</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SOCKADDR</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_ADDRINFO</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_next</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGEHLP_MODULE64">Win32_IMAGEHLP_MODULE64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGEHLP_MODULE64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">sizeOfStruct</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>   <span class="DataType_IDENT DataType">baseOfImage</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">imageSize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">timeDateStamp</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">checkSum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">numSyms</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SYM_TYPE</span>  <span class="DataType_IDENT DataType">symType</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">32</span><span class="DataType_DEFAULT DataType">]</span>  <span class="DataType_IDENT DataType">moduleName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">256</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">imageName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">256</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">loadedImageName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">256</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">loadedPdbName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">cVSig</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">*</span><span class="DataType_DEFAULT DataType">*</span>    <span class="DataType_IDENT DataType">cVData</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">pdbSig</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_GUID</span>      <span class="DataType_IDENT DataType">pdbSig70</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">pdbAge</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">pdbUnmatched</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">dbgUnmatched</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">lineNumbers</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">globalSymbols</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">typeInfo</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">sourceIndexed</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_BOOL</span>      <span class="DataType_IDENT DataType">publics</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">machineType</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">reserved</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_ARM64_NT_NEON128">Win32_ARM64_NT_NEON128</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_ARM64_NT_NEON128</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_ULONGLONG</span> <span class="DataType_IDENT DataType">low</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONGLONG</span>  <span class="DataType_IDENT DataType">high</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_AMD64_CONTEXT">Win32_AMD64_CONTEXT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_AMD64_CONTEXT</span> <span class="DataType_FUNCTION DataType">@align</span><span class="DataType_DEFAULT DataType">(</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">)</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p1Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p2Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p3Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p4Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p5Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">p6Home</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">contextFlags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">mxCsr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segCs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segDs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segEs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segFs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segGs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>    <span class="DataType_IDENT DataType">segSs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>   <span class="DataType_IDENT DataType">eFlags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr0</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr1</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr2</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr3</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr6</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">dr7</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rax</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rcx</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rdx</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rbx</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rsp</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rbp</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rsi</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rdi</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r8</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r9</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r10</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r11</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r12</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r13</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r14</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">r15</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span> <span class="DataType_IDENT DataType">rip</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_KEYWORD DataType">union</span>
+	<span class="DataType_DEFAULT DataType">{</span>
+		<span class="DataType_TYPE DataType">Win32_XMM_SAVE_AREA32</span>   <span class="DataType_IDENT DataType">fltSave</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_COMMENT DataType">//Win32_NEON128[16]       q;</span>
+		<span class="DataType_TYPE DataType">Win32_ULONGLONG</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">32</span><span class="DataType_DEFAULT DataType">]</span>     <span class="DataType_IDENT DataType">d</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_KEYWORD DataType">struct</span>
+		<span class="DataType_DEFAULT DataType">{</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">2</span><span class="DataType_DEFAULT DataType">]</span>  <span class="DataType_IDENT DataType">header</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span>  <span class="DataType_IDENT DataType">legacy</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm0</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm1</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm2</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm3</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm4</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm5</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm6</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm7</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm8</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm9</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm10</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm11</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm12</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm13</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm14</span><span class="DataType_DEFAULT DataType">;</span>
+			<span class="DataType_TYPE DataType">Win32_M128A</span>     <span class="DataType_IDENT DataType">xmm15</span><span class="DataType_DEFAULT DataType">;</span>
+		<span class="DataType_DEFAULT DataType">}</span>
+		<span class="DataType_TYPE DataType">Win32_DWORD</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">32</span><span class="DataType_DEFAULT DataType">]</span>     <span class="DataType_IDENT DataType">s</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_DEFAULT DataType">}</span>
+	<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">26</span><span class="DataType_DEFAULT DataType">]</span>         <span class="DataType_IDENT DataType">vectorRegister</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">vectorControl</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">debugControl</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">lastBranchToRip</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">lastBranchFromRip</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">lastExceptionToRip</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD64</span>           <span class="DataType_IDENT DataType">lastExceptionFromRip</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_WIN32_FIND_DATAW">Win32_WIN32_FIND_DATAW</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_WIN32_FIND_DATAW</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwFileAttributes</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span>      <span class="DataType_IDENT DataType">ftCreationTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span>      <span class="DataType_IDENT DataType">ftLastAccessTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_FILETIME</span>      <span class="DataType_IDENT DataType">ftLastWriteTime</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">nFileSizeHigh</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">nFileSizeLow</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwReserved0</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwReserved1</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WCHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">260</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">cFileName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_WCHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">14</span><span class="DataType_DEFAULT DataType">]</span>     <span class="DataType_IDENT DataType">cAlternateFileName</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwFileType</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use.</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwCreatorType</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use</span>
+	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wFinderFlags</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_RECT">Win32_RECT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_RECT</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">left</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">top</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">right</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">bottom</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></body></html>

@@ -1,1 +1,97 @@
-<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/os/linux/index.html">Overview</a>&nbsp<a href="../../../std/os/linux/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/os/linux/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/os/index.html">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div></body></html>
+<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/os/linux/index.html">Overview</a>&nbsp<a href="../../../std/os/linux/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/os/linux/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/os/index.html">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div><h1>Public</h1><h2 id="EpollData">EpollData</h2><pre><code><span class="DataType_KEYWORD DataType">union</span> <span class="DataType_TYPE DataType">EpollData</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>   <span class="DataType_IDENT DataType">ptr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">int</span>     <span class="DataType_IDENT DataType">fd</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">uint</span>	<span class="DataType_IDENT DataType">u32</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>   <span class="DataType_IDENT DataType">u64</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Linux_dl_phdr_info_32">Linux_dl_phdr_info_32</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Linux_dl_phdr_info_32</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf32_Addr</span>  <span class="DataType_IDENT DataType">dlpi_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">ZString</span>     <span class="DataType_IDENT DataType">dlpi_name</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Phdr</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">dlpi_phdr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>  <span class="DataType_IDENT DataType">dlpi_phnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_adds</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_subs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">usz</span>         <span class="DataType_IDENT DataType">dlpi_tsl_modid</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>       <span class="DataType_IDENT DataType">dlpi_tls_data</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Elf32_Phdr">Elf32_Phdr</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Elf32_Phdr</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	<span class="DataType_IDENT DataType">p_type</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Off</span>	<span class="DataType_IDENT DataType">p_offset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Addr</span>	<span class="DataType_IDENT DataType">p_vaddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Addr</span>	<span class="DataType_IDENT DataType">p_paddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	<span class="DataType_IDENT DataType">p_filesz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	<span class="DataType_IDENT DataType">p_memsz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	<span class="DataType_IDENT DataType">p_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	<span class="DataType_IDENT DataType">p_align</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Linux_dl_phdr_info_64">Linux_dl_phdr_info_64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Linux_dl_phdr_info_64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>  <span class="DataType_IDENT DataType">dlpi_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">ZString</span>     <span class="DataType_IDENT DataType">dlpi_name</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Phdr</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">dlpi_phdr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>  <span class="DataType_IDENT DataType">dlpi_phnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_adds</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_subs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">usz</span>         <span class="DataType_IDENT DataType">dlpi_tsl_modid</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>       <span class="DataType_IDENT DataType">dlpi_tls_data</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Linux_Dl_info">Linux_Dl_info</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Linux_Dl_info</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">ZString</span>     <span class="DataType_IDENT DataType">dli_fname</span><span class="DataType_DEFAULT DataType">;</span>     <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> Pathname of shared object </span><span class="DataType_DEFAULT DataType">*/</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>       <span class="DataType_IDENT DataType">dli_fbase</span><span class="DataType_DEFAULT DataType">;</span>     <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> Base address of shared object </span><span class="DataType_DEFAULT DataType">*/</span>
+	<span class="DataType_TYPE DataType">ZString</span>     <span class="DataType_IDENT DataType">dli_sname</span><span class="DataType_DEFAULT DataType">;</span>     <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> Name of nearest symbol </span><span class="DataType_DEFAULT DataType">*/</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>       <span class="DataType_IDENT DataType">dli_saddr</span><span class="DataType_DEFAULT DataType">;</span>     <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> Address of nearest symbol </span><span class="DataType_DEFAULT DataType">*/</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="EpollParams">EpollParams</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">EpollParams</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">uint</span>	<span class="DataType_IDENT DataType">busy_poll_usecs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ushort</span>  <span class="DataType_IDENT DataType">busy_poll_budget</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span>	<span class="DataType_IDENT DataType">prefer_busy_poll</span><span class="DataType_DEFAULT DataType">;</span>
+	
+	<span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> pad the struct to a multiple of 64bits </span><span class="DataType_DEFAULT DataType">*/</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span>	<span class="DataType_IDENT DataType">__pad</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Elf64_Phdr">Elf64_Phdr</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Elf64_Phdr</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	<span class="DataType_IDENT DataType">p_type</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	<span class="DataType_IDENT DataType">p_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Off</span>	<span class="DataType_IDENT DataType">p_offset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>	<span class="DataType_IDENT DataType">p_vaddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>	<span class="DataType_IDENT DataType">p_paddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_filesz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_memsz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_align</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Elf64_Ehdr">Elf64_Ehdr</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Elf64_Ehdr</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">EI_NIDENT</span><span class="DataType_DEFAULT DataType">]</span>     <span class="DataType_IDENT DataType">e_ident</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_type</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_machine</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	        <span class="DataType_IDENT DataType">e_version</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>	        <span class="DataType_IDENT DataType">e_entry</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Off</span>	        <span class="DataType_IDENT DataType">e_phoff</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Off</span>	        <span class="DataType_IDENT DataType">e_shoff</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	        <span class="DataType_IDENT DataType">e_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_ehsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_phentsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_phnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_shentsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_shnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>	        <span class="DataType_IDENT DataType">e_shstrndx</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Elf32_Ehdr">Elf32_Ehdr</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Elf32_Ehdr</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">char</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">EI_NIDENT</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">e_ident</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_type</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_machine</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	    <span class="DataType_IDENT DataType">e_version</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Addr</span>	    <span class="DataType_IDENT DataType">e_entry</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Off</span>	    <span class="DataType_IDENT DataType">e_phoff</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Off</span>	    <span class="DataType_IDENT DataType">e_shoff</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Word</span>	    <span class="DataType_IDENT DataType">e_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_ehsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_phentsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_phnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_shentsize</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_shnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf32_Half</span>	    <span class="DataType_IDENT DataType">e_shstrndx</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="EpollEvent">EpollEvent</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">EpollEvent</span> <span class="DataType_IDENT DataType">@packed</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">uint</span>	<span class="DataType_IDENT DataType">events</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> Epoll events </span><span class="DataType_DEFAULT DataType">*/</span>
+	<span class="DataType_TYPE DataType">EpollData</span> <span class="DataType_IDENT DataType">data</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_DEFAULT DataType">/*</span><span class="DataType_DEFAULT DataType"> User data variable </span><span class="DataType_DEFAULT DataType">*/</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></body></html>

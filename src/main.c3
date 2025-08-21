@@ -118,7 +118,8 @@ struct HighlightData
 }
 
 fn String HighlightData.get_text(&self, String data) => data[self.start:self.len];
-fn usz HighlightData.end(&self) => self.start + self.len;
+fn usz HighlightData.end_inclusive(&self) => self.start + self.len;
+fn usz HighlightData.end_exclusive(&self) => self.end_inclusive() - 1;
 
 struct HighlightedText (Printable)
 {
@@ -146,7 +147,7 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 		}
 		else if (i != 0)
 		{
-			n += fmt.printf(self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - self.highlights[i - 1].end()]);
+			n += fmt.printf(self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - self.highlights[i - 1].end_inclusive()]);
 		}
 		n += fmt.printf(`<span class="DataType_%s DataType">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
 	}
@@ -156,7 +157,7 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 	}
 	else if ($print_before_and_after && self.highlights[^1].type != END)
 	{
-		n += fmt.printf(self.data[self.highlights[^1].end()..]);
+		n += fmt.printf(self.data[self.highlights[^1].end_inclusive()..]);
 	}
 	return n;
 }
@@ -166,7 +167,7 @@ fn String HighlightedText.get_string(&self)
 	foreach (i, h : self.highlights)
 	{
 		if (h.type == END) break;
-		len = h.end();
+		len = h.end_exclusive();
 	}
 	return self.data[:len];
 }
@@ -186,8 +187,8 @@ fn HighlightedTextSlice? HighlightedText.slice_matching(&self, String to_find)
 		if (to_find.len >= highlight.len && to_find[:highlight.len] == highlight.get_text(self.data))foreach (j, highlight1 : self.highlights[i..])
 		{
 			if (highlight1.type == END) break;
-			if (self.data[highlight.start..highlight1.end() - 1].len < to_find.len) continue;
-			if (self.data[highlight.start..highlight1.end() - 1] == to_find)
+			if (self.data[highlight.start..highlight1.end_exclusive()].len < to_find.len) continue;
+			if (self.data[highlight.start..highlight1.end_exclusive()] == to_find)
 			{
 				return self.slice(i, i + j);
 			}
@@ -203,7 +204,7 @@ fn usz? HighlightedTextSlice.to_format(&self, Formatter* fmt) @dynamic
 }
 fn String HighlightedTextSlice.get_string(&self)
 {
-	return self.data[self.highlights[0].start..self.highlights[^1].start + self.highlights[^1].len - 1];
+	return self.data[self.highlights[0].start..self.highlights[^1].end_exclusive()];
 }
 
 interface DocGenData
@@ -310,9 +311,9 @@ struct Struct (DocGenData)
 }
 
 fn String Struct.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText Struct.get_highlighted(&self) @dynamic => self.get_highlighted();
+fn HighlightedText Struct.get_highlighted(&self) @dynamic => self.text;
 fn bool Struct.is_private(&self) @dynamic => self.attributes.contains("@private");
-fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || view != TYPES;
+fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
 fn String Struct.get_short_description(&self, Allocator alloc) @dynamic
 {
 	if (self.doc_comment.description.len() != 0)
@@ -338,12 +339,14 @@ struct ModuleSectionData
 {
 	List {Global} globals;
 	List {Func} functions;
+	List {Struct} structs;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
 {
 	self.globals.init(alloc);
 	self.functions.init(alloc);
+	self.structs.init(alloc);
 	self.attributes.init(alloc);
 }
 

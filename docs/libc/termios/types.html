@@ -1,1 +1,14 @@
-<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../style.css"></head><body><h2 class="header"><a href="../../libc/termios/index.html">Overview</a>&nbsp<a href="../../libc/termios/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../libc/termios/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../libc/index.html">libc</a>::<span style="font-family: 'monospace'">termios</span></h1></div></body></html>
+<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../style.css"></head><body><h2 class="header"><a href="../../libc/termios/index.html">Overview</a>&nbsp<a href="../../libc/termios/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../libc/termios/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../libc/index.html">libc</a>::<span style="font-family: 'monospace'">termios</span></h1></div><h1>Public</h1><h2 id="Termios">Termios</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Termios</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Tc_iflags</span> <span class="DataType_IDENT DataType">c_iflag</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Tc_oflags</span> <span class="DataType_IDENT DataType">c_oflag</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Tc_cflags</span> <span class="DataType_IDENT DataType">c_cflag</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Tc_lflags</span> <span class="DataType_IDENT DataType">c_lflag</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Cc</span> <span class="DataType_IDENT DataType">c_line</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Cc</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">NCCS</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">c_cc</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Speed</span> <span class="DataType_IDENT DataType">c_ispeed</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Speed</span> <span class="DataType_IDENT DataType">c_ospeed</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Termios</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">dummy</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></body></html>

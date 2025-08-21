@@ -22,7 +22,7 @@ macro list_with(Allocator alloc, ...)
 alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
 alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
-fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name)
+fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name) => @pool()
 {
 	TSTree* parse_tree = parser::parse_string(parser, null, data);
 	defer ts::tree_delete(parse_tree);
@@ -37,6 +37,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	defer query_cursor::delete(query_cursor);
 
 	// TODO: make these global/static so I don't keep recreating & destroying them for every file I parse
+	// TODO: use more anchors with wildcards so it doesn't match things multiple times and doesn't get tripped by comments in odd places
 	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
 	defer query::delete(module_query);
 
@@ -137,7 +138,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 										unreachable("unexpected global type '%s'", type);
 								}
 							case "name":
-								// glob.name = text.copy(alloc);
+								// TODO: there's probably something I can do with the match start byte - node start byte to make .slice_matching O(1) or O(n) instead of O(n^2)
 								glob.name = glob.text.slice_matching(text)!!;
 							case "value":
 								// glob.val = text.copy(alloc);
@@ -278,6 +279,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					comment.contracts.push(contract);
 					contract = {};
 				}
+			// NOTE: also handles unions
 			case "struct_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
@@ -291,6 +293,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 
 				Struct struc = create_struct(alloc);
 				struc.text = collect_data(alloc, node, data);
+				io::printfn("struct: %p", struc.text.data.ptr);
 				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
@@ -308,6 +311,8 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 							unreachable("unexpected '%s'", name);
 					}
 				};
+				struc.doc_comment = comment;
+				current_mod.sections[^1].structs.push(struc);
 				comment = {};
 			default:
 				comment = {};
@@ -352,6 +357,7 @@ macro Struct create_struct(Allocator alloc)
 	Struct s;
 	s.attributes.init(alloc);
 	s.members.init(alloc);
+	s.interfaces.init(alloc);
 	return s;
 }
 
