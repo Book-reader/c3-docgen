@@ -118,6 +118,7 @@ struct HighlightData
 }
 
 fn String HighlightData.get_text(&self, String data) => data[self.start:self.len];
+fn usz HighlightData.end(&self) => self.start + self.len;
 
 struct HighlightedText (Printable)
 {
@@ -145,7 +146,7 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 		}
 		else if (i != 0)
 		{
-			n += fmt.printf(self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - (self.highlights[i - 1].start + self.highlights[i - 1].len)]);
+			n += fmt.printf(self.data[self.highlights[i - 1].start + self.highlights[i - 1].len:highlight.start - self.highlights[i - 1].end()]);
 		}
 		n += fmt.printf(`<span class="DataType_%s DataType">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
 	}
@@ -155,14 +156,44 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 	}
 	else if ($print_before_and_after && self.highlights[^1].type != END)
 	{
-		n += fmt.printf(self.data[self.highlights[^1].start + self.highlights[^1].len..]);
+		n += fmt.printf(self.data[self.highlights[^1].end()..]);
 	}
 	return n;
 }
-
-fn HighlightedTextSlice HighlightedText.slice(&self, usz start, usz end)
+fn String HighlightedText.get_string(&self)
 {
-	return {self.data, self.highlights[start..end]};
+	usz len = self.data.len;
+	foreach (i, h : self.highlights)
+	{
+		if (h.type == END) break;
+		len = h.end();
+	}
+	return self.data[:len];
+}
+
+fn HighlightedTextSlice HighlightedText.slice(&self, usz start_highlight_idx, usz end_highlight_idx)
+{
+	return {self.data, self.highlights[start_highlight_idx..end_highlight_idx]};
+}
+
+fn HighlightedTextSlice? HighlightedText.slice_matching(&self, String to_find)
+{
+	usz? start_idx = NOT_FOUND?;
+	usz? end_idx = NOT_FOUND?;
+	foreach (i, highlight : self.highlights)
+	{
+		if (self.data[highlight.start..].len < to_find.len) break;
+		if (to_find.len >= highlight.len && to_find[:highlight.len] == highlight.get_text(self.data))foreach (j, highlight1 : self.highlights[i..])
+		{
+			if (highlight1.type == END) break;
+			if (self.data[highlight.start..highlight1.end() - 1].len < to_find.len) continue;
+			if (self.data[highlight.start..highlight1.end() - 1] == to_find)
+			{
+				return self.slice(i, i + j);
+			}
+		}
+	}
+	return NOT_FOUND?;
 }
 
 typedef HighlightedTextSlice = inline HighlightedText;
@@ -184,7 +215,7 @@ interface DocGenData
 	fn bool is_hidden_from(ModuleView view);
 	// fn bool has_attribute(String attr);
 	fn String get_short_description(Allocator alloc);
-	fn String get_description(Allocator alloc);
+	fn DocComment get_description();
 	fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
 
@@ -220,13 +251,7 @@ fn String Global.get_short_description(&self, Allocator alloc) @dynamic
 	return "";
 }
 // Same here
-fn String Global.get_description(&self, Allocator alloc) @dynamic => @pool()
-{
-	DString d;
-	d.tinit();
-	foreach (desc : self.doc_comment.description) d.appendf(desc);
-	return d.copy_str(alloc);
-}
+fn DocComment Global.get_description(&self) @dynamic => self.doc_comment;
 
 struct Func (DocGenData)
 {
@@ -256,13 +281,7 @@ fn String Func.get_short_description(&self, Allocator alloc) @dynamic
 	}
 	return "";
 }
-fn String Func.get_description(&self, Allocator alloc) @dynamic => @pool()
-{
-	DString d;
-	d.tinit();
-	foreach (desc : self.doc_comment.description) d.appendf(desc);
-	return d.copy_str(alloc);
-}
+fn DocComment Func.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPE : FUNCTIONS;
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
@@ -273,6 +292,39 @@ struct Param
 	String name;
 	String type;
 }
+
+struct StructMember
+{
+	HighlightedTextSlice name;
+	HighlightedTextSlice type;
+}
+
+struct Struct (DocGenData)
+{
+	HighlightedTextSlice name;
+	List {/*StructMember*/HighlightedTextSlice} members;
+	List {HighlightedTextSlice} interfaces;
+	List {String} attributes;
+	HighlightedText text;
+	DocComment doc_comment;
+}
+
+fn String Struct.get_name(&self) @dynamic => self.name.get_string();
+fn HighlightedText Struct.get_highlighted(&self) @dynamic => self.get_highlighted();
+fn bool Struct.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || view != TYPES;
+fn String Struct.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+fn DocComment Struct.get_description(&self) @dynamic => self.doc_comment;
+fn ModuleView Struct.get_own_view(&self) @dynamic => TYPES;
 
 struct ModuleSection
 {
@@ -299,6 +351,12 @@ struct DocComment
 {
 	List {String} description;
 	List {Contract} contracts;
+}
+fn usz? DocComment.to_format(&self, Formatter* fmt) @dynamic
+{
+	usz? n;
+	foreach (desc : self.description) n += fmt.printf(desc);
+	return n;
 }
 
 enum ContractType {CUSTOM, ENSURE, REQUIRE, RETURN, RETURN_FAULT, PARAM, PURE}
@@ -637,7 +695,7 @@ fn String Module.get_globals(&self, Allocator alloc) => @pool()
 				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
 				foreach (val : name.value) @pool()
 				{
-					b.text("%s", val.first.get_description(tmem));
+					b.text("%s", val.first.get_description());
 					b.@precode()
 					{
 						b.text("%s", val.first.get_highlighted());
@@ -665,7 +723,7 @@ fn String Module.get_types(&self, Allocator alloc)
 				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
 				foreach (val : name.value) @pool()
 				{
-					b.text("%s", val.first.get_description(tmem));
+					b.text("%s", val.first.get_description());
 					b.@precode()
 					{
 						b.text("%s", val.first.get_highlighted());
@@ -693,7 +751,7 @@ fn String Module.get_functions(&self, Allocator alloc)
 				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
 				foreach (val : name.value) @pool()
 				{
-					b.text("%s", val.first.get_description(tmem));
+					b.text("%s", val.first.get_description());
 					b.@precode()
 					{
 						b.text("%s", val.first.get_highlighted());
@@ -768,6 +826,33 @@ pre {
 	background-color: #efefef;
 }
 `;
+
+module std::core::array;
+
+macro @contains($array, $member)
+{
+	$foreach $m : $array:
+		$if $m == $member:
+			return true;
+		$endif
+	$endforeach
+	return false;
+}
+
+macro @index_of($array, $member)
+{
+	bool $found;
+	$foreach $i, $m : $array:
+		$if $m == $member:
+			$found = true;
+			return $i;
+		$endif
+	$endforeach
+	$if !$found:
+		$error @sprintf("Unable to find member %s", $member);
+	$endif
+}
+
 
 module ts::cursor;
 

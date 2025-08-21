@@ -47,12 +47,13 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
 	defer query::delete(func_query);
 
-	// TSQuery* struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name (attributes (attribute)* @attr)? body: (struct_body [(struct_member_declaration) @member (_)]*))`)!!;
-	// defer query::delete(struct_query);
+	TSQuery* struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name . (_)* (interface_impl_list (_)+ @interface)? (attributes [(attribute) @attr (_)]+)? body: (struct_body . [(struct_member_declaration) @member (_)]+) . )`)!!;
+	defer query::delete(struct_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
+	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;
 	Module* current_mod = root;
 	do
@@ -73,7 +74,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					foreach (i, capture : match.captures[:match.capture_count])
 					{
 						uint len;
-						String text = capture.get_text(data);
+						String text = substitiute_with_table(tmem, capture.get_text(data));
 
 						switch (String match_name = ts::query_capture_name_for_id(module_query, capture.index, &len).str_view())
 						{
@@ -112,14 +113,14 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Global glob = global(alloc);
+				Global glob = create_global(alloc);
 				glob.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
 					foreach (capture : match.captures[:match.capture_count])
 					{
 						uint len;
-						String text = capture.get_text(data);
+						String text = substitiute_with_table(tmem, capture.get_text(data));
 
 						switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
 						{
@@ -137,14 +138,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 								}
 							case "name":
 								// glob.name = text.copy(alloc);
-								foreach (i, n : glob.text.highlights)
-								{
-									if (n.get_text(glob.text.data) == text)
-									{
-										glob.name = glob.text.slice(i, i);
-									}
-								}
-								if (glob.text.data.ptr == null) unreachable("could not find node name");
+								glob.name = glob.text.slice_matching(text)!!;
 							case "value":
 								// glob.val = text.copy(alloc);
 								break;
@@ -173,7 +167,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Func func = function(alloc);
+				Func func = create_function(alloc);
 				func.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
 				{
@@ -181,22 +175,14 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					foreach (capture : match.captures[:match.capture_count])
 					{
 						uint len;
-						String text = capture.get_text(data);
+						String text = substitiute_with_table(tmem, capture.get_text(data));
 
 						switch (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
 						{
 							case "return":
 								func.return_type.set(text.copy(alloc));
 							case "name":
-								// func.name = text.copy(alloc);
-								foreach (i, n : func.text.highlights)
-								{
-									if (n.get_text(func.text.data) == text)
-									{
-										func.name = func.text.slice(i, i);
-									}
-								}
-								if (func.text.data.ptr == null) unreachable("could not find node name");
+								func.name = func.text.slice_matching(text)!!;
 							case "macro":
 								func.macro_ = true;
 							// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
@@ -292,6 +278,37 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					comment.contracts.push(contract);
 					contract = {};
 				}
+			case "struct_declaration":
+				// Handle files without module declarations/with code before a module declaration
+				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				Struct struc = create_struct(alloc);
+				struc.text = collect_data(alloc, node, data);
+				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
+				{
+					String text = substitiute_with_table(tmem, capture.get_text(data));
+					switch (name)
+					{
+						case "name":
+							struc.name = struc.text.slice_matching(text)!!;
+						case "attr":
+							struc.attributes.push(text.copy(alloc));
+						case "member":
+							struc.members.push(struc.text.slice_matching(text))!!;
+						case "interface":
+							struc.interfaces.push(struc.text.slice_matching(text)!!);
+						default:
+							unreachable("unexpected '%s'", name);
+					}
+				};
+				comment = {};
 			default:
 				comment = {};
 		}
@@ -315,19 +332,27 @@ macro Module* module_create(Allocator alloc, Module* parent, String path)
 	return new;
 }
 
-macro Global global(Allocator alloc)
+macro Global create_global(Allocator alloc)
 {
 	Global g;
 	g.attributes.init(alloc);
 	return g;
 }
 
-macro Func function(Allocator alloc)
+macro Func create_function(Allocator alloc)
 {
 	Func f;
 	f.attributes.init(alloc);
 	f.params.init(alloc);
 	return f;
+}
+
+macro Struct create_struct(Allocator alloc)
+{
+	Struct s;
+	s.attributes.init(alloc);
+	s.members.init(alloc);
+	return s;
 }
 
 macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) => @pool()
@@ -457,10 +482,12 @@ macro substitiute_with_table(Allocator alloc, String text) => @pool()
 
 module ts::query_cursor;
 
-macro void @exec_captures(TSQueryCursor* cursor, TSQuery* query, TSNode node; @body(TSQueryCapture capture)) {
+macro void @exec_captures(TSQueryCursor* cursor, TSQuery* query, TSNode node; @body(TSQueryCapture capture, String capture_name)) {
 	ts::query_cursor_exec(cursor, query, node);
-	for (TSQueryMatch match, uint idx; ts::query_cursor_next_capture(cursor, &match, &idx);) {
-		@body(match.captures[idx]);
+	for (TSQueryMatch match, uint idx; ts::query_cursor_next_capture(cursor, &match, &idx);)
+	{
+		uint len;
+		@body(match.captures[idx], (String)ts::query_capture_name_for_id(query, match.captures[idx].index, &len)[:len]);
 	}
 }
 
