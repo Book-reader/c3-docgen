@@ -327,6 +327,34 @@ fn String Struct.get_short_description(&self, Allocator alloc) @dynamic
 fn DocComment Struct.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Struct.get_own_view(&self) @dynamic => TYPES;
 
+struct Enum (DocGenData)
+{
+	HighlightedTextSlice name;
+	Maybe {HighlightedTextSlice} spec;
+	List {HighlightedTextSlice} values;
+	List {HighlightedTextSlice} interfaces;
+	List {String} attributes;
+	HighlightedText text;
+	DocComment doc_comment;
+}
+
+fn String Enum.get_name(&self) @dynamic => self.name.get_string();
+fn HighlightedText Enum.get_highlighted(&self) @dynamic => self.text;
+fn bool Enum.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn bool Enum.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
+fn String Enum.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+fn DocComment Enum.get_description(&self) @dynamic => self.doc_comment;
+fn ModuleView Enum.get_own_view(&self) @dynamic => TYPES;
+
 struct ModuleSection
 {
 	inline ModuleSectionData data;
@@ -340,6 +368,7 @@ struct ModuleSectionData
 	List {Global} globals;
 	List {Func} functions;
 	List {Struct} structs;
+	List {Enum} enums;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -347,6 +376,7 @@ fn void ModuleSection.init(&self, Allocator alloc)
 	self.globals.init(alloc);
 	self.functions.init(alloc);
 	self.structs.init(alloc);
+	self.enums.init(alloc);
 	self.attributes.init(alloc);
 }
 

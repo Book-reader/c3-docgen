@@ -3,4 +3,58 @@
     <span class="DataType_BUILTIN_TYPE DataType">ulong</span>               <span class="DataType_IDENT DataType">length</span><span class="DataType_DEFAULT DataType">;</span>
     <span class="DataType_BUILTIN_TYPE DataType">ulong</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span>            <span class="DataType_IDENT DataType">hash_state</span><span class="DataType_DEFAULT DataType">;</span>
     <span class="DataType_BUILTIN_TYPE DataType">char</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_CONST DataType">BLOCK_SIZE</span><span class="DataType_DEFAULT DataType">]</span>    <span class="DataType_IDENT DataType">buffer</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="HashTruncationType">HashTruncationType</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">HashTruncationType</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_BUILTIN_TYPE DataType">uint</span> <span class="DataType_DEFAULT DataType">(</span><span class="DataType_BUILTIN_TYPE DataType">uint</span> <span class="DataType_IDENT DataType">truncation_width</span><span class="DataType_DEFAULT DataType">,</span> <span class="DataType_BUILTIN_TYPE DataType">ulong</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">initial_state</span><span class="DataType_DEFAULT DataType">)</span>
+<span class="DataType_DEFAULT DataType">{</span>
+    <span class="DataType_CONST DataType">SHA512</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_NUMBER DataType">512</span><span class="DataType_DEFAULT DataType">,</span>
+        <span class="DataType_DEFAULT DataType">{</span>
+            <span class="DataType_NUMBER DataType">0x6a09e667f3bcc908</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0xbb67ae8584caa73b</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x3c6ef372fe94f82b</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0xa54ff53a5f1d36f1</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x510e527fade682d1</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x9b05688c2b3e6c1f</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x1f83d9abfb41bd6b</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x5be0cd19137e2179</span>
+        <span class="DataType_DEFAULT DataType">}</span>
+    <span class="DataType_DEFAULT DataType">}</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">SHA384</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_NUMBER DataType">384</span><span class="DataType_DEFAULT DataType">,</span>
+        <span class="DataType_DEFAULT DataType">{</span>
+            <span class="DataType_NUMBER DataType">0xcbbb9d5dc1059ed8</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x629a292a367cd507</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x9159015a3070dd17</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x152fecd8f70e5939</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x67332667ffc00b31</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x8eb44a8768581511</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0xdb0c2e0d64f98fa7</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x47b5481dbefa4fa4</span>
+        <span class="DataType_DEFAULT DataType">}</span>
+    <span class="DataType_DEFAULT DataType">}</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">SHA512_224</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_NUMBER DataType">224</span><span class="DataType_DEFAULT DataType">,</span>
+        <span class="DataType_DEFAULT DataType">{</span>
+            <span class="DataType_NUMBER DataType">0x8C3D37C819544DA2</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x73E1996689DCD4D6</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x1DFAB7AE32FF9C82</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x679DD514582F9FCF</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x0F6D2B697BD44DA8</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x77E36F7304C48942</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x3F9D85A86A1D36C8</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x1112E6AD91D692A1</span>
+        <span class="DataType_DEFAULT DataType">}</span>
+    <span class="DataType_DEFAULT DataType">}</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">SHA512_256</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_NUMBER DataType">256</span><span class="DataType_DEFAULT DataType">,</span>
+        <span class="DataType_DEFAULT DataType">{</span>
+            <span class="DataType_NUMBER DataType">0x22312194FC2BF72C</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x9F555FA3C84C64C2</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x2393B86B6F53B151</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x963877195940EABD</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x96283EE2A88EFFE3</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0xBE5E1E2553863992</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x2B0199FC2C85B8AA</span><span class="DataType_DEFAULT DataType">,</span>
+            <span class="DataType_NUMBER DataType">0x0EB72DDC81C52CA2</span>
+        <span class="DataType_DEFAULT DataType">}</span>
+    <span class="DataType_DEFAULT DataType">}</span><span class="DataType_DEFAULT DataType">,</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre></body></html>

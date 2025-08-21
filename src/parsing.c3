@@ -51,6 +51,9 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name . (_)* (interface_impl_list (_)+ @interface)? (attributes [(attribute) @attr (_)]+)? body: (struct_body . [(struct_member_declaration) @member (_)]+) . )`)!!;
 	defer query::delete(struct_query);
 
+	TSQuery* enum_query = query::new(tsc3::language(), `(enum_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (enum_spec)? @spec (attributes [(attribute) @attr (_)]+)? body: (enum_body [ (enum_constant) @value (_) "," ]+) )`)!!;
+	defer query::delete(enum_query);
+
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
@@ -314,6 +317,41 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				struc.doc_comment = comment;
 				current_mod.sections[^1].structs.push(struc);
 				comment = {};
+			case "enum_declaration":
+				// Handle files without module declarations/with code before a module declaration
+				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				Enum enum_ = create_enum(alloc);
+				enum_.text = collect_data(alloc, node, data);
+				io::printfn("enum_t: %p", enum_.text.data.ptr);
+				query_cursor::@exec_captures(query_cursor, enum_query, node; TSQueryCapture capture, String name)
+				{
+					String text = substitiute_with_table(tmem, capture.get_text(data));
+					switch (name)
+					{
+						case "name":
+							enum_.name = enum_.text.slice_matching(text)!!;
+						case "attr":
+							enum_.attributes.push(text.copy(alloc));
+						case "interface":
+							enum_.interfaces.push(enum_.text.slice_matching(text)!!);
+						case "spec":
+							enum_.spec.set(enum_.text.slice_matching(text)!!);
+						case "value":
+							enum_.values.push(enum_.text.slice_matching(text)!!);
+						default:
+							unreachable("unexpected '%s'", name);
+					}
+				};
+				enum_.doc_comment = comment;
+				current_mod.sections[^1].enums.push(enum_);
 			default:
 				comment = {};
 		}
@@ -361,6 +399,15 @@ macro Struct create_struct(Allocator alloc)
 	return s;
 }
 
+macro Enum create_enum(Allocator alloc)
+{
+	Enum e;
+	e.attributes.init(alloc);
+	e.values.init(alloc);
+	e.interfaces.init(alloc);
+	return e;
+}
+
 macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) => @pool()
 {
 	List {HighlightData} collected_data;
@@ -387,7 +434,7 @@ fn void collect_data_rec(Allocator alloc, List {HighlightData}* collected_data, 
 		TSTreeCursor bak = cursor::copy(cursor);
 		defer cursor::delete(&bak);
 
-		if (cursor::current_node(cursor).type() != "module_resolution"/* && cursor::current_field_name(cursor) ?? "" != "function"*/ && @ok(cursor::goto_first_child(&bak)))
+		if (cursor::current_node(cursor).type() != "module_resolution" && cursor::current_node(cursor).type() != "block_comment" && cursor::current_node(cursor).type() != "doc_comment"/* && cursor::current_field_name(cursor) ?? "" != "function"*/ && @ok(cursor::goto_first_child(&bak)))
 		{
 			if (cursor::current_node(cursor).type() == "macro_func_body")
 			{

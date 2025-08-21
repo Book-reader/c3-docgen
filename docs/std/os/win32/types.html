@@ -96,16 +96,16 @@
         <span class="DataType_TYPE DataType">Win32_HANDLE</span>                           <span class="DataType_IDENT DataType">handle</span><span class="DataType_DEFAULT DataType">;</span>
         <span class="DataType_TYPE DataType">Win32_DWORD</span>                            <span class="DataType_IDENT DataType">uLong</span><span class="DataType_DEFAULT DataType">;</span>
     <span class="DataType_DEFAULT DataType">}</span>
-<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MODULEINFO">Win32_MODULEINFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MODULEINFO</span>
-<span class="DataType_DEFAULT DataType">{</span>
-	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">lpBaseOfDll</span><span class="DataType_DEFAULT DataType">;</span>
-	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">sizeOfImage</span><span class="DataType_DEFAULT DataType">;</span>
-	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">entryPoint</span><span class="DataType_DEFAULT DataType">;</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_pollfd">Win32_pollfd</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_pollfd</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_SOCKET</span> <span class="DataType_IDENT DataType">fd</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">events</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">revents</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MODULEINFO">Win32_MODULEINFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MODULEINFO</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">lpBaseOfDll</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">sizeOfImage</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_LPVOID</span> <span class="DataType_IDENT DataType">entryPoint</span><span class="DataType_DEFAULT DataType">;</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_PAINTSTRUCT">Win32_PAINTSTRUCT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_PAINTSTRUCT</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_HDC</span>  <span class="DataType_IDENT DataType">hdc</span><span class="DataType_DEFAULT DataType">;</span>
@@ -137,6 +137,17 @@
 	<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">8</span><span class="DataType_DEFAULT DataType">]</span>  <span class="DataType_IDENT DataType">floatRegisters</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_M128A</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">16</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">xmmRegisters</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_UCHAR</span><span class="DataType_DEFAULT DataType">[</span><span class="DataType_NUMBER DataType">96</span><span class="DataType_DEFAULT DataType">]</span> <span class="DataType_IDENT DataType">reserved4</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SYM_TYPE">Win32_SYM_TYPE</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_SYM_TYPE</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">SYM_NONE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_COFF</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_CV</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_PDB</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_EXPORT</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_DEFERRED</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_SYM</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_DIA</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SYM_VIRTUAL</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_LARGE_INTEGER">Win32_LARGE_INTEGER</h2><pre><code><span class="DataType_KEYWORD DataType">union</span> <span class="DataType_TYPE DataType">Win32_LARGE_INTEGER</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_KEYWORD DataType">struct</span>
@@ -157,6 +168,18 @@
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">cx</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">cy</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_FreeType">Win32_FreeType</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_FreeType</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_KEYWORD DataType">const</span> <span class="DataType_TYPE DataType">Win32_DWORD</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">MEM_DECOMMIT</span>              <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00004000</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MEM_RELEASE</span>               <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00008000</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MEM_COALESCE_PLACEHOLDERS</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00000001</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MEM_PRESERVE_PLACEHOLDER</span>  <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00000002</span><span class="DataType_DEFAULT DataType">,</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MEM_EXTENDED_PARAMETER_ATTRIBUTE">Win32_MEM_EXTENDED_PARAMETER_ATTRIBUTE</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_MEM_EXTENDED_PARAMETER_ATTRIBUTE</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_KEYWORD DataType">const</span> <span class="DataType_TYPE DataType">Win32_DWORD64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">NONPAGED</span>       <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x02</span><span class="DataType_DEFAULT DataType">,</span>  <span class="DataType_COMMENT DataType">// The allocation is non-pageable.</span>
+	<span class="DataType_CONST DataType">NONPAGED_LARGE</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x08</span><span class="DataType_DEFAULT DataType">,</span>  <span class="DataType_COMMENT DataType">// The allocation is mapped using large pages.</span>
+	<span class="DataType_CONST DataType">NONPAGED_HUGE</span>  <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x10</span><span class="DataType_DEFAULT DataType">,</span>  <span class="DataType_COMMENT DataType">// The allocation is mapped using huge pages.</span>
+	<span class="DataType_CONST DataType">EC_CODE</span>	       <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x40</span><span class="DataType_DEFAULT DataType">,</span>  <span class="DataType_COMMENT DataType">// The allocation will contain emulation-compatible (EC) code.</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MSG">Win32_MSG</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_MSG</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_HWND</span> <span class="DataType_IDENT DataType">hwnd</span><span class="DataType_DEFAULT DataType">;</span>
@@ -189,6 +212,26 @@
 	<span class="DataType_TYPE DataType">Win32_HANDLE</span> <span class="DataType_IDENT DataType">hThread</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwProcessId</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>  <span class="DataType_IDENT DataType">dwThreadId</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_MEM_EXTENDED_PARAMETER_TYPE">Win32_MEM_EXTENDED_PARAMETER_TYPE</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_MEM_EXTENDED_PARAMETER_TYPE</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_TYPE DataType">CInt</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">INVALID_TYPE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ADDRESS_REQUIREMENTS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NUMA_NODE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PARTITION_HANDLE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">USER_PHYSICAL_HANDLE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ATTRIBUTE_FLAGS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">IMAGE_MACHINE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MAX</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_AllocationType">Win32_AllocationType</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_AllocationType</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_KEYWORD DataType">const</span> <span class="DataType_TYPE DataType">Win32_DWORD</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">MEM_COMMIT</span>      <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00001000</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MEM_RESERVE</span>     <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00002000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_RESET</span>       <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00080000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_RESET_UNDO</span>  <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x01000000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_LARGE_PAGES</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x20000000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_PHYSICAL</span>    <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00400000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_TOP_DOWN</span>    <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00100000</span><span class="DataType_DEFAULT DataType">,</span>
+    <span class="DataType_CONST DataType">MEM_WRITE_WATCH</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x00200000</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_FOCUS_EVENT_RECORD">Win32_FOCUS_EVENT_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_FOCUS_EVENT_RECORD</span> 
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_BOOL</span> <span class="DataType_IDENT DataType">bSetFocus</span><span class="DataType_DEFAULT DataType">;</span>
@@ -347,6 +390,12 @@
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_WINDOW_BUFFER_SIZE_RECORD">Win32_WINDOW_BUFFER_SIZE_RECORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_WINDOW_BUFFER_SIZE_RECORD</span> 
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_COORD</span> <span class="DataType_IDENT DataType">dwSize</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_ADDRESS_MODE">Win32_ADDRESS_MODE</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_ADDRESS_MODE</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">ADDR_MODE_1616</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ADDR_MODE_1632</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ADDR_MODE_REAL</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ADDR_MODE_FLAT</span><span class="DataType_DEFAULT DataType">,</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SYSTEM_INFO">Win32_SYSTEM_INFO</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SYSTEM_INFO</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_KEYWORD DataType">union</span>
@@ -367,6 +416,10 @@
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwAllocationGranularity</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wProcessorLevel</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wProcessorRevision</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_GET_FILEEX_INFO_LEVELS">Win32_GET_FILEEX_INFO_LEVELS</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_GET_FILEEX_INFO_LEVELS</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">STANDARD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MAX</span><span class="DataType_DEFAULT DataType">,</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_SOCKADDR">Win32_SOCKADDR</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_SOCKADDR</span> 
 <span class="DataType_DEFAULT DataType">{</span>
    <span class="DataType_TYPE DataType">Win32_USHORT</span> <span class="DataType_IDENT DataType">sa_family</span><span class="DataType_DEFAULT DataType">;</span>
@@ -437,10 +490,6 @@
 	<span class="DataType_TYPE DataType">Win32_DWORD</span> <span class="DataType_IDENT DataType">signature</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_IMAGE_FILE_HEADER</span> <span class="DataType_IDENT DataType">fileHeader</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_IMAGE_OPTIONAL_HEADER64</span> <span class="DataType_IDENT DataType">optionalHeader</span><span class="DataType_DEFAULT DataType">;</span>
-<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_COORD">Win32_COORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_COORD</span> 
-<span class="DataType_DEFAULT DataType">{</span>
-	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">x</span><span class="DataType_DEFAULT DataType">;</span>
-	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">y</span><span class="DataType_DEFAULT DataType">;</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_addrinfo">Win32_addrinfo</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_addrinfo</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_INT</span> <span class="DataType_IDENT DataType">ai_flags</span><span class="DataType_DEFAULT DataType">;</span>
@@ -451,6 +500,10 @@
 	<span class="DataType_TYPE DataType">Win32_CHAR</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_canonname</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_SOCKADDR</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_addr</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_TYPE DataType">Win32_ADDRINFO</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">ai_next</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_COORD">Win32_COORD</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_COORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">x</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Win32_SHORT</span> <span class="DataType_IDENT DataType">y</span><span class="DataType_DEFAULT DataType">;</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_IMAGEHLP_MODULE64">Win32_IMAGEHLP_MODULE64</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_IMAGEHLP_MODULE64</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>     <span class="DataType_IDENT DataType">sizeOfStruct</span><span class="DataType_DEFAULT DataType">;</span>
@@ -572,6 +625,21 @@
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwFileType</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use.</span>
 	<span class="DataType_TYPE DataType">Win32_DWORD</span>         <span class="DataType_IDENT DataType">dwCreatorType</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use</span>
 	<span class="DataType_TYPE DataType">Win32_WORD</span>          <span class="DataType_IDENT DataType">wFinderFlags</span><span class="DataType_DEFAULT DataType">;</span> <span class="DataType_COMMENT DataType">// Obsolete. Do not use</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_Protect">Win32_Protect</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">Win32_Protect</span> <span class="DataType_DEFAULT DataType">:</span> <span class="DataType_KEYWORD DataType">const</span> <span class="DataType_TYPE DataType">Win32_DWORD</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">PAGE_EXECUTE</span>           <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x10</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_EXECUTE_READ</span>      <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x20</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_EXECUTE_READWRITE</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x40</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_EXECUTE_WRITECOPY</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x80</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_NOACCESS</span>          <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x01</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_READONLY</span>          <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x02</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_READWRITE</span>         <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x04</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_WRITECOPY</span>         <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x08</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_TARGETS_INVALID</span>   <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x40000000</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_TARGETS_NO_UPDATE</span> <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x40000000</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_GUARD</span>             <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x100</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_NOCACHE</span>           <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x200</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PAGE_WRITECOMBINE</span>      <span class="DataType_DEFAULT DataType">=</span> <span class="DataType_NUMBER DataType">0x400</span><span class="DataType_DEFAULT DataType">,</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="Win32_RECT">Win32_RECT</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_RECT</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_TYPE DataType">Win32_LONG</span> <span class="DataType_IDENT DataType">left</span><span class="DataType_DEFAULT DataType">;</span>

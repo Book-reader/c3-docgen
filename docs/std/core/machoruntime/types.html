@@ -26,6 +26,15 @@
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_BUILTIN_TYPE DataType">uint</span> <span class="DataType_IDENT DataType">cmd</span><span class="DataType_DEFAULT DataType">;</span>
 	<span class="DataType_BUILTIN_TYPE DataType">uint</span> <span class="DataType_IDENT DataType">cmdsize</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="StartupState">StartupState</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">StartupState</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">NOT_STARTED</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">INIT</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">RUN_CTORS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">READ_DYLIB</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">RUN_DYLIB_CTORS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">RUN_DTORS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SHUTDOWN</span>
 <span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="MachHeader">MachHeader</h2><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">MachHeader</span>
 <span class="DataType_DEFAULT DataType">{</span>
 	<span class="DataType_BUILTIN_TYPE DataType">uint</span> <span class="DataType_IDENT DataType">magic</span><span class="DataType_DEFAULT DataType">;</span>

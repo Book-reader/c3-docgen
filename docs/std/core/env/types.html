@@ -1,1 +1,106 @@
-<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/core/env/index.html">Overview</a>&nbsp<a href="../../../std/core/env/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/core/env/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/core/index.html">core</a>::<span style="font-family: 'monospace'">env</span></h1></div></body></html>
+<!DOCTYPE html><html style = "font-family:'0xProto Nerd Font'"><head><link rel="stylesheet" href="../../../style.css"></head><body><h2 class="header"><a href="../../../std/core/env/index.html">Overview</a>&nbsp<a href="../../../std/core/env/globals.html">Globals</a>&nbsp<span class="selected">Types</span>&nbsp<a href="../../../std/core/env/functions.html">Functions</a>&nbsp</h2><div class="module_path"><h1><a href="../../../std/index.html">std</a>::<a href="../../../std/core/index.html">core</a>::<span style="font-family: 'monospace'">env</span></h1></div><h1>Public</h1><h2 id="MemoryEnvironment">MemoryEnvironment</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">MemoryEnvironment</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">NORMAL</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SMALL</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">TINY</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NONE</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="OsType">OsType</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">OsType</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">UNKNOWN</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NONE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ANANAS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">CLOUD_ABI</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">DRAGON_FLY</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">FREEBSD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">FUCHSIA</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">IOS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">KFREEBSD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">LINUX</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PS3</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MACOS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NETBSD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">OPENBSD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">SOLARIS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">WIN32</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">HAIKU</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MINIX</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">RTEMS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NACL</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// Native Client</span>
+	<span class="DataType_CONST DataType">CNK</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// BG/P Compute-Node Kernel</span>
+	<span class="DataType_CONST DataType">AIX</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">CUDA</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">NVOPENCL</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">AMDHSA</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">PS4</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ELFIAMCU</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">TVOS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">WATCHOS</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">MESA3D</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">CONTIKI</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">AMDPAL</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">HERMITCORE</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">HURD</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">WASI</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">EMSCRIPTEN</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ANDROID</span><span class="DataType_DEFAULT DataType">,</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="CompilerOptLevel">CompilerOptLevel</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">CompilerOptLevel</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">O0</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">O1</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">O2</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">O3</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre><h2 id="ArchType">ArchType</h2><pre><code><span class="DataType_KEYWORD DataType">enum</span> <span class="DataType_TYPE DataType">ArchType</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_CONST DataType">UNKNOWN</span><span class="DataType_DEFAULT DataType">,</span>
+	<span class="DataType_CONST DataType">ARM</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// ARM (little endian): arm, armv.*, xscale</span>
+	<span class="DataType_CONST DataType">ARMB</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// ARM (big endian): armeb</span>
+	<span class="DataType_CONST DataType">AARCH64</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// AArch64 (little endian): aarch64</span>
+	<span class="DataType_CONST DataType">AARCH64_BE</span><span class="DataType_DEFAULT DataType">,</span>   <span class="DataType_COMMENT DataType">// AArch64 (big endian): aarch64_be</span>
+	<span class="DataType_CONST DataType">AARCH64_32</span><span class="DataType_DEFAULT DataType">,</span>   <span class="DataType_COMMENT DataType">// AArch64 (little endian) ILP32: aarch64_32</span>
+	<span class="DataType_CONST DataType">ARC</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// ARC: Synopsys ARC</span>
+	<span class="DataType_CONST DataType">AVR</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// AVR: Atmel AVR microcontroller</span>
+	<span class="DataType_CONST DataType">BPFEL</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// eBPF or extended BPF or 64-bit BPF (little endian)</span>
+	<span class="DataType_CONST DataType">BPFEB</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// eBPF or extended BPF or 64-bit BPF (big endian)</span>
+	<span class="DataType_CONST DataType">HEXAGON</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// Hexagon: hexagon</span>
+	<span class="DataType_CONST DataType">MIPS</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// MIPS: mips, mipsallegrex, mipsr6</span>
+	<span class="DataType_CONST DataType">MIPSEL</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// MIPSEL: mipsel, mipsallegrexe, mipsr6el</span>
+	<span class="DataType_CONST DataType">MIPS64</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// MIPS64: mips64, mips64r6, mipsn32, mipsn32r6</span>
+	<span class="DataType_CONST DataType">MIPS64EL</span><span class="DataType_DEFAULT DataType">,</span>     <span class="DataType_COMMENT DataType">// MIPS64EL: mips64el, mips64r6el, mipsn32el, mipsn32r6el</span>
+	<span class="DataType_CONST DataType">MSP430</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// MSP430: msp430</span>
+	<span class="DataType_CONST DataType">PPC</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// PPC: powerpc</span>
+	<span class="DataType_CONST DataType">PPC64</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// PPC64: powerpc64, ppu</span>
+	<span class="DataType_CONST DataType">PPC64LE</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// PPC64LE: powerpc64le</span>
+	<span class="DataType_CONST DataType">R600</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// R600: AMD GPUs HD2XXX - HD6XXX</span>
+	<span class="DataType_CONST DataType">AMDGCN</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// AMDGCN: AMD GCN GPUs</span>
+	<span class="DataType_CONST DataType">RISCV32</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// RISC-V (32-bit): riscv32</span>
+	<span class="DataType_CONST DataType">RISCV64</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// RISC-V (64-bit): riscv64</span>
+	<span class="DataType_CONST DataType">SPARC</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// Sparc: sparc</span>
+	<span class="DataType_CONST DataType">SPARCV9</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// Sparcv9: Sparcv9</span>
+	<span class="DataType_CONST DataType">SPARCEL</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// Sparc: (endianness = little). NB: &apos;Sparcle&apos; is a CPU variant</span>
+	<span class="DataType_CONST DataType">SYSTEMZ</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// SystemZ: s390x</span>
+	<span class="DataType_CONST DataType">TCE</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// TCE (http://tce.cs.tut.fi/): tce</span>
+	<span class="DataType_CONST DataType">TCELE</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// TCE little endian (http://tce.cs.tut.fi/): tcele</span>
+	<span class="DataType_CONST DataType">THUMB</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// Thumb (little endian): thumb, thumbv.*</span>
+	<span class="DataType_CONST DataType">THUMBEB</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// Thumb (big endian): thumbeb</span>
+	<span class="DataType_CONST DataType">X86</span><span class="DataType_DEFAULT DataType">,</span>          <span class="DataType_COMMENT DataType">// X86: i[3-9]86</span>
+	<span class="DataType_CONST DataType">X86_64</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// X86-64: amd64, x86_64</span>
+	<span class="DataType_CONST DataType">XCORE</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// XCore: xcore</span>
+	<span class="DataType_CONST DataType">NVPTX</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// NVPTX: 32-bit</span>
+	<span class="DataType_CONST DataType">NVPTX64</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// NVPTX: 64-bit</span>
+	<span class="DataType_CONST DataType">LE32</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// le32: generic little-endian 32-bit CPU (PNaCl)</span>
+	<span class="DataType_CONST DataType">LE64</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// le64: generic little-endian 64-bit CPU (PNaCl)</span>
+	<span class="DataType_CONST DataType">AMDIL</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// AMDIL</span>
+	<span class="DataType_CONST DataType">AMDIL64</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// AMDIL with 64-bit pointers</span>
+	<span class="DataType_CONST DataType">HSAIL</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// AMD HSAIL</span>
+	<span class="DataType_CONST DataType">HSAIL64</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// AMD HSAIL with 64-bit pointers</span>
+	<span class="DataType_CONST DataType">SPIR</span><span class="DataType_DEFAULT DataType">,</span>         <span class="DataType_COMMENT DataType">// SPIR: standard portable IR for OpenCL 32-bit version</span>
+	<span class="DataType_CONST DataType">SPIR64</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// SPIR: standard portable IR for OpenCL 64-bit version</span>
+	<span class="DataType_CONST DataType">KALIMBA</span><span class="DataType_DEFAULT DataType">,</span>      <span class="DataType_COMMENT DataType">// Kalimba: generic kalimba</span>
+	<span class="DataType_CONST DataType">SHAVE</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// SHAVE: Movidius vector VLIW processors</span>
+	<span class="DataType_CONST DataType">LANAI</span><span class="DataType_DEFAULT DataType">,</span>        <span class="DataType_COMMENT DataType">// Lanai: Lanai 32-bit</span>
+	<span class="DataType_CONST DataType">WASM32</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// WebAssembly with 32-bit pointers</span>
+	<span class="DataType_CONST DataType">WASM64</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// WebAssembly with 64-bit pointers</span>
+	<span class="DataType_CONST DataType">RSCRIPT32</span><span class="DataType_DEFAULT DataType">,</span>    <span class="DataType_COMMENT DataType">// 32-bit RenderScript</span>
+	<span class="DataType_CONST DataType">RSCRIPT64</span><span class="DataType_DEFAULT DataType">,</span>    <span class="DataType_COMMENT DataType">// 64-bit RenderScript</span>
+	<span class="DataType_CONST DataType">XTENSA</span><span class="DataType_DEFAULT DataType">,</span>       <span class="DataType_COMMENT DataType">// Xtensa</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></body></html>
