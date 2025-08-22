@@ -397,6 +397,7 @@ struct ModuleSectionData
 	List {Func} functions;
 	List {Struct} structs;
 	List {Enum} enums;
+	List {BitStruct} bitstructs;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -405,6 +406,7 @@ fn void ModuleSection.init(&self, Allocator alloc)
 	self.functions.init(alloc);
 	self.structs.init(alloc);
 	self.enums.init(alloc);
+	self.bitstructs.init(alloc);
 	self.attributes.init(alloc);
 }
 

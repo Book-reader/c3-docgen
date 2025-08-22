@@ -357,6 +357,40 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				current_mod.sections[^1].enums.push(enum_);
 				comment = {};
 			case "bitstruct_declaration":
+				// Handle files without module declarations/with code before a module declaration
+				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				BitStruct bitstruc = create_bitstruct(alloc);
+				bitstruc.text = collect_data(alloc, node, data);
+				io::printfn("bitstruct: %p", bitstruc.text.data.ptr);
+				query_cursor::@exec_captures(query_cursor, bitstruct_query, node; TSQueryCapture capture, String name)
+				{
+					String text = substitiute_with_table(tmem, capture.get_text(data));
+					switch (name)
+					{
+						case "name":
+							bitstruc.name = bitstruc.text.slice_matching(text)!!;
+						case "attr":
+							bitstruc.attributes.push(text.copy(alloc));
+						case "interface":
+							bitstruc.interfaces.push(bitstruc.text.slice_matching(text)!!);
+						case "type":
+							bitstruc.type = bitstruc.text.slice_matching(text)!!;
+						case "member":
+							bitstruc.members.push(bitstruc.text.slice_matching(text)!!);
+						default:
+							unreachable("unexpected '%s'", name);
+					}
+				};
+				bitstruc.doc_comment = comment;
+				current_mod.sections[^1].bitstructs.push(bitstruc);
 				comment = {};
 			default:
 				comment = {};
@@ -413,6 +447,16 @@ macro Enum create_enum(Allocator alloc)
 	e.interfaces.init(alloc);
 	return e;
 }
+
+macro BitStruct create_bitstruct(Allocator alloc)
+{
+	BitStruct b;
+	b.attributes.init(alloc);
+	b.members.init(alloc);
+	b.interfaces.init(alloc);
+	return b;
+}
+
 
 macro HighlightedText collect_data(Allocator alloc, TSNode node, String data) => @pool()
 {
