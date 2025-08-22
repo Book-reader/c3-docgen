@@ -504,7 +504,7 @@ fn usz Module.get_depth(&self)
 }
 
 alias ModuleViewFunc = fn String(Module*, Allocator);
-enum ModuleView : (String path, String name, ModuleViewFunc func, bool in_title)
+enum ModuleView : char (String path, String name, ModuleViewFunc func, bool in_title)
 {
 	OVERVIEW = { "index.html", "Overview", &Module.get_overview, true },
 	GLOBALS = { "globals.html", "Globals", &Module.get_globals, true },
@@ -512,6 +512,8 @@ enum ModuleView : (String path, String name, ModuleViewFunc func, bool in_title)
 	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions, true },
 	TYPE = { "type.%s.html", "Type", fn (a, b) {return {};}, false },
 }
+fn uint ModuleView.hash(self) => self.ordinal.hash();
+
 
 fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
 {
@@ -666,7 +668,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 			foreach (section : a[0].iter())
 			{
 				// First public values
-				b.h(2, section.key);
+				b.h(2, section.key.name);
 				b.@table({"Name", "Description"})
 				{
 					foreach (val : section.value.iter()) @pool()
@@ -690,7 +692,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 			foreach (section : a[1].iter())
 			{
 				// Then private values
-				b.h(3, section.key);
+				b.h(3, section.key.name);
 				b.@table({"Name", "Description"})
 				{
 					foreach (val : section.value.iter()) @pool()
@@ -711,7 +713,7 @@ fn String Module.get_overview(&self, Allocator alloc) => @pool()
 	};
 }
 
-alias Abomination = HashMap {String, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}}[2];
+alias Abomination = HashMap {ModuleView, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}}[2];
 
 fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView view)
 {
@@ -725,43 +727,43 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 			$typefrom($member.typeid) m = $member.get(sec.data);
 			foreach (&member : m)
 			{
-				String section_name = member.get_own_view().name;
+				ModuleView section = member.get_own_view();
 				String member_name = member.get_name();
 				if (!member.is_hidden_from(view))
 				{
 					if (!member.is_private())
 					{
-						if (!a[0].has_key(section_name))
+						if (!a[0].has_key(section))
 						{
-							a[0][section_name] = {};
-							a[0][section_name]!!.init(alloc);
+							a[0][section] = {};
+							a[0][section]!!.init(alloc);
 						}
-						if (!a[0][section_name]!!.has_key(member_name))
+						if (!a[0][section]!!.has_key(member_name))
 						{
-							a[0].get_ref(section_name)!!.set(member_name, {});
-							a[0].get_ref(section_name)!!.get_ref(member_name)!!.init(alloc);
-							// a[section_name]!![0][member_name] = {};
-							// a[section_name]!![0][member_name]!!.init(alloc);
+							a[0].get_ref(section)!!.set(member_name, {});
+							a[0].get_ref(section)!!.get_ref(member_name)!!.init(alloc);
+							// a[section]!![0][member_name] = {};
+							// a[section]!![0][member_name]!!.init(alloc);
 						}
-						// a[section_name]!![0][member_name]!!.push({member, sec});
-						a[0].get_ref(section_name)!!.get_ref(member_name)!!.push({member, sec});
+						// a[section]!![0][member_name]!!.push({member, sec});
+						a[0].get_ref(section)!!.get_ref(member_name)!!.push({member, sec});
 					}
 					else
 					{
-						if (!a[1].has_key(section_name))
+						if (!a[1].has_key(section))
 						{
-							a[1][section_name] = {};
-							a[1][section_name]!!.init(alloc);
+							a[1][section] = {};
+							a[1][section]!!.init(alloc);
 						}
-						if (!a[1][section_name]!!.has_key(member_name))
+						if (!a[1][section]!!.has_key(member_name))
 						{
-							// a[section_name]!![1][member_name] = {};
-							// a[section_name]!![1][member_name]!!.init(alloc);
-							a[1].get_ref(section_name)!!.set(member_name, {});
-							a[1].get_ref(section_name)!!.get_ref(member_name)!!.init(alloc);
+							// a[section]!![1][member_name] = {};
+							// a[section]!![1][member_name]!!.init(alloc);
+							a[1].get_ref(section)!!.set(member_name, {});
+							a[1].get_ref(section)!!.get_ref(member_name)!!.init(alloc);
 						}
-						// a[section_name]!![1][member_name]!!.push({member, sec});
-						a[1].get_ref(section_name)!!.get_ref(member_name)!!.push({member, sec});
+						// a[section]!![1][member_name]!!.push({member, sec});
+						a[1].get_ref(section)!!.get_ref(member_name)!!.push({member, sec});
 					}
 				}
 			}
@@ -771,70 +773,17 @@ fn Abomination filter_and_collect_data(Allocator alloc, Module* mod, ModuleView 
 	return a;
 }
 
-fn String Module.get_globals(&self, Allocator alloc) => @pool()
+fn String Module.get_globals(&self, Allocator alloc) => gen_module_view(self, alloc, GLOBALS);
+fn String Module.get_types(&self, Allocator alloc) => gen_module_view(self, alloc, TYPES);
+fn String Module.get_functions(&self, Allocator alloc) => gen_module_view(self, alloc, FUNCTIONS);
+fn String gen_module_view(Module* self, Allocator alloc, ModuleView view) => @pool()
 {
-	return html::@html(alloc, "Module Globals", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	return html::@html(alloc, string::tformat("Module %s", view.name), self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
 	{
-		self.gen_header(b, GLOBALS);
+		self.gen_header(b, view);
 		self.gen_module_title(b);
 
-		Abomination a = filter_and_collect_data(tmem, self, GLOBALS);
-		String[2] visibility = {"Public", "Private"};
-		foreach (i, c : a)
-		{
-			if (c.len() == 0) continue;
-			b.h(1, visibility[i]);
-			foreach (section : c.iter()) foreach (name : section.value.iter())
-			{
-				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
-				foreach (val : name.value) @pool()
-				{
-					b.text("%s", val.first.get_description());
-					b.@precode()
-					{
-						b.text("%s", val.first.get_highlighted());
-					};
-				};
-			}
-		}
-	};
-}
-fn String Module.get_types(&self, Allocator alloc)
-{
-	return html::@html(alloc, "Module Types", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
-	{
-		self.gen_header(b, TYPES);
-		self.gen_module_title(b);
-
-		Abomination a = filter_and_collect_data(tmem, self, TYPES);
-		String[2] visibility = {"Public", "Private"};
-		foreach (i, c : a)
-		{
-			if (c.len() == 0) continue;
-			b.h(1, visibility[i]);
-			foreach (section : c.iter()) foreach (name : section.value.iter())
-			{
-				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
-				foreach (val : name.value) @pool()
-				{
-					b.text("%s", val.first.get_description());
-					b.@precode()
-					{
-						b.text("%s", val.first.get_highlighted());
-					};
-				};
-			}
-		}
-	};
-}
-fn String Module.get_functions(&self, Allocator alloc)
-{
-	return html::@html(alloc, "Module Functions", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
-	{
-		self.gen_header(b, FUNCTIONS);
-		self.gen_module_title(b);
-
-		Abomination a = filter_and_collect_data(tmem, self, FUNCTIONS);
+		Abomination a = filter_and_collect_data(tmem, self, view);
 		String[2] visibility = {"Public", "Private"};
 		foreach (i, c : a)
 		{
