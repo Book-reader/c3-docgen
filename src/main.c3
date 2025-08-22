@@ -510,7 +510,7 @@ enum ModuleView : char (String path, String name, ModuleViewFunc func, bool in_t
 	GLOBALS = { "globals.html", "Globals", &Module.get_globals, true },
 	TYPES = { "types.html", "Types", &Module.get_types, true },
 	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions, true },
-	TYPE = { "type.%s.html", "Type", fn (a, b) {return {};}, false },
+	TYPE = { "type.%s.html", "Type", null, false },
 }
 fn uint ModuleView.hash(self) => self.ordinal.hash();
 
