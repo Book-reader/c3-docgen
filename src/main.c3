@@ -223,6 +223,33 @@ interface DocGenData
 	// fn List {Contract} get_doc_contracts();
 	// fn String get_doc_comment(Allocator alloc);
 }
+// TODO:
+/*
+struct DocGenDataDefault (DocGenData)
+{
+	HighlightedTextSlice name;
+	DocComment doc_comment;
+	HighlightedText text;
+	List {String} attributes;
+}
+
+fn String DocGenDataDefault.get_name(&self) @dynamic => self.name.get_string();
+fn HighlightedText DocGenDataDefault.get_highlighted(&self) @dynamic => self.text;
+fn bool DocGenDataDefault.is_hidden_from(&self, ModuleView view) @dynamic => unreachable("Override is_hidden_from per-impl");
+fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn ModuleView DocGenDataDefault.get_own_view(&self) @dynamic => unreachable("Override get_own_view per-impl");
+fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
+*/
 
 // TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
 struct Global (DocGenData)
@@ -418,7 +445,11 @@ struct DocComment
 fn usz? DocComment.to_format(&self, Formatter* fmt) @dynamic
 {
 	usz? n;
-	foreach (desc : self.description) n += fmt.printf(desc);
+	foreach (desc : self.description)
+	{
+		n += fmt.printf(desc);
+		n += fmt.printf("<br/>");
+	}
 	return n;
 }
 
