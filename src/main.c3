@@ -355,6 +355,34 @@ fn String Enum.get_short_description(&self, Allocator alloc) @dynamic
 fn DocComment Enum.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Enum.get_own_view(&self) @dynamic => TYPES;
 
+struct BitStruct (DocGenData)
+{
+	HighlightedTextSlice name;
+	HighlightedTextSlice type;
+	List {HighlightedTextSlice} members;
+	List {HighlightedTextSlice} interfaces;
+	List {String} attributes;
+	HighlightedText text;
+	DocComment doc_comment;
+}
+
+fn String BitStruct.get_name(&self) @dynamic => self.name.get_string();
+fn HighlightedText BitStruct.get_highlighted(&self) @dynamic => self.text;
+fn bool BitStruct.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn bool BitStruct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
+fn String BitStruct.get_short_description(&self, Allocator alloc) @dynamic
+{
+	if (self.doc_comment.description.len() != 0)
+	{
+		String str = self.doc_comment.description[0];
+		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
+		return str;
+	}
+	return "";
+}
+fn DocComment BitStruct.get_description(&self) @dynamic => self.doc_comment;
+fn ModuleView BitStruct.get_own_view(&self) @dynamic => TYPES;
+
 struct ModuleSection
 {
 	inline ModuleSectionData data;

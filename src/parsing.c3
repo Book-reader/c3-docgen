@@ -54,6 +54,9 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	TSQuery* enum_query = query::new(tsc3::language(), `(enum_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (enum_spec)? @spec (attributes [(attribute) @attr (_)]+)? body: (enum_body [ (enum_constant) @value (_) "," ]+) )`)!!;
 	defer query::delete(enum_query);
 
+	TSQuery* bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
+	defer query::delete(bitstruct_query);
+
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	assert(ts::tree_cursor_goto_first_child(&cursor));
 
@@ -352,6 +355,9 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 				};
 				enum_.doc_comment = comment;
 				current_mod.sections[^1].enums.push(enum_);
+				comment = {};
+			case "bitstruct_declaration":
+				comment = {};
 			default:
 				comment = {};
 		}
