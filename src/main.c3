@@ -5,6 +5,7 @@ import std::collections::enummap;
 import std::collections::list;
 import std::collections::pair;
 import std::collections::maybe;
+import std::collections::interfacelist;
 import std::sort;
 import std::math;
 
@@ -336,28 +337,15 @@ fn DocGenDataType BitStruct.get_data_type(&self) @dynamic => TYPE;
 
 struct ModuleSection
 {
-	inline ModuleSectionData data;
+	InterfaceList {DocGenData} data;
 	DocComment doc_comment;
 	HighlightedText text;
 	List {String} attributes;
 }
 
-struct ModuleSectionData
-{
-	List {Global} globals;
-	List {Func} functions;
-	List {Struct} structs;
-	List {Enum} enums;
-	List {BitStruct} bitstructs;
-}
-
 fn void ModuleSection.init(&self, Allocator alloc)
 {
-	self.globals.init(alloc);
-	self.functions.init(alloc);
-	self.structs.init(alloc);
-	self.enums.init(alloc);
-	self.bitstructs.init(alloc);
+	self.data.init(alloc);
 	self.attributes.init(alloc);
 }
 
@@ -517,11 +505,13 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
-		ModuleView module_data = collect_module_data(tmem, mod);
+		ModuleView module_overview = collect_module_data(tmem, mod);
+		gen_sidebar(mod, module_overview, b);
+
 		$foreach $member : ModuleView.membersof:
 		{
 			String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
-			ModuleData view = $member.get(module_data);
+			ModuleData view = $member.get(module_overview);
 			foreach (&section : view.values) if (section.len() > 0)
 			{
 				b.h(2, view_name);
@@ -553,6 +543,13 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 	}.copy(alloc);
 }
 
+fn void gen_sidebar(Module* mod, ModuleView view, HtmlBuilder* b)
+{
+	b.@div(`class="sidebar"`)
+	{
+
+	};
+}
 /*fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
 {
 	b.@h(2, `class="header"`)
@@ -702,31 +699,23 @@ struct ModuleView
 	ModuleData public;
 	ModuleData private;
 }
-// alias Abomination = HashMap {ModuleView, HashMap {String, List {Pair {DocGenData, ModuleSection*}}}}[2];
 fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview = false)
 {
 	ModuleView view;
 	foreach (&sec : mod.sections)
 	{
-		// TODO: store all module data in a single list of DocGenData instead of each in a separate list
-		// Maybe there should be a generic InterfaceList that is like the AnyList but for a specific interface? and the anylist could be `alias AnyList = InterfaceList {any}` or something
-		$foreach $member : ModuleSectionData.membersof:
+		foreach (member : sec.data) if (!in_overview || member.in_overview())
 		{
-			$typefrom($member.typeid) m = $member.get(sec.data);
-			foreach (&member : m) if (!in_overview || member.in_overview())
+			DocGenDataType data_type = member.get_data_type();
+			String member_name = member.get_name();
+			ModuleData* dat = member.is_private() ? &view.private : &view.public;
+			if (!(*dat)[data_type].is_initialized()) (*dat).get_ref(data_type).init(alloc);
+			if (!(*dat)[data_type].has_key(member_name))
 			{
-				DocGenDataType data_type = member.get_data_type();
-				String member_name = member.get_name();
-				ModuleData* dat = member.is_private() ? &view.private : &view.public;
-				if (!(*dat)[data_type].is_initialized()) (*dat).get_ref(data_type).init(alloc);
-				if (!(*dat)[data_type].has_key(member_name))
-				{
-					dat.get_ref(data_type).set(member_name, *List {ModuleMemberView}.init(&&{}, alloc));
-				}
-				dat.get_ref(data_type).get_ref(member_name)!!.push({member, sec});
+				dat.get_ref(data_type).set(member_name, *List {ModuleMemberView}.init(&&{}, alloc));
 			}
+			dat.get_ref(data_type).get_ref(member_name)!!.push({member, sec});
 		}
-		$endforeach
 	}
 	return view;
 }

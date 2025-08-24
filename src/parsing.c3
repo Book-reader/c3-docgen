@@ -158,7 +158,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						}
 					}
 					glob.doc_comment = comment;
-					current_mod.sections[^1].globals.push(glob);
+					current_mod.sections[^1].data.push(glob);
 					comment = {};
 				};
 
@@ -222,7 +222,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 						}
 					}
 					func.doc_comment = comment;
-					current_mod.sections[^1].functions.push(func);
+					current_mod.sections[^1].data.push(func);
 					comment = {};
 				};
 			case "doc_comment":
@@ -299,7 +299,6 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 
 				Struct struc = create_struct(alloc);
 				struc.text = collect_data(alloc, node, data);
-				io::printfn("struct: %p", struc.text.data.ptr);
 				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
@@ -318,7 +317,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					}
 				};
 				struc.doc_comment = comment;
-				current_mod.sections[^1].structs.push(struc);
+				current_mod.sections[^1].data.push(struc);
 				comment = {};
 			case "enum_declaration":
 				// Handle files without module declarations/with code before a module declaration
@@ -333,7 +332,6 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 
 				Enum enum_ = create_enum(alloc);
 				enum_.text = collect_data(alloc, node, data);
-				io::printfn("enum_t: %p", enum_.text.data.ptr);
 				query_cursor::@exec_captures(query_cursor, enum_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
@@ -354,7 +352,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					}
 				};
 				enum_.doc_comment = comment;
-				current_mod.sections[^1].enums.push(enum_);
+				current_mod.sections[^1].data.push(enum_);
 				comment = {};
 			case "bitstruct_declaration":
 				// Handle files without module declarations/with code before a module declaration
@@ -369,7 +367,6 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 
 				BitStruct bitstruc = create_bitstruct(alloc);
 				bitstruc.text = collect_data(alloc, node, data);
-				io::printfn("bitstruct: %p", bitstruc.text.data.ptr);
 				query_cursor::@exec_captures(query_cursor, bitstruct_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
@@ -390,7 +387,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 					}
 				};
 				bitstruc.doc_comment = comment;
-				current_mod.sections[^1].bitstructs.push(bitstruc);
+				current_mod.sections[^1].data.push(bitstruc);
 				comment = {};
 			default:
 				comment = {};

@@ -10,6 +10,8 @@ struct HtmlElement (Printable)
 		struct
 		{
 			String name;
+			String[] classes;
+			String id;
 			struct attrs
 			{
 				String name;
@@ -22,7 +24,7 @@ struct HtmlElement (Printable)
 }
 
 return html::@html(
-	attrs: {{"id", name.key}},
+	id: name.key,
 	children: {
 		html::@head({
 			html::@link(attrs: {{"rel", "stylesheet"}, {"href", css_file}})
