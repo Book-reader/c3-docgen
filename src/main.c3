@@ -229,6 +229,7 @@ interface DocGenData
 	fn String get_overview_name(Module* mod, Allocator alloc) @optional;
 	fn HighlightedText get_highlighted();
 	fn bool is_private();
+	fn bool is_hidden();
 	// fn bool is_hidden_from(ModuleView view);
 	// fn bool has_attribute(String attr);
 	fn String get_short_description(Allocator alloc);
@@ -255,6 +256,7 @@ fn String DocGenDataDefault.get_name(&self) @dynamic => self.name.get_string();
 fn HighlightedText DocGenDataDefault.get_highlighted(&self) @dynamic => self.text;
 // fn bool DocGenDataDefault.is_hidden_from(&self, ModuleView view) @dynamic => unreachable("Override is_hidden_from per-impl");
 fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains("@private");
+fn bool DocGenDataDefault.is_hidden(&self) @dynamic => self.attributes.contains("@local");
 // fn ModuleView DocGenDataDefault.get_own_view(&self) @dynamic => unreachable("Override get_own_view per-impl");
 fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
@@ -792,7 +794,7 @@ fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview
 	ModuleView view;
 	foreach (&sec : mod.sections)
 	{
-		foreach (member : sec.data) if (!in_overview || member.in_overview())
+		foreach (member : sec.data) if (!member.is_hidden()) if (!in_overview || member.in_overview())
 		{
 			DocGenDataType data_type = member.get_data_type();
 			String member_name = member.get_name();
