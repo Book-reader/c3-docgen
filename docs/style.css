@@ -1,4 +1,8 @@
 
+html {
+	font-family:"0xProto Nerd Font";
+}
+
 .DataType_KEYWORD {
 	color: red;
 }

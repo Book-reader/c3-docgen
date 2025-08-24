@@ -35,3 +35,11 @@ Should also have a global overview page that shows all root modules like std, li
 I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html and https://docs.oracle.com/javase/8/docs/api/java/awt/Checkbox.html
 but also stealing some ideas from https://docs.rs/tokio/latest/tokio/io/index.html
 ```
+
+
+ok, new (rough) idea for internal layout:
+remove `ModuleView` enum, each `DocGenData` has a `String get_file_name` method, as well as a `bool shown_in_overview` + `String overview_str` and a `String get_page` that takes the root module, the current module, and an allocator.
+each `DocGenData` is responsible for printing its own data.
+
+this theoretically means I can just iterate over every submodule, calling some modified version of `filter_and_collect_data` to get the values and then iterate over all of them to print them.
+Since types can be extended from any module, I would need some system for looking up types based on imports, but that can come later. for now I'll just use the methods for the type that are defined in the same module.
