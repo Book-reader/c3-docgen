@@ -223,8 +223,7 @@ interface DocGenData
 	// fn List {Contract} get_doc_contracts();
 	// fn String get_doc_comment(Allocator alloc);
 }
-// TODO:
-/*
+
 struct DocGenDataDefault (DocGenData)
 {
 	HighlightedTextSlice name;
@@ -249,67 +248,32 @@ fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynam
 	return "";
 }
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
-*/
+
 
 // TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
-struct Global (DocGenData)
+struct Global // (DocGenData)
 {
-	HighlightedTextSlice name;
+	inline DocGenDataDefault data;
 	// I store the whole type including generic params etc in here, and then can parse it again later
 	Maybe {String} type;
-	List {String} attributes;
-	DocComment doc_comment;
-	HighlightedText text;
 }
 
-fn String Global.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
+// fn String Global.get_name(&self) @dynamic => self.name.get_string();
+// fn HighlightedText Global.get_highlighted(&self) @dynamic => self.text;
 fn bool Global.is_hidden_from(&self, ModuleView view) @dynamic => (view != OVERVIEW && view != GLOBALS) || self.attributes.contains("@local");
-fn bool Global.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn ModuleView Global.get_own_view(&self) @dynamic => GLOBALS;
-// I could probably make this into a method of DocGenData instead if I added a `fn DocComment get_doc_comment()` to it
-fn String Global.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-// Same here
-fn DocComment Global.get_description(&self) @dynamic => self.doc_comment;
 
-struct Func (DocGenData)
+struct Func // (DocGenData)
 {
-	HighlightedTextSlice name;
+	inline DocGenDataDefault data;
 	Maybe {String} return_type;
 	Maybe {String} method_of;
 	Maybe {String} trailing;
 	bool macro_;
-	List {String} attributes;
 	List {Param} params;
-	DocComment doc_comment;
-	HighlightedText text;
 }
-fn String Func.get_name(&self) @dynamic => self.name.get_string();
 fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
-fn HighlightedText Func.get_highlighted(&self) @dynamic => self.text;
-fn bool Func.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn bool Func.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != OVERVIEW && view != FUNCTIONS && view != TYPE) || (view != TYPE && self.method_of.has_value);
-
-fn String Func.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-fn DocComment Func.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPE : FUNCTIONS;
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
@@ -327,87 +291,36 @@ struct StructMember
 	HighlightedTextSlice type;
 }
 
-struct Struct (DocGenData)
+struct Struct // (DocGenData)
 {
-	HighlightedTextSlice name;
+	inline DocGenDataDefault data;
 	List {/*StructMember*/HighlightedTextSlice} members;
 	List {HighlightedTextSlice} interfaces;
-	List {String} attributes;
-	HighlightedText text;
-	DocComment doc_comment;
 }
 
-fn String Struct.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText Struct.get_highlighted(&self) @dynamic => self.text;
-fn bool Struct.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-fn String Struct.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-fn DocComment Struct.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Struct.get_own_view(&self) @dynamic => TYPES;
 
-struct Enum (DocGenData)
+struct Enum // (DocGenData)
 {
-	HighlightedTextSlice name;
+	inline DocGenDataDefault data;
 	Maybe {HighlightedTextSlice} spec;
 	List {HighlightedTextSlice} values;
 	List {HighlightedTextSlice} interfaces;
-	List {String} attributes;
-	HighlightedText text;
-	DocComment doc_comment;
 }
 
-fn String Enum.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText Enum.get_highlighted(&self) @dynamic => self.text;
-fn bool Enum.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn bool Enum.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-fn String Enum.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-fn DocComment Enum.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView Enum.get_own_view(&self) @dynamic => TYPES;
 
-struct BitStruct (DocGenData)
+struct BitStruct // (DocGenData)
 {
-	HighlightedTextSlice name;
+	inline DocGenDataDefault data;
 	HighlightedTextSlice type;
 	List {HighlightedTextSlice} members;
 	List {HighlightedTextSlice} interfaces;
-	List {String} attributes;
-	HighlightedText text;
-	DocComment doc_comment;
 }
 
-fn String BitStruct.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText BitStruct.get_highlighted(&self) @dynamic => self.text;
-fn bool BitStruct.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn bool BitStruct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-fn String BitStruct.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
-fn DocComment BitStruct.get_description(&self) @dynamic => self.doc_comment;
 fn ModuleView BitStruct.get_own_view(&self) @dynamic => TYPES;
 
 struct ModuleSection
@@ -802,6 +715,14 @@ fn String gen_module_view(Module* self, Allocator alloc, ModuleView view) => @po
 				};
 			}
 		}
+	};
+}
+
+fn String gen_view_for(Module* mod, Allocator alloc, DocGenData data)
+{
+	return html::@html(alloc, string::tformat("%s", data.get_name()), mod.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
+	{
+	
 	};
 }
 

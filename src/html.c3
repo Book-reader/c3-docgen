@@ -1,5 +1,35 @@
 module html;
 
+// TODO: instead of printing directly, consider making the macros generate a tree of structs that all get formatted at once something like this:
+/*
+struct HtmlElement (Printable)
+{
+	bool is_text;
+	union
+	{
+		struct
+		{
+			String name;
+			struct attrs
+			{
+				String name;
+				String value;
+			}
+			HtmlElement[] children;
+		}
+		String text;
+	}
+}
+
+return html::@html(
+	attrs: {{"id", name.key}},
+	children: {
+		html::@head({
+			html::@link(attrs: {{"rel", "stylesheet"}, {"href", css_file}})
+		})
+	}
+)
+*/
 macro String @html(Allocator alloc, String title, String css_file, String...; @body(HtmlBuilder* b)) => @pool()
 {
 	HtmlBuilder b;
