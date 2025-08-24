@@ -15,6 +15,8 @@ alias tsc3 = module tree_sitter_c3;
 
 import html;
 
+const OVERVIEW_FILE = "index.html";
+
 fn int main(String[] args)
 {
 	/*TrackingAllocator alloc1;
@@ -58,7 +60,7 @@ fn int main(String[] args)
 			}
 
 			{
-				File overview = file::open(mod_folder.tconcat("index.html"), "wb")!!;
+				File overview = file::open(mod_folder.tconcat(OVERVIEW_FILE), "wb")!!;
 				defer (void)overview.close();
 				io::fprintf(&overview, "%s", get_module_overview(tmem, mod))!!;
 			}
@@ -452,6 +454,10 @@ fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
 	return result.copy_str(alloc);
 }
 
+fn String get_relative_path_to_overview(Allocator alloc, Module* src, Module* dst) => @pool()
+{
+	return src.get_path_to_root(tmem).tconcat(dst.get_folder_path(tmem, "")[1..]).tconcat(OVERVIEW_FILE).copy(alloc);
+}
 // TODO: get_relative_path_to(DocGenData other)
 /*fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
 {
@@ -508,6 +514,54 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 		ModuleView module_overview = collect_module_data(tmem, mod);
 		gen_sidebar(mod, module_overview, b);
 
+		b.@div(`class="main"`)
+		{
+			gen_module_title(mod, b);
+			$foreach $member : ModuleView.membersof:
+			{
+				String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
+				ModuleData view = $member.get(module_overview);
+				foreach (&section : view.values) if (section.len() > 0)
+				{
+					b.h(2, view_name);
+					break;
+				}
+
+				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
+				{
+					// First public values
+					b.h(2, DocGenDataType.from_ordinal(i).section_name);
+					b.@table({"Name", "Description"})
+					{
+						foreach (val : section.iter()) @pool()
+						{
+							b.@tr()
+							{
+								DocGenData dat = val.value[0].data;
+								b.@td()
+								{
+									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+								};
+								b.td(dat.get_short_description(tmem));
+							};
+						};
+					};
+				}
+			}
+			$endforeach
+		};
+	}.copy(alloc);
+}
+
+fn void gen_sidebar(Module* mod, ModuleView module_overview, HtmlBuilder* b) => @pool()
+{
+	b.@div(`class="sidebar"`)
+	{
+		b.@h(1)
+		{
+			b.text("Module ");
+			b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod));
+		};
 		$foreach $member : ModuleView.membersof:
 		{
 			String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
@@ -522,7 +576,7 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 			{
 				// First public values
 				b.h(2, DocGenDataType.from_ordinal(i).section_name);
-				b.@table({"Name", "Description"})
+				b.@table({})
 				{
 					foreach (val : section.iter()) @pool()
 					{
@@ -531,25 +585,59 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 							DocGenData dat = val.value[0].data;
 							b.@td()
 							{
-								b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+								b.url(dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
 							};
-							b.td(dat.get_short_description(tmem));
 						};
 					};
 				};
 			}
 		}
 		$endforeach
-	}.copy(alloc);
-}
-
-fn void gen_sidebar(Module* mod, ModuleView view, HtmlBuilder* b)
-{
-	b.@div(`class="sidebar"`)
-	{
-
+		// b.text("%s", get_module_overview(tmem, mod));
 	};
 }
+
+fn void gen_module_title(Module* mod, HtmlBuilder* b) => @pool()
+{
+	b.@div(`class="module_path"`)
+	{
+		b.@h(1)
+		{
+			if (mod.parent != null && mod.parent.path.ptr != null) @pool()
+			{
+				List {Module*} parents;
+				parents.tinit();
+
+				Module* parent = mod.parent;
+				while (parent != null && parent.path.ptr != null) @pool()
+				{
+					parents.push(parent);
+					parent = parent.parent;
+				};
+
+				foreach_r (parent1 : parents)
+				{
+					b.url(parent1.path, get_relative_path_to_overview(tmem, mod, parent1));
+					b.text("::");
+				}
+			};
+			b.@span(`style="font-family: 'monospace'"`)
+			{
+				b.text(mod.path);
+				if (mod.generic_params.len() > 0)
+				{
+					b.text(" {");
+					foreach (i, param : mod.generic_params)
+					{
+						b.text("%s%s", param, i == mod.generic_params.len() - 1 ? "" : ", ");
+					}
+					b.text("}");
+				}
+			};
+		};
+	};
+}
+
 /*fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
 {
 	b.@h(2, `class="header"`)
@@ -782,6 +870,23 @@ const GLOBAL_CSS =
 `
 html {
 	font-family:"0xProto Nerd Font";
+}
+
+.sidebar {
+	height: 100%;
+	width: 15em;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	background-color: #dfdfdf;
+}
+
+.main {
+	margin-left: 15em;
+	padding: 0px 10px;
+	position: fixed;
 }
 
 .DataType_KEYWORD {

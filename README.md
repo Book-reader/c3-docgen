@@ -29,6 +29,8 @@ and I would have to do this for every single occurence of a type (but only per m
 
 I'll have to have a page that contains all builtins, including all methods on the builtin types. probably should be called @builtin.md so it can't conflict with anything else
 Should also have a global overview page that shows all root modules like std, libc, @builtin, and any user-created modules
+
+I would also want to show methods inherited by inline types
 ```
 
 ```
