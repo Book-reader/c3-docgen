@@ -237,16 +237,7 @@ fn HighlightedText DocGenDataDefault.get_highlighted(&self) @dynamic => self.tex
 fn bool DocGenDataDefault.is_hidden_from(&self, ModuleView view) @dynamic => unreachable("Override is_hidden_from per-impl");
 fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains("@private");
 fn ModuleView DocGenDataDefault.get_own_view(&self) @dynamic => unreachable("Override get_own_view per-impl");
-fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic
-{
-	if (self.doc_comment.description.len() != 0)
-	{
-		String str = self.doc_comment.description[0];
-		if (self.doc_comment.description.len() > 1) str = str.concat(alloc, "...");
-		return str;
-	}
-	return "";
-}
+fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
 
 
@@ -365,6 +356,17 @@ fn usz? DocComment.to_format(&self, Formatter* fmt) @dynamic
 	}
 	return n;
 }
+fn String DocComment.get_short_description(&self, Allocator alloc)
+{
+	if (self.description.len() != 0)
+	{
+		String str = self.description[0];
+		if (self.description.len() > 1) str = str.tconcat("...");
+		return str.copy(alloc);
+	}
+	return "";
+}
+
 
 enum ContractType {CUSTOM, ENSURE, REQUIRE, RETURN, RETURN_FAULT, PARAM, PURE}
 struct Contract
