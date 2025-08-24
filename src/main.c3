@@ -16,6 +16,7 @@ alias tsc3 = module tree_sitter_c3;
 import html;
 
 const OVERVIEW_FILE = "index.html";
+const SIDEBAR_FILE = "sidebar.html";
 
 fn int main(String[] args)
 {
@@ -32,7 +33,6 @@ fn int main(String[] args)
 	foreach (str : args[1..]) @pool()
 	{
 		String file_data = (String)file::load(tmem, str)!!;
-
 		Path str_path = path::new(alloc, str)!!;
 		get_modules(alloc, modules, parser, file_data, str_path.basename()[:^str_path.extension().len + 1]!!);
 	};
@@ -63,6 +63,10 @@ fn int main(String[] args)
 				File overview = file::open(mod_folder.tconcat(OVERVIEW_FILE), "wb")!!;
 				defer (void)overview.close();
 				io::fprintf(&overview, "%s", get_module_overview(tmem, mod))!!;
+
+				File sidebar = file::open(mod_folder.tconcat(SIDEBAR_FILE), "wb")!!;
+				defer (void)sidebar.close();
+				io::fprintf(&sidebar, "%s", gen_module_sidebar(tmem, mod))!!;
 			}
 			/*foreach (view : ModuleView.values) if (view.in_title)
 			{
@@ -217,11 +221,11 @@ fn String HighlightedTextSlice.get_string(&self)
 	return self.data[self.highlights[0].start..self.highlights[^1].end_exclusive()];
 }
 
-enum DocGenDataType : char (String section_name)
+enum DocGenDataType : char (String section_name, String file_format)
 {
-	TYPE = "Types",
-	FUNCTION = "Functions",
-	GLOBAL = "Globals",
+	TYPE = { "Types", "type.%s.html" },
+	FUNCTION = { "Functions", "fn.%s.html" },
+	GLOBAL = { "Globals", "global.%s.html" },
 }
 interface DocGenData
 {
@@ -237,11 +241,17 @@ interface DocGenData
 
 	fn bool in_overview();
 	fn DocGenDataType get_data_type();
+	// fn String get_file_path(Allocator alloc, Module* mod);
 	// fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
 
 	// fn List {Contract} get_doc_contracts();
 	// fn String get_doc_comment(Allocator alloc);
+}
+
+fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
+{
+	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(string::tformat(self.get_data_type().file_format, self.get_name())).copy(alloc);
 }
 
 struct DocGenDataDefault (DocGenData)
@@ -262,7 +272,6 @@ fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynam
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
 fn bool DocGenDataDefault.in_overview(&self) @dynamic => true;
 fn DocGenDataType DocGenDataDefault.get_data_type(&self) @dynamic => unreachable("Override get_data_type per-impl");
-
 
 // TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
 struct Global // (DocGenData)
@@ -514,11 +523,24 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
 		ModuleView module_overview = collect_module_data(tmem, mod);
-		gen_sidebar(mod, module_overview, b);
+		// gen_sidebar(mod, module_overview, b);
+		include_sidebar(b);
 
 		b.@div(`class="main"`)
 		{
 			gen_module_title(mod, b);
+			if (mod.children.len() != 0)
+			{
+				b.h(2, "Submodules");
+				mod.@iter_children(; Module* child)
+				{
+					io::printfn("%s", child.path);
+					b.url(child.path, get_relative_path_to_overview(tmem, mod, child));
+					b.spc();
+				};
+			}
+
+
 			$foreach $member : ModuleView.membersof:
 			{
 				String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
@@ -542,7 +564,7 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod)/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
 								};
 								b.td(dat.get_short_description(tmem));
 							};
@@ -555,48 +577,63 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 	}.copy(alloc);
 }
 
-fn void gen_sidebar(Module* mod, ModuleView module_overview, HtmlBuilder* b) => @pool()
+fn void include_sidebar(HtmlBuilder* b) => @pool()
 {
-	b.@div(`class="sidebar"`)
-	{
-		b.@h(1)
-		{
-			b.text("Module ");
-			b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod));
-		};
-		$foreach $member : ModuleView.membersof:
-		{
-			String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
-			ModuleData view = $member.get(module_overview);
-			foreach (&section : view.values) if (section.len() > 0)
-			{
-				b.h(2, view_name);
-				break;
-			}
+	b.elem("iframe", "", @sprintf(`class="sidebar" src="./%s" scrolling="no"`, SIDEBAR_FILE));
+}
 
-			foreach (i, &section : view.values) if (section.len() > 0)// @pool()
+fn String gen_module_sidebar(Allocator alloc, Module* mod) => @pool()
+{
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	{
+		ModuleView module_overview = collect_module_data(tmem, mod);
+		b.@div(`class="sidebar"`)
+		{
+			b.@h(1)
 			{
-				// First public values
-				b.h(2, DocGenDataType.from_ordinal(i).section_name);
-				b.@table({})
+				b.text("Module");
+				b.br();
+				b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod));
+			};
+			$foreach $member : ModuleView.membersof:
+			{
+				String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
+				ModuleData view = $member.get(module_overview);
+				usz h = 1;
+				if (view_name != "Public")
 				{
-					foreach (val : section.iter()) @pool()
+					foreach (&section : view.values) if (section.len() > 0)
 					{
-						b.@tr()
+						b.h(1, view_name);
+						h = 2;
+						break;
+					}
+				}
+
+				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
+				{
+					// First public values
+					b.h(h, DocGenDataType.from_ordinal(i).section_name);
+					b.@table({})
+					{
+						foreach (val : section.iter()) @pool()
 						{
-							DocGenData dat = val.value[0].data;
-							b.@td()
+							b.@tr()
 							{
-								b.url(dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+								DocGenData dat = val.value[0].data;
+								b.@td()
+								{
+									b.url(dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+								};
 							};
 						};
 					};
-				};
+				}
 			}
-		}
-		$endforeach
-		// b.text("%s", get_module_overview(tmem, mod));
-	};
+			$endforeach
+			// b.text("%s", get_module_overview(tmem, mod));
+		};
+	}.copy(alloc);
 }
 
 fn void gen_module_title(Module* mod, HtmlBuilder* b) => @pool()
@@ -883,12 +920,13 @@ html {
 	left: 0;
 	overflow-x: hidden;
 	background-color: #dfdfdf;
+	padding-left: 0.5em;
+	border: none;
 }
 
 .main {
 	margin-left: 15em;
 	padding: 0px 10px;
-	position: fixed;
 }
 
 .DataType_KEYWORD {
