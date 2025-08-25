@@ -35,7 +35,7 @@ fn int main(String[] args)
 	{
 		String file_data = (String)file::load(tmem, str)!!;
 		Path str_path = path::new(alloc, str)!!;
-		get_modules(alloc, modules, parser, file_data, str_path.basename()[:^str_path.extension().len + 1]!!);
+		get_modules(alloc, modules, parser, file_data, str_path.basename()[:^str_path.extension().len + 1 ?? str_path.basename().len]);
 	};
 
 
@@ -319,6 +319,7 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 		{
 			gen_module_title(mod, b);
 			b.h(1, self.get_name());
+			b.text("%s", self.get_description());
 		};
 	}.copy(alloc);
 }

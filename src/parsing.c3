@@ -22,7 +22,7 @@ macro list_with(Allocator alloc, ...)
 alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
 alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
-fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name) => @pool()
+fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name) => @pool()
 {
 	TSTree* parse_tree = parser::parse_string(parser, null, data);
 	defer ts::tree_delete(parse_tree);
@@ -58,7 +58,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	defer query::delete(bitstruct_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
-	cursor::goto_first_child(&cursor)!!;
+	if (catch cursor::goto_first_child(&cursor)) return;
 
 	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;
@@ -394,7 +394,6 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 		}
 		cursor::reset_to(&cursor, &pos);
 	} while (@ok(cursor::goto_next_sibling(&cursor)));
-	return root;
 }
 
 // What this would do is take in the token, iterate over all its children, and build a string of the content with comments and extra spacing removed
