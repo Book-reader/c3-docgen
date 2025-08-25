@@ -46,6 +46,4 @@ each `DocGenData` is responsible for printing its own data.
 this theoretically means I can just iterate over every submodule, calling some modified version of `filter_and_collect_data` to get the values and then iterate over all of them to print them.
 Since types can be extended from any module, I would need some system for looking up types based on imports, but that can come later. for now I'll just use the methods for the type that are defined in the same module.
 
-TODO: have both the sidebar and main view be in an iframe where clicking the sidebar changes the main view url because it has the `target="main_ifram"` attribute where `main_iframe` is the name of the main iframe
-it should also call `history.pushState(null, '', NEW_URL)` and all the `fn.%s.html` files are the same and have an iframe pointing to to a file named something like `_fn.%s.html` with the actual data
-the only time the sidebar should reload & reset is when moving between submodules
+TODO: handle `@private` modules

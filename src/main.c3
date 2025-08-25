@@ -621,7 +621,7 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 
 				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
 				{
-					// First public values
+					// TODO: copy what I do for the sidebar where all public are h2 with private header is h2 and private categories are h3
 					b.h(2, DocGenDataType.from_ordinal(i).section_name);
 					b.@table({"Name", "Description"})
 					{
