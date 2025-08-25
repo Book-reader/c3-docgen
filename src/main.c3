@@ -697,13 +697,13 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 		{
 			if (mod.parent == null)
 			{
-				b.h(1, "Package Overview");
+				b.h(1, "Packages Overview");
 			}
 			else
 			{
 				b.@h(3)
 				{
-					b.url("Package Overview", get_relative_path_to(tmem, mod, mod.get_root(), INDEX_FILE), `target="_parent"`);
+					b.url("Packages Overview", get_relative_path_to(tmem, mod, mod.get_root(), INDEX_FILE), `target="_parent"`);
 				};
 				b.@h(1)
 				{
