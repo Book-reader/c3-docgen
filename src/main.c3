@@ -293,7 +293,7 @@ fn String DocGenData.get_data_file_path(&self, Allocator alloc, Module* mod) => 
 
 fn String DocGenData.get_file_name(&self, Allocator alloc) => @pool()
 {
-	return string::format(mem, self.get_data_type().file_format, self.get_name());
+	return string::format(alloc, self.get_data_type().file_format, self.get_name());
 }
 
 fn String DocGenData.get_data_file_name(&self, Allocator alloc) => @pool()

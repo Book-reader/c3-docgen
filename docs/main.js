@@ -1,5 +1,5 @@
 
-function linkAction(event, /*origHref, */newHref)
+function linkAction(event, newHref)
 {
 	event.preventDefault();
 	let main_frame = window.parent.document.getElementById('main-frame');
