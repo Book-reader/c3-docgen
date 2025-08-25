@@ -85,7 +85,11 @@ fn int main(String[] args)
 						DocGenData dat = val.value[0].data;
 						File f = file::open(mod_folder.tconcat(dat.get_file_name(tmem)), "wb")!!;
 						defer (void)f.close();
-						io::fprintf(&f, "%s", dat.get_view(tmem, mod, module_overview))!!;
+						io::fprintf(&f, "%s", gen_view(tmem, mod, module_overview, dat))!!;
+
+						File f1 = file::open(mod_folder.tconcat(dat.get_data_file_name(tmem)), "wb")!!;
+						defer (void)f1.close();
+						io::fprintf(&f1, "%s", dat.get_view(tmem, mod, module_overview))!!;
 						// b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod)/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
 						// b.td(dat.get_short_description(tmem));
 					};
@@ -276,6 +280,11 @@ interface DocGenData
 fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
 {
 	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(self.get_file_name(tmem)).copy(alloc);
+}
+
+fn String DocGenData.get_data_file_path(&self, Allocator alloc, Module* mod) => @pool()
+{
+	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(self.get_data_file_name(tmem)).copy(alloc);
 }
 
 fn String DocGenData.get_file_name(&self, Allocator alloc) => @pool()
@@ -611,7 +620,8 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod));
+									// TODO: extract out the onClick thing into a function or something
+									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`onclick="event.preventDefault(); window.parent.document.getElementById('main-frame').src = '%s'"`, dat.get_data_file_path(tmem, mod)));
 								};
 								b.td(dat.get_short_description(tmem));
 							};
@@ -635,9 +645,9 @@ macro String gen_view(Allocator alloc, Module* mod, ModuleView module_overview, 
 	{
 		b.iframe(@sprintf(`class="sidebar-frame" src="./%s" scrolling="no"`, SIDEBAR_FILE));
 		$if @is_valid_macro_slot(doc_gen_data):
-			b.iframe(string::tformat(`class="main-frame" name="main_frame" src="./%s"`, doc_gen_data.get_data_file_name(tmem)));
+			b.iframe(string::tformat(`class="main-frame" id="main-frame" name="main_frame" src="./%s"`, doc_gen_data.get_data_file_name(tmem)));
 		$else
-			b.iframe(string::tformat(`class="main-frame" name="main_frame" src="./%s"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
+			b.iframe(string::tformat(`class="main-frame" id="main-frame" name="main_frame" src="./%s"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
 		$endif
 	}.copy(alloc);
 }
@@ -671,7 +681,6 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 
 				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
 				{
-					// First public values
 					b.h(h, DocGenDataType.from_ordinal(i).section_name);
 					b.@table({})
 					{
@@ -682,7 +691,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(dat.get_name(), dat.get_file_path(tmem, mod), `target="main_frame"`);
+									b.url(dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`target="main_frame" onclick="event.preventDefault(); window.parent.document.getElementById('main-frame').src = '%s'"`, dat.get_data_file_path(tmem, mod)));
 								};
 							};
 						};
