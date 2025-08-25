@@ -8,15 +8,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1755985292,
-        "narHash": "sha256-zJln/A3lp8g6d6SFT5kE5hpW2gaxLjSxd4/n3E5E/kE=",
-        "owner": "c3lang",
+        "lastModified": 1756034885,
+        "narHash": "sha256-zTbq0bpEqIelXefl2O5fySBrNn7rkHQjxu3eOiXhBKw=",
+        "owner": "Book-reader",
         "repo": "c3c",
-        "rev": "9bf933ae314d78b612d74d5fbf4c6e578f5ebd0b",
+        "rev": "bc7d83e7e9eb24a6c27e35e8031b005c99cc5377",
         "type": "github"
       },
       "original": {
-        "owner": "c3lang",
+        "owner": "Book-reader",
+        "ref": "interfacelist",
         "repo": "c3c",
         "type": "github"
       }
