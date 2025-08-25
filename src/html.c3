@@ -32,7 +32,7 @@ return html::@html(
 	}
 )
 */
-macro String @html(Allocator alloc, String title, String css_file, String...; @body(HtmlBuilder* b)) => @pool()
+macro String @html(Allocator alloc, String title, String css_file, String js_file, String...; @body(HtmlBuilder* b)) => @pool()
 {
 	HtmlBuilder b;
 	b.init(tmem);
@@ -41,6 +41,7 @@ macro String @html(Allocator alloc, String title, String css_file, String...; @b
 		b.@head()
 		{
 			b.text(string::tformat(`<link rel="stylesheet" href="%s">`, css_file));
+			b.text(string::tformat(`<script src="%s"></script>`, js_file));
 		};
 		b.@body()
 		{

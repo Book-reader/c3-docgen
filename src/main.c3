@@ -47,6 +47,10 @@ fn int main(String[] args)
 		File css = file::open(root_folder.tconcat("/style.css"), "wb")!!;
 		defer (void)css.close();
 		io::fprintf(&css, "%s", GLOBAL_CSS)!!;
+
+		File js = file::open(root_folder.tconcat("/main.js"), "wb")!!;
+		defer (void)js.close();
+		io::fprintf(&js, "%s", GLOBAL_JS)!!;
 	};
 
 	modules.@iter_all_children(; Module* mod)
@@ -297,15 +301,23 @@ fn String DocGenData.get_data_file_name(&self, Allocator alloc) => @pool()
 	return "_".concat(alloc, self.get_file_name(tmem));
 }
 
+fn String path_to_css(Allocator alloc, Module* mod) => @pool()
+{
+	return mod.get_path_to_root(tmem).concat(alloc, "style.css");
+}
+
+fn String path_to_js(Allocator alloc, Module* mod) => @pool()
+{
+	return mod.get_path_to_root(tmem).concat(alloc, "main.js");
+}
+
 fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
-	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
-		// gen_sidebar(mod, module_overview, b);
-		// include_sidebar(b);
-
 		b.@div(`class="main"`)
 		{
+			gen_module_title(mod, b);
 			b.h(1, self.get_name());
 		};
 	}.copy(alloc);
@@ -577,7 +589,7 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
-	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
 		// gen_sidebar(mod, module_overview, b);
 		// include_sidebar(b);
@@ -621,7 +633,7 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 								b.@td()
 								{
 									// TODO: extract out the onClick thing into a function or something
-									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`onclick="event.preventDefault(); window.parent.document.getElementById('main-frame').src = '%s'"`, dat.get_data_file_path(tmem, mod)));
+									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`onclick="linkAction(event, '%s')"`, dat.get_data_file_path(tmem, mod)));
 								};
 								b.td(dat.get_short_description(tmem));
 							};
@@ -634,14 +646,9 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 	}.copy(alloc);
 }
 
-/*fn void include_sidebar(HtmlBuilder* b) => @pool()
-{
-	b.iframe(@sprintf(`class="sidebar-frame" src="./%s" scrolling="no"`, SIDEBAR_FILE));
-}*/
-
 macro String gen_view(Allocator alloc, Module* mod, ModuleView module_overview, doc_gen_data = EMPTY_MACRO_SLOT) => @pool()
 {
-	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
 		b.iframe(@sprintf(`class="sidebar-frame" src="./%s" scrolling="no"`, SIDEBAR_FILE));
 		$if @is_valid_macro_slot(doc_gen_data):
@@ -654,7 +661,7 @@ macro String gen_view(Allocator alloc, Module* mod, ModuleView module_overview, 
 
 fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
-	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
 		b.@div(`class="sidebar"`)
 		{
@@ -662,7 +669,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 			{
 				b.text("Module");
 				b.br();
-				b.url(string::tformat("%s", mod.path), get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE), `target="main_frame"`);
+				b.url(string::tformat("%s", mod.path), get_relative_path_to(tmem, mod, mod, INDEX_FILE), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
 			};
 			$foreach $member : ModuleView.membersof:
 			{
@@ -691,7 +698,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`target="main_frame" onclick="event.preventDefault(); window.parent.document.getElementById('main-frame').src = '%s'"`, dat.get_data_file_path(tmem, mod)));
+									b.url(dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, dat.get_data_file_path(tmem, mod)));
 								};
 							};
 						};
@@ -1059,6 +1066,17 @@ html {
 
 pre {
 	background-color: #efefef;
+}
+`;
+
+const GLOBAL_JS =
+`
+function linkAction(event, newHref)
+{
+	event.preventDefault();
+	let main_frame = window.parent.document.getElementById('main-frame');
+	main_frame.src = newHref;
+	window.parent.history.pushState(null, '', event.target.href);
 }
 `;
 
