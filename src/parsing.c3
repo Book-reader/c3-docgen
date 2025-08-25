@@ -58,7 +58,7 @@ fn Module* get_modules(Allocator alloc, Module* root, TSParser* parser, String d
 	defer query::delete(bitstruct_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
-	assert(ts::tree_cursor_goto_first_child(&cursor));
+	cursor::goto_first_child(&cursor)!!;
 
 	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;
