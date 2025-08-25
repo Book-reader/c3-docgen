@@ -6,6 +6,7 @@ import std::collections::list;
 import std::collections::pair;
 import std::collections::maybe;
 import std::collections::interfacelist;
+import std::collections::triple;
 import std::sort;
 import std::math;
 
@@ -31,13 +32,37 @@ fn int main(String[] args)
 
 	Module* modules = module_create(alloc, null, {});
 
-	foreach (str : args[1..]) @pool()
+	if (args.len != 2)
 	{
-		String file_data = (String)file::load(tmem, str)!!;
-		Path str_path = path::new(alloc, str)!!;
-		get_modules(alloc, modules, parser, file_data, str_path.basename()[:^str_path.extension().len + 1 ?? str_path.basename().len]);
-	};
+		io::eprintfn("Usage: %s <path to folder to read C3 files from>", args[0]);
+		return 1;
+	}
 
+	Path? dir_path = path::new(alloc, args[1]);
+	if (catch err = dir_path)
+	{
+		io::eprintfn("Error when opening folder: %s", err);
+		return 1;
+	}
+	if (catch err = dir_path.walk(
+		fn (path, is_dir, data)
+		{
+			if (is_dir) return false;
+			if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i")) return false;
+			Triple {Allocator, Module*, TSParser*}* dat = data;
+			Allocator alloc = dat.first;
+			Module* modules = dat.second;
+			TSParser* parser = dat.third;
+
+			String file_data = (String)file::load(tmem, path.path_string)!!;
+			get_modules(alloc, modules, parser, file_data, path.basename()[:^path.extension().len + 1]!!);
+			return false;
+		},
+	&&(Triple {Allocator, Module*, TSParser*}) {alloc, modules, parser}))
+	{
+		io::printfn("Error while reading files: %s", err);
+		return 1;
+	}
 
 	String root_folder = "./docs";
 	io::printfn("%s", modules);
