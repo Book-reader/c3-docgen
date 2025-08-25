@@ -164,3 +164,5 @@ macro HtmlBuilder.code(&self, String code, String...) => self.@code($vasplat) { 
 macro HtmlBuilder.h(&self, usz header_level, String text, String...) => self.@h(header_level, $vasplat) { self.text(text); }
 
 macro HtmlBuilder.td(&self, String val, String...) => self.@td($vasplat) { self.text(val); }
+
+macro HtmlBuilder.iframe(&self, ...) => self.elem("iframe", "", $vasplat);

@@ -15,7 +15,8 @@ alias tsc3 = module tree_sitter_c3;
 
 import html;
 
-const OVERVIEW_FILE = "index.html";
+const INDEX_FILE = "index.html";
+const OVERVIEW_FILE = "overview.html";
 const SIDEBAR_FILE = "sidebar.html";
 
 fn int main(String[] args)
@@ -59,11 +60,15 @@ fn int main(String[] args)
 				path::mkdir(mod_folder_path, true)!!;
 			}
 			ModuleView module_overview = collect_module_data(tmem, mod);
-
 			{
+				File index = file::open(mod_folder.tconcat(INDEX_FILE), "wb")!!;
+				defer (void)index.close();
+				io::fprintf(&index, "%s", gen_view(tmem, mod, module_overview))!!;
+
+
 				File overview = file::open(mod_folder.tconcat(OVERVIEW_FILE), "wb")!!;
 				defer (void)overview.close();
-				io::fprintf(&overview, "%s", get_module_overview(tmem, mod, module_overview))!!;
+				io::fprintf(&overview, "%s", gen_module_overview(tmem, mod, module_overview))!!;
 
 				File sidebar = file::open(mod_folder.tconcat(SIDEBAR_FILE), "wb")!!;
 				defer (void)sidebar.close();
@@ -278,15 +283,21 @@ fn String DocGenData.get_file_name(&self, Allocator alloc) => @pool()
 	return string::format(mem, self.get_data_type().file_format, self.get_name());
 }
 
+fn String DocGenData.get_data_file_name(&self, Allocator alloc) => @pool()
+{
+	return "_".concat(alloc, self.get_file_name(tmem));
+}
+
 fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
 		// gen_sidebar(mod, module_overview, b);
-		include_sidebar(b);
+		// include_sidebar(b);
 
 		b.@div(`class="main"`)
 		{
+			b.h(1, self.get_name());
 		};
 	}.copy(alloc);
 }
@@ -502,9 +513,9 @@ fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
 	return result.copy_str(alloc);
 }
 
-fn String get_relative_path_to_overview(Allocator alloc, Module* src, Module* dst) => @pool()
+fn String get_relative_path_to(Allocator alloc, Module* src, Module* dst, String dst_file) => @pool()
 {
-	return src.get_path_to_root(tmem).tconcat(dst.get_folder_path(tmem, "")[1..]).tconcat(OVERVIEW_FILE).copy(alloc);
+	return src.get_path_to_root(tmem).tconcat(dst.get_folder_path(tmem, "")[1..]).tconcat(dst_file).copy(alloc);
 }
 // TODO: get_relative_path_to(DocGenData other)
 /*fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
@@ -555,12 +566,12 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 }
 
-fn String get_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
+fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
 		// gen_sidebar(mod, module_overview, b);
-		include_sidebar(b);
+		// include_sidebar(b);
 
 		b.@div(`class="main"`)
 		{
@@ -571,7 +582,7 @@ fn String get_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 				mod.@iter_children(; Module* child)
 				{
 					io::printfn("%s", child.path);
-					b.url(child.path, get_relative_path_to_overview(tmem, mod, child));
+					b.url(child.path, get_relative_path_to(tmem, mod, child, INDEX_FILE), `target="_parent"`);
 					b.spc();
 				};
 			}
@@ -613,9 +624,22 @@ fn String get_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 	}.copy(alloc);
 }
 
-fn void include_sidebar(HtmlBuilder* b) => @pool()
+/*fn void include_sidebar(HtmlBuilder* b) => @pool()
 {
-	b.elem("iframe", "", @sprintf(`class="sidebar" src="./%s" scrolling="no"`, SIDEBAR_FILE));
+	b.iframe(@sprintf(`class="sidebar-frame" src="./%s" scrolling="no"`, SIDEBAR_FILE));
+}*/
+
+macro String gen_view(Allocator alloc, Module* mod, ModuleView module_overview, doc_gen_data = EMPTY_MACRO_SLOT) => @pool()
+{
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	{
+		b.iframe(@sprintf(`class="sidebar-frame" src="./%s" scrolling="no"`, SIDEBAR_FILE));
+		$if @is_valid_macro_slot(doc_gen_data):
+			b.iframe(string::tformat(`class="main-frame" name="main_frame" src="./%s"`, doc_gen_data.get_data_file_name(tmem)));
+		$else
+			b.iframe(string::tformat(`class="main-frame" name="main_frame" src="./%s"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
+		$endif
+	}.copy(alloc);
 }
 
 fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
@@ -628,7 +652,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 			{
 				b.text("Module");
 				b.br();
-				b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod), `target="_parent"`);
+				b.url(string::tformat("%s", mod.path), get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE), `target="main_frame"`);
 			};
 			$foreach $member : ModuleView.membersof:
 			{
@@ -658,7 +682,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(dat.get_name(), dat.get_file_path(tmem, mod), `target="_parent"`);
+									b.url(dat.get_name(), dat.get_file_path(tmem, mod), `target="main_frame"`);
 								};
 							};
 						};
@@ -691,7 +715,7 @@ fn void gen_module_title(Module* mod, HtmlBuilder* b) => @pool()
 
 				foreach_r (parent1 : parents)
 				{
-					b.url(parent1.path, get_relative_path_to_overview(tmem, mod, parent1));
+					b.url(parent1.path, get_relative_path_to(tmem, mod, parent1, INDEX_FILE), `target="_parent"`);
 					b.text("::");
 				}
 			};
@@ -960,8 +984,28 @@ html {
 }
 
 .main {
-	margin-left: 15em;
-	padding: 0px 10px;
+	/*margin-left: 15em;
+	padding: 0px 10px;*/
+	height: 100%;
+	width: 100% - 15em;
+}
+
+.sidebar-frame {
+	height: 100%;
+	width: 15em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	border: none;
+}
+
+.main-frame {
+	height: 100%;
+	width: calc(100% - 15em);
+	position: fixed;
+	top: 0;
+	left: 15em;
+	border: none;
 }
 
 .DataType_KEYWORD {

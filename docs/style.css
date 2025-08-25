@@ -17,8 +17,28 @@ html {
 }
 
 .main {
-	margin-left: 15em;
-	padding: 0px 10px;
+	/*margin-left: 15em;
+	padding: 0px 10px;*/
+	height: 100%;
+	width: 100% - 15em;
+}
+
+.sidebar-frame {
+	height: 100%;
+	width: 15em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	border: none;
+}
+
+.main-frame {
+	height: 100%;
+	width: calc(100% - 15em);
+	position: fixed;
+	top: 0;
+	left: 15em;
+	border: none;
 }
 
 .DataType_KEYWORD {
