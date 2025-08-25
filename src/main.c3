@@ -553,7 +553,7 @@ macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 	while (stack.len() != 0) @pool()
 	{
 		Module* n = stack.pop()!!;
-		if (n.path.ptr != null) @body(n);
+		@body(n);
 		if (n.children.len() != 0)
 		{
 
