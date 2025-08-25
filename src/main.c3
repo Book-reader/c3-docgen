@@ -51,7 +51,7 @@ fn int main(String[] args)
 			Module* modules = dat.second;
 			TSParser* parser = dat.third;
 
-			String file_data = (String)file::load(tmem, path.path_string)!!;
+			String file_data = (String)file::load(tmem, path.path_string)!;
 			get_modules(alloc, modules, parser, file_data, path.basename()[:^path.extension().len + 1]!!);
 			return false;
 		},
