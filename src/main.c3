@@ -58,16 +58,35 @@ fn int main(String[] args)
 			{
 				path::mkdir(mod_folder_path, true)!!;
 			}
+			ModuleView module_overview = collect_module_data(tmem, mod);
 
 			{
 				File overview = file::open(mod_folder.tconcat(OVERVIEW_FILE), "wb")!!;
 				defer (void)overview.close();
-				io::fprintf(&overview, "%s", get_module_overview(tmem, mod))!!;
+				io::fprintf(&overview, "%s", get_module_overview(tmem, mod, module_overview))!!;
 
 				File sidebar = file::open(mod_folder.tconcat(SIDEBAR_FILE), "wb")!!;
 				defer (void)sidebar.close();
-				io::fprintf(&sidebar, "%s", gen_module_sidebar(tmem, mod))!!;
+				io::fprintf(&sidebar, "%s", gen_module_sidebar(tmem, mod, module_overview))!!;
 			}
+
+			$foreach $member : ModuleView.membersof:
+			{
+				ModuleData view = $member.get(module_overview);
+				foreach (i, &section : view.values)
+				{
+					foreach (val : section.iter()) @pool()
+					{
+						DocGenData dat = val.value[0].data;
+						File f = file::open(mod_folder.tconcat(dat.get_file_name(tmem)), "wb")!!;
+						defer (void)f.close();
+						io::fprintf(&f, "%s", dat.get_view(tmem, mod, module_overview))!!;
+						// b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod)/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+						// b.td(dat.get_short_description(tmem));
+					};
+				}
+			}
+			$endforeach
 			/*foreach (view : ModuleView.values) if (view.in_title)
 			{
 				
@@ -251,7 +270,25 @@ interface DocGenData
 
 fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
 {
-	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(string::tformat(self.get_data_type().file_format, self.get_name())).copy(alloc);
+	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(self.get_file_name(tmem)).copy(alloc);
+}
+
+fn String DocGenData.get_file_name(&self, Allocator alloc) => @pool()
+{
+	return string::format(mem, self.get_data_type().file_format, self.get_name());
+}
+
+fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
+{
+	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
+	{
+		// gen_sidebar(mod, module_overview, b);
+		include_sidebar(b);
+
+		b.@div(`class="main"`)
+		{
+		};
+	}.copy(alloc);
 }
 
 struct DocGenDataDefault (DocGenData)
@@ -518,11 +555,10 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 }
 
-fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
+fn String get_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
-		ModuleView module_overview = collect_module_data(tmem, mod);
 		// gen_sidebar(mod, module_overview, b);
 		include_sidebar(b);
 
@@ -564,7 +600,7 @@ fn String get_module_overview(Allocator alloc, Module* mod) => @pool()
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod)/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod));
 								};
 								b.td(dat.get_short_description(tmem));
 							};
@@ -582,18 +618,17 @@ fn void include_sidebar(HtmlBuilder* b) => @pool()
 	b.elem("iframe", "", @sprintf(`class="sidebar" src="./%s" scrolling="no"`, SIDEBAR_FILE));
 }
 
-fn String gen_module_sidebar(Allocator alloc, Module* mod) => @pool()
+fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), mod.get_path_to_root(tmem).tconcat("style.css"); HtmlBuilder* b)
 	{
-		ModuleView module_overview = collect_module_data(tmem, mod);
 		b.@div(`class="sidebar"`)
 		{
 			b.@h(1)
 			{
 				b.text("Module");
 				b.br();
-				b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod));
+				b.url(string::tformat("%s", mod.path), get_relative_path_to_overview(tmem, mod, mod), `target="_parent"`);
 			};
 			$foreach $member : ModuleView.membersof:
 			{
@@ -623,7 +658,7 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod) => @pool()
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									b.url(dat.get_name(), "todo"/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
+									b.url(dat.get_name(), dat.get_file_path(tmem, mod), `target="_parent"`);
 								};
 							};
 						};
