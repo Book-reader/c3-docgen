@@ -610,6 +610,13 @@ macro Module.@iter_children(&self; @body(Module* mod))
 
 }
 
+fn Module* Module.get_root(&self)
+{
+	Module* mod = self;
+	while (mod.parent != null) mod = mod.parent;
+	return mod;
+}
+
 fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
@@ -688,47 +695,58 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 	{
 		b.@div(`class="sidebar"`)
 		{
-			b.@h(1)
+			if (mod.parent == null)
 			{
-				b.text("Module");
-				b.br();
-				b.url(string::tformat("%s", mod.path), get_relative_path_to(tmem, mod, mod, INDEX_FILE), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
-			};
-			$foreach $member : ModuleView.membersof:
+				b.h(1, "Package Overview");
+			}
+			else
 			{
-				String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
-				ModuleData view = $member.get(module_overview);
-				usz h = 1;
-				if (view_name != "Public")
+				b.@h(3)
 				{
-					foreach (&section : view.values) if (section.len() > 0)
-					{
-						b.h(1, view_name);
-						h = 2;
-						break;
-					}
-				}
-
-				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
+					b.url("Package Overview", get_relative_path_to(tmem, mod, mod.get_root(), INDEX_FILE), `target="_parent"`);
+				};
+				b.@h(1)
 				{
-					b.h(h, DocGenDataType.from_ordinal(i).section_name);
-					b.@table({})
+					b.text("Module");
+					b.br();
+					b.url(string::tformat("%s", mod.path), get_relative_path_to(tmem, mod, mod, INDEX_FILE), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, get_relative_path_to(tmem, mod, mod, OVERVIEW_FILE)));
+				};
+				$foreach $member : ModuleView.membersof:
+				{
+					String view_name = $member.nameof.snake_to_pascal_copy(tmem); // Public or Private
+					ModuleData view = $member.get(module_overview);
+					usz h = 1;
+					if (view_name != "Public")
 					{
-						foreach (val : section.iter()) @pool()
+						foreach (&section : view.values) if (section.len() > 0)
 						{
-							b.@tr()
+							b.h(1, view_name);
+							h = 2;
+							break;
+						}
+					}
+
+					foreach (i, &section : view.values) if (section.len() > 0)// @pool()
+					{
+						b.h(h, DocGenDataType.from_ordinal(i).section_name);
+						b.@table({})
+						{
+							foreach (val : section.iter()) @pool()
 							{
-								DocGenData dat = val.value[0].data;
-								b.@td()
+								b.@tr()
 								{
-									b.url(dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, dat.get_data_file_path(tmem, mod)));
+									DocGenData dat = val.value[0].data;
+									b.@td()
+									{
+										b.url(dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`target="main_frame" onclick="linkAction(event, '%s')"`, dat.get_data_file_path(tmem, mod)));
+									};
 								};
 							};
 						};
-					};
+					}
 				}
+				$endforeach
 			}
-			$endforeach
 			// b.text("%s", get_module_overview(tmem, mod));
 		};
 	}.copy(alloc);
