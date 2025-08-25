@@ -22,9 +22,6 @@ const SIDEBAR_FILE = "sidebar.html";
 
 fn int main(String[] args)
 {
-	/*TrackingAllocator alloc1;
-	alloc1.init(tmem);
-	defer alloc1.print_report();*/
 	Allocator alloc = tmem;
 
 	TSParser* parser = parser::new_with_language(tsc3::language())!!;
@@ -778,143 +775,6 @@ fn void gen_module_title(Module* mod, HtmlBuilder* b) => @pool()
 	};
 }
 
-/*fn void Module.gen_header(&self, HtmlBuilder* b, ModuleView view) => @pool()
-{
-	b.@h(2, `class="header"`)
-	{
-		$foreach $member : ModuleView.values:
-			$if $member.in_title:
-				if ($member == view)
-				{
-					b.@span(`class="selected"`)
-					{
-						b.text($member.name);
-					};
-				}
-				else
-				{
-					b.url($member.name, self.get_relative_path_to(tmem, self, $member));
-				}
-				b.spc();
-			$endif
-		$endforeach
-	};
-}*/
-
-// this is too close to Game.run for my liking, should probably change to `fn void gen_module_title(Module* mod, HtmlBuilder* b)`
-/*fn void Module.gen_module_title(&self, HtmlBuilder* b) => @pool()
-{
-	b.@div(`class="module_path"`)
-	{
-		b.@h(1)
-		{
-			if (self.parent != null && self.parent.path.ptr != null) @pool()
-			{
-				List {Module*} parents;
-				parents.tinit();
-
-				Module* parent = self.parent;
-			 	while (parent != null && parent.path.ptr != null) @pool()
-				{
-					parents.push(parent);
-					parent = parent.parent;
-				};
-
-				foreach_r (parent1 : parents)
-				{
-					b.url(parent1.path, self.get_relative_path_to(tmem, parent1, OVERVIEW));
-					b.text("::");
-				}
-			};
-			b.@span(`style="font-family: 'monospace'"`)
-			{
-				b.text(self.path);
-				if (self.generic_params.len() > 0)
-				{
-					b.text(" {");
-					foreach (i, param : self.generic_params)
-					{
-						b.text("%s%s", param, i == self.generic_params.len() - 1 ? "" : ", ");
-					}
-					b.text("}");
-				}
-			};
-		};
-	};
-}*/
-
-// const String GLOBAL_HTML_STYLES = `style = "font-family:'0xProto Nerd Font'"`;
-
-/*fn String Module.get_overview(&self, Allocator alloc) => @pool()
-{
-	return html::@html(alloc, "Module Overview", self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
-	{
-		self.gen_header(b, OVERVIEW);
-		self.gen_module_title(b);
-		if (self.children.len() != 0)
-		{
-			b.h(2, "Submodules");
-			self.@iter_children(; Module* child)
-			{
-				io::printfn("%s", child.path);
-				b.url(child.path, self.get_relative_path_to(tmem, child, OVERVIEW));
-				b.spc();
-			};
-		}
-
-
-		Abomination a = filter_and_collect_data(tmem, self, OVERVIEW);
-		if (a[0].len() > 0)
-		{
-			foreach (section : a[0].iter())
-			{
-				// First public values
-				b.h(2, section.key.name);
-				b.@table({"Name", "Description"})
-				{
-					foreach (val : section.value.iter()) @pool()
-					{
-						b.@tr()
-						{
-							DocGenData dat = val.value[0].first;
-							b.@td()
-							{
-								b.url(&dat.get_overview_name ? dat.get_overview_name(self, tmem) : dat.get_name(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
-							};
-							b.td(dat.get_short_description(tmem));
-						};
-					};
-				};
-			}
-		}
-		if (a[1].len() > 0)
-		{
-			b.h(2, "Private");
-			foreach (section : a[1].iter())
-			{
-				// Then private values
-				b.h(3, section.key.name);
-				b.@table({"Name", "Description"})
-				{
-					foreach (val : section.value.iter()) @pool()
-					{
-						b.@tr()
-						{
-							DocGenData dat = val.value[0].first;
-							b.@td()
-							{
-								b.url(&dat.get_overview_name ? dat.get_overview_name(self, tmem) : dat.get_name(), string::tformat("%s#%s", self.get_relative_path_to(tmem, self, dat.get_own_view()), val.key));
-							};
-							b.td(dat.get_short_description(tmem));
-						};
-					};
-				};
-			}
-		}
-	};
-}
-*/
-
 alias ModuleData = EnumMap {DocGenDataType, ModuleMembers};
 alias ModuleMembers = HashMap {String, List {ModuleMemberView}};
 struct ModuleMemberView
@@ -947,46 +807,6 @@ fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview
 	}
 	return view;
 }
-/*
-fn String Module.get_globals(&self, Allocator alloc) => gen_module_view(self, alloc, GLOBALS);
-fn String Module.get_types(&self, Allocator alloc) => gen_module_view(self, alloc, TYPES);
-fn String Module.get_functions(&self, Allocator alloc) => gen_module_view(self, alloc, FUNCTIONS);
-fn String gen_module_view(Module* self, Allocator alloc, ModuleView view) => @pool()
-{
-	return html::@html(alloc, string::tformat("Module %s", view.name), self.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
-	{
-		self.gen_header(b, view);
-		self.gen_module_title(b);
-
-		Abomination a = filter_and_collect_data(tmem, self, view);
-		String[2] visibility = {"Public", "Private"};
-		foreach (i, c : a)
-		{
-			if (c.len() == 0) continue;
-			b.h(1, visibility[i]);
-			foreach (section : c.iter()) foreach (name : section.value.iter())
-			{
-				b.h(2, name.key, string::tformat(`id="%s"`, name.key));
-				foreach (val : name.value) @pool()
-				{
-					b.text("%s", val.first.get_description());
-					b.@precode()
-					{
-						b.text("%s", val.first.get_highlighted());
-					};
-				};
-			}
-		}
-	};
-}
-
-fn String gen_view_for(Module* mod, Allocator alloc, DocGenData data)
-{
-	return html::@html(alloc, string::tformat("%s", data.get_name()), mod.get_path_to_root(tmem).tconcat("style.css"), GLOBAL_HTML_STYLES; HtmlBuilder* b)
-	{
-	
-	};
-}*/
 
 fn int stringcmp(String a, String b)
 {
