@@ -935,39 +935,34 @@ pre {
 // the view page doesn't need the linkAction and the the sidebar+data pages don't need the event listener
 const GLOBAL_JS =
 `
-let orig_view = undefined;
+// not needed in the view page.
 function linkAction(event, newHref)
 {
 	event.preventDefault();
 	let main_frame = window.top.document.getElementById('main-frame');
 	window.top.history.pushState(newHref, event.target.href, event.target.href);
 	main_frame.contentWindow.location.replace(newHref);
-	// main_frame.src = newHref;
-	// main_frame.contentWindow.history.replaceState(null, newHref, newHref);
-	// main_frame.contentWindow.location.replace(newHref);
-	console.error("pushed new state");
 }
 
-if (window === window.top)
+window.onload = () =>
 {
-	window.onpopstate = (e) =>
+	if (window === window.top)
 	{
-		console.warn("ewfefijewfoiwofewij");
-		console.warn(e);
-		if (e.state != null)
+		const MAIN_FRAME = document.getElementById('main-frame');
+		const ORIG_SRC = MAIN_FRAME.src;
+		window.onpopstate = (e) =>
 		{
-			console.info("test");
-			document.getElementById('main-frame').src = e.state;
-			document.getElementById('main-frame').contentWindow.history.replaceState(null, '', e.state);
-		}
-		else
-		{
-			console.info("test1");
-			document.getElementById('main-frame').contentWindow.location.reload();
-		}
-
-	};
-}
+			if (e.state != null)
+			{
+				MAIN_FRAME.contentWindow.location.replace(e.state);
+			}
+			else
+			{
+				MAIN_FRAME.contentWindow.location.replace(ORIG_SRC);
+			}
+		};
+	}
+};
 `;
 
 module std::core::array;

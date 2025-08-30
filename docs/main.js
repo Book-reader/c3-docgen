@@ -1,58 +1,29 @@
 
-let orig_view = undefined;
+// only needed in the view page.
 function linkAction(event, newHref)
 {
 	event.preventDefault();
 	let main_frame = window.top.document.getElementById('main-frame');
-	window.top.history.pushState(newHref, event.target.href, event.target.href);
 	main_frame.contentWindow.location.replace(newHref);
-	// main_frame.src = newHref;
-	// main_frame.contentWindow.history.replaceState(null, newHref, newHref);
-	// main_frame.contentWindow.location.replace(newHref);
-	console.error("pushed new state");
+	window.top.history.pushState(newHref, event.target.href, event.target.href);
 }
 
-if (window === window.top)
+window.onload = () =>
 {
-	window.onpopstate = (e) =>
+	if (window === window.top)
 	{
-		console.warn("ewfefijewfoiwofewij");
-		console.warn(e);
-		if (e.state != null)
+		const MAIN_FRAME = document.getElementById('main-frame');
+		const ORIG_SRC = MAIN_FRAME.src;
+		window.onpopstate = (e) =>
 		{
-			console.info("test");
-			document.getElementById('main-frame').src = e.state;
-			document.getElementById('main-frame').contentWindow.history.replaceState(null, '', e.state);
-		}
-		else
-		{
-			console.info("test1");
-			document.getElementById('main-frame').contentWindow.location.reload();
-		}
-
-	};
-}
-/*//if (window == window.top)
-//{
-	console.log("no parent");
-	window.onpopstate = (e) => setTimeout(() => {
-		console.log("afewfewfewfw");
-		console.log("got popstate");
-		console.warn(e);
-		if (e.state === "linkAction")
-		{
-			console.warn("it was a linkAction");
-			location.reload();
-		}
-	}, 0);
-
-	window.onpushstate = (e) => setTimeout(() => console.error("got push state"), 0);
-
-Object.keys(window).forEach(key => {
-    if (/^on/.test(key)) {
-        window.addEventListener(key.slice(2), event => {
-            console.log(event.type);
-        });
-    }
-});
-//}*/
+			if (e.state != null)
+			{
+				MAIN_FRAME.contentWindow.location.replace(e.state);
+			}
+			else
+			{
+				MAIN_FRAME.contentWindow.location.replace(ORIG_SRC);
+			}
+		};
+	}
+};
