@@ -36,6 +36,7 @@ I would also want to show methods inherited by inline types
 ```
 I'm going for something like this: https://docs.oracle.com/javase/8/docs/api/java/awt/package-summary.html and https://docs.oracle.com/javase/8/docs/api/java/awt/Checkbox.html
 but also stealing some ideas from https://docs.rs/tokio/latest/tokio/io/index.html
+and borrow ideas from this as well https://hexdocs.pm/aide/index.html
 ```
 
 

@@ -15,6 +15,7 @@ import tree_sitter_c3;
 alias tsc3 = module tree_sitter_c3;
 
 import html;
+import closures;
 
 const INDEX_FILE = "index.html";
 const OVERVIEW_FILE = "overview.html";
@@ -22,6 +23,8 @@ const SIDEBAR_FILE = "sidebar.html";
 
 fn int main(String[] args)
 {
+	closures::init()!!;
+	defer closures::deinit();
 	Allocator alloc = tmem;
 
 	TSParser* parser = parser::new_with_language(tsc3::language())!!;
@@ -41,21 +44,16 @@ fn int main(String[] args)
 		io::eprintfn("Error when opening folder: %s", err);
 		return 1;
 	}
+
 	if (catch err = dir_path.walk(
-		fn (path, is_dir, data)
+		closure::new(fn bool?(Allocator alloc, Module* modules, TSParser* parser, Path path, bool is_dir, void*)
 		{
 			if (is_dir) return false;
 			if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i")) return false;
-			Triple {Allocator, Module*, TSParser*}* dat = data;
-			Allocator alloc = dat.first;
-			Module* modules = dat.second;
-			TSParser* parser = dat.third;
-
 			String file_data = (String)file::load(tmem, path.path_string)!;
 			get_modules(alloc, modules, parser, file_data, path.basename()[:^path.extension().len + 1]!!);
 			return false;
-		},
-	&&(Triple {Allocator, Module*, TSParser*}) {alloc, modules, parser}))
+		}, alloc, modules, parser), null))
 	{
 		io::printfn("Error while reading files: %s", err);
 		return 1;
@@ -933,14 +931,42 @@ pre {
 }
 `;
 
+// TODO: split this into different javascript files for the view page and the sidebar+data files. I could probably have one shared for sidebar+data & one more specific to that view if needed.
+// the view page doesn't need the linkAction and the the sidebar+data pages don't need the event listener
 const GLOBAL_JS =
 `
+let orig_view = undefined;
 function linkAction(event, newHref)
 {
 	event.preventDefault();
-	let main_frame = window.parent.document.getElementById('main-frame');
-	main_frame.src = newHref;
-	window.parent.history.pushState(null, '', event.target.href);
+	let main_frame = window.top.document.getElementById('main-frame');
+	window.top.history.pushState(newHref, event.target.href, event.target.href);
+	main_frame.contentWindow.location.replace(newHref);
+	// main_frame.src = newHref;
+	// main_frame.contentWindow.history.replaceState(null, newHref, newHref);
+	// main_frame.contentWindow.location.replace(newHref);
+	console.error("pushed new state");
+}
+
+if (window === window.top)
+{
+	window.onpopstate = (e) =>
+	{
+		console.warn("ewfefijewfoiwofewij");
+		console.warn(e);
+		if (e.state != null)
+		{
+			console.info("test");
+			document.getElementById('main-frame').src = e.state;
+			document.getElementById('main-frame').contentWindow.history.replaceState(null, '', e.state);
+		}
+		else
+		{
+			console.info("test1");
+			document.getElementById('main-frame').contentWindow.location.reload();
+		}
+
+	};
 }
 `;
 
