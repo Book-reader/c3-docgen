@@ -298,7 +298,7 @@ interface DocGenData
 
 	fn bool in_overview();
 	fn DocGenDataType get_data_type();
-	// fn void print_extra_data(HtmlBuilder* b);
+	fn void print_extra_data(HtmlBuilder* b);
 	// fn String get_file_path(Allocator alloc, Module* mod);
 	// fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
@@ -350,7 +350,7 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 				b.text("%s", self.get_highlighted());
 			};
 			b.text("%s", self.get_description());
-			// self.print_extra_data(b);
+			self.print_extra_data(b);
 		};
 	}.copy(alloc);
 }
@@ -384,6 +384,8 @@ struct Global // (DocGenData)
 }
 
 fn DocGenDataType Global.get_data_type(&self) @dynamic => GLOBAL;
+fn void Global.print_extra_data(&self, HtmlBuilder* b) @dynamic {}
+
 
 struct Func // (DocGenData)
 {
@@ -395,10 +397,12 @@ struct Func // (DocGenData)
 	List {Param} params;
 }
 fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
-// fn bool Func.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != OVERVIEW && view != FUNCTIONS && view != TYPE) || (view != TYPE && self.method_of.has_value);
-// fn ModuleView Func.get_own_view(&self) @dynamic => self.method_of.has_value ? TYPE : FUNCTIONS;
 fn bool Func.in_overview(&self) @dynamic => self.method_of.has_value ? false : true;
 fn DocGenDataType Func.get_data_type(&self) @dynamic => FUNCTION; // TODO: if method_of.has_value maybe return METHOD?
+fn void Func.print_extra_data(&self, HtmlBuilder* b) @dynamic
+{
+	b.h(2, "Parameters"); // I would list each parameter with the contents of `@param name : ...` above
+}
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
 struct Param
@@ -422,9 +426,11 @@ struct Struct // (DocGenData)
 	List {HighlightedTextSlice} interfaces;
 }
 fn DocGenDataType Struct.get_data_type(&self) @dynamic => TYPE;
-fn void Struct.print_extra_data(&self, HtmlBuilder* b)
+fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 {
+	// TODO: maybe have the members in the struct definition be a collapsable section?
 	b.h(2, "Members");
+	b.h(2, "Methods");
 }
 
 // fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
@@ -438,9 +444,11 @@ struct Enum // (DocGenData)
 	List {HighlightedTextSlice} interfaces;
 }
 fn DocGenDataType Enum.get_data_type(&self) @dynamic => TYPE;
-
-// fn bool Enum.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-// fn ModuleView Enum.get_own_view(&self) @dynamic => TYPES;
+fn void Enum.print_extra_data(&self, HtmlBuilder* b) @dynamic
+{
+	b.h(2, "Values & Associated values");
+	b.h(2, "Methods");
+}
 
 struct BitStruct // (DocGenData)
 {
@@ -450,6 +458,12 @@ struct BitStruct // (DocGenData)
 	List {HighlightedTextSlice} interfaces;
 }
 fn DocGenDataType BitStruct.get_data_type(&self) @dynamic => TYPE;
+fn void BitStruct.print_extra_data(&self, HtmlBuilder* b) @dynamic
+{
+	b.h(2, "Parent Type");
+	b.h(2, "Members");
+	b.h(2, "Methods");
+}
 
 // fn bool BitStruct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
 // fn ModuleView BitStruct.get_own_view(&self) @dynamic => TYPES;
