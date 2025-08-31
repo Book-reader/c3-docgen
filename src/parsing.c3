@@ -120,7 +120,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Global glob = create_global(alloc);
+				Global glob = create_global(alloc, current_mod);
 				glob.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
@@ -174,7 +174,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Func func = create_function(alloc);
+				Func func = create_function(alloc, current_mod);
 				func.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
 				{
@@ -224,6 +224,15 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					func.doc_comment = comment;
 					current_mod.sections[^1].data.push(func);
 					comment = {};
+
+					if (func.method_of.has_value)
+					{
+						if (!current_mod.unresolved_methods.has_key(func.method_of.get()!!))
+						{
+							current_mod.unresolved_methods[func.method_of.get()!!] = *List {Func*}.init(&&{}, alloc);
+						}
+						current_mod.unresolved_methods.get_ref(func.method_of.get()!!)!!.push((Func*)current_mod.sections[^1].data[^1].ptr);
+					}
 				};
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);
@@ -297,7 +306,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Struct struc = create_struct(alloc);
+				Struct struc = create_struct(alloc, current_mod);
 				struc.text = collect_data(alloc, node, data);
 				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
 				{
@@ -330,7 +339,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
-				Enum enum_ = create_enum(alloc);
+				Enum enum_ = create_enum(alloc, current_mod);
 				enum_.text = collect_data(alloc, node, data);
 				query_cursor::@exec_captures(query_cursor, enum_query, node; TSQueryCapture capture, String name)
 				{
@@ -365,7 +374,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
-				BitStruct bitstruc = create_bitstruct(alloc);
+				BitStruct bitstruc = create_bitstruct(alloc, current_mod);
 				bitstruc.text = collect_data(alloc, node, data);
 				query_cursor::@exec_captures(query_cursor, bitstruct_query, node; TSQueryCapture capture, String name)
 				{
@@ -408,45 +417,51 @@ macro Module* module_create(Allocator alloc, Module* parent, String path)
 	new.sections.init(alloc);
 	new.children.init(alloc);
 	new.generic_params.init(alloc, 0);
+	new.unresolved_methods.init(alloc);
 	return new;
 }
 
-macro Global create_global(Allocator alloc)
+macro Global create_global(Allocator alloc, Module* parent_module)
 {
 	Global g;
+	g.parent_module = parent_module;
 	g.attributes.init(alloc);
 	return g;
 }
 
-macro Func create_function(Allocator alloc)
+macro Func create_function(Allocator alloc, Module* parent_module)
 {
 	Func f;
+	f.parent_module = parent_module;
 	f.attributes.init(alloc);
 	f.params.init(alloc);
 	return f;
 }
 
-macro Struct create_struct(Allocator alloc)
+macro Struct create_struct(Allocator alloc, Module* parent_module)
 {
 	Struct s;
+	s.parent_module = parent_module;
 	s.attributes.init(alloc);
 	s.members.init(alloc);
 	s.interfaces.init(alloc);
 	return s;
 }
 
-macro Enum create_enum(Allocator alloc)
+macro Enum create_enum(Allocator alloc, Module* parent_module)
 {
 	Enum e;
+	e.parent_module = parent_module;
 	e.attributes.init(alloc);
 	e.values.init(alloc);
 	e.interfaces.init(alloc);
 	return e;
 }
 
-macro BitStruct create_bitstruct(Allocator alloc)
+macro BitStruct create_bitstruct(Allocator alloc, Module* parent_module)
 {
 	BitStruct b;
+	b.parent_module = parent_module;
 	b.attributes.init(alloc);
 	b.members.init(alloc);
 	b.interfaces.init(alloc);

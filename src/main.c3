@@ -21,6 +21,7 @@ const INDEX_FILE = "index.html";
 const OVERVIEW_FILE = "overview.html";
 const SIDEBAR_FILE = "sidebar.html";
 
+// TODO: break this awful mess into multiple files. one dedicated to only the output formatting and one for the struct definitions
 fn int main(String[] args)
 {
 	$if env::COMPILER_SAFE_MODE:
@@ -148,6 +149,7 @@ struct Module // (Printable)
 	List {GenericParam} generic_params;
 	bool generics_done;
 	List {ModuleSection} sections;
+	HashMap {String, List {Func*}} unresolved_methods;
 	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
 		// it also has these:
 			// List {Type} types;
@@ -299,12 +301,15 @@ interface DocGenData
 	fn bool in_overview();
 	fn DocGenDataType get_data_type();
 	fn void print_extra_data(HtmlBuilder* b);
+	// fn Module* get_parent();
 	// fn String get_file_path(Allocator alloc, Module* mod);
 	// fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
 
 	// fn List {Contract} get_doc_contracts();
 	// fn String get_doc_comment(Allocator alloc);
+
+	// fn DataId get_id(); // TODO: maybe add a uid to each new instance of a DocGenData? might be helpful for method resolution, think about it more later.
 }
 
 fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
@@ -355,8 +360,14 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 	}.copy(alloc);
 }
 
+fn void DocGenData.print_view(&self, Allocator alloc, HtmlBuilder* b, ModuleView module_overview)
+{
+
+}
+
 struct DocGenDataDefault (DocGenData)
 {
+	Module* parent_module;
 	HighlightedTextSlice name;
 	DocComment doc_comment;
 	HighlightedText text;
@@ -374,6 +385,7 @@ fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comm
 fn bool DocGenDataDefault.in_overview(&self) @dynamic => true;
 fn DocGenDataType DocGenDataDefault.get_data_type(&self) @dynamic => unreachable("Override get_data_type per-impl");
 fn void DocGenDataDefault.print_extra_data(&self, HtmlBuilder* b) @dynamic => unreachable("Override print_extra_data per-impl");
+// fn Module* DocGenDataDefault.get_parent(&self) @dynamic => self.parent_module;
 
 // TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
 struct Global // (DocGenData)
@@ -431,6 +443,26 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 	// TODO: maybe have the members in the struct definition be a collapsable section?
 	b.h(2, "Members");
 	b.h(2, "Methods");
+
+	// TODO: there is a better way to do this.
+	self.parent_module.get_root().@iter_all_children(; Module* mod)
+	{
+		if (mod.unresolved_methods.has_key(self.get_name()))
+		{
+			List {Func*} methods = mod.unresolved_methods[self.get_name()]!!;
+			mod.unresolved_methods.remove(self.get_name());
+			foreach (method : methods)
+			{
+				b.h(3, method.get_name());
+				b.@precode()
+				{
+					b.text("%s", method.get_highlighted());
+				};
+				b.text("%s", method.get_description());
+				method.print_extra_data(b);
+			}
+		}
+	};
 }
 
 // fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
