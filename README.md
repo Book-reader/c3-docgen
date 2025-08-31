@@ -48,3 +48,5 @@ this theoretically means I can just iterate over every submodule, calling some m
 Since types can be extended from any module, I would need some system for looking up types based on imports, but that can come later. for now I'll just use the methods for the type that are defined in the same module.
 
 TODO: handle `@private` modules
+
+TODO: consider writing an HTML parser for the doc comments. I could probably use the same format as the `HighlightedText` struct

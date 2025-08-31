@@ -28,7 +28,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 	defer ts::tree_delete(parse_tree);
 	TSNode root_node = ts::tree_root_node(parse_tree);
 
-	io::printfn("Parsing file '%s'", file_name);
+	log::info("Parsing file '%s'", file_name);
 
 	TSTreeCursor cursor = cursor::new(root_node);
 	defer cursor::delete(&cursor);
@@ -88,13 +88,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 							case "path":
 								current_mod = current_mod.children.@get_or_set(text, module_create(alloc, current_mod, text.copy(alloc)));
 							case "param.const":
-								io::printfn("found generic const '%s'", text);
+								log::debug("found generic const '%s'", text);
 								if (!current_mod.generics_done) current_mod.generic_params.push({.type = CONST, .val = text.copy(alloc)});
 							case "param.type":
-								io::printfn("found generic type '%s'", text);
+								log::debug("found generic type '%s'", text);
 								if (!current_mod.generics_done) current_mod.generic_params.push({.type = TYPE, .val = text.copy(alloc)});
 							case "attr":
-								io::printfn("found module attrs '%s'", text);
+								log::debug("found module attrs '%s'", text);
 								sec.attributes.push(text.copy(alloc));
 							default:
 								unreachable("unexpexted '%s'", match_name);
@@ -102,7 +102,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					}
 					sec.text = collect_data(alloc, node, data);
 					sec.doc_comment = comment;
-					io::printfn("generic params: %s", current_mod.generic_params);
+					log::debug("generic params: %s", current_mod.generic_params);
 					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
 					current_mod.generics_done = true;
 					// if (sec.attributes.len() != 0) abort("%s", sec.attributes);

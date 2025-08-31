@@ -23,6 +23,11 @@ const SIDEBAR_FILE = "sidebar.html";
 
 fn int main(String[] args)
 {
+	$if env::COMPILER_SAFE_MODE:
+		log::set_priority_for_category(log::default_category, VERBOSE);
+	$else
+		log::set_priority_for_category(log::default_category, INFO);
+	$endif
 	closures::init()!!;
 	defer closures::deinit();
 	Allocator alloc = tmem;
@@ -34,14 +39,14 @@ fn int main(String[] args)
 
 	if (args.len != 2)
 	{
-		io::eprintfn("Usage: %s <path to folder to read C3 files from>", args[0]);
+		log::error("Usage: %s <path to folder to read C3 files from>", args[0]);
 		return 1;
 	}
 
 	Path? dir_path = path::new(alloc, args[1]);
 	if (catch err = dir_path)
 	{
-		io::eprintfn("Error when opening folder: %s", err);
+		log::error("Error when opening folder: %s", err);
 		return 1;
 	}
 
@@ -55,12 +60,12 @@ fn int main(String[] args)
 			return false;
 		}, alloc, modules, parser), null))
 	{
-		io::printfn("Error while reading files: %s", err);
+		log::error("Error while reading files: %s", err);
 		return 1;
 	}
 
 	String root_folder = "./docs";
-	io::printfn("%s", modules);
+	log::debug("%s", modules);
 
 	@pool()
 	{
@@ -419,7 +424,7 @@ struct Struct // (DocGenData)
 fn DocGenDataType Struct.get_data_type(&self) @dynamic => TYPE;
 fn void Struct.print_extra_data(&self, HtmlBuilder* b)
 {
-	b.h(2, "");
+	b.h(2, "Members");
 }
 
 // fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
@@ -643,7 +648,7 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 				{
 					mod.@iter_children(; Module* child)
 					{
-						io::printfn("%s", child.path);
+						log::debug("%s", child.path);
 						b.url(child.path, get_relative_path_to(tmem, mod, child, INDEX_FILE), `target="_parent"`);
 					};
 				};

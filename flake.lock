@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756034885,
-        "narHash": "sha256-zTbq0bpEqIelXefl2O5fySBrNn7rkHQjxu3eOiXhBKw=",
+        "lastModified": 1756614937,
+        "narHash": "sha256-dGjtpaJlxrtWre1zmtoCIJMGIpTjEHD+Snt7xgJFXd0=",
         "owner": "Book-reader",
         "repo": "c3c",
-        "rev": "bc7d83e7e9eb24a6c27e35e8031b005c99cc5377",
+        "rev": "66960dd83ad08215c60fd11b10a29d8d219fbce1",
         "type": "github"
       },
       "original": {
