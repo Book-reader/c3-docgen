@@ -1,11 +1,11 @@
 
-// only needed in the view page.
+// not needed in the view page.
 function linkAction(event, newHref)
 {
 	event.preventDefault();
 	let main_frame = window.top.document.getElementById('main-frame');
-	main_frame.contentWindow.location.replace(newHref);
 	window.top.history.pushState(newHref, event.target.href, event.target.href);
+	main_frame.contentWindow.location.replace(newHref);
 }
 
 window.onload = () =>

@@ -293,6 +293,7 @@ interface DocGenData
 
 	fn bool in_overview();
 	fn DocGenDataType get_data_type();
+	// fn void print_extra_data(HtmlBuilder* b);
 	// fn String get_file_path(Allocator alloc, Module* mod);
 	// fn ModuleView get_own_view();
 	// fn String[] get_attributes() @optional;
@@ -339,7 +340,12 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 		{
 			gen_module_title(mod, b);
 			b.h(1, self.get_name());
+			b.@precode()
+			{
+				b.text("%s", self.get_highlighted());
+			};
 			b.text("%s", self.get_description());
+			// self.print_extra_data(b);
 		};
 	}.copy(alloc);
 }
@@ -362,6 +368,7 @@ fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynam
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
 fn bool DocGenDataDefault.in_overview(&self) @dynamic => true;
 fn DocGenDataType DocGenDataDefault.get_data_type(&self) @dynamic => unreachable("Override get_data_type per-impl");
+fn void DocGenDataDefault.print_extra_data(&self, HtmlBuilder* b) @dynamic => unreachable("Override print_extra_data per-impl");
 
 // TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
 struct Global // (DocGenData)
@@ -410,6 +417,10 @@ struct Struct // (DocGenData)
 	List {HighlightedTextSlice} interfaces;
 }
 fn DocGenDataType Struct.get_data_type(&self) @dynamic => TYPE;
+fn void Struct.print_extra_data(&self, HtmlBuilder* b)
+{
+	b.h(2, "");
+}
 
 // fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
 // fn ModuleView Struct.get_own_view(&self) @dynamic => TYPES;
@@ -628,11 +639,13 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 			if (mod.children.len() != 0)
 			{
 				b.h(2, "Submodules");
-				mod.@iter_children(; Module* child)
+				b.@div(`class="submodule-list"`)
 				{
-					io::printfn("%s", child.path);
-					b.url(child.path, get_relative_path_to(tmem, mod, child, INDEX_FILE), `target="_parent"`);
-					b.spc();
+					mod.@iter_children(; Module* child)
+					{
+						io::printfn("%s", child.path);
+						b.url(child.path, get_relative_path_to(tmem, mod, child, INDEX_FILE), `target="_parent"`);
+					};
 				};
 			}
 
@@ -886,6 +899,26 @@ html {
 	border: none;
 }
 
+.submodule-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.submodule-list * {
+	padding: 0em 1em 0em 0em;
+}
+
+pre {
+	background-color: #efefef;
+	/*width: auto;*/
+	max-width: max-content;
+}
+
+pre code {
+	font-size: 1.5em; /* The font size is 1.5 times the font size :) */
+}
+
 .DataType_KEYWORD {
 	color: red;
 }
@@ -924,10 +957,6 @@ html {
 
 .DataType {
 	display: inline-block;
-}
-
-pre {
-	background-color: #efefef;
 }
 `;
 

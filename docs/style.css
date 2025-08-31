@@ -41,6 +41,26 @@ html {
 	border: none;
 }
 
+.submodule-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.submodule-list * {
+	padding: 0em 1em 0em 0em;
+}
+
+pre {
+	background-color: #efefef;
+	/*width: auto;*/
+	max-width: max-content;
+}
+
+pre code {
+	font-size: 1.5em; /* The font size is 1.5 times the font size :) */
+}
+
 .DataType_KEYWORD {
 	color: red;
 }
@@ -79,8 +99,4 @@ html {
 
 .DataType {
 	display: inline-block;
-}
-
-pre {
-	background-color: #efefef;
 }

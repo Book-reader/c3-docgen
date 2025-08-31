@@ -40,6 +40,7 @@ macro String @html(Allocator alloc, String title, String css_file, String js_fil
 	{
 		b.@head()
 		{
+			b.text(`<meta name="viewport" content="width=device-width, initial-scale=1.0">`);
 			b.text(string::tformat(`<link rel="stylesheet" href="%s">`, css_file));
 			b.text(string::tformat(`<script src="%s"></script>`, js_file));
 		};

@@ -1,1 +1,12 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">win32</span></h1></div><h1>Win32_INPUT_RECORD</h1></div></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">win32</span></h1></div><h1>Win32_INPUT_RECORD</h1><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Win32_INPUT_RECORD</span> 
+<span class="DataType_DEFAULT DataType">{</span>
+    <span class="DataType_TYPE DataType">Win32_WORD</span> <span class="DataType_IDENT DataType">eventType</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_KEYWORD DataType">union</span> <span class="DataType_IDENT DataType">event</span>
+    <span class="DataType_DEFAULT DataType">{</span>
+        <span class="DataType_TYPE DataType">Win32_KEY_EVENT_RECORD</span> <span class="DataType_IDENT DataType">keyEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_MOUSE_EVENT_RECORD</span> <span class="DataType_IDENT DataType">mouseEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_WINDOW_BUFFER_SIZE_RECORD</span> <span class="DataType_IDENT DataType">windowBufferSizeEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_MENU_EVENT_RECORD</span> <span class="DataType_IDENT DataType">menuEvent</span><span class="DataType_DEFAULT DataType">;</span>
+        <span class="DataType_TYPE DataType">Win32_FOCUS_EVENT_RECORD</span> <span class="DataType_IDENT DataType">focusEvent</span><span class="DataType_DEFAULT DataType">;</span>
+    <span class="DataType_DEFAULT DataType">}</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></div></body></html>

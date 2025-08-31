@@ -1,1 +1,11 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div><h1>Linux_dl_phdr_info_64</h1></div></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div><h1>Linux_dl_phdr_info_64</h1><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Linux_dl_phdr_info_64</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>  <span class="DataType_IDENT DataType">dlpi_addr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">ZString</span>     <span class="DataType_IDENT DataType">dlpi_name</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Phdr</span><span class="DataType_DEFAULT DataType">*</span> <span class="DataType_IDENT DataType">dlpi_phdr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Half</span>  <span class="DataType_IDENT DataType">dlpi_phnum</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_adds</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">ulong</span>       <span class="DataType_IDENT DataType">dlpi_subs</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">usz</span>         <span class="DataType_IDENT DataType">dlpi_tsl_modid</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_BUILTIN_TYPE DataType">void</span><span class="DataType_DEFAULT DataType">*</span>       <span class="DataType_IDENT DataType">dlpi_tls_data</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></div></body></html>

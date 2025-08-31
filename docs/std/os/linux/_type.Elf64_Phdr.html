@@ -1,1 +1,11 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div><h1>Elf64_Phdr</h1></div></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../../../style.css"><script src="../../../main.js"></script></head><body><div class="main"><div class="module_path"><h1><a href="../../../std/index.html" target="_parent">std</a>::<a href="../../../std/os/index.html" target="_parent">os</a>::<span style="font-family: 'monospace'">linux</span></h1></div><h1>Elf64_Phdr</h1><pre><code><span class="DataType_KEYWORD DataType">struct</span> <span class="DataType_TYPE DataType">Elf64_Phdr</span>
+<span class="DataType_DEFAULT DataType">{</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	<span class="DataType_IDENT DataType">p_type</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Word</span>	<span class="DataType_IDENT DataType">p_flags</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Off</span>	<span class="DataType_IDENT DataType">p_offset</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>	<span class="DataType_IDENT DataType">p_vaddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Addr</span>	<span class="DataType_IDENT DataType">p_paddr</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_filesz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_memsz</span><span class="DataType_DEFAULT DataType">;</span>
+	<span class="DataType_TYPE DataType">Elf64_Xword</span>	<span class="DataType_IDENT DataType">p_align</span><span class="DataType_DEFAULT DataType">;</span>
+<span class="DataType_DEFAULT DataType">}</span></code></pre></div></body></html>
