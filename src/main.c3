@@ -350,7 +350,7 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 		{
 			gen_module_title(mod, b);
 			b.h(1, self.get_name());
-			b.@precode()
+			b.@precode(`class="code-block"`)
 			{
 				b.text("%s", self.get_highlighted());
 			};
@@ -454,7 +454,7 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 			foreach (method : methods)
 			{
 				b.h(3, method.get_name());
-				b.@precode()
+				b.@precode(`class="code-block"`)
 				{
 					b.text("%s", method.get_highlighted());
 				};
@@ -960,14 +960,10 @@ html {
 	padding: 0em 1em 0em 0em;
 }
 
-pre {
+.code-block {
 	background-color: #efefef;
 	/*width: auto;*/
 	max-width: max-content;
-}
-
-pre code {
-	font-size: 1.5em; /* The font size is 1.5 times the font size :) */
 }
 
 .DataType_KEYWORD {
