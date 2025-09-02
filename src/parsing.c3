@@ -57,8 +57,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 	TSQuery* bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
 	defer query::delete(bitstruct_query);
 
+	TSQuery* import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
+	defer query::delete(import_query);
+
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	if (catch cursor::goto_first_child(&cursor)) return;
+
+	// TODO: before scanning over file, first check for ERROR node and abort if found
 
 	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;
@@ -225,14 +230,14 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					current_mod.sections[^1].data.push(func);
 					comment = {};
 
-					if (func.method_of.has_value)
+					/*if (func.method_of.has_value)
 					{
 						if (!current_mod.unresolved_methods.has_key(func.method_of.get()!!))
 						{
 							current_mod.unresolved_methods[func.method_of.get()!!] = *List {Func*}.init(&&{}, alloc);
 						}
 						current_mod.unresolved_methods.get_ref(func.method_of.get()!!)!!.push((Func*)current_mod.sections[^1].data[^1].ptr);
-					}
+					}*/
 				};
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);
@@ -398,6 +403,37 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				bitstruc.doc_comment = comment;
 				current_mod.sections[^1].data.push(bitstruc);
 				comment = {};
+			case "import_declaration":
+				// Handle files without module declarations/with code before a module declaration
+				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				List {String} mod_path;
+				mod_path.tinit(5);
+				query_cursor::@exec_captures(query_cursor, import_query, node; TSQueryCapture capture, String name)
+				{
+					String text = substitiute_with_table(tmem, capture.get_text(data));
+					switch (name)
+					{
+						case "attr":
+						case "mod":
+							mod_path.push(text.copy(alloc));
+						case "modend":
+							current_mod.sections[^1].unresolved_imports.push(mod_path.to_array(alloc));
+							// log::debug("AAAAAA: got import '%s'", mod_path);
+							mod_path.clear();
+						default:
+							unreachable("unexpected '%s'", name);
+
+				}
+				};
+				comment = {};
 			default:
 				comment = {};
 		}
@@ -417,7 +453,6 @@ macro Module* module_create(Allocator alloc, Module* parent, String path)
 	new.sections.init(alloc);
 	new.children.init(alloc);
 	new.generic_params.init(alloc, 0);
-	new.unresolved_methods.init(alloc);
 	return new;
 }
 
@@ -560,7 +595,6 @@ const REPLACE_TABLE = const_map::@new_equal{char, String}(
 	{'&', "&amp;"},
 	{'"', "&quot;"},
 	{'\'', "&apos;"},
-	{'%', "%%"},
 );
 
 macro substitiute_with_table(Allocator alloc, String text) => @pool()

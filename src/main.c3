@@ -65,6 +65,50 @@ fn int main(String[] args)
 		return 1;
 	}
 
+	modules.@iter_all_children(; Module* mod)
+	{
+		foreach (i, sec : mod.sections) @pool()
+		{
+			log::debug("Checking imports of module %s section %s", mod.get_path_string(tmem), i);
+			// TODO: maybe this could be its own method on Module?
+			assert(!sec.resolved_imports);
+			List {String[]} imports = sec.unresolved_imports;
+			sec.unresolved_imports = {};
+			sec.imports = {};
+			sec.imports.init(alloc, imports.len());
+			foreach IM: (im : imports)
+			{
+				ModuleImport mod_path = {.mod = modules};
+				foreach (path : im)
+				{
+					if (path[0] == '@')
+					{
+						switch (path)
+						{
+							case "@norecurse":
+								mod_path.norecurse = true;
+							case "@public":
+								mod_path.public = true;
+							default:
+								log::warn("Ignoring unknown import attribute %s", path);
+						}
+					}
+					else if (try m = mod_path.mod.children[path])
+					{
+						mod_path.mod = m;
+					}
+					else
+					{
+						log::warn("Module has unknown import `%s`, ignoring", string::join(tmem, im, "::"));
+						continue IM;
+					}
+				}
+				log::debug("Found import %s {.norecurse = %s, .public = %s}", string::join(tmem, im, "::"), mod_path.norecurse, mod_path.public);
+				sec.imports.push(mod_path);
+			}
+		};
+	};
+
 	String root_folder = "./docs";
 	log::debug("%s", modules);
 
@@ -149,7 +193,6 @@ struct Module // (Printable)
 	List {GenericParam} generic_params;
 	bool generics_done;
 	List {ModuleSection} sections;
-	HashMap {String, List {Func*}} unresolved_methods;
 	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
 		// it also has these:
 			// List {Type} types;
@@ -445,7 +488,7 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 	b.h(2, "Methods");
 
 	// TODO: there is a better way to do this.
-	self.parent_module.get_root().@iter_all_children(; Module* mod)
+/*	self.parent_module.get_root().@iter_all_children(; Module* mod)
 	{
 		if (mod.unresolved_methods.has_key(self.get_name()))
 		{
@@ -462,7 +505,7 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 				method.print_extra_data(b);
 			}
 		}
-	};
+	};*/
 }
 
 // fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
@@ -506,12 +549,29 @@ struct ModuleSection
 	DocComment doc_comment;
 	HighlightedText text;
 	List {String} attributes;
+	bool resolved_imports;
+	union
+	{
+		List {String[]} unresolved_imports;
+		List {ModuleImport} imports;
+	}
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
 {
 	self.data.init(alloc);
 	self.attributes.init(alloc);
+	self.unresolved_imports.init(alloc);
+}
+
+struct ModuleImport
+{
+	Module* mod;
+	bitstruct : char
+	{
+		bool norecurse;
+		bool public;
+	}
 }
 
 struct DocComment
@@ -524,8 +584,8 @@ fn usz? DocComment.to_format(&self, Formatter* fmt) @dynamic
 	usz? n;
 	foreach (desc : self.description)
 	{
-		n += fmt.printf(desc);
-		n += fmt.printf("<br/>");
+		n += fmt.print(desc);
+		n += fmt.print("<br/>");
 	}
 	return n;
 }
@@ -692,6 +752,7 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 				b.h(2, "Submodules");
 				b.@div(`class="submodule-list"`)
 				{
+					// TODO: sort iter_children by name
 					mod.@iter_children(; Module* child)
 					{
 						log::debug("%s", child.path);
