@@ -696,25 +696,14 @@ macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 	{
 		Module* n = stack.pop()!!;
 		@body(n);
-		if (n.children.len() != 0)
+		n.@iter_children(; Module* mod)
 		{
-
-			Entry {String, Module*}*[] children = mem::temp_array(Entry {String, Module*}*, n.children.len());
-			usz i;
-			foreach (Entry {String, Module*}* e : n.children.table) while (e != null)
-			{
-				children[i++] = e;
-				e = e.next;
-			}
-
-			sort::insertionsort(children, fn int(Entry {String, Module*}* a, Entry {String, Module*}* b) => stringcmp(a.key, b.key));
-			// Idk why it's sorting it in reverse, it's the same sorting function as I used before. either I'm iterating it wrong this time or it was always backwards and I was iterating incorrectly the first time
-			foreach_r (c : children) stack.push(c.value);
-		}
+			stack.push(mod);
+		};
 	};
 }
 
-macro Module.@iter_children(&self; @body(Module* mod))
+macro Module.@iter_children(&self; @body(Module* mod)) => @pool()
 {
 	if (self.children.len() == 0) return;
 	Entry {String, Module*}*[] children = mem::temp_array(Entry {String, Module*}*, self.children.len());
@@ -726,7 +715,7 @@ macro Module.@iter_children(&self; @body(Module* mod))
 	}
 
 	sort::insertionsort(children, fn int(Entry {String, Module*}* a, Entry {String, Module*}* b) => stringcmp(a.key, b.key));
-	foreach_r (c : children) @body(c.value);
+	foreach (c : children) @body(c.value);
 
 }
 
