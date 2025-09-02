@@ -22,6 +22,44 @@ macro list_with(Allocator alloc, ...)
 alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
 alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
+
+TSQuery* module_query;
+TSQuery* global_query;
+TSQuery* func_query;
+TSQuery* struct_query;
+TSQuery* enum_query;
+TSQuery* bitstruct_query;
+TSQuery* import_query;
+TSQuery* alias_query;
+
+fn void init_module_queries() @init
+{
+	io::printfn("Initializing module queries");
+	// TODO: use more anchors with wildcards & lists so it doesn't match things multiple times and doesn't get tripped by comments in odd places
+	module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
+	global_query = query::new(tsc3::language(), `(global_declaration (_ type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
+	// TODO: this may break if there are comments inside certain parts of the function definition (eg `fn void something() @Attr1 /*comment*/ @Attr2)`)
+	func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
+	struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name . (_)* (interface_impl_list (_)+ @interface)? (attributes [(attribute) @attr (_)]+)? body: (struct_body . [(struct_member_declaration) @member (_)]+) . )`)!!;
+	enum_query = query::new(tsc3::language(), `(enum_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (enum_spec)? @spec (attributes [(attribute) @attr (_)]+)? body: (enum_body [ (enum_constant) @value (_) "," ]+) )`)!!;
+	bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
+	import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
+	alias_query = query::new(tsc3::language(), `[ (_ name: (type_ident) @new_typename (type) @orig_typename) (_ name: (ident) @new_modulename "module" (path_ident) @orig_pathname) ]`)!!;
+}
+
+fn void deinit_module_queries() @finalizer
+{
+	io::printfn("Destroying module queries");
+	query::delete(module_query);
+	query::delete(global_query);
+	query::delete(func_query);
+	query::delete(struct_query);
+	query::delete(enum_query);
+	query::delete(bitstruct_query);
+	query::delete(import_query);
+	query::delete(alias_query);
+}
+
 fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name) => @pool()
 {
 	TSTree* parse_tree = parser::parse_string(parser, null, data);
@@ -29,36 +67,15 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 	TSNode root_node = ts::tree_root_node(parse_tree);
 
 	log::info("Parsing file '%s'", file_name);
+	// init_module_queries();
+	// defer deinit_module_queries();
+	assert(module_query != null && global_query != null && func_query != null && struct_query != null && enum_query != null && bitstruct_query != null && import_query != null && alias_query != null);
 
 	TSTreeCursor cursor = cursor::new(root_node);
 	defer cursor::delete(&cursor);
 
 	TSQueryCursor* query_cursor = query_cursor::new();
 	defer query_cursor::delete(query_cursor);
-
-	// TODO: make these global/static so I don't keep recreating & destroying them for every file I parse
-	// TODO: use more anchors with wildcards so it doesn't match things multiple times and doesn't get tripped by comments in odd places
-	TSQuery* module_query = query::new(tsc3::language(), `(module_declaration path: (path_ident (module_resolution (ident) @path)* (ident) @path) (generic_param_list [(const_ident) @param.const (type_ident) @param.type _]*)? (attributes (attribute) @attr)?)`)!!;
-	defer query::delete(module_query);
-
-	TSQuery* global_query = query::new(tsc3::language(), `(global_declaration (_ type: (_)? @type name: (_) @name (attributes (attribute)* @attr)? right: (_)? @value) @decl_type)`)!!;
-	defer query::delete(global_query);
-
-	// TODO: this may break if there are comments inside certain parts of the function definition (eg `fn void something() @Attr1 /*comment*/ @Attr2)`)
-	TSQuery* func_query = query::new(tsc3::language(), `(_ (_ return_type: (_)? @return method_type: (_)? @type name: (_) @name) ([(func_param_list (param type: (_)? @param.type name: (_) @param.name)*) (macro_param_list (param type: (_)? @param.type name: (_) @param.name)* (trailing_block_param)? @trailing) @macro]) (attributes (attribute)* @attr)?)`)!!;
-	defer query::delete(func_query);
-
-	TSQuery* struct_query = query::new(tsc3::language(), `(struct_declaration name: (type_ident) @name . (_)* (interface_impl_list (_)+ @interface)? (attributes [(attribute) @attr (_)]+)? body: (struct_body . [(struct_member_declaration) @member (_)]+) . )`)!!;
-	defer query::delete(struct_query);
-
-	TSQuery* enum_query = query::new(tsc3::language(), `(enum_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (enum_spec)? @spec (attributes [(attribute) @attr (_)]+)? body: (enum_body [ (enum_constant) @value (_) "," ]+) )`)!!;
-	defer query::delete(enum_query);
-
-	TSQuery* bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
-	defer query::delete(bitstruct_query);
-
-	TSQuery* import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
-	defer query::delete(import_query);
 
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	if (catch cursor::goto_first_child(&cursor)) return;
@@ -431,8 +448,29 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						default:
 							unreachable("unexpected '%s'", name);
 
-				}
+					}
 				};
+				comment = {};
+			case "alias_declaration":
+				// Handle files without module declarations/with code before a module declaration
+/*				if (current_mod == root)
+				{
+					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
+					ModuleSection m;
+					m.init(alloc);
+					current_mod.sections.push(m);
+				}
+				assert(current_mod.sections.len() != 0);
+
+				query_cursor::@exec_captures(query_cursor, alias_query, node; TSQueryCapture capture, String name)
+				{
+					String text = substitiute_with_table(tmem, capture.get_text(data));
+					switch (name)
+					{
+						default:
+							unreachable("unexpected '%s'", name);
+					}
+				};*/
 				comment = {};
 			default:
 				comment = {};

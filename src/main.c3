@@ -109,6 +109,7 @@ fn int main(String[] args)
 		};
 	};
 
+	// TODO: empty root folder to remove old docs before outputting new docs
 	String root_folder = "./docs";
 	log::debug("%s", modules);
 
