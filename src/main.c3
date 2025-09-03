@@ -143,6 +143,8 @@ fn int main(String[] args)
 	};
 
 	// TODO: empty root folder to remove old docs before outputting new docs
+	// TODO: always include stdlib in docs generated so I can always resolve stdlib imports
+	// TODO: unzip .c3l files to get implementations in libraries
 	String root_folder = "./docs";
 	log::debug("%s", modules);
 
