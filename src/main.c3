@@ -65,9 +65,10 @@ fn int main(String[] args)
 		return 1;
 	}
 
+	// TODO: first Module.resolve_imports, then Module.resolve_import_aliases
 	modules.@iter_all_children(; Module* mod)
 	{
-		foreach (i, sec : mod.sections) @pool()
+		foreach (i, &sec : mod.sections) @pool()
 		{
 			log::debug("Checking imports of module %s section %s", mod.get_path_string(tmem), i);
 			// TODO: maybe this could be its own method on Module?
@@ -106,6 +107,38 @@ fn int main(String[] args)
 				log::debug("Found import %s {.norecurse = %s, .public = %s}", string::join(tmem, im, "::"), mod_path.norecurse, mod_path.public);
 				sec.imports.push(mod_path);
 			}
+			sec.resolved_imports = true;
+		};
+	};
+	modules.@iter_all_children(; Module* mod)
+	{
+		foreach (i, &sec : mod.sections) @pool()
+		{
+			log::debug("Checking import aliases of module %s section %s", mod.get_path_string(tmem), i);
+			assert(sec.resolved_imports && !sec.resolved_import_aliases);
+			List {String[]} aliases = sec.unresoled_import_aliases;
+			sec.unresoled_import_aliases = {};
+			sec.import_aliases = {};
+			sec.import_aliases.init(alloc, aliases.len());
+			foreach IM: (al : aliases)
+			{
+				ModuleAlias mod_path = {.mod = modules, .name = al[^1]};
+				foreach (path : al[:^1])
+				{
+					if (try m = mod_path.mod.children[path])
+					{
+						mod_path.mod = m;
+					}
+					else
+					{
+						log::warn("Module has unknown import alias `%s`, ignoring", string::join(tmem, al[:^1], "::"));
+						continue IM;
+					}
+				}
+				log::debug("Found import alias '%s = %s'", mod_path.name, string::join(tmem, al[:^1], "::"));
+				sec.import_aliases.push(mod_path);
+			}
+			sec.resolved_import_aliases = true;
 		};
 	};
 
@@ -541,8 +574,13 @@ fn void BitStruct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 	b.h(2, "Methods");
 }
 
-// fn bool BitStruct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-// fn ModuleView BitStruct.get_own_view(&self) @dynamic => TYPES;
+struct TypeAlias
+{
+	inline DocGenDataDefault data;
+	HighlightedTextSlice aliased_module;
+	// This also contains any generic params like in `alias IntList = List {int}`
+	HighlightedTextSlice aliased_name;
+}
 
 struct ModuleSection
 {
@@ -556,6 +594,12 @@ struct ModuleSection
 		List {String[]} unresolved_imports;
 		List {ModuleImport} imports;
 	}
+	bool resolved_import_aliases;
+	union
+	{
+		List {String[]} unresoled_import_aliases;
+		List {ModuleAlias} import_aliases;
+	}
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -563,6 +607,7 @@ fn void ModuleSection.init(&self, Allocator alloc)
 	self.data.init(alloc);
 	self.attributes.init(alloc);
 	self.unresolved_imports.init(alloc);
+	self.unresoled_import_aliases.init(alloc);
 }
 
 struct ModuleImport
@@ -573,6 +618,12 @@ struct ModuleImport
 		bool norecurse;
 		bool public;
 	}
+}
+
+struct ModuleAlias
+{
+	String name;
+	Module* mod;
 }
 
 struct DocComment

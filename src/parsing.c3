@@ -44,7 +44,7 @@ fn void init_module_queries() @init
 	enum_query = query::new(tsc3::language(), `(enum_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (enum_spec)? @spec (attributes [(attribute) @attr (_)]+)? body: (enum_body [ (enum_constant) @value (_) "," ]+) )`)!!;
 	bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
 	import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
-	alias_query = query::new(tsc3::language(), `[ (_ name: (type_ident) @new_typename (type) @orig_typename) (_ name: (ident) @new_modulename "module" (path_ident) @orig_pathname) ]`)!!;
+	alias_query = query::new(tsc3::language(), `[ ( (type_ident) @new_typename (type (path_type_ident (module_resolution (ident) @orig_module)* (type_ident) @orig_name))) ( (ident) @new_modulename "module" (path_ident ((module_resolution (ident) @orig_module)* (ident) @orig_name))) ]`)!!;
 }
 
 fn void deinit_module_queries() @finalizer
@@ -453,7 +453,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				comment = {};
 			case "alias_declaration":
 				// Handle files without module declarations/with code before a module declaration
-/*				if (current_mod == root)
+				if (current_mod == root)
 				{
 					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
 					ModuleSection m;
@@ -462,15 +462,44 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				}
 				assert(current_mod.sections.len() != 0);
 
+				List {String} orig_path;
+				orig_path.tinit();
+				String orig_name;
+				String new_name;
+				bool is_module;
+				// TODO: have a way to store that `test::Type` is from module test & should be looked up there. ig that a type alias could add a new `TypeAlias` DocGenData that then gets resolved later
 				query_cursor::@exec_captures(query_cursor, alias_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
 					switch (name)
 					{
+						case "new_modulename":
+							new_name = text.copy(alloc);
+							is_module = true;
+						case "new_typename":
+							new_name = text.copy(alloc);
+						case "orig_module":
+							orig_path.push(text.copy(alloc));
+						case "orig_name":
+							orig_name = text.copy(alloc);
 						default:
 							unreachable("unexpected '%s'", name);
 					}
-				};*/
+				};
+				if (is_module)
+				{
+					orig_path.push(orig_name);
+					orig_path.push(new_name);
+					current_mod.sections[^1].unresoled_import_aliases.push(orig_path.to_array(alloc));
+				}
+				else
+				{
+					log::warn("Type aliasing is not supported yet, ignoring");
+					// TypeAlias al = create_typealias(alloc, orig_path, orig_name, new_name);
+					// // TODO: how should I show module aliases? Maybe I shouldn't show them at all since they are only used for internal renaming.
+					// al.text = collect_data(alloc, node, data);
+					// current_mod.sections[^1].data.push(al);
+				}
 				comment = {};
 			default:
 				comment = {};
