@@ -38,32 +38,62 @@ fn int main(String[] args)
 
 	Module* modules = module_create(alloc, null, {});
 
-	if (args.len != 2)
+	if (args.len < 2)
 	{
-		log::error("Usage: %s <path to folder to read C3 files from>", args[0]);
+		log::error("Usage: %s <files/folders to read C3 files from>", args[0]);
 		return 1;
 	}
 
-	Path? dir_path = path::new(alloc, args[1]);
-	if (catch err = dir_path)
+	@pool()
 	{
-		log::error("Error when opening folder: %s", err);
-		return 1;
-	}
+		List {Path} files;
+		files.tinit();
 
-	if (catch err = dir_path.walk(
-		closure::new(fn bool?(Allocator alloc, Module* modules, TSParser* parser, Path path, bool is_dir, void*)
+		foreach (arg : args[1..])
 		{
-			if (is_dir) return false;
-			if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i")) return false;
-			String file_data = (String)file::load(tmem, path.path_string)!;
-			get_modules(alloc, modules, parser, file_data, path.basename()[:^path.extension().len + 1]!!);
-			return false;
-		}, alloc, modules, parser), null))
-	{
-		log::error("Error while reading files: %s", err);
-		return 1;
-	}
+			Path? path = path::new(tmem, arg);
+			if (catch err = path)
+			{
+				log::error("Path '%s' is invalid", arg);
+				return 1;
+			}
+			if (path::is_file(path))
+			{
+				if (@catch(path.extension()) || (path.extension()!! != ".c3" && path.extension()!! != ".c3i"))
+				{
+					log::error("File '%s' is not a c3 file", arg);
+					return 1;
+				}
+				files.push(path);
+			}
+			else
+			{
+				bool? res = path::traverse(path, closure::new(fn bool?(List {Path}* files, Path path, bool is_dir, any)
+				{
+					if (is_dir) return false;
+					if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i")) return false;
+					files.push(path::new(tmem, path.str_view())!!);
+					return false;
+				}, &files), null);
+				if (catch err = res)
+				{
+					log::error("Error while traversing path: %s", err);
+					return 1;
+				}
+			}
+		}
+
+		foreach (file : files)
+		{
+			String? file_data = (String)file::load(tmem, file.path_string);
+			if (catch err = file_data)
+			{
+				log::error("Unable to read file '%s': %s", file, err);
+				return 1;
+			}
+			get_modules(alloc, modules, parser, file_data, file.basename()[:^file.extension().len + 1]!!);
+		}
+	};
 
 	// TODO: first Module.resolve_imports, then Module.resolve_import_aliases
 	modules.@iter_all_children(; Module* mod)
