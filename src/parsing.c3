@@ -246,15 +246,6 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					func.doc_comment = comment;
 					current_mod.sections[^1].data.push(func);
 					comment = {};
-
-					/*if (func.method_of.has_value)
-					{
-						if (!current_mod.unresolved_methods.has_key(func.method_of.get()!!))
-						{
-							current_mod.unresolved_methods[func.method_of.get()!!] = *List {Func*}.init(&&{}, alloc);
-						}
-						current_mod.unresolved_methods.get_ref(func.method_of.get()!!)!!.push((Func*)current_mod.sections[^1].data[^1].ptr);
-					}*/
 				};
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);

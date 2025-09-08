@@ -230,21 +230,10 @@ fn int main(String[] args)
 						File f1 = file::open(mod_folder.tconcat(dat.get_data_file_name(tmem)), "wb")!!;
 						defer (void)f1.close();
 						io::fprintf(&f1, "%s", dat.get_view(tmem, mod, module_overview))!!;
-						// b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod)/*string::tformat("%s#%s", mod.get_relative_path_to(tmem, mod, dat.get_own_view()), val.key)*/);
-						// b.td(dat.get_short_description(tmem));
 					};
 				}
 			}
 			$endforeach
-			/*foreach (view : ModuleView.values) if (view.in_title)
-			{
-				
-				// String mod_file = mod.get_file_path(tmem, root_folder, TYPES);
-				// abort();
-				File out = file::open(mod_folder.tconcat(view.path), "wb")!!;
-				defer (void)out.close();
-				io::fprintf(&out, "%s", view.func(mod, alloc))!!;
-			}*/
 		};
 	};
 
@@ -259,11 +248,6 @@ struct Module // (Printable)
 	List {GenericParam} generic_params;
 	bool generics_done;
 	List {ModuleSection} sections;
-	// List {ModuleData} data; // the moduledata contains a list of conditionals/attributes as well as all things that fall under that module section
-		// it also has these:
-			// List {Type} types;
-			// List {Function} funcs;
-			// List {Global} globals;
 }
 
 enum GenericParamType : char {CONST, TYPE}
@@ -322,7 +306,6 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 	{
 		if (highlight.type == END) break;
 		// if (i > 0) io::printfn("curr: \"%s\"; start: %s; len: %s; prev.start: %s; prev.len: %s", self.data[highlight.start:highlight.len], highlight.start, highlight.len, self.highlights[i - 1].start, self.highlights[i - 1].len);
-		// never write code at 1:30 am
 		if ($print_before_and_after && i == 0)
 		{
 			n += fmt.printf(self.data[:highlight.start]);
@@ -574,9 +557,6 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 	};*/
 }
 
-// fn bool Struct.is_hidden_from(&self, ModuleView view) @dynamic => self.attributes.contains("@local") || (view != TYPES && view != OVERVIEW);
-// fn ModuleView Struct.get_own_view(&self) @dynamic => TYPES;
-
 struct Enum // (DocGenData)
 {
 	inline DocGenDataDefault data;
@@ -735,18 +715,6 @@ fn usz Module.get_depth(&self)
 	return depth;
 }
 
-/*alias ModuleViewFunc = fn String(Module*, Allocator);
-enum ModuleView : char (String format, String name, ModuleViewFunc func, bool in_title)
-{
-	OVERVIEW = { "index.html", "Overview", &Module.get_overview, true },
-	GLOBALS = { "globals.html", "Globals", &Module.get_globals, true },
-	TYPES = { "types.html", "Types", &Module.get_types, true },
-	FUNCTIONS = { "functions.html", "Functions", &Module.get_functions, true },
-	TYPE = { "type.%s.html", "Type", null, false },
-}
-fn uint ModuleView.hash(self) => self.ordinal.hash();*/
-
-
 fn String Module.get_path_to_root(&self, Allocator alloc) => @pool()
 {
 	DString result;
@@ -765,11 +733,6 @@ fn String get_relative_path_to(Allocator alloc, Module* src, Module* dst, String
 {
 	return src.get_path_to_root(tmem).tconcat(dst.get_folder_path(tmem, "")[1..]).tconcat(dst_file).copy(alloc);
 }
-// TODO: get_relative_path_to(DocGenData other)
-/*fn String Module.get_relative_path_to(&self, Allocator alloc, Module* other, ModuleView view) => @pool()
-{
-	return self.get_path_to_root(tmem).tconcat(other.get_folder_path(tmem, "")[1..]).tconcat(view.path).copy(alloc);
-}*/
 
 macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 {
@@ -814,9 +777,6 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
-		// gen_sidebar(mod, module_overview, b);
-		// include_sidebar(b);
-
 		b.@div(`class="main"`)
 		{
 			gen_module_title(mod, b);
@@ -847,7 +807,6 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 
 				foreach (i, &section : view.values) if (section.len() > 0)// @pool()
 				{
-					// TODO: copy what I do for the sidebar where all public are h2 with private header is h2 and private categories are h3
 					b.h(2, DocGenDataType.from_ordinal(i).section_name);
 					b.@table({"Name", "Description"})
 					{
@@ -858,7 +817,6 @@ fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_ov
 								DocGenData dat = val.value[0].data;
 								b.@td()
 								{
-									// TODO: extract out the onClick thing into a function or something
 									b.url(&dat.get_overview_name ? dat.get_overview_name(mod, tmem) : dat.get_name(), dat.get_file_path(tmem, mod), string::tformat(`onclick="linkAction(event, '%s')"`, dat.get_data_file_path(tmem, mod)));
 								};
 								b.td(dat.get_short_description(tmem));
@@ -943,7 +901,6 @@ fn String gen_module_sidebar(Allocator alloc, Module* mod, ModuleView module_ove
 				}
 				$endforeach
 			}
-			// b.text("%s", get_module_overview(tmem, mod));
 		};
 	}.copy(alloc);
 }
