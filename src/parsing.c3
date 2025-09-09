@@ -166,13 +166,12 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 										unreachable("unexpected global type '%s'", type);
 								}
 							case "name":
-								// TODO: there's probably something I can do with the match start byte - node start byte to make .slice_matching O(1) or O(n) instead of O(n^2)
 								glob.name = glob.text.slice_matching(text)!!;
 							case "value":
 								// glob.val = text.copy(alloc);
 								break;
 							case "attr":
-								glob.attributes.push(text.copy(alloc));
+								glob.attributes.push(glob.text.slice_matching(text)!!);
 							case "type":
 								glob.type.set(text.copy(alloc));
 							default:
@@ -236,7 +235,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 							case "type":
 								func.method_of.set(text.copy(alloc));
 							case "attr":
-								func.attributes.push(text.copy(alloc));
+								func.attributes.push(func.text.slice_matching(text)!!);
 							case "trailing":
 								func.trailing.set(text.copy(alloc));
 							default:
@@ -329,7 +328,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						case "name":
 							struc.name = struc.text.slice_matching(text)!!;
 						case "attr":
-							struc.attributes.push(text.copy(alloc));
+							struc.attributes.push(struc.text.slice_matching(text)!!);
 						case "member":
 							struc.members.push(struc.text.slice_matching(text))!!;
 						case "interface":
@@ -362,7 +361,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						case "name":
 							enum_.name = enum_.text.slice_matching(text)!!;
 						case "attr":
-							enum_.attributes.push(text.copy(alloc));
+							enum_.attributes.push(enum_.text.slice_matching(text)!!);
 						case "interface":
 							enum_.interfaces.push(enum_.text.slice_matching(text)!!);
 						case "spec":
@@ -397,7 +396,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						case "name":
 							bitstruc.name = bitstruc.text.slice_matching(text)!!;
 						case "attr":
-							bitstruc.attributes.push(text.copy(alloc));
+							bitstruc.attributes.push(bitstruc.text.slice_matching(text)!!);
 						case "interface":
 							bitstruc.interfaces.push(bitstruc.text.slice_matching(text)!!);
 						case "type":

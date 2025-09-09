@@ -293,6 +293,8 @@ struct HighlightedText (Printable)
 	HighlightData[] highlights;
 }
 
+fn bool HighlightedText.equals(&self, HighlightedText other) @operator(==) => self.data == other.data/* && self.highlights == other.highlights*/;
+
 fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 {
 	return self.to_format_internal(fmt, true);
@@ -463,14 +465,14 @@ struct DocGenDataDefault (DocGenData)
 	HighlightedTextSlice name;
 	DocComment doc_comment;
 	HighlightedText text;
-	List {String} attributes;
+	List {HighlightedText} attributes;
 }
 
 fn String DocGenDataDefault.get_name(&self) @dynamic => self.name.get_string();
 fn HighlightedText DocGenDataDefault.get_highlighted(&self) @dynamic => self.text;
 // fn bool DocGenDataDefault.is_hidden_from(&self, ModuleView view) @dynamic => unreachable("Override is_hidden_from per-impl");
-fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains("@private");
-fn bool DocGenDataDefault.is_hidden(&self) @dynamic => self.attributes.contains("@local");
+fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains({"@private", {}});
+fn bool DocGenDataDefault.is_hidden(&self) @dynamic => self.attributes.contains({"@local", {}});
 // fn ModuleView DocGenDataDefault.get_own_view(&self) @dynamic => unreachable("Override get_own_view per-impl");
 fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
 fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
