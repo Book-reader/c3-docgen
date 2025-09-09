@@ -293,8 +293,6 @@ struct HighlightedText (Printable)
 	HighlightData[] highlights;
 }
 
-fn bool HighlightedText.equals(&self, HighlightedText other) @operator(==) => self.data == other.data/* && self.highlights == other.highlights*/;
-
 fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic
 {
 	return self.to_format_internal(fmt, true);
@@ -330,6 +328,7 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 }
 fn String HighlightedText.get_string(&self)
 {
+	if (self.highlights.len == 0) return self.data;
 	usz len = self.data.len;
 	foreach (i, h : self.highlights)
 	{
@@ -371,8 +370,11 @@ fn usz? HighlightedTextSlice.to_format(&self, Formatter* fmt) @dynamic
 }
 fn String HighlightedTextSlice.get_string(&self)
 {
+	if (self.highlights.len == 0) return self.data;
 	return self.data[self.highlights[0].start..self.highlights[^1].end_exclusive()];
 }
+
+fn bool HighlightedTextSlice.equals(&self, HighlightedTextSlice other) @operator(==) => self.get_string() == other.get_string();
 
 enum DocGenDataType : char (String section_name, String file_format)
 {
@@ -465,7 +467,7 @@ struct DocGenDataDefault (DocGenData)
 	HighlightedTextSlice name;
 	DocComment doc_comment;
 	HighlightedText text;
-	List {HighlightedText} attributes;
+	List {HighlightedTextSlice} attributes;
 }
 
 fn String DocGenDataDefault.get_name(&self) @dynamic => self.name.get_string();
@@ -601,7 +603,7 @@ struct ModuleSection
 	InterfaceList {DocGenData} data;
 	DocComment doc_comment;
 	HighlightedText text;
-	List {String} attributes;
+	List {HighlightedTextSlice} attributes;
 	bool resolved_imports;
 	union
 	{
@@ -623,6 +625,9 @@ fn void ModuleSection.init(&self, Allocator alloc)
 	self.unresolved_imports.init(alloc);
 	self.unresoled_import_aliases.init(alloc);
 }
+
+fn bool ModuleSection.is_private(&self) => self.attributes.contains({"@private", {}});
+fn bool ModuleSection.is_hidden(&self) => self.attributes.contains({"@local", {}});
 
 struct ModuleImport
 {
@@ -965,11 +970,12 @@ fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview
 	ModuleView view;
 	foreach (&sec : mod.sections)
 	{
-		foreach (member : sec.data) if (!member.is_hidden()) if (!in_overview || member.in_overview())
+		if (!sec.is_hidden()) foreach (member : sec.data) if (!member.is_hidden()) if (!in_overview || member.in_overview())
 		{
 			DocGenDataType data_type = member.get_data_type();
 			String member_name = member.get_name();
-			ModuleData* dat = member.is_private() ? &view.private : &view.public;
+			// TODO: support @public members in @private module sections
+			ModuleData* dat = member.is_private() || sec.is_private() ? &view.private : &view.public;
 			if (!(*dat)[data_type].is_initialized()) (*dat).get_ref(data_type).init(alloc);
 			if (!(*dat)[data_type].has_key(member_name))
 			{

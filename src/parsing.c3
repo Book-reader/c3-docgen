@@ -100,6 +100,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					// io::printfn("matched on %s", match.capture_count);
 					ModuleSection sec;
 					sec.init(alloc);
+					sec.text = collect_data(alloc, node, data);
 					foreach (i, capture : match.captures[:match.capture_count])
 					{
 						uint len;
@@ -117,12 +118,11 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 								if (!current_mod.generics_done) current_mod.generic_params.push({.type = TYPE, .val = text.copy(alloc)});
 							case "attr":
 								log::debug("found module attrs '%s'", text);
-								sec.attributes.push(text.copy(alloc));
+								sec.attributes.push(sec.text.slice_matching(text)!!);
 							default:
 								unreachable("unexpexted '%s'", match_name);
 						}
 					}
-					sec.text = collect_data(alloc, node, data);
 					sec.doc_comment = comment;
 					log::debug("generic params: %s", current_mod.generic_params);
 					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
