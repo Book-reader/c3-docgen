@@ -95,7 +95,7 @@ fn int main(String[] args)
 		}
 	};
 
-	// TODO: first Module.resolve_imports, then Module.resolve_import_aliases
+/*	// TODO: first Module.resolve_imports, then Module.resolve_import_aliases
 	modules.@iter_all_children(; Module* mod)
 	{
 		foreach (i, &sec : mod.sections) @pool()
@@ -170,7 +170,7 @@ fn int main(String[] args)
 			}
 			sec.resolved_import_aliases = true;
 		};
-	};
+	};*/
 
 	// TODO: empty root folder to remove old docs before outputting new docs
 	// TODO: always include stdlib in docs generated so I can always resolve stdlib imports
@@ -199,7 +199,7 @@ fn int main(String[] args)
 			{
 				path::mkdir(mod_folder_path, true)!!;
 			}
-			ModuleView module_overview = collect_module_data(tmem, mod);
+/*			ModuleView module_overview = collect_module_data(tmem, mod);
 			{
 				File index = file::open(mod_folder.tconcat(INDEX_FILE), "wb")!!;
 				defer (void)index.close();
@@ -233,7 +233,7 @@ fn int main(String[] args)
 					};
 				}
 			}
-			$endforeach
+			$endforeach*/
 		};
 	};
 
@@ -376,39 +376,7 @@ fn String HighlightedTextSlice.get_string(&self)
 
 fn bool HighlightedTextSlice.equals(&self, HighlightedTextSlice other) @operator(==) => self.get_string() == other.get_string();
 
-enum DocGenDataType : char (String section_name, String file_format)
-{
-	TYPE = { "Types", "type.%s.html" },
-	FUNCTION = { "Functions", "fn.%s.html" },
-	GLOBAL = { "Globals", "global.%s.html" },
-}
-interface DocGenData
-{
-	fn String get_name();
-	fn String get_overview_name(Module* mod, Allocator alloc) @optional;
-	fn HighlightedText get_highlighted();
-	fn bool is_private();
-	fn bool is_hidden();
-	// fn bool is_hidden_from(ModuleView view);
-	// fn bool has_attribute(String attr);
-	fn String get_short_description(Allocator alloc);
-	fn DocComment get_description();
-
-	fn bool in_overview();
-	fn DocGenDataType get_data_type();
-	fn void print_extra_data(HtmlBuilder* b);
-	// fn Module* get_parent();
-	// fn String get_file_path(Allocator alloc, Module* mod);
-	// fn ModuleView get_own_view();
-	// fn String[] get_attributes() @optional;
-
-	// fn List {Contract} get_doc_contracts();
-	// fn String get_doc_comment(Allocator alloc);
-
-	// fn DataId get_id(); // TODO: maybe add a uid to each new instance of a DocGenData? might be helpful for method resolution, think about it more later.
-}
-
-fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
+/*fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
 {
 	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(self.get_file_name(tmem)).copy(alloc);
 }
@@ -427,7 +395,7 @@ fn String DocGenData.get_data_file_name(&self, Allocator alloc) => @pool()
 {
 	return "_".concat(alloc, self.get_file_name(tmem));
 }
-
+*/
 fn String path_to_css(Allocator alloc, Module* mod) => @pool()
 {
 	return mod.get_path_to_root(tmem).concat(alloc, "style.css");
@@ -438,7 +406,7 @@ fn String path_to_js(Allocator alloc, Module* mod) => @pool()
 	return mod.get_path_to_root(tmem).concat(alloc, "main.js");
 }
 
-fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
+/*fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
@@ -454,15 +422,11 @@ fn String DocGenData.get_view(&self, Allocator alloc, Module* mod, ModuleView mo
 			self.print_extra_data(b);
 		};
 	}.copy(alloc);
-}
+}*/
 
-fn void DocGenData.print_view(&self, Allocator alloc, HtmlBuilder* b, ModuleView module_overview)
+struct DataBase
 {
-
-}
-
-struct DocGenDataDefault (DocGenData)
-{
+	// TODO: replace with ModuleSection*?
 	Module* parent_module;
 	HighlightedTextSlice name;
 	DocComment doc_comment;
@@ -470,47 +434,31 @@ struct DocGenDataDefault (DocGenData)
 	List {HighlightedTextSlice} attributes;
 }
 
-fn String DocGenDataDefault.get_name(&self) @dynamic => self.name.get_string();
-fn HighlightedText DocGenDataDefault.get_highlighted(&self) @dynamic => self.text;
-// fn bool DocGenDataDefault.is_hidden_from(&self, ModuleView view) @dynamic => unreachable("Override is_hidden_from per-impl");
-fn bool DocGenDataDefault.is_private(&self) @dynamic => self.attributes.contains({"@private", {}});
-fn bool DocGenDataDefault.is_hidden(&self) @dynamic => self.attributes.contains({"@local", {}});
-// fn ModuleView DocGenDataDefault.get_own_view(&self) @dynamic => unreachable("Override get_own_view per-impl");
-fn String DocGenDataDefault.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
-fn DocComment DocGenDataDefault.get_description(&self) @dynamic => self.doc_comment;
-fn bool DocGenDataDefault.in_overview(&self) @dynamic => true;
-fn DocGenDataType DocGenDataDefault.get_data_type(&self) @dynamic => unreachable("Override get_data_type per-impl");
-fn void DocGenDataDefault.print_extra_data(&self, HtmlBuilder* b) @dynamic => unreachable("Override print_extra_data per-impl");
-// fn Module* DocGenDataDefault.get_parent(&self) @dynamic => self.parent_module;
+fn bool DataBase.is_private(&self) => self.attributes.contains({"@private", {}});
+fn bool DataBase.is_hidden(&self) => self.attributes.contains({"@local", {}});
+// fn String DataBase.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
+// fn DocComment DataBase.get_description(&self) @dynamic => self.doc_comment;
+// fn bool DataBase.in_overview(&self) @dynamic => true;
+// fn DocGenDataType DataBase.get_data_type(&self) @dynamic => unreachable("Override get_data_type per-impl");
+// fn void DataBase.print_extra_data(&self, HtmlBuilder* b) @dynamic => unreachable("Override print_extra_data per-impl");
+// fn Module* DataBase.get_parent(&self) @dynamic => self.parent_module;
 
-// TODO: store most data (name, type, val, attributes) as a slice into the HighlightedText
-struct Global // (DocGenData)
+struct Global
 {
-	inline DocGenDataDefault data;
-	// I store the whole type including generic params etc in here, and then can parse it again later
+	inline DataBase data;
 	Maybe {String} type;
 }
 
-fn DocGenDataType Global.get_data_type(&self) @dynamic => GLOBAL;
-fn void Global.print_extra_data(&self, HtmlBuilder* b) @dynamic {}
-
-
-struct Func // (DocGenData)
+struct Func
 {
-	inline DocGenDataDefault data;
+	inline DataBase data;
 	Maybe {String} return_type;
 	Maybe {String} method_of;
 	Maybe {String} trailing;
 	bool macro_;
 	List {Param} params;
 }
-fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
-fn bool Func.in_overview(&self) @dynamic => self.method_of.has_value ? false : true;
-fn DocGenDataType Func.get_data_type(&self) @dynamic => FUNCTION; // TODO: if method_of.has_value maybe return METHOD?
-fn void Func.print_extra_data(&self, HtmlBuilder* b) @dynamic
-{
-	b.h(2, "Parameters"); // I would list each parameter with the contents of `@param name : ...` above
-}
+// fn String Func.get_overview_name(&self, Module* mod, Allocator alloc) @dynamic => mod.path.tconcat("::").tconcat(self.name.get_string()).copy(alloc);
 
 enum ParamType {REGULAR, CT, EXPR, VAARG/*, MACRO_VAARG probably not needed since I distinguish macros in Func*/}
 struct Param
@@ -527,14 +475,13 @@ struct StructMember
 	HighlightedTextSlice type;
 }
 
-struct Struct // (DocGenData)
+struct Struct
 {
-	inline DocGenDataDefault data;
+	inline DataBase data;
 	List {/*StructMember*/HighlightedTextSlice} members;
 	List {HighlightedTextSlice} interfaces;
 }
-fn DocGenDataType Struct.get_data_type(&self) @dynamic => TYPE;
-fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
+fn void Struct.print_extra_data(&self, HtmlBuilder* b)
 {
 	// TODO: maybe have the members in the struct definition be a collapsable section?
 	b.h(2, "Members");
@@ -561,69 +508,71 @@ fn void Struct.print_extra_data(&self, HtmlBuilder* b) @dynamic
 	};*/
 }
 
-struct Enum // (DocGenData)
+struct Enum
 {
-	inline DocGenDataDefault data;
+	inline DataBase data;
 	Maybe {HighlightedTextSlice} spec;
 	List {HighlightedTextSlice} values;
 	List {HighlightedTextSlice} interfaces;
 }
-fn DocGenDataType Enum.get_data_type(&self) @dynamic => TYPE;
-fn void Enum.print_extra_data(&self, HtmlBuilder* b) @dynamic
-{
-	b.h(2, "Values & Associated values");
-	b.h(2, "Methods");
-}
 
-struct BitStruct // (DocGenData)
+struct BitStruct
 {
-	inline DocGenDataDefault data;
+	inline DataBase data;
 	HighlightedTextSlice type;
 	List {HighlightedTextSlice} members;
 	List {HighlightedTextSlice} interfaces;
 }
-fn DocGenDataType BitStruct.get_data_type(&self) @dynamic => TYPE;
-fn void BitStruct.print_extra_data(&self, HtmlBuilder* b) @dynamic
-{
-	b.h(2, "Parent Type");
-	b.h(2, "Members");
-	b.h(2, "Methods");
-}
 
 struct TypeAlias
 {
-	inline DocGenDataDefault data;
+	inline DataBase data;
+	// TODO: might not be needed? I won't need to print them separately
 	HighlightedTextSlice aliased_module;
-	// This also contains any generic params like in `alias IntList = List {int}`
 	HighlightedTextSlice aliased_name;
+}
+
+struct TypeDef
+{
+	inline DataBase data;
+	bool inline_;
 }
 
 struct ModuleSection
 {
-	InterfaceList {DocGenData} data;
+	ModuleSectionData data;
 	DocComment doc_comment;
 	HighlightedText text;
 	List {HighlightedTextSlice} attributes;
-	bool resolved_imports;
-	union
-	{
-		List {String[]} unresolved_imports;
-		List {ModuleImport} imports;
-	}
-	bool resolved_import_aliases;
-	union
-	{
-		List {String[]} unresoled_import_aliases;
-		List {ModuleAlias} import_aliases;
-	}
+	List {String[]} imports;
+	List {String[]} import_aliases;
+}
+
+struct ModuleSectionData
+{
+	List {Func} funcs;
+	List {Global} globals;
+	List {Struct} structs;
+	List {Enum} enums;
+	List {BitStruct} bitstructs;
+	List {TypeAlias} typealiases;
+	List {TypeDef} typedefs;
+}
+
+fn void ModuleSectionData.init(&self, Allocator alloc)
+{
+	$foreach $member : ModuleSectionData.membersof:
+		(&$member.get(*self)).init(alloc);
+	$endforeach
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
 {
 	self.data.init(alloc);
 	self.attributes.init(alloc);
-	self.unresolved_imports.init(alloc);
-	self.unresoled_import_aliases.init(alloc);
+	self.imports.init(alloc);
+	self.import_aliases.init(alloc);
+	self.data.init(alloc);
 }
 
 fn bool ModuleSection.is_private(&self) => self.attributes.contains({"@private", {}});
@@ -780,7 +729,7 @@ fn Module* Module.get_root(&self)
 	return mod;
 }
 
-fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
+/*fn String gen_module_overview(Allocator alloc, Module* mod, ModuleView module_overview) => @pool()
 {
 	return html::@html(tmem, string::tformat("%s overview", mod.get_path_string(tmem)), path_to_css(tmem, mod), path_to_js(tmem, mod); HtmlBuilder* b)
 	{
@@ -951,9 +900,9 @@ fn void gen_module_title(Module* mod, HtmlBuilder* b) => @pool()
 			};
 		};
 	};
-}
+}*/
 
-alias ModuleData = EnumMap {DocGenDataType, ModuleMembers};
+/*alias ModuleData = EnumMap {DocGenDataType, ModuleMembers};
 alias ModuleMembers = HashMap {String, List {ModuleMemberView}};
 struct ModuleMemberView
 {
@@ -985,7 +934,7 @@ fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview
 		}
 	}
 	return view;
-}
+}*/
 
 fn int stringcmp(String a, String b)
 {
