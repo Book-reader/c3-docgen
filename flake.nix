@@ -2,7 +2,7 @@
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 		c3c = {
-			url = "github:Book-reader/c3c/interfacelist";
+			url = "github:c3lang/c3c/dev";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};

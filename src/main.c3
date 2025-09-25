@@ -979,7 +979,7 @@ fn ModuleView collect_module_data(Allocator alloc, Module* mod, bool in_overview
 			if (!(*dat)[data_type].is_initialized()) (*dat).get_ref(data_type).init(alloc);
 			if (!(*dat)[data_type].has_key(member_name))
 			{
-				dat.get_ref(data_type).set(member_name, *List {ModuleMemberView}.init(&&{}, alloc));
+				dat.get_ref(data_type).set(member_name, *(List){}.init(alloc));
 			}
 			dat.get_ref(data_type).get_ref(member_name)!!.push({member, sec});
 		}
