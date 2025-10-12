@@ -1,8 +1,8 @@
 {
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 		c3c = {
-			url = "github:c3lang/c3c/dev";
+			url = "github:c3lang/c3c";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};

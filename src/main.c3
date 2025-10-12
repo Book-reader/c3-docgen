@@ -15,7 +15,6 @@ import tree_sitter_c3;
 alias tsc3 = module tree_sitter_c3;
 
 import html;
-import closures;
 
 const INDEX_FILE = "index.html";
 const OVERVIEW_FILE = "overview.html";
@@ -29,8 +28,6 @@ fn int main(String[] args)
 	$else
 		log::set_priority_for_category(log::default_category, INFO);
 	$endif
-	closures::init()!!;
-	defer closures::deinit();
 	Allocator alloc = tmem;
 
 	TSParser* parser = parser::new_with_language(tsc3::language())!!;
@@ -68,13 +65,13 @@ fn int main(String[] args)
 			}
 			else
 			{
-				bool? res = path::traverse(path, closure::new(fn bool?(List {Path}* files, Path path, bool is_dir, any)
+				bool? res = path::traverse(path, fn (path, is_dir, files)
 				{
 					if (is_dir) return false;
 					if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i")) return false;
-					files.push(path::new(tmem, path.str_view())!!);
+					((List {Path}*)files.ptr).push(path::new(tmem, path.str_view())!!);
 					return false;
-				}, &files), null);
+				}, &files);
 				if (catch err = res)
 				{
 					log::error("Error while traversing path: %s", err);
@@ -95,82 +92,7 @@ fn int main(String[] args)
 		}
 	};
 
-/*	// TODO: first Module.resolve_imports, then Module.resolve_import_aliases
-	modules.@iter_all_children(; Module* mod)
-	{
-		foreach (i, &sec : mod.sections) @pool()
-		{
-			log::debug("Checking imports of module %s section %s", mod.get_path_string(tmem), i);
-			// TODO: maybe this could be its own method on Module?
-			assert(!sec.resolved_imports);
-			List {String[]} imports = sec.unresolved_imports;
-			sec.unresolved_imports = {};
-			sec.imports = {};
-			sec.imports.init(alloc, imports.len());
-			foreach IM: (im : imports)
-			{
-				ModuleImport mod_path = {.mod = modules};
-				foreach (path : im)
-				{
-					if (path[0] == '@')
-					{
-						switch (path)
-						{
-							case "@norecurse":
-								mod_path.norecurse = true;
-							case "@public":
-								mod_path.public = true;
-							default:
-								log::warn("Ignoring unknown import attribute %s", path);
-						}
-					}
-					else if (try m = mod_path.mod.children[path])
-					{
-						mod_path.mod = m;
-					}
-					else
-					{
-						log::warn("Module has unknown import `%s`, ignoring", string::join(tmem, im, "::"));
-						continue IM;
-					}
-				}
-				log::debug("Found import %s {.norecurse = %s, .public = %s}", string::join(tmem, im, "::"), mod_path.norecurse, mod_path.public);
-				sec.imports.push(mod_path);
-			}
-			sec.resolved_imports = true;
-		};
-	};
-	modules.@iter_all_children(; Module* mod)
-	{
-		foreach (i, &sec : mod.sections) @pool()
-		{
-			log::debug("Checking import aliases of module %s section %s", mod.get_path_string(tmem), i);
-			assert(sec.resolved_imports && !sec.resolved_import_aliases);
-			List {String[]} aliases = sec.unresoled_import_aliases;
-			sec.unresoled_import_aliases = {};
-			sec.import_aliases = {};
-			sec.import_aliases.init(alloc, aliases.len());
-			foreach IM: (al : aliases)
-			{
-				ModuleAlias mod_path = {.mod = modules, .name = al[^1]};
-				foreach (path : al[:^1])
-				{
-					if (try m = mod_path.mod.children[path])
-					{
-						mod_path.mod = m;
-					}
-					else
-					{
-						log::warn("Module has unknown import alias `%s`, ignoring", string::join(tmem, al[:^1], "::"));
-						continue IM;
-					}
-				}
-				log::debug("Found import alias '%s = %s'", mod_path.name, string::join(tmem, al[:^1], "::"));
-				sec.import_aliases.push(mod_path);
-			}
-			sec.resolved_import_aliases = true;
-		};
-	};*/
+	modules.resolve(alloc, modules);
 
 	// TODO: empty root folder to remove old docs before outputting new docs
 	// TODO: always include stdlib in docs generated so I can always resolve stdlib imports
@@ -250,6 +172,96 @@ struct Module // (Printable)
 	List {ModuleSection} sections;
 }
 
+fn void Module.resolve(&self, Allocator alloc, Module* root)
+{
+	self.resolve_imports(alloc, root);
+	self.resolve_import_aliases(alloc, root);
+	self.resolve_aliases(alloc, root);
+	// self.resolve_types();
+}
+
+fn void Module.resolve_imports(&self, Allocator alloc, Module* root)
+{
+	self.@iter_all_children(; Module* mod)
+	{
+		foreach (i, &sec : mod.sections) @pool()
+		{
+			log::debug("Checking imports of module %s section %s", mod.get_path_string(tmem), i);
+			assert(!sec.resolved_imports);
+			foreach IM: (im : sec.unresolved_imports)
+			{
+				ModuleImport mod_path = {.mod = root};
+				foreach (path : im)
+				{
+					if (path[0] == '@')
+					{
+						switch (path)
+						{
+							case "@norecurse":
+								mod_path.norecurse = true;
+							case "@public":
+								mod_path.public = true;
+							default:
+								log::warn("Ignoring unknown import attribute %s", path);
+						}
+					}
+					else if (try m = mod_path.mod.children[path])
+					{
+						mod_path.mod = m;
+					}
+					else
+					{
+						log::warn("Module has unknown import `%s`, ignoring", string::join(tmem, im, "::"));
+						continue IM;
+					}
+				}
+				log::debug("Found import %s {.norecurse = %s, .public = %s}", string::join(tmem, im, "::"), mod_path.norecurse, mod_path.public);
+				sec.imports.push(mod_path);
+			}
+			sec.resolved_imports = true;
+		};
+	};
+}
+
+fn void Module.resolve_import_aliases(&self, Allocator alloc, Module* root)
+{
+	self.@iter_all_children(; Module* mod)
+	{
+		foreach (i, &sec : mod.sections) @pool()
+		{
+			log::debug("Checking import aliases of module %s section %s", mod.get_path_string(tmem), i);
+			assert(sec.resolved_imports && !sec.resolved_import_aliases);
+			sec.import_aliases.init(alloc, sec.unresolved_import_aliases.len());
+			foreach IM: (al : sec.unresolved_import_aliases)
+			{
+				ModuleAlias mod_path = {.mod = root, .name = al[^1]};
+				foreach (path : al[:^1])
+				{
+					if (try m = mod_path.mod.children[path])
+					{
+						mod_path.mod = m;
+					}
+					else
+					{
+						log::warn("Module has unknown import alias `%s`, ignoring", string::join(tmem, al[:^1], "::"));
+						continue IM;
+					}
+				}
+				log::debug("Found import alias '%s = %s'", mod_path.name, string::join(tmem, al[:^1], "::"));
+				sec.import_aliases.push(mod_path);
+			}
+			sec.resolved_import_aliases = true;
+		};
+	};
+}
+
+fn void Module.resolve_imports(&self, Allocator alloc, Module* root)
+{
+	self.@iter_all_children(; Module* mod)
+	{
+	};
+}
+
 enum GenericParamType : char {CONST, TYPE}
 struct GenericParam (Printable)
 {
@@ -265,15 +277,70 @@ enum ValType
 	CONST,
 	TYPE,
 }
-/*struct TypeDef
+
+struct ModuleSection
 {
-	union
+	ModuleSectionData data;
+	DocComment doc_comment;
+	HighlightedText text;
+	List {HighlightedTextSlice} attributes;
+
+	bool resolved_imports;
+	List {String[]} unresolved_imports;
+	List {ModuleImport} imports;
+
+	bool resolved_import_aliases;
+	List {String[]} unresolved_import_aliases;
+	List {ModuleAlias} import_aliases;
+}
+
+struct ModuleSectionData
+{
+	List {Func} funcs;
+	List {Global} globals;
+	List {Struct} structs;
+	List {Enum} enums;
+	List {BitStruct} bitstructs;
+	List {TypeAlias} typealiases;
+	List {TypeDef} typedefs;
+}
+
+fn void ModuleSectionData.init(&self, Allocator alloc)
+{
+	$foreach $member : ModuleSectionData.membersof:
+		(&$member.get(*self)).init(alloc);
+	$endforeach
+}
+
+fn void ModuleSection.init(&self, Allocator alloc)
+{
+	self.data.init(alloc);
+	self.attributes.init(alloc);
+	self.unresolved_imports.init(alloc);
+	self.unresolved_import_aliases.init(alloc);
+	self.imports.init(alloc);
+	self.import_aliases.init(alloc);
+	self.data.init(alloc);
+}
+
+fn bool ModuleSection.is_private(&self) => self.attributes.contains({"@private", {}});
+fn bool ModuleSection.is_hidden(&self) => self.attributes.contains({"@local", {}});
+
+struct ModuleImport
+{
+	Module* mod;
+	bitstruct : char
 	{
-		struct alias_ {}
-		struct enum_ {}
-		struct struct_ {}
+		bool norecurse;
+		bool public;
 	}
-}*/
+}
+
+struct ModuleAlias
+{
+	String name;
+	Module* mod;
+}
 
 enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH, FUNCTION, END /*nice hack to tell when to stop printing text*/}
 struct HighlightData
@@ -535,63 +602,13 @@ struct TypeAlias
 struct TypeDef
 {
 	inline DataBase data;
-	bool inline_;
+	bool is_inline;
 }
 
-struct ModuleSection
-{
-	ModuleSectionData data;
-	DocComment doc_comment;
-	HighlightedText text;
-	List {HighlightedTextSlice} attributes;
-	List {String[]} imports;
-	List {String[]} import_aliases;
-}
-
-struct ModuleSectionData
-{
-	List {Func} funcs;
-	List {Global} globals;
-	List {Struct} structs;
-	List {Enum} enums;
-	List {BitStruct} bitstructs;
-	List {TypeAlias} typealiases;
-	List {TypeDef} typedefs;
-}
-
-fn void ModuleSectionData.init(&self, Allocator alloc)
-{
-	$foreach $member : ModuleSectionData.membersof:
-		(&$member.get(*self)).init(alloc);
-	$endforeach
-}
-
-fn void ModuleSection.init(&self, Allocator alloc)
-{
-	self.data.init(alloc);
-	self.attributes.init(alloc);
-	self.imports.init(alloc);
-	self.import_aliases.init(alloc);
-	self.data.init(alloc);
-}
-
-fn bool ModuleSection.is_private(&self) => self.attributes.contains({"@private", {}});
-fn bool ModuleSection.is_hidden(&self) => self.attributes.contains({"@local", {}});
-
-struct ModuleImport
-{
-	Module* mod;
-	bitstruct : char
-	{
-		bool norecurse;
-		bool public;
-	}
-}
-
-struct ModuleAlias
+struct ResolvedTypeAlias
 {
 	String name;
-	Module* mod;
+	any data;
 }
 
 struct DocComment

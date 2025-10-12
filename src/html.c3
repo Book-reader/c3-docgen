@@ -32,11 +32,11 @@ return html::@html(
 	}
 )
 */
-macro String @html(Allocator alloc, String title, String css_file, String js_file, String...; @body(HtmlBuilder* b)) => @pool()
+macro String @html(Allocator alloc, String title, String css_file, String js_file, String... attrs; @body(HtmlBuilder* b)) => @pool()
 {
 	HtmlBuilder b;
 	b.init(tmem);
-	b.@html($vasplat)
+	b.@html(...attrs)
 	{
 		b.@head()
 		{
@@ -61,65 +61,69 @@ macro HtmlBuilder.init(&self, Allocator alloc)
 	self.text("<!DOCTYPE html>");
 }
 
-macro HtmlBuilder.@elem(&self, String elem_name, String...; @body())
+macro HtmlBuilder.@elem(&self, String elem_name, String... attrs; @body())
 {
 	self.appendf("<%s", elem_name);
-	$for var $i = 0; $i < $vacount; $i++:
+	/*$for var $i = 0; $i < $vacount; $i++:
 		self.appendf(" %s", $vaarg[$i]);
-	$endfor
+	$endfor*/
+	foreach (attr : attrs)
+	{
+		self.appendf(" %s", attr);
+	}
 	self.appendf(">");
 	defer self.appendf("</%s>", elem_name);
 	@body();
 }
 
 
-macro HtmlBuilder.@h(&self, usz header_level, String...; @body()) => @pool()
+macro HtmlBuilder.@h(&self, usz header_level, String... attrs; @body()) => @pool()
 {
-	self.@elem(string::tformat("h%s", header_level), $vasplat)
+	self.@elem(string::tformat("h%s", header_level), ...attrs)
 	{
 		@body();
 	};
 }
 
-macro HtmlBuilder.@url(&self, String href, String...; @body()) => @pool()
+macro HtmlBuilder.@url(&self, String href, String... attrs; @body()) => @pool()
 {
-	self.@elem("a", string::tformat(`href="%s"`, href), $vasplat)
+	self.@elem("a", string::tformat(`href="%s"`, href), ...attrs)
 	{
 		@body();
 	};
 }
 
-macro HtmlBuilder.@code(&self, String...; @body()) => self.@elem("code", $vasplat)
+macro HtmlBuilder.@code(&self, String... attrs; @body()) => self.@elem("code", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@div(&self, String...; @body()) => self.@elem("div", $vasplat)
+macro HtmlBuilder.@div(&self, String... attrs; @body()) => self.@elem("div", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@span(&self, String...; @body()) => self.@elem("span", $vasplat)
+macro HtmlBuilder.@span(&self, String... attrs; @body()) => self.@elem("span", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@html(&self, String...; @body()) => self.@elem("html", $vasplat)
+macro HtmlBuilder.@html(&self, String... attrs; @body()) => self.@elem("html", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@head(&self, String...; @body()) => self.@elem("head", $vasplat)
+macro HtmlBuilder.@head(&self, String... attrs; @body()) => self.@elem("head", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@body(&self, String...; @body()) => self.@elem("body", $vasplat)
+macro HtmlBuilder.@body(&self, String... attrs; @body()) => self.@elem("body", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@table(&self, String[] header, String...; @body()) => self.@elem("table", $vasplat)
+macro HtmlBuilder.@table(&self, String[] header, String... attrs; @body()) => self.@elem("table", ...attrs)
 {
 	if (header.len > 0) self.@tr()
 	{
@@ -128,22 +132,22 @@ macro HtmlBuilder.@table(&self, String[] header, String...; @body()) => self.@el
 	@body();
 }
 
-macro HtmlBuilder.@tr(&self, String...; @body()) => self.@elem("tr", $vasplat)
+macro HtmlBuilder.@tr(&self, String... attrs; @body()) => self.@elem("tr", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@td(&self, String...; @body()) => self.@elem("td", $vasplat)
+macro HtmlBuilder.@td(&self, String... attrs; @body()) => self.@elem("td", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@pre(&self, String...; @body()) => self.@elem("pre", $vasplat)
+macro HtmlBuilder.@pre(&self, String... attrs; @body()) => self.@elem("pre", ...attrs)
 {
 	@body();
 }
 
-macro HtmlBuilder.@precode(&self, String...; @body()) => self.@pre($vasplat)
+macro HtmlBuilder.@precode(&self, String... attrs; @body()) => self.@pre(...attrs)
 {
 	self.@code()
 	{
@@ -157,14 +161,14 @@ macro HtmlBuilder.spc(&self) => self.text("&nbsp");
 
 macro HtmlBuilder.br(&self) => self.text("<br/>");
 
-macro HtmlBuilder.elem(&self, String elem, String val, String...) => self.@elem(elem, $vasplat) { self.text(val); }
+macro HtmlBuilder.elem(&self, String elem, String val, String... attrs) => self.@elem(elem, ...attrs) { self.text(val); }
 
-macro HtmlBuilder.url(&self, String name, String href, String...) => self.@url(href, $vasplat) { self.text(name); }
+macro HtmlBuilder.url(&self, String name, String href, String... attrs) => self.@url(href, ...attrs) { self.text(name); }
 
-macro HtmlBuilder.code(&self, String code, String...) => self.@code($vasplat) { self.text(code); }
+macro HtmlBuilder.code(&self, String code, String... attrs) => self.@code(...attrs) { self.text(code); }
 
-macro HtmlBuilder.h(&self, usz header_level, String text, String...) => self.@h(header_level, $vasplat) { self.text(text); }
+macro HtmlBuilder.h(&self, usz header_level, String text, String... attrs) => self.@h(header_level, ...attrs) { self.text(text); }
 
-macro HtmlBuilder.td(&self, String val, String...) => self.@td($vasplat) { self.text(val); }
+macro HtmlBuilder.td(&self, String val, String... attrs) => self.@td(...attrs) { self.text(val); }
 
 macro HtmlBuilder.iframe(&self, ...) => self.elem("iframe", "", $vasplat);

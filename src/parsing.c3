@@ -432,7 +432,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						case "mod":
 							mod_path.push(text.copy(alloc));
 						case "modend":
-							current_mod.sections[^1].imports.push(mod_path.to_array(alloc));
+							current_mod.sections[^1].unresolved_imports.push(mod_path.to_array(alloc));
 							// log::debug("AAAAAA: got import '%s'", mod_path);
 							mod_path.clear();
 						default:
@@ -480,7 +480,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				{
 					orig_path.push(orig_name);
 					orig_path.push(new_name);
-					current_mod.sections[^1].import_aliases.push(orig_path.to_array(alloc));
+					current_mod.sections[^1].unresolved_import_aliases.push(orig_path.to_array(alloc));
 				}
 				else
 				{
