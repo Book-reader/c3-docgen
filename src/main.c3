@@ -255,7 +255,7 @@ fn void Module.resolve_import_aliases(&self, Allocator alloc, Module* root)
 	};
 }
 
-fn void Module.resolve_imports(&self, Allocator alloc, Module* root)
+fn void Module.resolve_aliases(&self, Allocator alloc, Module* root)
 {
 	self.@iter_all_children(; Module* mod)
 	{
@@ -292,6 +292,14 @@ struct ModuleSection
 	bool resolved_import_aliases;
 	List {String[]} unresolved_import_aliases;
 	List {ModuleAlias} import_aliases;
+
+/*	bool resolved_type_aliases;
+	List {String[]} unresolved_type_aliases;
+	List {TypeAlias} type_aliases;
+
+	bool resolved_value_aliases;
+	List {String[]} unresolved_value_aliases;
+	List {ValueAlias} value_aliases;*/
 }
 
 struct ModuleSectionData
@@ -341,6 +349,20 @@ struct ModuleAlias
 	String name;
 	Module* mod;
 }
+
+/*struct TypeAlias
+{
+	String name;
+	DocGenData aliased_to; // TODO: this won't work with `alias IntList = List {int}` because it doesn't store the generic parameters
+	List {HighlightedTextSlice} attributes;
+}
+
+struct ValueAlias
+{
+	String name;
+	DocGenData aliased_to;
+	List {HighlightedTextSlice} attributes;
+}*/
 
 enum DataType : char {DEFAULT, KEYWORD, BUILTIN_TYPE, TYPE, CONST, IDENT, NUMBER, STRING, ATTR, COMMENT, PATH, FUNCTION, END /*nice hack to tell when to stop printing text*/}
 struct HighlightData
