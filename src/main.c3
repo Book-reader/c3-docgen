@@ -280,7 +280,8 @@ enum ValType
 
 struct ModuleSection
 {
-	ModuleSectionData data;
+	HashMap {String, DocGenData} global_namespace; // Values, Consts, Aliases, Funcs, and Types
+	// HashMap {String, DocGenData} type_namespace; // Types & Type aliases
 	DocComment doc_comment;
 	HighlightedText text;
 	List {HighlightedTextSlice} attributes;
@@ -302,33 +303,16 @@ struct ModuleSection
 	List {ValueAlias} value_aliases;*/
 }
 
-struct ModuleSectionData
-{
-	List {Func} funcs;
-	List {Global} globals;
-	List {Struct} structs;
-	List {Enum} enums;
-	List {BitStruct} bitstructs;
-	List {TypeAlias} typealiases;
-	List {TypeDef} typedefs;
-}
-
-fn void ModuleSectionData.init(&self, Allocator alloc)
-{
-	$foreach $member : ModuleSectionData.membersof:
-		(&$member.get(*self)).init(alloc);
-	$endforeach
-}
-
 fn void ModuleSection.init(&self, Allocator alloc)
 {
-	self.data.init(alloc);
+	// self.data.init(alloc);
+	self.global_namespace.init(alloc);
 	self.attributes.init(alloc);
 	self.unresolved_imports.init(alloc);
 	self.unresolved_import_aliases.init(alloc);
 	self.imports.init(alloc);
 	self.import_aliases.init(alloc);
-	self.data.init(alloc);
+	// self.data.init(alloc);
 }
 
 fn bool ModuleSection.is_private(&self) => self.attributes.contains({"@private", {}});
@@ -465,7 +449,39 @@ fn String HighlightedTextSlice.get_string(&self)
 
 fn bool HighlightedTextSlice.equals(&self, HighlightedTextSlice other) @operator(==) => self.get_string() == other.get_string();
 
-/*fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
+enum DocGenDataType : char (String section_name, String file_format)
+{
+	TYPE = { "Types", "type.%s.html" },
+	FUNCTION = { "Functions", "fn.%s.html" },
+	GLOBAL = { "Globals", "global.%s.html" },
+}
+interface DocGenData
+{
+/*	fn String get_name();
+	fn String get_overview_name(Module* mod, Allocator alloc) @optional;
+	fn HighlightedText get_highlighted();*/
+	fn bool is_private();
+	fn bool is_hidden();
+	// fn bool is_hidden_from(ModuleView view);
+	// fn bool has_attribute(String attr);
+/*	fn String get_short_description(Allocator alloc);
+	fn DocComment get_description();
+
+	fn bool in_overview();
+	fn DocGenDataType get_data_type();
+	fn void print_extra_data(HtmlBuilder* b);*/
+	// fn Module* get_parent();
+	// fn String get_file_path(Allocator alloc, Module* mod);
+	// fn ModuleView get_own_view();
+	// fn String[] get_attributes() @optional;
+
+	// fn List {Contract} get_doc_contracts();
+	// fn String get_doc_comment(Allocator alloc);
+
+	// fn DataId get_id(); // TODO: maybe add a uid to each new instance of a DocGenData? might be helpful for method resolution, think about it more later.
+}
+/*
+fn String DocGenData.get_file_path(&self, Allocator alloc, Module* mod) => @pool()
 {
 	return mod.get_path_to_root(tmem).tconcat(mod.get_folder_path(tmem, "")[1..]).tconcat(self.get_file_name(tmem)).copy(alloc);
 }
@@ -513,7 +529,7 @@ fn String path_to_js(Allocator alloc, Module* mod) => @pool()
 	}.copy(alloc);
 }*/
 
-struct DataBase
+struct DataBase (DocGenData)
 {
 	// TODO: replace with ModuleSection*?
 	Module* parent_module;
@@ -523,8 +539,8 @@ struct DataBase
 	List {HighlightedTextSlice} attributes;
 }
 
-fn bool DataBase.is_private(&self) => self.attributes.contains({"@private", {}});
-fn bool DataBase.is_hidden(&self) => self.attributes.contains({"@local", {}});
+fn bool DataBase.is_private(&self) @dynamic => self.attributes.contains({"@private", {}});
+fn bool DataBase.is_hidden(&self) @dynamic => self.attributes.contains({"@local", {}});
 // fn String DataBase.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);
 // fn DocComment DataBase.get_description(&self) @dynamic => self.doc_comment;
 // fn bool DataBase.in_overview(&self) @dynamic => true;
