@@ -121,6 +121,14 @@ fn int main(String[] args)
 			{
 				path::mkdir(mod_folder_path, true)!!;
 			}
+
+
+			File index = file::open(mod_folder.tconcat(INDEX_FILE), "wb")!!;
+			defer (void)index.close();
+			foreach (sec : mod.sections) foreach (val : sec.global_namespace.iter())
+			{
+				io::fprintf(&index, "<p>%s<p>", val.key)!!;
+			}
 /*			ModuleView module_overview = collect_module_data(tmem, mod);
 			{
 				File index = file::open(mod_folder.tconcat(INDEX_FILE), "wb")!!;
@@ -294,13 +302,8 @@ struct ModuleSection
 	List {String[]} unresolved_import_aliases;
 	List {ModuleAlias} import_aliases;
 
-/*	bool resolved_type_aliases;
-	List {String[]} unresolved_type_aliases;
-	List {TypeAlias} type_aliases;
-
-	bool resolved_value_aliases;
-	List {String[]} unresolved_value_aliases;
-	List {ValueAlias} value_aliases;*/
+	// TODO: maybe?
+	// HashMap {String, ModuleImport} imports;
 }
 
 fn void ModuleSection.init(&self, Allocator alloc)
@@ -457,8 +460,8 @@ enum DocGenDataType : char (String section_name, String file_format)
 }
 interface DocGenData
 {
-/*	fn String get_name();
-	fn String get_overview_name(Module* mod, Allocator alloc) @optional;
+	fn String get_name();
+	/*fn String get_overview_name(Module* mod, Allocator alloc) @optional;
 	fn HighlightedText get_highlighted();*/
 	fn bool is_private();
 	fn bool is_hidden();
@@ -533,12 +536,13 @@ struct DataBase (DocGenData)
 {
 	// TODO: replace with ModuleSection*?
 	Module* parent_module;
-	HighlightedTextSlice name;
+	String name;
 	DocComment doc_comment;
 	HighlightedText text;
 	List {HighlightedTextSlice} attributes;
 }
 
+fn String DataBase.get_name(&self) @dynamic => self.name;
 fn bool DataBase.is_private(&self) @dynamic => self.attributes.contains({"@private", {}});
 fn bool DataBase.is_hidden(&self) @dynamic => self.attributes.contains({"@local", {}});
 // fn String DataBase.get_short_description(&self, Allocator alloc) @dynamic => self.doc_comment.get_short_description(alloc);

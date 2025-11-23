@@ -143,7 +143,6 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 				assert(current_mod.sections.len() != 0);
 
 				Global glob = create_global(alloc, current_mod);
-				String name;
 				glob.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
 				{
@@ -167,8 +166,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 										unreachable("unexpected global type '%s'", type);
 								}
 							case "name":
-								name = text;
-								glob.name = glob.text.slice_matching(text)!!;
+								glob.name = text.copy(alloc);
 							case "value":
 								// glob.val = text.copy(alloc);
 								break;
@@ -181,7 +179,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						}
 					}
 					glob.doc_comment = comment;
-					current_mod.sections[^1].global_namespace[name] = allocator::clone(alloc, glob);
+					current_mod.sections[^1].global_namespace[glob.name] = allocator::clone(alloc, glob);
 					comment = {};
 				};
 
@@ -199,7 +197,6 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 
 				Func func = create_function(alloc, current_mod);
 				func.text = collect_data(alloc, node, data);
-				String name;
 				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
 				{
 					Param p;
@@ -213,14 +210,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 							case "return":
 								func.return_type.set(text.copy(alloc));
 							case "name":
-								func.name = func.text.slice_matching(text)!!;
+								func.name = text.copy(alloc);
 							case "macro":
 								func.macro_ = true;
 							// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
 							case "param.name":
-								name = text;
 								p.name = text.copy(alloc);
-								switch (String pname = capture.node.type())
+								switch (String name = capture.node.type())
 								{
 									case "ident":
 										p.kind = REGULAR;
@@ -229,7 +225,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 									case "hash_ident":
 										p.kind = EXPR;
 									default:
-										unreachable("unexpected param '%s'", pname);
+										unreachable("unexpected param '%s'", name);
 								}
 								func.params.push(p);
 								p = {};
@@ -247,7 +243,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 						}
 					}
 					func.doc_comment = comment;
-					current_mod.sections[^1].global_namespace[name] = allocator::clone(alloc, func);
+					current_mod.sections[^1].global_namespace[func.name] = allocator::clone(alloc, func);
 					comment = {};
 				};
 			case "doc_comment":
@@ -324,15 +320,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 
 				Struct struc = create_struct(alloc, current_mod);
 				struc.text = collect_data(alloc, node, data);
-				String struct_name;
 				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
 					switch (name)
 					{
 						case "name":
-							struct_name = text;
-							struc.name = struc.text.slice_matching(text)!!;
+							struc.name = text.copy(alloc);
 						case "attr":
 							struc.attributes.push(struc.text.slice_matching(text)!!);
 						case "member":
@@ -344,7 +338,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					}
 				};
 				struc.doc_comment = comment;
-				current_mod.sections[^1].global_namespace[struct_name] = allocator::clone(alloc, struc);
+				current_mod.sections[^1].global_namespace[struc.name] = allocator::clone(alloc, struc);
 				comment = {};
 			case "enum_declaration":
 				// Handle files without module declarations/with code before a module declaration
@@ -359,15 +353,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 
 				Enum enum_ = create_enum(alloc, current_mod);
 				enum_.text = collect_data(alloc, node, data);
-				String enum_name;
 				query_cursor::@exec_captures(query_cursor, enum_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
 					switch (name)
 					{
 						case "name":
-							enum_name = text;
-							enum_.name = enum_.text.slice_matching(text)!!;
+							enum_.name = text.copy(alloc);
 						case "attr":
 							enum_.attributes.push(enum_.text.slice_matching(text)!!);
 						case "interface":
@@ -381,7 +373,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					}
 				};
 				enum_.doc_comment = comment;
-				current_mod.sections[^1].global_namespace[enum_name] = allocator::clone(alloc, enum_);
+				current_mod.sections[^1].global_namespace[enum_.name] = allocator::clone(alloc, enum_);
 				comment = {};
 			case "bitstruct_declaration":
 				// Handle files without module declarations/with code before a module declaration
@@ -396,15 +388,13 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 
 				BitStruct bitstruc = create_bitstruct(alloc, current_mod);
 				bitstruc.text = collect_data(alloc, node, data);
-				String bitstruct_name;
 				query_cursor::@exec_captures(query_cursor, bitstruct_query, node; TSQueryCapture capture, String name)
 				{
 					String text = substitiute_with_table(tmem, capture.get_text(data));
 					switch (name)
 					{
 						case "name":
-							bitstruct_name = text;
-							bitstruc.name = bitstruc.text.slice_matching(text)!!;
+							bitstruc.name = text.copy(alloc);
 						case "attr":
 							bitstruc.attributes.push(bitstruc.text.slice_matching(text)!!);
 						case "interface":
@@ -418,7 +408,7 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					}
 				};
 				bitstruc.doc_comment = comment;
-				current_mod.sections[^1].global_namespace[bitstruct_name] = allocator::clone(alloc, bitstruc);
+				current_mod.sections[^1].global_namespace[bitstruc.name] = allocator::clone(alloc, bitstruc);
 				comment = {};
 			case "import_declaration":
 				// Handle files without module declarations/with code before a module declaration
