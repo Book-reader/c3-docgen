@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1759433255,
-        "narHash": "sha256-/XcYg/wDZuc4yOogNjXRKp4auv74xxviNF1AMRxr/iI=",
+        "lastModified": 1764465780,
+        "narHash": "sha256-otoa2nLzH5eei3abRHl54slp1rMzuziQmUldS9mNTGw=",
         "owner": "c3lang",
         "repo": "c3c",
-        "rev": "e0fbe31f004d47f5177e10373b1b39c3285042e3",
+        "rev": "a2aa9fae6b9f66784e9cc849cb1ad4b4ba15e9c1",
         "type": "github"
       },
       "original": {

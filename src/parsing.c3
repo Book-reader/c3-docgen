@@ -1,6 +1,6 @@
 module docgen;
 import std::collections::list;
-import std::collections::pair;
+import std::collections::maybe;
 import std::io;
 
 import ts;
@@ -19,8 +19,8 @@ macro list_with(Allocator alloc, ...)
 	return l;
 }
 
-alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
-alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
+// alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
+// alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
 
 TSQuery* module_query;
@@ -60,9 +60,9 @@ fn void deinit_module_queries() @finalizer
 	query::delete(alias_query);
 }
 
-fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data, String file_name) => @pool()
+fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, String file_data, String file_name) => @pool()
 {
-	TSTree* parse_tree = parser::parse_string(parser, null, data);
+	TSTree* parse_tree = parser::parse_string(parser, null, file_data);
 	defer ts::tree_delete(parse_tree);
 	TSNode root_node = ts::tree_root_node(parse_tree);
 
@@ -84,17 +84,39 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 
 	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;
-	Module* current_mod = root;
+	Module* current_mod = root_module;
 	do
 	{
 		TSNode node = cursor::current_node(&cursor);
 		// io::printfn("a: %s", node.type());
-		TSTreeCursor pos = cursor::copy(&cursor);
-		defer cursor::delete(&pos);
+		// TSTreeCursor pos_backup = cursor::copy(&cursor);
+		// defer cursor::delete(&pos_backup);
+		// TODO: error when encountering the ERROR node
 		switch MAIN: (node.type())
 		{
 			case "module_declaration":
-				query_cursor::@exec(query_cursor, module_query, node; TSQueryMatch* match)
+				parse_module_declaration(alloc, root_module, &current_mod, &cursor, file_data, &comment);
+/*				query_cursor::@exec_captures(query_cursor, module_name_query, node; TSQueryCapture capture, String name)
+				{
+					String text = capture.get_text(data);
+/*					switch (name)
+					{
+						case "new_modulename":
+							new_name = text.copy(alloc);
+							is_module = true;
+						case "new_typename":
+							new_name = text.copy(alloc);
+						case "orig_module":
+							orig_path.push(text.copy(alloc));
+						case "orig_name":
+							orig_name = text.copy(alloc);
+						default:
+							unreachable("unexpected '%s'", name);
+					}*/
+				};*/
+				// comment = {};
+
+/*				query_cursor::@exec(query_cursor, module_query, node; TSQueryMatch* match)
 				{
 					current_mod = root;
 					// io::printfn("matched on %s", match.capture_count);
@@ -130,8 +152,8 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					// if (sec.attributes.len() != 0) abort("%s", sec.attributes);
 					current_mod.sections.push(sec);
 					comment = {};
-				};
-			case "global_declaration":
+				};*/
+/*			case "global_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
 				{
@@ -490,14 +512,107 @@ fn void get_modules(Allocator alloc, Module* root, TSParser* parser, String data
 					// al.text = collect_data(alloc, node, data);
 					// current_mod.sections[^1].data.push(al);
 				}
-				comment = {};
+				comment = {};*/
 			default:
 				comment = {};
 		}
-		cursor::reset_to(&cursor, &pos);
+		// cursor::reset_to(&cursor, &pos);
 	} while (@ok(cursor::goto_next_sibling(&cursor)));
 }
 
+// TODO: replace all `unreachable(...)` and `!!` with an error log and return a fault
+fn void parse_module_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSTreeCursor* cursor, String file_data, DocComment* comment)
+{
+	TSTreeCursor pos = cursor::copy(cursor);
+	defer cursor::delete(&pos);
+	cursor::goto_first_child(&pos) ?? unreachable(`module declaration had no children (should *NEVER* happen)`);
+	*current_mod = root_module;
+	// Find the module path
+	while (true)
+	{
+		String? field_name = cursor::current_field_name(&pos);
+		if (try field_name && field_name == "path") break;
+		cursor::goto_next_sibling(&pos) ?? unreachable(`module declaration without "path" field (did the C3 tree-sitter change something?)`);
+	}
+	cursor::goto_first_child(&pos) ?? unreachable("module declaration path was empty");
+
+	// Navigate to the module, creating any submodules as necessary
+	do
+	{
+		TSNode mod_path_node = cursor::current_node(&pos);
+		switch (String name = mod_path_node.type())
+		{
+			case "module_resolution":
+				cursor::goto_first_child(&pos) ?? unreachable("Module resolution had no children");
+				while (true)
+				{
+					mod_path_node = cursor::current_node(&pos);
+					if (mod_path_node.type() == "ident") break;
+					cursor::goto_next_sibling(&pos) ?? unreachable("module resolution had no 'ident'");
+				}
+				cursor::goto_parent(&pos)!!;
+				nextcase;
+			case "ident":
+				String mod_path = mod_path_node.get_text(file_data);
+				io::printfn("mod path: %s", mod_path);
+				*current_mod = (*current_mod).children.@get_or_set(mod_path, new_module(alloc, parent: maybe::value(*current_mod), name: maybe::value(mod_path.copy(alloc)), generic_params: maybe::EMPTY));
+			case "::":
+			case "block_comment":
+			case "doc_comment":
+			case "line_comment":
+				break;
+			default:
+				unreachable("Unexpected node type '%s' in module path", name);
+		}
+	} while (@ok(cursor::goto_next_sibling(&pos)));
+
+	// Add generic params to the module if they exist
+	cursor::goto_parent(&pos)!!;
+	while (@ok(cursor::goto_next_sibling(&pos)))
+	{
+		if (cursor::current_node(&pos).type() == "generic_param_list")
+		{
+			break;
+		}
+	}
+	if (cursor::current_node(&pos).type() == "generic_param_list" &&
+		!(*current_mod).generic_params.has_value /* We don't want to add extra params to a module that already has generic params */)
+	{
+		cursor::goto_first_child(&pos) ?? unreachable("Generic param list had no children");
+		GenericParams params;
+		params.init(alloc);
+
+		do
+		{
+			TSNode generic_param_node = cursor::current_node(&pos);
+			switch (String name = generic_param_node.type())
+			{
+				case "const_ident":
+					params.push(new_generic_param(generic_param_node.get_text(file_data).copy(alloc), CONST));
+				case "type_ident":
+					params.push(new_generic_param(generic_param_node.get_text(file_data).copy(alloc), TYPE));
+				case "{":
+				case "}":
+				case ",":
+				case "block_comment":
+				case "doc_comment":
+				case "line_comment":
+					break;
+				default:
+					unreachable("Unexpected node type '%s' in generic parameter list", name);
+			}
+		} while (@ok(cursor::goto_next_sibling(&pos)));
+
+		(*current_mod).generic_params = maybe::value(params);
+		// TODO: also add these generic params into the namespace so that they can be jumped to like normal but point to the module definition instead of a specific type definition
+	}
+
+	// Add a new module section to the module
+	(*current_mod).sections.push(new_module_section(alloc, doc_comment: maybe::value(*comment)));
+	*comment = {};
+}
+
+/*
 // What this would do is take in the token, iterate over all its children, and build a string of the content with comments and extra spacing removed
 // Not needed yet though
 // fn String re_stringify(Allocator alloc, TSNode node)
@@ -654,6 +769,7 @@ const REPLACE_TABLE = const_map::@new_equal{char, String}(
 	{'\'', "&apos;"},
 );
 
+// TODO: I am doing this in completely the wrong place, I should be doing text replacement when I'm printing the text into the file
 macro substitiute_with_table(Allocator alloc, String text) => @pool()
 {
 	List {String} replaced;
@@ -684,7 +800,7 @@ macro substitiute_with_table(Allocator alloc, String text) => @pool()
 	new.attributes.add_array(attributes);
 	return new;
 }*/
-
+*/
 module ts::query_cursor;
 
 macro void @exec_captures(TSQueryCursor* cursor, TSQuery* query, TSNode node; @body(TSQueryCapture capture, String capture_name)) {
