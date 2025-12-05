@@ -75,6 +75,7 @@ macro Module.@iter_children(&self; @body(Module* mod)) => @pool()
 
 fn String Module.get_overview_file_name(&self, Allocator alloc) => @pool()
 {
+	if (!self.name.has_value && !self.parent.has_value) return "index.md".copy(alloc);
 	DString str;
 	str.tinit();
 
@@ -83,7 +84,7 @@ fn String Module.get_overview_file_name(&self, Allocator alloc) => @pool()
 		if (i != 0) str.append(".");
 		str.appendf("%s", path);
 	}
-	str.append(".html");
+	str.append(".md");
 
 	return str.copy_str(alloc);
 }
@@ -108,6 +109,7 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 	full_path.reverse();
 	return full_path.to_array(alloc);
 }
+
 
 /*
  ModuleSection definitions
@@ -165,15 +167,49 @@ fn ModuleSection new_module_section(Allocator alloc, Maybe {DocComment} doc_comm
 struct GenericParam
 {
 	GenericParamType type;
-	HighlightedToken data;
+	HighlightedText data;
 }
 
 fn GenericParam new_generic_param(String data, GenericParamType type)
 {
-	return {type, {data, type == CONST ? CONSTANT : TYPE}};
+	return {type, {data, {{0, data.len, type == CONST ? CONSTANT : TYPE}}}};
 }
 
 enum GenericParamType : char { CONST, TYPE }
+
+
+/*
+ Global definitions
+*/
+alias Strings = List {String};
+struct Global
+{
+	HighlightedText text; // The full declaration including value
+	HighlightedToken name;
+	Maybe {HighlightedText} type;
+	Maybe {Strings} attributes;
+	Maybe {DocComment} doc_comment;
+	// TODO: `Type` would be a struct that handles all possible cases of type name directly with/without module path, `$typeof`/`$typefrom`, and generic types
+	//  I'd use this to have jump to definition for types that support it
+	// Maybe {Type} type;
+}
+
+fn Global new_global(Allocator alloc, HighlightedText text, HighlightedToken name, Maybe {HighlightedText} type, Maybe {Strings} attributes)
+{
+	Global new;
+	unreachable();
+}
+
+
+/*
+ Struct Declarations
+*/
+// TODO
+/*struct Struct
+{
+	HashMap {String, HighlightedText} members; // TODO: struct members can also have doc comments
+}*/
+
 
 /*
  Unimplemented definitions
@@ -185,7 +221,6 @@ typedef Function = void*;
 typedef BitStruct = void*;
 typedef TypeAlias = void*;
 typedef ValueAlias = void*;
-typedef Global = void*;
 typedef Import = void*;
 typedef ImportAlias = void*;
 
@@ -194,10 +229,110 @@ typedef ImportAlias = void*;
 */
 struct HighlightedToken
 {
-	String data;
+	usz start;
+	uint len; // The 4294967296 character token:
 	HighlightedTokenType type;
 }
-enum HighlightedTokenType : char { DEFAULT, NUMBER_LITERAL, STRING_LITERAL, KEYWORD, TYPE, CONSTANT, COMMENT }
+enum HighlightedTokenType : char { DEFAULT, NUMBER_LITERAL, STRING_LITERAL, BOOLEAN, KEYWORD, TYPE, CONSTANT, COMMENT, BUILTIN }
 
-alias HighlightedText = HighlightedToken[];
-alias HighlightedTextBuilder = List {HighlightedToken};
+fn usz? HighlightedToken.to_string(&self, Formatter* fmt, String data)
+{
+	// fmt.printf(`<span class="DataType_%s DataType">%s</span>`, highlight.type, self.data[highlight.start:highlight.len]);
+	// abort("Unimplemented: %s", $$FUNC);
+	Ansi ansi;
+	switch (self.type)
+	{
+		case BOOLEAN:
+			ansi = RED;
+		case CONSTANT:
+			ansi = MAGENTA;
+		default:
+			ansi = RESET;
+	}
+	return fmt.printf("%s%s%s", ansi, self.get_text(data), Ansi.RESET);
+}
+fn String HighlightedToken.get_text(&self, String data) => data[self.start:self.len];
+fn usz HighlightedToken.end_inclusive(&self) => self.start + self.len;
+fn usz HighlightedToken.end_exclusive(&self) => self.end_inclusive() - 1;
+
+
+<*
+ An explicitly unowned string. This has no affect on semantics
+ but is helpful to remember
+*>
+alias SubString = String;
+struct HighlightedText (Printable)
+{
+	String data; // This is the main string data that the HighlightedTokens have a slice of
+	HighlightedToken[] highlighted;
+}
+
+fn usz? HighlightedText.to_format(&self, Formatter* fmt) @dynamic => self.to_format_internal(fmt, true);
+
+macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print_before_and_after)
+{
+	usz? n;
+
+	foreach (i, highlight : self.highlighted)
+	{
+		// TODO: why did the old version have this?
+		// if (highlight.type == END) break;
+		if ($print_before_and_after && i == 0)
+		{
+			n += fmt.printf(self.data[:highlight.start]);
+		}
+		else if (i != 0 && self.highlighted[i - 1].end_exclusive() < highlight.start)
+		{
+			// Print the text between the current token and now
+			n += fmt.printf(self.data[self.highlighted[i - 1].start + self.highlighted[i - 1].len:highlight.start - self.highlighted[i - 1].end_inclusive()]);
+		}
+		n += highlight.to_string(fmt, self.data);
+	}
+	if (self.highlighted.len == 0)
+	{
+		n += fmt.printf(self.data);
+	}
+	else if ($print_before_and_after/* && self.highlighted[^1].type != END*/)
+	{
+		n += fmt.printf(self.data[self.highlighted[^1].end_inclusive()..]);
+	}
+	return n;
+}
+
+/*
+ DocGenType declarations
+*/
+struct DocGenType
+{
+	DocGenTypeKind type;
+	HighlightedText text;
+	// TODO
+/*	union
+	{
+		HighlightedToken builtin;
+		struct plain
+		{
+			HighlightedToken name;
+			List {}
+		}
+		struct generic
+		{
+			HighlightedToken base;
+			List {}
+		}
+		HighlightedText typeof;
+	}*/
+}
+
+fn DocGenType new_docgen_type(Allocator alloc, )
+{
+	unreachable();
+}
+
+enum DocGenTypeKind : char
+{
+	BUILTIN, // Things like `int`
+	PLAIN, // Things like `String` and `IntList`
+	GENERIC, // Things like `List {int}`
+	TYPEOF // Things like `$typeof(1)` and `$typefrom($my_typeid)`
+}

@@ -22,6 +22,10 @@ macro list_with(Allocator alloc, ...)
 // alias GlobalAbomination = List {Pair {Global*, ModuleSection*}};
 // alias FuncAbomination = List {Pair {Func*, ModuleSection*}};
 
+// The highlights query from https://github.com/c3lang/tree-sitter-c3/blob/main/queries/highlights.scm
+// This *must* be updated alongside libtree-sitter-c3.a since it relies on the output of the specific version of the c3 tree-sitter
+// TODO: maybe move it into tree_sitter_c3.c3l?
+const HIGHLIGHTS_QUERY = $embed("../resources/highlights.scm");
 
 TSQuery* module_query;
 TSQuery* global_query;
@@ -31,6 +35,7 @@ TSQuery* enum_query;
 TSQuery* bitstruct_query;
 TSQuery* import_query;
 TSQuery* alias_query;
+TSQuery* highlight_query;
 
 fn void init_module_queries() @init
 {
@@ -45,6 +50,7 @@ fn void init_module_queries() @init
 	bitstruct_query = query::new(tsc3::language(), `(bitstruct_declaration name: (type_ident) @name (interface_impl_list [(path_type_ident) @interface (_) ","]+)? (type)? @type (attributes [(attribute) @attr (_)]+)? body: (bitstruct_body [ (bitstruct_member_declaration) @member (_) ]+) )`)!!;
 	import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
 	alias_query = query::new(tsc3::language(), `[ ( (type_ident) @new_typename (type (path_type_ident (module_resolution (ident) @orig_module)* (type_ident) @orig_name))) ( (ident) @new_modulename "module" (path_ident ((module_resolution (ident) @orig_module)* (ident) @orig_name))) ]`)!!;
+	highlight_query = query::new(tsc3::language(), HIGHLIGHTS_QUERY)!!;
 }
 
 fn void deinit_module_queries() @finalizer
@@ -69,7 +75,15 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 	log::info("Parsing file '%s'", file_name);
 	// init_module_queries();
 	// defer deinit_module_queries();
-	assert(module_query != null && global_query != null && func_query != null && struct_query != null && enum_query != null && bitstruct_query != null && import_query != null && alias_query != null);
+	assert(module_query != null
+			&& global_query != null
+			&& func_query != null
+			&& struct_query != null
+			&& enum_query != null
+			&& bitstruct_query != null
+			&& import_query != null
+			&& alias_query != null
+			&& highlight_query != null);
 
 	TSTreeCursor cursor = cursor::new(root_node);
 	defer cursor::delete(&cursor);
@@ -96,74 +110,11 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 		{
 			case "module_declaration":
 				parse_module_declaration(alloc, root_module, &current_mod, &cursor, file_data, &comment);
-/*				query_cursor::@exec_captures(query_cursor, module_name_query, node; TSQueryCapture capture, String name)
-				{
-					String text = capture.get_text(data);
-/*					switch (name)
-					{
-						case "new_modulename":
-							new_name = text.copy(alloc);
-							is_module = true;
-						case "new_typename":
-							new_name = text.copy(alloc);
-						case "orig_module":
-							orig_path.push(text.copy(alloc));
-						case "orig_name":
-							orig_name = text.copy(alloc);
-						default:
-							unreachable("unexpected '%s'", name);
-					}*/
-				};*/
-				// comment = {};
-
-/*				query_cursor::@exec(query_cursor, module_query, node; TSQueryMatch* match)
-				{
-					current_mod = root;
-					// io::printfn("matched on %s", match.capture_count);
-					ModuleSection sec;
-					sec.init(alloc);
-					sec.text = collect_data(alloc, node, data);
-					foreach (i, capture : match.captures[:match.capture_count])
-					{
-						uint len;
-						String text = substitiute_with_table(tmem, capture.get_text(data));
-
-						switch (String match_name = ts::query_capture_name_for_id(module_query, capture.index, &len).str_view())
-						{
-							case "path":
-								current_mod = current_mod.children.@get_or_set(text, module_create(alloc, current_mod, text.copy(alloc)));
-							case "param.const":
-								log::debug("found generic const '%s'", text);
-								if (!current_mod.generics_done) current_mod.generic_params.push({.type = CONST, .val = text.copy(alloc)});
-							case "param.type":
-								log::debug("found generic type '%s'", text);
-								if (!current_mod.generics_done) current_mod.generic_params.push({.type = TYPE, .val = text.copy(alloc)});
-							case "attr":
-								log::debug("found module attrs '%s'", text);
-								sec.attributes.push(sec.text.slice_matching(text)!!);
-							default:
-								unreachable("unexpexted '%s'", match_name);
-						}
-					}
-					sec.doc_comment = comment;
-					log::debug("generic params: %s", current_mod.generic_params);
-					// Before I would duplicate generic params if I encountered the same generic module multiple times (eg std::collections::map)
-					current_mod.generics_done = true;
-					// if (sec.attributes.len() != 0) abort("%s", sec.attributes);
-					current_mod.sections.push(sec);
-					comment = {};
-				};*/
-/*			case "global_declaration":
+			case "global_declaration":
 				// Handle files without module declarations/with code before a module declaration
-				if (current_mod == root)
-				{
-					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
-					ModuleSection m;
-					m.init(alloc);
-					current_mod.sections.push(m);
-				}
-				assert(current_mod.sections.len() != 0);
-
+				handle_implicit_module_decl(alloc, root_module, &current_mod, file_name);
+				io::printfn("Highlighted text: %s", highlight_node_text(alloc, query_cursor, node, file_data));
+/*
 				Global glob = create_global(alloc, current_mod);
 				glob.text = collect_data(alloc, node, data);
 				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
@@ -203,8 +154,8 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 					glob.doc_comment = comment;
 					current_mod.sections[^1].global_namespace[glob.name] = allocator::clone(alloc, glob);
 					comment = {};
-				};
-
+				};*/
+/*
 			case "macro_declaration":
 			case "func_definition":
 				// Handle files without module declarations/with code before a module declaration
@@ -520,6 +471,102 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 	} while (@ok(cursor::goto_next_sibling(&cursor)));
 }
 
+<*
+ Automatically creates a module from the current file name if there is no module declaration at the top of the file
+*>
+// TODO: replace invalid character names in the file name with underscores and convert to lowercase
+fn void handle_implicit_module_decl(Allocator alloc, Module* root_module, Module** current_mod, String file_name)
+{
+	if (*current_mod == root_module)
+	{
+		*current_mod = (*current_mod).children.@get_or_set(file_name, new_module(alloc, parent: maybe::value(root_module), name: maybe::value(file_name.copy(alloc)), generic_params: maybe::EMPTY));
+		(*current_mod).sections.push(new_module_section(alloc, doc_comment: maybe::EMPTY));
+	}
+	assert((*current_mod).sections.len() != 0);
+}
+
+<*
+ Takes a tree-sitter node and returns a new HighlightedText with the highlighted version of the data
+*>
+fn HighlightedText highlight_node_text(Allocator alloc, TSQueryCursor* query_cursor, TSNode node, String file_data) => @pool()
+{
+	HighlightedText text;
+	text.data = node.get_text(file_data).copy(alloc);
+	List {HighlightedToken} tokens;
+	tokens.tinit();
+
+	usz start_idx = node.start_byte();
+	query_cursor::@exec_captures(query_cursor, highlight_query, node; TSQueryCapture capture, String name)
+	{
+		HighlightedTokenType type;
+		assert(capture.end_byte() - capture.start_byte() < uint.max); // Just to make sure lol
+		defer tokens.push({capture.start_byte() - start_idx, (uint)(capture.end_byte() - capture.start_byte()), type});
+		switch (name)
+		{
+			case "constant":
+				type = CONSTANT;
+			case "boolean":
+				type = BOOLEAN;
+			case "constant.builtin":
+				type = BUILTIN;
+			case "variable":
+			case "variable.member":
+			case "variable.parameter":
+			case "keyword":
+			case "keyword.directive":
+			case "keyword.debug":
+			case "keyword.function":
+			case "keyword.function":
+			case "keyword.return":
+			case "keyword.import":
+			case "keyword.type":
+			case "keyword.conditional":
+			case "keyword.repeat":
+			case "keyword.modifier":
+			case "operator":
+			case "keyword.conditional.ternary":
+			case "number":
+			case "number.float":
+			case "character":
+			case "number":
+			case "string":
+			case "string.escape":
+			case "constant.builtin":
+			case "variable.builtin":
+			case "label":
+			case "module":
+			case "attribute":
+			case "type":
+			case "type.builtin":
+			case "function":
+			case "function.method":
+			case "function.call":
+			case "function.method.call":
+			case "function.builtin":
+			case "variable.builtin":
+			case "comment":
+			case "comment.documentation":
+			case "spell":
+			case "attribute":
+			case "variable.parameter":
+			case "comment.documentation":
+				nextcase;
+				// io::printfn("got '%s': '%s'", name, capture.get_text(file_data));
+			case "punctuation.bracket":
+			case "punctuation.delimiter":
+				type = DEFAULT;
+			default:
+				unreachable("unexpected '%s'", name);
+		}
+	};
+	text.highlighted = tokens.to_array(alloc);
+	return text;
+}
+
+<*
+ Parses a module declaration such as `module std::collections::list {Type}`
+ and creates the corresponding module section in the module tree
+*>
 // TODO: replace all `unreachable(...)` and `!!` with an error log and return a fault
 fn void parse_module_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSTreeCursor* cursor, String file_data, DocComment* comment)
 {

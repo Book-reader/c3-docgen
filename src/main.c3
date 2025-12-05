@@ -46,19 +46,20 @@ fn int main(String[] args)
 	io::printn(*root_module);
 
 	String root_folder = "docs/";
-	root_module.@iter_all_children(; Module* mod)
+/*	root_module.@iter_all_children(; Module* mod)
 	{
 		@pool()
 		{
 			String file_name = root_folder.tconcat(mod.get_overview_file_name(tmem));
-			File? f = file::open(file_name, "wb");
-			if (catch err = f)
+			File? index_file = file::open(file_name, "wb");
+			if (catch err = index_file)
 			{
 				log::error("Unable to open file '%s': %s", file_name, err);
 			}
-			defer (void)f.close();
+			// io::fprintf(&index_file, "%s\n", mod.format_overview(tmem))!!;
+			defer (void)index_file.close();
 		};
-	};
+	};*/
 /*
 	modules.resolve(alloc, modules);
 
