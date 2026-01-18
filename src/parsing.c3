@@ -36,6 +36,7 @@ TSQuery* bitstruct_query;
 TSQuery* import_query;
 TSQuery* alias_query;
 TSQuery* highlight_query;
+TSQuery* error_query;
 
 fn void init_module_queries() @init
 {
@@ -51,6 +52,7 @@ fn void init_module_queries() @init
 	import_query = query::new(tsc3::language(), `[ (ident) @mod (at_ident) @attr "," @modend ";" @modend ]`)!!;
 	alias_query = query::new(tsc3::language(), `[ ( (type_ident) @new_typename (type (path_type_ident (module_resolution (ident) @orig_module)* (type_ident) @orig_name))) ( (ident) @new_modulename "module" (path_ident ((module_resolution (ident) @orig_module)* (ident) @orig_name))) ]`)!!;
 	highlight_query = query::new(tsc3::language(), HIGHLIGHTS_QUERY)!!;
+	error_query = query::new(tsc3::language(), `(ERROR) @error`)!!;
 }
 
 fn void deinit_module_queries() @finalizer
@@ -83,7 +85,8 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 			&& bitstruct_query != null
 			&& import_query != null
 			&& alias_query != null
-			&& highlight_query != null);
+			&& highlight_query != null
+			&& error_query != null);
 
 	TSTreeCursor cursor = cursor::new(root_node);
 	defer cursor::delete(&cursor);
@@ -94,7 +97,12 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 	assert (cursor::current_node(&cursor).type() == "source_file");
 	if (catch cursor::goto_first_child(&cursor)) return;
 
-	// TODO: before scanning over file, first check for ERROR node and abort if found
+	query_cursor::@exec_captures(query_cursor, error_query, root_node; TSQueryCapture capture, String name)
+	{
+		log::error("Suntax error found in C3 file, make sure to use a version of the C3 tree-sitter parser compatible with your C3 source code");
+		log::error("Syntax error start:\n%s%s%s", Ansi.RED, capture.node.get_text(file_data), Ansi.RESET);
+		abort(); // TODO: return error from this function
+	};
 
 	// TODO: do something like 'if (try goto_parent && try goto_prev_sibling && sibling == doc_comment) extract_doc_comment' instead of what I currently do so I can get comments in things like struct members as well
 	DocComment comment;

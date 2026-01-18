@@ -4,3 +4,6 @@
 [submodule "lib/closures.c3l"]
 	path = lib/closures.c3l
 	url = https://github.com/Book-reader/closures.c3l.git
+[submodule "test_stdlib"]
+	path = test_stdlib
+	url = https://github.com/c3lang/c3c

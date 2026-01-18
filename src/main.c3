@@ -117,14 +117,14 @@ fn void? parse_all_files(Allocator alloc, TSParser* parser, Module* root_module,
 			if (catch err = path)
 			{
 				log::error("Path '%s' is invalid", path_name);
-				return err?;
+				return ^err;
 			}
 			if (path::is_file(path))
 			{
 				if (@catch(path.extension()) || (path.extension()!! != ".c3" && path.extension()!! != ".c3i"))
 				{
 					log::error("File '%s' is not a c3 file", path_name);
-					return io::INVALID_FORMAT?;
+					return ^io::INVALID_FORMAT;
 				}
 				files.push(path);
 			}
@@ -140,7 +140,7 @@ fn void? parse_all_files(Allocator alloc, TSParser* parser, Module* root_module,
 				if (catch err = res)
 				{
 					log::error("Error while traversing path: %s", err);
-					return err?;
+					return ^err;
 				}
 			}
 		}
@@ -151,7 +151,7 @@ fn void? parse_all_files(Allocator alloc, TSParser* parser, Module* root_module,
 			if (catch err = file_data)
 			{
 				log::error("Unable to read file '%s': %s", file, err);
-				return err?;
+				return ^err;
 			}
 			parse_file(alloc, root_module, parser, file_data, file.basename()[:^file.extension().len + 1]!!);
 		};
@@ -161,7 +161,7 @@ fn void? parse_all_files(Allocator alloc, TSParser* parser, Module* root_module,
 fn int stringcmp(String a, String b)
 {
 	int res;
-	foreach (i, c : a[:math::min(a.len, b.len)])
+	foreach (i, c : a[:min(a.len, b.len)])
 	{
 		if (c > b[i])
 		{
@@ -347,13 +347,13 @@ fn void delete(TSTreeCursor* self) => ts::tree_cursor_delete(self);
 fn void reset(TSTreeCursor* self, TSNode node) => ts::tree_cursor_reset(self, node);
 fn void reset_to(TSTreeCursor* dst, TSTreeCursor* src) => ts::tree_cursor_reset_to(dst, src);
 fn TSNode current_node(TSTreeCursor* self) => ts::tree_cursor_current_node(self);
-fn String? current_field_name(TSTreeCursor* self) => (ts::tree_cursor_current_field_name(self) ?: NO_NAME?).str_view();
+fn String? current_field_name(TSTreeCursor* self) => (ts::tree_cursor_current_field_name(self) ?: ^NO_NAME).str_view();
 fn TSFieldId current_field_id(TSTreeCursor* self) => ts::tree_cursor_current_field_id(self);
-fn void? goto_parent(TSTreeCursor* self) => ts::tree_cursor_goto_parent(self) ? ret_void() : NONE_REMAINING?;
-fn void? goto_next_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_next_sibling(self) ? ret_void() : NONE_REMAINING?;
-fn void? goto_previous_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_previous_sibling(self) ? ret_void() : NONE_REMAINING?;
-fn void? goto_first_child(TSTreeCursor* self) => ts::tree_cursor_goto_first_child(self) ? ret_void() : NONE_REMAINING?;
-fn void? goto_last_child(TSTreeCursor* self) => ts::tree_cursor_goto_last_child(self) ? ret_void() : NONE_REMAINING?;
+fn void? goto_parent(TSTreeCursor* self) => ts::tree_cursor_goto_parent(self) ? ret_void() : ^NONE_REMAINING;
+fn void? goto_next_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_next_sibling(self) ? ret_void() : ^NONE_REMAINING;
+fn void? goto_previous_sibling(TSTreeCursor* self) => ts::tree_cursor_goto_previous_sibling(self) ? ret_void() : ^NONE_REMAINING;
+fn void? goto_first_child(TSTreeCursor* self) => ts::tree_cursor_goto_first_child(self) ? ret_void() : ^NONE_REMAINING;
+fn void? goto_last_child(TSTreeCursor* self) => ts::tree_cursor_goto_last_child(self) ? ret_void() : ^NONE_REMAINING;
 fn void goto_descendant(TSTreeCursor* self, uint goal_descendant_index) => ts::tree_cursor_goto_descendant(self, goal_descendant_index);
 fn uint current_descendant_index(TSTreeCursor* self) => ts::tree_cursor_current_descendant_index(self);
 fn uint current_depth(TSTreeCursor* self) => ts::tree_cursor_current_depth(self);
@@ -370,5 +370,5 @@ module std::collections::list {Type};
 fn Type? List.get_try(&self, usz idx)
 {
 	if (idx < self.size) return self.entries[idx];
-	return NOT_FOUND?;
+	return ^NOT_FOUND;
 }
