@@ -168,13 +168,13 @@ fn ModuleSection new_module_section(Allocator alloc, Maybe {DocComment} doc_comm
 */
 struct GenericParam
 {
+	HighlightedText text;
 	GenericParamType type;
-	HighlightedText data;
 }
 
-fn GenericParam new_generic_param(String data, GenericParamType type)
+fn GenericParam new_generic_param(String text, GenericParamType type)
 {
-	return {type, {0, data, {{0, data.len, type == CONST ? CONSTANT : TYPE}}}};
+	return {{0, text, {{0, text.len, type == CONST ? CONSTANT : TYPE}}}, type};
 }
 
 enum GenericParamType : char { CONST, TYPE }
@@ -248,8 +248,8 @@ fn Function new_function
 */
 struct FunctionParam
 {
-	FunctionParamType param_type;
 	HighlightedText text; // A slice into the parent Function's HighlightedText
+	FunctionParamType param_type;
 	String name;
 	Maybe {HighlightedText} type;
 	Maybe {HighlightedText} default_value;
@@ -265,15 +265,65 @@ enum FunctionParamType : char
 
 fn FunctionParam new_function_param
 (
-	FunctionParamType param_type,
 	HighlightedText text,
+	FunctionParamType param_type,
 	String name,
 	Maybe {HighlightedText} type,
 	Maybe {HighlightedText} default_value,
 )
 {
-	return {param_type, text, name, type, default_value};
+	return {text, param_type, name, type, default_value};
 }
+
+
+/*
+ DocComment definitions
+*/
+struct DocComment
+{
+	HighlightedText text;
+	Maybe {String} comment;
+	Maybe {DocCommentContract[]} contracts;
+}
+
+fn DocComment new_doc_comment(HighlightedText text, Maybe {String} comment, Maybe {DocCommentContract[]} contracts)
+{
+	return {text, comment, contracts};
+}
+
+
+/*
+ DocCommentContract definitions
+*/
+struct DocCommentContract
+{
+	DocCommentContractType type;
+	String name; // eg `@require`
+	Maybe {HighlightedText} expression; // eg x == 1
+	Maybe {String} message;
+}
+
+fn DocCommentContract new_doc_comment_contract(DocCommentContractType type, String name, Maybe {HighlightedText} expression, Maybe {String} message)
+{
+	return {type, name, expression, message};
+}
+
+
+/*
+ DocCommentContractType definitions
+*/
+enum DocCommentContractType : char
+{
+	ENSURE,
+	REQUIRE,
+	RETURN,
+	RETURN_FAULT,
+	PARAM,
+	PURE,
+	DEPRECATED,
+	CUSTOM,
+}
+
 
 /*
  Struct definitions
@@ -288,7 +338,6 @@ fn FunctionParam new_function_param
 /*
  Unimplemented definitions
 */
-typedef DocComment = void*;
 typedef Struct = void*;
 typedef Enum = void*;
 typedef BitStruct = void*;

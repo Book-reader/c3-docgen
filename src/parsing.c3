@@ -125,15 +125,15 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 			case "func_definition":
 				parse_function_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
 
-			/*
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);
 				defer cursor::delete(&cc);
 
-				comment = {};
-				comment.contracts.init(alloc);
-				comment.description.init(alloc);
-				Contract contract;
+				HighlightedText doc_comment_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
+				DString doc_comment_comment;
+				doc_comment_comment.tinit();
+				List {DocCommentContract} doc_comment_contracts;
+				doc_comment_contracts.tinit();
 
 				cursor::goto_first_child(&cc)!!;
 				if (catch cursor::goto_next_sibling(&cc)) break;
@@ -142,7 +142,7 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 				if (cc.node().type() == "doc_comment_text")
 				{
 					String starting_chars;
-					Splitter splitter  = substitiute_with_table(tmem, cc.node().get_text(data)).tokenize_all("\n");
+					Splitter splitter  = cc.node().get_text(file_data).tokenize_all("\n");
 					while (try line = splitter.next())
 					{
 						if (starting_chars.ptr == null && line.trim() != "" && line.len != line.trim_left().len)
@@ -150,44 +150,50 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 							starting_chars = line[:line.len - line.trim_left().len];
 						}
 						String line_trim = starting_chars.ptr == null || line.len < starting_chars.len || line[:starting_chars.len] != starting_chars ? line : line[starting_chars.len..];
-						comment.description.push(line_trim.copy(alloc));
+						doc_comment_comment.append(line_trim.copy(alloc));
 					}
-					if (comment.description.len() > 0 && comment.description[^1] == "") comment.description.pop()!!;
+					// if (comment.description.len() > 0 && comment.description[^1] == "") comment.description.pop()!!;
 					if (catch cursor::goto_next_sibling(&cc)) break;
 				}
 
+				// TODO: this seems like it needs to be a do-while instead? it might cut off the first contract
 				while (try cursor::goto_next_sibling(&cc) && cc.node().type() != "*>")
 				{
-					if (contract.name.ptr)
-					{
-						comment.contracts.push(contract);
-						contract = {};
-					}
+					DocCommentContractType doc_comment_contract_type;
+					String doc_comment_contract_name;
 
 					assert(cc.node().type() == "doc_comment_contract");
 					cursor::goto_first_child(&cc)!!;
 					defer cursor::goto_parent(&cc)!!;
 
 					assert(cursor::current_field_name(&cc)!! == "name");
-					contract.name = cc.node().get_text(data).copy(alloc);
-					switch (contract.name)
+					doc_comment_contract_name = cc.node().get_text(file_data).copy(alloc);
+					switch (doc_comment_contract_name)
 					{
-						case "@ensure": contract.type = ENSURE;
-						case "@require": contract.type = REQUIRE;
-						case "@return": contract.type = RETURN;
-						case "@param": contract.type = PARAM;
-						case "@pure": contract.type = PURE;
-						default: contract.type = CUSTOM;
+						case "@ensure": doc_comment_contract_type = ENSURE;
+						case "@require": doc_comment_contract_type = REQUIRE;
+						case "@return": doc_comment_contract_type = RETURN;
+						case "@param": doc_comment_contract_type = PARAM;
+						case "@pure": doc_comment_contract_type = PURE;
+						case "@deprecated": doc_comment_contract_type = DEPRECATED;
+						default: doc_comment_contract_type = CUSTOM;
 					}
+
+					doc_comment_contracts.push(new_doc_comment_contract(
+												type: doc_comment_contract_type,
+												name: doc_comment_contract_name,
+												expression: maybe::EMPTY, // TODO
+												message: maybe::EMPTY, // TODO
+											));
 				}
 
-				if (contract.name.ptr)
-				{
-					comment.contracts.push(contract);
-					contract = {};
-				}
+				comment = new_doc_comment(
+								text: doc_comment_text,
+								comment: doc_comment_comment.len() ? maybe::value(doc_comment_comment.copy_str(alloc)) : maybe::EMPTY,
+								contracts: doc_comment_contracts.len() ? maybe::value(doc_comment_contracts.to_array(alloc)) : maybe::EMPTY,
+							);
 			// NOTE: also handles unions
-			case "struct_declaration":
+/*			case "struct_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
 				{
