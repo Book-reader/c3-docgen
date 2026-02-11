@@ -123,104 +123,8 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 
 			case "macro_declaration":
 			case "func_definition":
-				// Handle files without module declarations/with code before a module declaration
-				handle_implicit_module_decl(alloc, root_module, &current_mod, file_name);
+				parse_function_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
 
-				HighlightedText function_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
-				String function_name;
-				bool function_is_macro;
-				Maybe {HighlightedText} function_method_type;
-				Maybe {HighlightedText} function_return_type;
-				List {String} function_attributes;
-				function_attributes.tinit();
-				List {FunctionParam} function_parameters;
-				function_parameters.tinit();
-
-				// FunctionParamType function_param_param_type;
-				// HighlightedText function_param_text;
-				// String function_param_name;
-				// Maybe {HighlightedText} function_param_type;
-
-				query_cursor::@exec_captures(query_cursor, func_query, current_node; TSQueryCapture capture, String capture_name)
-				{
-					String text = capture.get_text(file_data);
-
-					switch (capture_name) // (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
-					{
-						case "return":
-							function_return_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
-						case "name":
-							function_name = text.copy(alloc);
-						case "macro":
-							function_is_macro = true;
-						// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
-						// TODO: include the function param default value
-						// TODO: move function parameter parsing to a separate function & query so I can better handle things like `macro foo($Type)`
-						//       so I would do `case "param": function_parameters.push(parse_function_param(capture))` or something
-/*						case "param.name":
-							function_param_name = text.copy(alloc);
-							switch (String name = capture.node().type())
-							{
-								case "ident":
-									p.kind = REGULAR;
-								case "ct_ident":
-									p.kind = CONST;
-								case "hash_ident":
-									p.kind = EXPRESSION;
-								default:
-									unreachable("unexpected param '%s'", name);
-							}
-							/*p.name = text.copy(alloc);
-							switch (String name = capture.node.type())
-							{
-								case "ident":
-									p.kind = REGULAR;
-								case "ct_ident":
-									p.kind = CT;
-								case "hash_ident":
-									p.kind = EXPR;
-								default:
-									unreachable("unexpected param '%s'", name);
-							}
-							func.params.push(p);
-							p = {};*/
-							break;
-						case "param.type":
-							function_param.type = text.copy(alloc);
-							//p.type = text.copy(alloc);
-							//p.typed = true;
-							break;*/
-						case "param.name":
-						case "param.type":
-							break; // See above
-
-						case "type":
-							function_method_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
-							//func.method_of.set(text.copy(alloc));
-							break;
-						case "attr":
-							//func.attributes.push(func.text.slice_matching(text)!!);
-							break;
-						case "trailing":
-							//func.trailing.set(text.copy(alloc));
-							break;
-						default:
-							unreachable("unexpected '%s'", capture_name);
-					}
-				};
-				// func.doc_comment = comment;
-				current_mod.sections[^1].functions[function_name] = new_function(
-																		text: function_text,
-																		name: function_name,
-																		is_macro: function_is_macro,
-																		method_type: function_method_type,
-																		return_type: function_return_type,
-																		attributes: function_attributes.len() ? maybe::value(function_attributes.to_array(alloc)) : maybe::EMPTY,
-																		doc_comment: maybe::EMPTY, // TODO
-																		parameters: function_parameters.len() ? maybe::value(function_parameters.to_array(alloc)) : maybe::EMPTY,
-																		trailing_parameters: maybe::EMPTY, // TODO
-																	);
-				comment = {};
 			/*
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);
@@ -724,6 +628,109 @@ fn void parse_global_declaration(Allocator alloc, Module* root_module, Module** 
 													);
 
 	log::info("Got global with type %s", (*current_mod).sections[^1].globals[global_name]!!.type);
+	*comment = {};
+}
+
+
+fn void parse_function_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSQueryCursor* query_cursor, TSNode current_node, String file_name, String file_data, DocComment* comment)
+{
+	// Handle files without module declarations/with code before a module declaration
+	handle_implicit_module_decl(alloc, root_module, current_mod, file_name);
+
+	HighlightedText function_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
+	String function_name;
+	bool function_is_macro;
+	Maybe {HighlightedText} function_method_type;
+	Maybe {HighlightedText} function_return_type;
+	List {String} function_attributes;
+	function_attributes.tinit();
+	List {FunctionParam} function_parameters;
+	function_parameters.tinit();
+
+	// FunctionParamType function_param_param_type;
+	// HighlightedText function_param_text;
+	// String function_param_name;
+	// Maybe {HighlightedText} function_param_type;
+
+	query_cursor::@exec_captures(query_cursor, func_query, current_node; TSQueryCapture capture, String capture_name)
+	{
+		String text = capture.get_text(file_data);
+
+		switch (capture_name) // (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
+		{
+			case "return":
+				function_return_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
+			case "name":
+				function_name = text.copy(alloc);
+			case "macro":
+				function_is_macro = true;
+			// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
+			// TODO: include the function param default value
+			// TODO: move function parameter parsing to a separate function & query so I can better handle things like `macro foo($Type)`
+			//       so I would do `case "param": function_parameters.push(parse_function_param(capture))` or something
+			/*case "param.name":
+				function_param_name = text.copy(alloc);
+				switch (String name = capture.node().type())
+				{
+					case "ident":
+						p.kind = REGULAR;
+					case "ct_ident":
+						p.kind = CONST;
+					case "hash_ident":
+						p.kind = EXPRESSION;
+					default:
+						unreachable("unexpected param '%s'", name);
+				}
+				/*p.name = text.copy(alloc);
+				switch (String name = capture.node.type())
+				{
+					case "ident":
+						p.kind = REGULAR;
+					case "ct_ident":
+						p.kind = CT;
+					case "hash_ident":
+						p.kind = EXPR;
+					default:
+						unreachable("unexpected param '%s'", name);
+				}
+				func.params.push(p);
+				p = {};*/
+				break;
+			case "param.type":
+				function_param.type = text.copy(alloc);
+				//p.type = text.copy(alloc);
+				//p.typed = true;
+				break;*/
+			case "param.name":
+			case "param.type":
+				break; // See above
+
+			case "type":
+				function_method_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
+				//func.method_of.set(text.copy(alloc));
+				break;
+			case "attr":
+				//func.attributes.push(func.text.slice_matching(text)!!);
+				break;
+			case "trailing":
+				//func.trailing.set(text.copy(alloc));
+				break;
+			default:
+				unreachable("unexpected '%s'", capture_name);
+		}
+	};
+	// func.doc_comment = comment;
+	(*current_mod).sections[^1].functions[function_name] = new_function(
+															text: function_text,
+															name: function_name,
+															is_macro: function_is_macro,
+															method_type: function_method_type,
+															return_type: function_return_type,
+															attributes: function_attributes.len() ? maybe::value(function_attributes.to_array(alloc)) : maybe::EMPTY,
+															doc_comment: maybe::EMPTY, // TODO
+															parameters: function_parameters.len() ? maybe::value(function_parameters.to_array(alloc)) : maybe::EMPTY,
+															trailing_parameters: maybe::EMPTY, // TODO
+														);
 	*comment = {};
 }
 
