@@ -109,60 +109,73 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 	Module* current_mod = root_module;
 	do
 	{
-		TSNode node = cursor::current_node(&cursor);
+		TSNode current_node = cursor::current_node(&cursor);
 		// io::printfn("a: %s", node.type());
 		// TSTreeCursor pos_backup = cursor::copy(&cursor);
 		// defer cursor::delete(&pos_backup);
 		// TODO: error when encountering the ERROR node
-		switch MAIN: (node.type())
+		switch MAIN: (current_node.type())
 		{
 			case "module_declaration":
 				parse_module_declaration(alloc, root_module, &current_mod, &cursor, file_data, &comment);
 			case "global_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				handle_implicit_module_decl(alloc, root_module, &current_mod, file_name);
-				io::printfn("Highlighted text: %s", highlight_node_text(alloc, query_cursor, node, file_data));
-/*
-				Global glob = create_global(alloc, current_mod);
-				glob.text = collect_data(alloc, node, data);
-				query_cursor::@exec(query_cursor, global_query, node; TSQueryMatch* match)
-				{
-					foreach (capture : match.captures[:match.capture_count])
-					{
-						uint len;
-						String text = substitiute_with_table(tmem, capture.get_text(data));
+				// io::printfn("Highlighted text: %s", highlight_node_text(alloc, query_cursor, node, file_data));
 
-						switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
-						{
-							case "decl_type":
-								// TODO: handle extern functions
-								switch (String type = capture.node.type())
-								{
-									case "declaration":
-										break;
-									case "const_declaration":
-									case "function_declaration": // TODO: handle as regular function
-										break;
-									default:
-										unreachable("unexpected global type '%s'", type);
-								}
-							case "name":
-								glob.name = text.copy(alloc);
-							case "value":
-								// glob.val = text.copy(alloc);
-								break;
-							case "attr":
-								glob.attributes.push(glob.text.slice_matching(text)!!);
-							case "type":
-								glob.type.set(text.copy(alloc));
-							default:
-								unreachable("unexpexted '%s'", match_name);
-						}
+				// Global glob = new_global(alloc, current_mod);
+				// glob.text = collect_data(alloc, node, data);
+				HighlightedText global_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
+				String global_name;
+				Maybe {HighlightedText} global_type;
+				List {String} global_attributes;
+				global_attributes.tinit();
+				query_cursor::@exec_captures(query_cursor, global_query, current_node; TSQueryCapture capture, String capture_name)
+				{
+					uint len;
+					String text = capture.get_text(file_data);
+
+					switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
+					{
+						case "decl_type":
+							// TODO: handle extern functions
+							switch (String type = capture.node.type())
+							{
+								case "declaration":
+									break;
+								case "const_declaration":
+								case "func_declaration": // TODO: handle as regular function
+									break;
+								default:
+									unreachable("unexpected global type '%s'", type);
+							}
+						case "name":
+							global_name = text.copy(alloc);
+						case "value":
+							// glob.val = text.copy(alloc);
+							break;
+						case "attr":
+							// global_attributes.push(glob.text.slice_matching(text)!!);
+							break;
+						case "type":
+							global_type = maybe::value(global_text.slice_bytes(start_byte: capture.start_byte() - current_node.start_byte(), byte_len: capture.end_byte() - capture.start_byte()));
+						default:
+							unreachable("unexpected '%s'", match_name);
 					}
-					glob.doc_comment = comment;
-					current_mod.sections[^1].global_namespace[glob.name] = allocator::clone(alloc, glob);
-					comment = {};
-				};*/
+				};
+				// TODO
+				// glob.doc_comment = comment;
+				Maybe {String[]} global_attributes_slice = global_attributes.len() == 0 ? maybe::EMPTY : maybe::value(global_attributes.to_array(alloc));
+				current_mod.sections[^1].globals[global_name] = new_global(
+																	text: global_text,
+																	name: global_name,
+																	type: global_type,
+																	attributes: global_attributes_slice,
+																	doc_comment: maybe::EMPTY,
+																);
+
+				log::info("Got global with type %s", current_mod.sections[^1].globals[global_name]!!.type);
+				comment = {};
 /*
 			case "macro_declaration":
 			case "func_definition":

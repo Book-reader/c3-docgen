@@ -172,7 +172,7 @@ struct GenericParam
 
 fn GenericParam new_generic_param(String data, GenericParamType type)
 {
-	return {type, {data, {{0, data.len, type == CONST ? CONSTANT : TYPE}}}};
+	return {type, {0, data, {{0, data.len, type == CONST ? CONSTANT : TYPE}}}};
 }
 
 enum GenericParamType : char { CONST, TYPE }
@@ -181,23 +181,29 @@ enum GenericParamType : char { CONST, TYPE }
 /*
  Global definitions
 */
-alias Strings = List {String};
+// alias Strings = List {String};
 struct Global
 {
 	HighlightedText text; // The full declaration including value
-	HighlightedToken name;
-	Maybe {HighlightedText} type;
-	Maybe {Strings} attributes;
+	/*HighlightedToken*/ String name;
+	Maybe {HighlightedText} type; // TODO: this is currently its own allocated data, but it could also be made a slice in to Global.text
+	Maybe {String[]} attributes;
 	Maybe {DocComment} doc_comment;
 	// TODO: `Type` would be a struct that handles all possible cases of type name directly with/without module path, `$typeof`/`$typefrom`, and generic types
 	//  I'd use this to have jump to definition for types that support it
 	// Maybe {Type} type;
 }
 
-fn Global new_global(Allocator alloc, HighlightedText text, HighlightedToken name, Maybe {HighlightedText} type, Maybe {Strings} attributes)
+fn Global new_global
+(
+	HighlightedText text,
+	/*HighlightedToken*/ String name,
+	Maybe {HighlightedText} type,
+	Maybe {String[]} attributes,
+	Maybe {DocComment} doc_comment,
+)
 {
-	Global new;
-	unreachable();
+	return {text, name, type, attributes, doc_comment};
 }
 
 
@@ -256,14 +262,10 @@ fn usz HighlightedToken.end_inclusive(&self) => self.start + self.len;
 fn usz HighlightedToken.end_exclusive(&self) => self.end_inclusive() - 1;
 
 
-<*
- An explicitly unowned string. This has no affect on semantics
- but is helpful to remember
-*>
-alias SubString = String;
 struct HighlightedText (Printable)
 {
-	String data; // This is the main string data that the HighlightedTokens have a slice of
+	usz offset; // The offset into the string that the data starts, mainly for sliced highlighted text
+	String data; // This is the main string data that the HighlightedTokens index into
 	HighlightedToken[] highlighted;
 }
 
@@ -277,9 +279,9 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 	{
 		// TODO: why did the old version have this?
 		// if (highlight.type == END) break;
-		if ($print_before_and_after && i == 0)
+		if ($print_before_and_after && i == 0 && highlight.start > self.offset)
 		{
-			n += fmt.printf(self.data[:highlight.start]);
+			n += fmt.printf(self.data[self.offset..highlight.start]);
 		}
 		else if (i != 0 && self.highlighted[i - 1].end_exclusive() < highlight.start)
 		{
@@ -290,13 +292,40 @@ macro usz? HighlightedText.to_format_internal(&self, Formatter* fmt, bool $print
 	}
 	if (self.highlighted.len == 0)
 	{
-		n += fmt.printf(self.data);
+		n += fmt.printf(self.data[self.offset..]);
 	}
 	else if ($print_before_and_after/* && self.highlighted[^1].type != END*/)
 	{
 		n += fmt.printf(self.data[self.highlighted[^1].end_inclusive()..]);
 	}
 	return n;
+}
+
+<*
+	Returns a slice of the highlighted text, owned by the parent highlighted text
+	The slice *MUST* be on the boundaries of a HighlightedToken, it can't be partway through a token
+	@ensure found_start : "The start byte must align with the start of a HighlightedToken"
+	@ensure found_end : "The end byte must align with the end of a HighlightedToken"
+*>
+fn HighlightedText HighlightedText.slice_bytes(&self, usz start_byte, usz byte_len)
+{
+	bool found_start, found_end;
+	usz start_idx, end_idx;
+	foreach (i, tok : self.highlighted)
+	{
+		if (tok.start == start_byte)
+		{
+			found_start = true;
+			start_idx = i;
+		}
+		if (tok.end_inclusive() == start_byte + byte_len)
+		{
+			found_end = true;
+			end_idx = i;
+			break;
+		}
+	}
+	return {start_byte, self.data[:start_byte+byte_len], self.highlighted[start_idx..end_idx]};
 }
 
 /*
