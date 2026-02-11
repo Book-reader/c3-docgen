@@ -121,7 +121,7 @@ fn void? parse_all_files(Allocator alloc, TSParser* parser, Module* root_module,
 			}
 			if (path::is_file(path))
 			{
-				if (@catch(path.extension()) || (path.extension()!! != ".c3" && path.extension()!! != ".c3i"))
+				if (@catch(path.extension()) || (path.extension()!! != "c3" && path.extension()!! != "c3i"))
 				{
 					log::error("File '%s' is not a c3 file", path_name);
 					return ^io::INVALID_FORMAT;
