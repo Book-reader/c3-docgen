@@ -114,7 +114,7 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 /*
  ModuleSection definitions
 */
-struct ModuleSection
+struct ModuleSection (Printable)
 {
 	HashMap {String, Struct} structs;
 	HashMap {String, BitStruct} bit_structs;
@@ -128,6 +128,8 @@ struct ModuleSection
 	List {Import} imports;
 	Maybe {DocComment} doc_comment;
 }
+
+fn usz? ModuleSection.to_format(&self, Formatter* fmt) @dynamic => io::struct_to_format(*self, fmt, false);
 
 fn ModuleSection new_module_section(Allocator alloc, Maybe {DocComment} doc_comment)
 {
@@ -186,7 +188,7 @@ struct Global
 {
 	HighlightedText text; // The full declaration including value
 	/*HighlightedToken*/ String name;
-	Maybe {HighlightedText} type; // TODO: this is currently its own allocated data, but it could also be made a slice in to Global.text
+	Maybe {HighlightedText} type;
 	Maybe {String[]} attributes;
 	Maybe {DocComment} doc_comment;
 	// TODO: `Type` would be a struct that handles all possible cases of type name directly with/without module path, `$typeof`/`$typefrom`, and generic types
@@ -208,7 +210,73 @@ fn Global new_global
 
 
 /*
- Struct Declarations
+ Function definitions
+*/
+struct Function
+{
+	HighlightedText text; // The full declaration, including body (TODO: maybe don't copy the entire body)
+	String name;
+	bool is_macro;
+	Maybe {HighlightedText} method_type;
+	Maybe {HighlightedText} return_type;
+	Maybe {String[]} attributes;
+	Maybe {DocComment} doc_comment;
+	Maybe {FunctionParam[]} parameters;
+	Maybe {MacroTrailingParams} trailing_parameters;
+	// TODO: add generic parameters when I update to support new generics
+}
+
+fn Function new_function
+(
+	HighlightedText text,
+	String name,
+	bool is_macro,
+	Maybe {HighlightedText} method_type,
+	Maybe {HighlightedText} return_type,
+	Maybe {String[]} attributes,
+	Maybe {DocComment} doc_comment,
+	Maybe {FunctionParam[]} parameters,
+	Maybe {MacroTrailingParams} trailing_parameters,
+)
+{
+	return {text, name, is_macro, method_type, return_type, attributes, doc_comment, parameters, trailing_parameters};
+}
+
+
+/*
+ FunctionParam definitions
+*/
+struct FunctionParam
+{
+	FunctionParamType param_type;
+	HighlightedText text; // A slice into the parent Function's HighlightedText
+	String name;
+	Maybe {HighlightedText} type;
+	Maybe {HighlightedText} default_value;
+}
+
+enum FunctionParamType : char
+{
+	REGULAR,
+	CONST,
+	EXPRESSION,
+	TYPE,
+}
+
+fn FunctionParam new_function_param
+(
+	FunctionParamType param_type,
+	HighlightedText text,
+	String name,
+	Maybe {HighlightedText} type,
+	Maybe {HighlightedText} default_value,
+)
+{
+	return {param_type, text, name, type, default_value};
+}
+
+/*
+ Struct definitions
 */
 // TODO
 /*struct Struct
@@ -223,12 +291,12 @@ fn Global new_global
 typedef DocComment = void*;
 typedef Struct = void*;
 typedef Enum = void*;
-typedef Function = void*;
 typedef BitStruct = void*;
 typedef TypeAlias = void*;
 typedef ValueAlias = void*;
 typedef Import = void*;
 typedef ImportAlias = void*;
+typedef MacroTrailingParams = void*;
 
 /*
  Highlighting definitions

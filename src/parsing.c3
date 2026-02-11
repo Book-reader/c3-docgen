@@ -120,70 +120,108 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 				parse_module_declaration(alloc, root_module, &current_mod, &cursor, file_data, &comment);
 			case "global_declaration":
 				parse_global_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
-/*
+
 			case "macro_declaration":
 			case "func_definition":
 				// Handle files without module declarations/with code before a module declaration
-				if (current_mod == root)
-				{
-					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
-					ModuleSection m;
-					m.init(alloc);
-					current_mod.sections.push(m);
-				}
-				assert(current_mod.sections.len() != 0);
+				handle_implicit_module_decl(alloc, root_module, &current_mod, file_name);
 
-				Func func = create_function(alloc, current_mod);
-				func.text = collect_data(alloc, node, data);
-				query_cursor::@exec(query_cursor, func_query, node; TSQueryMatch* match)
+				HighlightedText function_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
+				String function_name;
+				bool function_is_macro;
+				Maybe {HighlightedText} function_method_type;
+				Maybe {HighlightedText} function_return_type;
+				List {String} function_attributes;
+				function_attributes.tinit();
+				List {FunctionParam} function_parameters;
+				function_parameters.tinit();
+
+				// FunctionParamType function_param_param_type;
+				// HighlightedText function_param_text;
+				// String function_param_name;
+				// Maybe {HighlightedText} function_param_type;
+
+				query_cursor::@exec_captures(query_cursor, func_query, current_node; TSQueryCapture capture, String capture_name)
 				{
-					Param p;
-					foreach (capture : match.captures[:match.capture_count])
+					String text = capture.get_text(file_data);
+
+					switch (capture_name) // (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
 					{
-						uint len;
-						String text = substitiute_with_table(tmem, capture.get_text(data));
+						case "return":
+							function_return_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
+						case "name":
+							function_name = text.copy(alloc);
+						case "macro":
+							function_is_macro = true;
+						// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
+						// TODO: include the function param default value
+						// TODO: move function parameter parsing to a separate function & query so I can better handle things like `macro foo($Type)`
+						//       so I would do `case "param": function_parameters.push(parse_function_param(capture))` or something
+/*						case "param.name":
+							function_param_name = text.copy(alloc);
+							switch (String name = capture.node().type())
+							{
+								case "ident":
+									p.kind = REGULAR;
+								case "ct_ident":
+									p.kind = CONST;
+								case "hash_ident":
+									p.kind = EXPRESSION;
+								default:
+									unreachable("unexpected param '%s'", name);
+							}
+							/*p.name = text.copy(alloc);
+							switch (String name = capture.node.type())
+							{
+								case "ident":
+									p.kind = REGULAR;
+								case "ct_ident":
+									p.kind = CT;
+								case "hash_ident":
+									p.kind = EXPR;
+								default:
+									unreachable("unexpected param '%s'", name);
+							}
+							func.params.push(p);
+							p = {};*/
+							break;
+						case "param.type":
+							function_param.type = text.copy(alloc);
+							//p.type = text.copy(alloc);
+							//p.typed = true;
+							break;*/
+						case "param.name":
+						case "param.type":
+							break; // See above
 
-						switch (String match_name = ts::query_capture_name_for_id(func_query, capture.index, &len).str_view())
-						{
-							case "return":
-								func.return_type.set(text.copy(alloc));
-							case "name":
-								func.name = text.copy(alloc);
-							case "macro":
-								func.macro_ = true;
-							// these both rely on tree-sitter being ordered and the type always appearing before the name if it exists.
-							case "param.name":
-								p.name = text.copy(alloc);
-								switch (String name = capture.node.type())
-								{
-									case "ident":
-										p.kind = REGULAR;
-									case "ct_ident":
-										p.kind = CT;
-									case "hash_ident":
-										p.kind = EXPR;
-									default:
-										unreachable("unexpected param '%s'", name);
-								}
-								func.params.push(p);
-								p = {};
-							case "param.type":
-								p.type = text.copy(alloc);
-								p.typed = true;
-							case "type":
-								func.method_of.set(text.copy(alloc));
-							case "attr":
-								func.attributes.push(func.text.slice_matching(text)!!);
-							case "trailing":
-								func.trailing.set(text.copy(alloc));
-							default:
-								unreachable("unexpexted '%s'", match_name);
-						}
+						case "type":
+							function_method_type = maybe::value(function_text.slice_bytes(...capture_text_range(current_node, capture)));
+							//func.method_of.set(text.copy(alloc));
+							break;
+						case "attr":
+							//func.attributes.push(func.text.slice_matching(text)!!);
+							break;
+						case "trailing":
+							//func.trailing.set(text.copy(alloc));
+							break;
+						default:
+							unreachable("unexpected '%s'", capture_name);
 					}
-					func.doc_comment = comment;
-					current_mod.sections[^1].global_namespace[func.name] = allocator::clone(alloc, func);
-					comment = {};
 				};
+				// func.doc_comment = comment;
+				current_mod.sections[^1].functions[function_name] = new_function(
+																		text: function_text,
+																		name: function_name,
+																		is_macro: function_is_macro,
+																		method_type: function_method_type,
+																		return_type: function_return_type,
+																		attributes: function_attributes.len() ? maybe::value(function_attributes.to_array(alloc)) : maybe::EMPTY,
+																		doc_comment: maybe::EMPTY, // TODO
+																		parameters: function_parameters.len() ? maybe::value(function_parameters.to_array(alloc)) : maybe::EMPTY,
+																		trailing_parameters: maybe::EMPTY, // TODO
+																	);
+				comment = {};
+			/*
 			case "doc_comment":
 				TSTreeCursor cc = cursor::copy(&cursor);
 				defer cursor::delete(&cc);
@@ -632,10 +670,7 @@ fn void parse_global_declaration(Allocator alloc, Module* root_module, Module** 
 {
 	// Handle files without module declarations/with code before a module declaration
 	handle_implicit_module_decl(alloc, root_module, current_mod, file_name);
-	// io::printfn("Highlighted text: %s", highlight_node_text(alloc, query_cursor, node, file_data));
 
-	// Global glob = new_global(alloc, current_mod);
-	// glob.text = collect_data(alloc, node, data);
 	HighlightedText global_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
 	String global_name;
 	Maybe {HighlightedText} global_type;
@@ -646,10 +681,11 @@ fn void parse_global_declaration(Allocator alloc, Module* root_module, Module** 
 		uint len;
 		String text = capture.get_text(file_data);
 
+		// TODO: this can probably be replaced with `capture_name`?
 		switch (String match_name = ts::query_capture_name_for_id(global_query, capture.index, &len).str_view())
 		{
 			case "decl_type":
-				// TODO: handle extern functions
+				// TODO: handle extern functions, possibly by dispatching to the parse_function_declaration function
 				switch (String type = capture.node.type())
 				{
 					case "declaration":
@@ -663,13 +699,15 @@ fn void parse_global_declaration(Allocator alloc, Module* root_module, Module** 
 			case "name":
 				global_name = text.copy(alloc);
 			case "value":
+				// TODO
 				// glob.val = text.copy(alloc);
 				break;
 			case "attr":
+				// TODO
 				// global_attributes.push(glob.text.slice_matching(text)!!);
 				break;
 			case "type":
-				global_type = maybe::value(global_text.slice_bytes(start_byte: capture.start_byte() - current_node.start_byte(), byte_len: capture.end_byte() - capture.start_byte()));
+				global_type = maybe::value(global_text.slice_bytes(...capture_text_range(current_node, capture)));
 			default:
 				unreachable("unexpected '%s'", match_name);
 		}
@@ -682,11 +720,20 @@ fn void parse_global_declaration(Allocator alloc, Module* root_module, Module** 
 														name: global_name,
 														type: global_type,
 														attributes: global_attributes_slice,
-														doc_comment: maybe::EMPTY,
+														doc_comment: maybe::EMPTY, // TODO
 													);
 
 	log::info("Got global with type %s", (*current_mod).sections[^1].globals[global_name]!!.type);
 	*comment = {};
+}
+
+
+<*
+ @return "The byte offset of the capture from the current node and the length of the current node"
+*>
+fn usz[2] capture_text_range(TSNode current_node, TSQueryCapture capture)
+{
+	return {capture.start_byte() - current_node.start_byte(), capture.end_byte() - capture.start_byte()};
 }
 
 /*
