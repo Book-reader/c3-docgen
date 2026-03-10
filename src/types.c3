@@ -20,7 +20,7 @@ struct Module (Printable)
 	Maybe {GenericParams} generic_params;
 	List {ModuleSection} sections;
 	Allocator alloc;
-	bool resolved_imports;
+	ResolvingStage resolving_stage;
 }
 
 fn Module* new_module(Allocator alloc, Maybe {Module*} parent, Maybe {String} name, Maybe {GenericParams} generic_params)
@@ -111,15 +111,17 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 	return full_path.to_array(alloc);
 }
 
-fn bool Module.imports_resolved(&self)
-{
-	defer if (self.resolved_imports)
-	{
-		foreach (&section : self.sections) assert(section.resolved_imports);
-	}
-	return self.resolved_imports;
-}
 
+/*
+ ResolvingStage definitions
+*/
+enum ResolvingStage : (ResolvingStage allowed_from, ResolvingStage next)
+{
+	UNRESOLVED{UNRESOLVED, IMPORTS_RESOLVED},
+	IMPORTS_RESOLVED{UNRESOLVED, IMPORT_ALIASES_RESOLVED},
+	IMPORT_ALIASES_RESOLVED{IMPORT_ALIASES_RESOLVED, TYPES_RESOLVED},
+	TYPES_RESOLVED{IMPORT_ALIASES_RESOLVED, TYPES_RESOLVED},
+}
 
 /*
  ModuleSection definitions
@@ -134,6 +136,7 @@ struct ModuleSection (Printable)
 	HashMap {String, ValueAlias} value_aliases;
 	HashMap {String, Global} globals;
 
+	HashMap {String, String[]} unresolved_import_aliases;
 	HashMap {String, Import*} import_aliases;
 	List {String[]} unresolved_imports;
 	List {Import} imports;

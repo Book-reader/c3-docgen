@@ -204,56 +204,8 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 				comment = {};*/
 			case "import_declaration":
 				parse_import_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
-/*			case "alias_declaration":
-				// Handle files without module declarations/with code before a module declaration
-				if (current_mod == root)
-				{
-					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
-					ModuleSection m;
-					m.init(alloc);
-					current_mod.sections.push(m);
-				}
-				assert(current_mod.sections.len() != 0);
-
-				List {String} orig_path;
-				orig_path.tinit();
-				String orig_name;
-				String new_name;
-				bool is_module;
-				// TODO: have a way to store that `test::Type` is from module test & should be looked up there. ig that a type alias could add a new `TypeAlias` DocGenData that then gets resolved later
-				query_cursor::@exec_captures(query_cursor, alias_query, node; TSQueryCapture capture, String name)
-				{
-					String text = substitiute_with_table(tmem, capture.get_text(data));
-					switch (name)
-					{
-						case "new_modulename":
-							new_name = text.copy(alloc);
-							is_module = true;
-						case "new_typename":
-							new_name = text.copy(alloc);
-						case "orig_module":
-							orig_path.push(text.copy(alloc));
-						case "orig_name":
-							orig_name = text.copy(alloc);
-						default:
-							unreachable("unexpected '%s'", name);
-					}
-				};
-				if (is_module)
-				{
-					orig_path.push(orig_name);
-					orig_path.push(new_name);
-					current_mod.sections[^1].unresolved_import_aliases.push(orig_path.to_array(alloc));
-				}
-				else
-				{
-					log::warn("Type aliasing is not supported yet, ignoring");
-					// TypeAlias al = create_typealias(alloc, orig_path, orig_name, new_name);
-					// // TODO: how should I show module aliases? Maybe I shouldn't show them at all since they are only used for internal renaming.
-					// al.text = collect_data(alloc, node, data);
-					// current_mod.sections[^1].data.push(al);
-				}
-				comment = {};*/
+			case "alias_declaration":
+				parse_alias_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
 			default:
 				comment = {};
 		}
@@ -776,6 +728,54 @@ fn void parse_import_declaration(Allocator alloc, Module* root_module, Module** 
 	};
 	*comment = {};
 
+}
+
+<*
+
+*>
+fn void parse_alias_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSQueryCursor* query_cursor, TSNode current_node, String file_name, String file_data, DocComment* comment)
+{
+	// Handle files without module declarations/with code before a module declaration
+	handle_implicit_module_decl(alloc, root_module, current_mod, file_name);
+
+	List {String} orig_path;
+	orig_path.tinit();
+	String orig_name;
+	String new_name;
+	bool is_module;
+	// TODO: have a way to store that `test::Type` is from module test & should be looked up there. ig that a type alias could add a new `TypeAlias` DocGenData that then gets resolved later
+	query_cursor::@exec_captures(query_cursor, alias_query, current_node; TSQueryCapture capture, String name)
+	{
+		String text = capture.get_text(file_data);
+		switch (name)
+		{
+			case "new_modulename":
+				new_name = text;
+				is_module = true;
+			case "new_typename":
+				new_name = text.copy(alloc);
+			case "orig_module":
+				orig_path.push(text.copy(alloc));
+			case "orig_name":
+				orig_name = text.copy(alloc);
+			default:
+				unreachable("unexpected '%s'", name);
+		}
+	};
+	if (is_module)
+	{
+		orig_path.push(orig_name);
+		(*current_mod).sections[^1].unresolved_import_aliases.set(new_name, orig_path.to_array(alloc));
+	}
+	else
+	{
+		log::warn("Type aliasing is not supported yet, ignoring");
+		// TypeAlias al = create_typealias(alloc, orig_path, orig_name, new_name);
+		// // TODO: how should I show module aliases? Maybe I shouldn't show them at all since they are only used for internal renaming.
+		// al.text = collect_data(alloc, node, data);
+		// current_mod.sections[^1].data.push(al);
+	}
+	*comment = {};
 }
 
 
