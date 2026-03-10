@@ -201,39 +201,10 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 				};
 				bitstruc.doc_comment = comment;
 				current_mod.sections[^1].global_namespace[bitstruc.name] = allocator::clone(alloc, bitstruc);
-				comment = {};
+				comment = {};*/
 			case "import_declaration":
-				// Handle files without module declarations/with code before a module declaration
-				if (current_mod == root)
-				{
-					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
-					ModuleSection m;
-					m.init(alloc);
-					current_mod.sections.push(m);
-				}
-				assert(current_mod.sections.len() != 0);
-
-				List {String} mod_path;
-				mod_path.tinit(5);
-				query_cursor::@exec_captures(query_cursor, import_query, node; TSQueryCapture capture, String name)
-				{
-					String text = substitiute_with_table(tmem, capture.get_text(data));
-					switch (name)
-					{
-						case "attr":
-						case "mod":
-							mod_path.push(text.copy(alloc));
-						case "modend":
-							current_mod.sections[^1].unresolved_imports.push(mod_path.to_array(alloc));
-							// log::debug("AAAAAA: got import '%s'", mod_path);
-							mod_path.clear();
-						default:
-							unreachable("unexpected '%s'", name);
-
-					}
-				};
-				comment = {};
-			case "alias_declaration":
+				parse_import_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
+/*			case "alias_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
 				{
@@ -774,6 +745,37 @@ fn void parse_struct_declaration(Allocator alloc, Module* root_module, Module** 
 													doc_comment: maybe::EMPTY, // TODO
 												);
 	*comment = {};
+}
+
+<*
+ 
+*>
+fn void parse_import_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSQueryCursor* query_cursor, TSNode current_node, String file_name, String file_data, DocComment* comment)
+{
+	// Handle files without module declarations/with code before a module declaration
+	handle_implicit_module_decl(alloc, root_module, current_mod, file_name);
+
+	List {String} mod_path;
+	mod_path.tinit(5);
+	query_cursor::@exec_captures(query_cursor, import_query, current_node; TSQueryCapture capture, String name)
+	{
+		String text = capture.get_text(file_data);
+		switch (name)
+		{
+			case "attr":
+			case "mod":
+				mod_path.push(text.copy(alloc));
+			case "modend":
+				(*current_mod).sections[^1].unresolved_imports.push(mod_path.to_array(alloc));
+				log::debug("AAAAAA: got import '%s'", mod_path);
+				mod_path.clear();
+			default:
+				unreachable("unexpected '%s'", name);
+
+		}
+	};
+	*comment = {};
+
 }
 
 

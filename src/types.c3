@@ -20,6 +20,7 @@ struct Module (Printable)
 	Maybe {GenericParams} generic_params;
 	List {ModuleSection} sections;
 	Allocator alloc;
+	bool resolved_imports;
 }
 
 fn Module* new_module(Allocator alloc, Maybe {Module*} parent, Maybe {String} name, Maybe {GenericParams} generic_params)
@@ -110,6 +111,15 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 	return full_path.to_array(alloc);
 }
 
+fn bool Module.imports_resolved(&self)
+{
+	defer if (self.resolved_imports)
+	{
+		foreach (&section : self.sections) assert(section.resolved_imports);
+	}
+	return self.resolved_imports;
+}
+
 
 /*
  ModuleSection definitions
@@ -124,9 +134,11 @@ struct ModuleSection (Printable)
 	HashMap {String, ValueAlias} value_aliases;
 	HashMap {String, Global} globals;
 
-	HashMap {String, ImportAlias} import_aliases;
+	HashMap {String, Import*} import_aliases;
+	List {String[]} unresolved_imports;
 	List {Import} imports;
 	Maybe {DocComment} doc_comment;
+	bool resolved_imports;
 }
 
 fn usz? ModuleSection.to_format(&self, Formatter* fmt) @dynamic => io::struct_to_format(*self, fmt, false);
