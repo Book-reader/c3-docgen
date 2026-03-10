@@ -1,9 +1,9 @@
 module docgen;
 import std::io;
 import std::sort;
-import std::collections::maybe;
 import std::collections::map;
 import std::collections::list;
+import std::collections::maybe;
 
 
 alias GenericParams = List {GenericParam};
@@ -328,17 +328,27 @@ enum DocCommentContractType : char
 /*
  Struct definitions
 */
-// TODO
-/*struct Struct
+struct Struct
 {
-	HashMap {String, HighlightedText} members; // TODO: struct members can also have doc comments
-}*/
+	HighlightedText text;
+	String name;
+	bool is_union;
+	// TODO: properly handle members, including nested structs/unions
+	// TODO: struct members can also have doc comments
+	HashMap {String, HighlightedText} members;
+	Maybe {String[]} attributes;
+	Maybe {String[]} interfaces;
+	Maybe {DocComment} doc_comment;
+}
 
+fn Struct new_struct(HighlightedText text, String name, bool is_union, HashMap {String, HighlightedText} members, Maybe {String[]} attributes, Maybe {String[]} interfaces, Maybe {DocComment} doc_comment)
+{
+	return {text, name, is_union, members, attributes, interfaces, doc_comment};
+}
 
 /*
  Unimplemented definitions
 */
-typedef Struct = void*;
 typedef Enum = void*;
 typedef BitStruct = void*;
 typedef TypeAlias = void*;

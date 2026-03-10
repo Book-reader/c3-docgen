@@ -1,7 +1,8 @@
 module docgen;
+import std::io;
+import std::collections::map;
 import std::collections::list;
 import std::collections::maybe;
-import std::io;
 
 import ts;
 import tree_sitter_c3;
@@ -129,40 +130,9 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 				parse_doc_comment(alloc, &cursor, query_cursor, current_node, file_data, &comment);
 
 			// NOTE: also handles unions
-/*			case "struct_declaration":
-				// Handle files without module declarations/with code before a module declaration
-				if (current_mod == root)
-				{
-					current_mod = current_mod.children.@get_or_set(file_name, module_create(alloc, current_mod, file_name.copy(alloc)));
-					ModuleSection m;
-					m.init(alloc);
-					current_mod.sections.push(m);
-				}
-				assert(current_mod.sections.len() != 0);
-
-				Struct struc = create_struct(alloc, current_mod);
-				struc.text = collect_data(alloc, node, data);
-				query_cursor::@exec_captures(query_cursor, struct_query, node; TSQueryCapture capture, String name)
-				{
-					String text = substitiute_with_table(tmem, capture.get_text(data));
-					switch (name)
-					{
-						case "name":
-							struc.name = text.copy(alloc);
-						case "attr":
-							struc.attributes.push(struc.text.slice_matching(text)!!);
-						case "member":
-							struc.members.push(struc.text.slice_matching(text))!!;
-						case "interface":
-							struc.interfaces.push(struc.text.slice_matching(text)!!);
-						default:
-							unreachable("unexpected '%s'", name);
-					}
-				};
-				struc.doc_comment = comment;
-				current_mod.sections[^1].global_namespace[struc.name] = allocator::clone(alloc, struc);
-				comment = {};
-			case "enum_declaration":
+			case "struct_declaration":
+				parse_struct_declaration(alloc, root_module, &current_mod, query_cursor, current_node, file_name, file_data, &comment);
+/*			case "enum_declaration":
 				// Handle files without module declarations/with code before a module declaration
 				if (current_mod == root)
 				{
@@ -749,6 +719,61 @@ fn void parse_doc_comment(Allocator alloc, TSTreeCursor* cursor, TSQueryCursor* 
 					comment: doc_comment_comment.len() ? maybe::value(doc_comment_comment.copy_str(alloc)) : maybe::EMPTY,
 					contracts: doc_comment_contracts.len() ? maybe::value(doc_comment_contracts.to_array(alloc)) : maybe::EMPTY,
 				);
+}
+
+<*
+ Also handles unions
+*>
+fn void parse_struct_declaration(Allocator alloc, Module* root_module, Module** current_mod, TSQueryCursor* query_cursor, TSNode current_node, String file_name, String file_data, DocComment* comment)
+{
+	// Handle files without module declarations/with code before a module declaration
+	handle_implicit_module_decl(alloc, root_module, current_mod, file_name);
+
+
+	HighlightedText struct_text = highlight_node_text(alloc, query_cursor, current_node, file_data);
+	String struct_name;
+	bool struct_is_union; // TODO
+	HashMap {String, HighlightedText} struct_members;
+	Maybe {HighlightedText} struct_type;
+	List {String} struct_attributes;
+	List {String} struct_interfaces;
+	struct_members.init(alloc);
+	struct_attributes.tinit();
+	struct_interfaces.tinit();
+
+	// Struct struc = create_struct(alloc, current_mod);
+	// struc.text = collect_data(alloc, node, data);
+	query_cursor::@exec_captures(query_cursor, struct_query, current_node; TSQueryCapture capture, String name)
+	{
+		String text = capture.get_text(file_data);
+		switch (name)
+		{
+			case "name":
+				struct_name = text.copy(alloc);
+			case "attr":
+				// struct_attributes.push(struct_text.slice_matching(text)!!);
+				break;
+			case "member":
+				// TODO
+				// struct_members.set(text, struct_text.slice_matching(text))!!;
+				break;
+			case "interface":
+				// struct_interfaces.push(struct_text.slice_matching(text)!!);
+				break;
+			default:
+				unreachable("unexpected '%s'", name);
+		}
+	};
+	(*current_mod).sections[^1].structs[struct_name] = new_struct(
+													text: struct_text,
+													name: struct_name,
+													is_union: struct_is_union,
+													members: struct_members,
+													attributes: maybe::EMPTY, // TODO
+													interfaces: maybe::EMPTY, // TODO
+													doc_comment: maybe::EMPTY, // TODO
+												);
+	*comment = {};
 }
 
 
