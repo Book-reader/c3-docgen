@@ -215,6 +215,7 @@ fn void parse_file(Allocator alloc, Module* root_module, TSParser* parser, Strin
 
 <*
  Automatically creates a module from the current file name if there is no module declaration at the top of the file
+ @ensure (*current_mod).sections.len() != 0
 *>
 // TODO: replace invalid character names in the file name with underscores and convert to lowercase
 fn void handle_implicit_module_decl(Allocator alloc, Module* root_module, Module** current_mod, String file_name)
@@ -222,9 +223,8 @@ fn void handle_implicit_module_decl(Allocator alloc, Module* root_module, Module
 	if (*current_mod == root_module)
 	{
 		*current_mod = (*current_mod).children.@get_or_set(file_name, new_module(alloc, parent: maybe::value(root_module), name: maybe::value(file_name.copy(alloc)), generic_params: maybe::EMPTY));
-		(*current_mod).sections.push(new_module_section(alloc, doc_comment: maybe::EMPTY));
+		(*current_mod).sections.push(new_module_section(alloc, parent_module: *current_mod, doc_comment: maybe::EMPTY));
 	}
-	assert((*current_mod).sections.len() != 0);
 }
 
 <*
@@ -397,7 +397,7 @@ fn void parse_module_declaration(Allocator alloc, Module* root_module, Module** 
 	}
 
 	// Add a new module section to the module
-	(*current_mod).sections.push(new_module_section(alloc, doc_comment: maybe::value(*comment)));
+	(*current_mod).sections.push(new_module_section(alloc, parent_module: *current_mod, doc_comment: maybe::value(*comment)));
 	*comment = {};
 }
 
@@ -558,6 +558,7 @@ fn void parse_function_declaration(Allocator alloc, Module* root_module, Module*
 	};
 	// func.doc_comment = comment;
 	(*current_mod).sections[^1].functions[function_name] = new_function(
+															parent_module_section: (*current_mod).sections[^1],
 															text: function_text,
 															name: function_name,
 															is_macro: function_is_macro,
@@ -688,6 +689,7 @@ fn void parse_struct_declaration(Allocator alloc, Module* root_module, Module** 
 		}
 	};
 	(*current_mod).sections[^1].structs[struct_name] = new_struct(
+													parent_module_section: (*current_mod).sections[^1],
 													text: struct_text,
 													name: struct_name,
 													is_union: struct_is_union,
@@ -709,16 +711,31 @@ fn void parse_import_declaration(Allocator alloc, Module* root_module, Module** 
 
 	List {String} mod_path;
 	mod_path.tinit(5);
+	bool import_norecurse = false;
+	bool import_public = false;
 	query_cursor::@exec_captures(query_cursor, import_query, current_node; TSQueryCapture capture, String name)
 	{
 		String text = capture.get_text(file_data);
 		switch (name)
 		{
 			case "attr":
+				switch (text)
+				{
+					case "@norecurse":
+						import_norecurse = true;
+					case "@public":
+						import_public = true;
+					default:
+						abort("Unknown import attribute %s", text);
+				}
 			case "mod":
 				mod_path.push(text.copy(alloc));
 			case "modend":
-				(*current_mod).sections[^1].unresolved_imports.push(mod_path.to_array(alloc));
+				(*current_mod).sections[^1].unresolved_imports.push(new_unresolved_import(
+																		path: mod_path.to_array(alloc),
+																		norecurse: import_norecurse,
+																		public: import_public,
+																	));
 				log::debug("AAAAAA: got import '%s'", mod_path);
 				mod_path.clear();
 			default:
@@ -727,7 +744,6 @@ fn void parse_import_declaration(Allocator alloc, Module* root_module, Module** 
 		}
 	};
 	*comment = {};
-
 }
 
 <*

@@ -18,7 +18,7 @@ struct Module (Printable)
 	Maybe {String} name; // the root module has no name
 	HashMap {String, Module*} children;
 	Maybe {GenericParams} generic_params;
-	List {ModuleSection} sections;
+	List {ModuleSection*} sections;
 	Allocator alloc;
 	ResolvingStage resolving_stage;
 }
@@ -35,10 +35,15 @@ fn Module* new_module(Allocator alloc, Maybe {Module*} parent, Maybe {String} na
 	return new;
 }
 
+<*
+ @require self.parent.has_value == self.name.has_value
+*>
+fn bool Module.is_root(&self) @inline => !self.parent.has_value;
+
 fn usz? Module.to_format(&self, Formatter* fmt) @dynamic
 {
 	usz? n = fmt.printf("{ parent: ");
-	n += self.parent.has_value ? fmt.printf("[%p]", self.parent.get()!!) : fmt.printf("%s", self.parent); // To prevent infinite recursion from children printing parents
+	n += !self.is_root() ? fmt.printf("[%p]", self.parent.get()!!) : fmt.printf("%s", self.parent); // To prevent infinite recursion from children printing parents
 	n += fmt.printf(", name: %s, children: %s, generic_params: %s, sections: %s, alloc: %s }", self.name, self.children, self.generic_params, self.sections, self.alloc);
 	return n;
 }
@@ -52,14 +57,14 @@ macro Module.@iter_all_children(&self; @body(Module* mod)) => @pool()
 	{
 		Module* n = stack.pop()!!;
 		@body(n);
-		n.@iter_children(; Module* mod)
+		n.@iter_direct_children(; Module* mod)
 		{
 			stack.push(mod);
 		};
 	};
 }
 
-macro Module.@iter_children(&self; @body(Module* mod)) => @pool()
+macro Module.@iter_direct_children(&self; @body(Module* mod)) => @pool()
 {
 	if (self.children.len() == 0) return;
 	Entry {String, Module*}*[] children = mem::temp_array(Entry {String, Module*}*, self.children.len());
@@ -74,9 +79,19 @@ macro Module.@iter_children(&self; @body(Module* mod)) => @pool()
 	foreach (c : children) @body(c.value);
 }
 
+macro Module.@each_parent(&self; @body(Module* mod))
+{
+	if (self.is_root()) return;
+
+	for (Module* mod = self.parent.get()!!; !mod.is_root(); mod = mod.parent.get()!!)
+	{
+		@body(mod);
+	}
+}
+
 fn String Module.get_overview_file_name(&self, Allocator alloc) => @pool()
 {
-	if (!self.name.has_value && !self.parent.has_value) return "index.md".copy(alloc);
+	if (self.is_root()) return "index.md".copy(alloc);
 	DString str;
 	str.tinit();
 
@@ -93,7 +108,7 @@ fn String Module.get_overview_file_name(&self, Allocator alloc) => @pool()
 fn Module* Module.get_root_module(&self)
 {
 	Module* root = self;
-	while (root.parent.has_value) root = root.parent.get()!!;
+	while (!root.is_root()) root = root.parent.get()!!;
 	return root;
 }
 
@@ -102,7 +117,7 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 	List {String} full_path;
 	full_path.tinit();
 	Module* current = self;
-	while (try name = current.name.get() && current.parent.has_value)
+	while (try name = current.name.get() && !current.is_root())
 	{
 		full_path.push(name.copy(alloc));
 		current = current.parent.get()!!;
@@ -111,52 +126,96 @@ fn String[] Module.get_full_path(&self, Allocator alloc) => @pool()
 	return full_path.to_array(alloc);
 }
 
+fn Module*? Module.find_submodule_by_path(&self, String[] path)
+{
+	if (path.len != 0) return (self.children[path[0]] ?? NOT_FOUND~).find_submodule_by_path(path[1..]);
+	return self;
+}
+
+<*
+ @require !self.is_root()
+*>
+fn String Module.get_name_string(&self, Allocator alloc) => @pool()
+{
+	return string::join(alloc, self.get_full_path(tmem), "::");
+}
+
 
 /*
  ResolvingStage definitions
 */
-enum ResolvingStage : (ResolvingStage allowed_from, ResolvingStage next)
+enum ResolvingStage : char
 {
-	UNRESOLVED{UNRESOLVED, IMPORTS_RESOLVED},
-	IMPORTS_RESOLVED{UNRESOLVED, IMPORT_ALIASES_RESOLVED},
-	IMPORT_ALIASES_RESOLVED{IMPORT_ALIASES_RESOLVED, TYPES_RESOLVED},
-	TYPES_RESOLVED{IMPORT_ALIASES_RESOLVED, TYPES_RESOLVED},
+	UNRESOLVED,
+	IMPORTS_RESOLVED,
+	IMPORT_ALIASES_RESOLVED,
+	TYPES_RESOLVED,
+	ALIASES_RESOLVED,
+	METHODS_RESOLVED,
 }
+
+fn bool ResolvingStage.completed(self, ResolvingStage stage)
+{
+	return self.ordinal >= stage.ordinal;
+}
+
 
 /*
  ModuleSection definitions
 */
 struct ModuleSection (Printable)
 {
+	Module* parent_module;
 	HashMap {String, Struct} structs;
 	HashMap {String, BitStruct} bit_structs;
 	HashMap {String, Enum} enums;
 	HashMap {String, Function} functions;
+	// TODO: have separate unresolved_type/value_aliases hashmaps and make this a step
 	HashMap {String, TypeAlias} type_aliases;
 	HashMap {String, ValueAlias} value_aliases;
 	HashMap {String, Global} globals;
 
 	HashMap {String, String[]} unresolved_import_aliases;
 	HashMap {String, Import*} import_aliases;
-	List {String[]} unresolved_imports;
+	List {UnresolvedImport} unresolved_imports;
 	List {Import} imports;
 	Maybe {DocComment} doc_comment;
-	bool resolved_imports;
+	ResolvingStage resolving_stage;
 }
 
-fn usz? ModuleSection.to_format(&self, Formatter* fmt) @dynamic => io::struct_to_format(*self, fmt, false);
 
-fn ModuleSection new_module_section(Allocator alloc, Maybe {DocComment} doc_comment)
+// modified from io::struct_to_format
+fn usz? ModuleSection.to_format(&self, Formatter* fmt) @dynamic
 {
-	ModuleSection new;
+	usz total = fmt.print("{ ")!;
+	$foreach $i, $member : ModuleSection.membersof:
+		$if $member.nameof != "parent_module":
+			$if $i > 0:
+				total += fmt.print(", ")!;
+			$endif
+			$if $member.nameof != "":
+				total += fmt.printf("%s: ", $member.nameof)!;
+			$endif
+			total += fmt.printf("%s", $member.get(*self))!;
+		$endif
+	$endforeach
+	return total + fmt.print(" }");
+
+}
+
+// Module sections are allocated on the heap and are never stored by value so their pointer stays stable and can be stored safely even when a module's sections array gets reallocated
+fn ModuleSection* new_module_section(Allocator alloc, Module* parent_module, Maybe {DocComment} doc_comment)
+{
+	ModuleSection* new = allocator::new(alloc, ModuleSection);
 	new.doc_comment = doc_comment;
+	new.parent_module = parent_module;
 /*	new.structs.init(alloc);
 	new.enums.init(alloc);
 	new.functions.init(alloc);*/
 	$foreach $member : ModuleSection.membersof:
 	{
 		$echo $member.nameof;
-		var val @safeinfer = &$member.get(new);
+		var val @safeinfer = &$member.get(*new);
 		$if $defined(val.init) &&& $defined(val.init(alloc)):
 			val.init(alloc);
 		$endif
@@ -196,6 +255,21 @@ enum GenericParamType : char { CONST, TYPE }
 
 
 /*
+ DocGenData definitions
+*/
+struct DocGenData
+{
+	typeid type;
+	ModuleSection* parent_module_section;
+}
+
+<*
+ @require self.type == $Type
+*>
+macro DocGenData.as(&self, $Type) => ($Type*)self;
+
+
+/*
  Global definitions
 */
 // alias Strings = List {String};
@@ -229,6 +303,7 @@ fn Global new_global
 */
 struct Function
 {
+	inline DocGenData base;
 	HighlightedText text; // The full declaration, including body (TODO: maybe don't copy the entire body)
 	String name;
 	bool is_macro;
@@ -243,6 +318,7 @@ struct Function
 
 fn Function new_function
 (
+	ModuleSection* parent_module_section,
 	HighlightedText text,
 	String name,
 	bool is_macro,
@@ -254,7 +330,7 @@ fn Function new_function
 	Maybe {MacroTrailingParams} trailing_parameters,
 )
 {
-	return {text, name, is_macro, method_type, return_type, attributes, doc_comment, parameters, trailing_parameters};
+	return {{Function, parent_module_section}, text, name, is_macro, method_type, return_type, attributes, doc_comment, parameters, trailing_parameters};
 }
 
 
@@ -345,6 +421,7 @@ enum DocCommentContractType : char
 */
 struct Struct
 {
+	inline DocGenData base;
 	HighlightedText text;
 	String name;
 	bool is_union;
@@ -356,10 +433,43 @@ struct Struct
 	Maybe {DocComment} doc_comment;
 }
 
-fn Struct new_struct(HighlightedText text, String name, bool is_union, HashMap {String, HighlightedText} members, Maybe {String[]} attributes, Maybe {String[]} interfaces, Maybe {DocComment} doc_comment)
+fn Struct new_struct(ModuleSection* parent_module_section, HighlightedText text, String name, bool is_union, HashMap {String, HighlightedText} members, Maybe {String[]} attributes, Maybe {String[]} interfaces, Maybe {DocComment} doc_comment)
 {
-	return {text, name, is_union, members, attributes, interfaces, doc_comment};
+	return {{Struct, parent_module_section}, text, name, is_union, members, attributes, interfaces, doc_comment};
 }
+
+
+/*
+ UnresolvedImport definitions
+*/
+struct UnresolvedImport
+{
+	String[] path;
+	bool norecurse;
+	bool public;
+}
+
+fn UnresolvedImport new_unresolved_import(String[] path, bool norecurse, bool public)
+{
+	return {path, norecurse, public};
+}
+
+
+/*
+ Import definitions
+*/
+struct Import
+{
+	Module* mod;
+	bool norecurse;
+	bool public;
+}
+
+fn Import new_import(Module* mod, bool norecurse, bool public)
+{
+	return {mod, norecurse, public};
+}
+
 
 /*
  Unimplemented definitions
@@ -368,7 +478,6 @@ typedef Enum = void*;
 typedef BitStruct = void*;
 typedef TypeAlias = void*;
 typedef ValueAlias = void*;
-typedef Import = void*;
 typedef ImportAlias = void*;
 typedef MacroTrailingParams = void*;
 
@@ -469,6 +578,8 @@ fn HighlightedText HighlightedText.slice_bytes(&self, usz start_byte, usz byte_l
 	}
 	return {start_byte, self.data[:start_byte+byte_len], self.highlighted[start_idx..end_idx]};
 }
+
+fn String HighlightedText.get_text(&self) => self.data[self.offset..];
 
 /*
  DocGenType declarations

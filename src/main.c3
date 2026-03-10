@@ -43,7 +43,20 @@ fn int main(String[] args)
 	}
 	if (catch parse_all_files(alloc, parser, root_module, args[1..])) return 1;
 
+	root_module.resolve_imports_rec();
+
 	io::printn(*root_module);
+
+	// root_module.find_submodule_by_path({"std", "core", "runtime"})!!.print_imports();
+
+	// Struct* file_decl = root_module.find_submodule_by_path({"std", "io"}).lookup_local_decl_by_name("File").as(Struct)!!;
+	// Struct* file_decl = root_module.find_submodule_by_path({"std", "collections", "maybe"}).lookup_local_decl_by_name("Maybe").as(Struct)!!;
+	// Struct* file_decl = root_module.find_submodule_by_path({"my", "test"}).lookup_local_decl_by_name("Foo").as(Struct)!!;
+	Struct* file_decl = root_module.find_submodule_by_path({"std", "core", "foo"}).lookup_local_decl_by_name("Foo").as(Struct)!!;
+
+	io::print("file_decl: "); io::printn(*file_decl);
+
+	/*io::printn(*/root_module.lookup_methods_on_decl_by_name(alloc, file_decl);//);
 
 	String root_folder = "docs/";
 /*	root_module.@iter_all_children(; Module* mod)
