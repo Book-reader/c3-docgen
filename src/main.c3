@@ -230,6 +230,10 @@ fn String parse_function(usz* i, String data, String function_str)
 			if (*i < data.len && data[*i] == '(') skip_block(i, data, '(', ')');
 			// io::printfn("a");
 		}
+		else if (*i < data.len && data[*i] == '<')
+		{
+			skip_block(i, data, '<', '>');
+		}
 		else if (*i < data.len && data[*i].is_space())
 		{
 			*i += 1;
