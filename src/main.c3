@@ -96,7 +96,8 @@ fn void? collect_decls(Allocator alloc, Modules* modules, String data, String fi
 			case i + 2 < data.len && data[i] == '/' && data[i + 1] == '*':
 				skip_comment(&i, data);
 			case i + 3 < data.len && data[i] == '<' && data[i + 1] == '*' && data[i + 2] != '>':
-				comment = handle_doc_comment(alloc, &i, data);
+				// comment = handle_doc_comment(alloc, &i, data);
+				skip_doc_comment(&i, data);
 				// io::printfn("comment is: %s", comment.comment);
 			case data[i] == '`':
 				skip_string(&i, data, '`');
@@ -281,7 +282,7 @@ fn void skip_comment(usz* i, String data)
 		}
 	}
 }
-fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool()
+/*fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool()
 {
 	usz start_idx = *i;
 	*i += 1;
@@ -332,6 +333,24 @@ fn DocComment handle_doc_comment(Allocator alloc, usz* i, String data) => @pool(
 	if (doc.comment.len() > 0 && doc.comment[^1].len == 0) doc.comment.remove_last();
 	
 	return doc;
+}*/
+fn void skip_doc_comment(usz* i, String data)
+{
+	*i += 1;
+	for (usz count = 1; count != 0 && *i < data.len; *i += 1)
+	{
+		if (data[*i] == '<' && *i + 2 < data.len && data[*i + 1] == '*')
+		{
+			count ++;
+			*i += 1;
+		}
+		if (data[*i] == '*' && *i + 2 < data.len && data[*i + 1] == '>')
+		{
+			count --;
+			*i += 1;
+		}
+	}
+
 }
 fn void skip_string(usz* i, String data, char string_char)
 {
@@ -356,7 +375,8 @@ fn void skip_block(usz* i, String data, char block_start, char block_end)
 			case *i + 2 < data.len && data[*i] == '/' && data[*i + 1] == '*':
 				skip_comment(i, data);
 			case *i + 3 < data.len && data[*i] == '<' && data[*i + 1] == '*' && data[*i + 2] != '>':
-				handle_doc_comment(tmem, i, data);
+				// handle_doc_comment(tmem, i, data);
+				skip_doc_comment(i, data);
 			case data[*i] == '`':
 				skip_string(i, data, '`');
 			case data[*i] == '\'':
