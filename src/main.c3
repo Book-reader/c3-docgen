@@ -52,7 +52,7 @@ fn int main(String[] args)
 			io::fprintf(&out_file, "### `%s`\n", mod)!!;
 			foreach (decl : modules.get(mod)!!)
 			{
-				if (decl.doc_comment.comment.len() > 0)
+				/*if (decl.doc_comment.comment.len() > 0)
 				{
 					io::fprintf(&out_file, "\n")!!;
 					foreach (str : decl.doc_comment.comment)
@@ -60,7 +60,7 @@ fn int main(String[] args)
 						io::fprintf(&out_file, "%s%s", str, str.len > 0 && str[^1] == '\n' ? "" : "\n")!!;
 						// io::printfn("sefwfewfwe: [%s]%s", str.len, str);
 					}
-				}
+				}*/
 				io::fprintf(&out_file, "```c3\n%s\n```\n", decl.item)!!;
 			}
 		}
